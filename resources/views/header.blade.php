@@ -391,7 +391,7 @@
                             <div class="d-flex justify-content-between align-items-center pb-3">
                                 <h5 class="m-0 text-muted">Total:</h5>
                                 <div class="px-2">
-                                    <h5 class="m-0" id="cart-item-total">$1258.58</h5>
+                                    <h5 class="m-0" id="cart-item-total">3654.7365 đ</h5>
                                 </div>
                             </div>
 
@@ -425,10 +425,10 @@
                             <div class="p-3">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
+                                        <h6 class="m-0 fs-16 fw-semibold text-white"> Thông báo </h6>
                                     </div>
                                     <div class="col-auto dropdown-tabs">
-                                        <span class="badge bg-light text-body fs-13"> 4 New</span>
+                                        <span class="badge bg-light text-body fs-13"> 4 Mới</span>
                                     </div>
                                 </div>
                             </div>
