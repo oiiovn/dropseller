@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tạo icon SVG -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" version="1.1" width="512" height="512">
+  <!-- Nền tròn màu đen -->
+  <circle cx="256" cy="256" r="256" fill="#000" />
+  <!-- Biểu tượng túi -->
+  <path d="M192 224h128c35.3 0 64 28.7 64 64v96c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64v-96c0-35.3 28.7-64 64-64z" fill="#FFF" />
+  <path d="M224 192v32h64v-32c0-17.7-14.3-32-32-32s-32 14.3-32 32z" fill="#000" />
+</svg>
