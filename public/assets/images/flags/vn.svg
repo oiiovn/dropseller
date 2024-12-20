@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cờ Việt Nam -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Vietnam_Flag" viewBox="0 0 512 512" xml:space="preserve">
+    <!-- Nền đỏ -->
+    <rect width="512" height="512" style="fill:#DA251D;" />
+    <!-- Ngôi sao vàng -->
+    <polygon points="256,100 284.2,198.2 384.8,198.2 303.3,254.8 331.5,353 256,296.5 180.5,353 208.7,254.8 127.2,198.2 227.8,198.2"
+        style="fill:#FFCD00;" />
+</svg>
