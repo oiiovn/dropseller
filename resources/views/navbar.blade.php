@@ -142,7 +142,7 @@
                                 <a href="{apps-chat.html}" class="nav-link" data-key="t-chat">Nạp</a>
                             </li>
                             <li class="nav-item">
-                                <a href="apps-chat.html" class="nav-link" data-key="t-chat">Lịch sử nạp</a>
+                                <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử nạp</a>
                             </li>
                             <li class="nav-item">
                                 <a href="apps-chat.html" class="nav-link" data-key="t-chat">Hoá đơn Drops</a>
