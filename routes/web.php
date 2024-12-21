@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\OrderController;
 
 use App\Http\Controllers\auth\AuthController;
 /*
@@ -31,6 +32,8 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 // Sản phẩm
 Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
+Route::get('order', [OrderController::class, 'Getorder'])->name('order');
+
 // Payment
 Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
 Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
