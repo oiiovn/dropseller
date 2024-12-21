@@ -40,6 +40,7 @@
                 /* Kết thúc ở ngoài container */
             }
         }
+
     </style>
 </head>
 
@@ -49,7 +50,7 @@
     <div class="modal fade" id="napTienModal" aria-hidden="true" aria-labelledby="napTienModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header d-flex align-items-center"style="height: 47px; padding-top:3px; " >
                     <h5 class="modal-title" id="napTienModalLabel">Thêm số dư vào tài khoản</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -61,7 +62,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer d-flex align-items-center" style="height: 47px; border: 1px solid #ccc; ">
+                <div class="modal-footer d-flex align-items-center"style="height: 57px; padding:5px; ">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
                     <button class="btn btn-primary" data-bs-target="#qrModal" data-bs-toggle="modal" data-bs-dismiss="modal">Thực hiện thanh toán</button>
                 </div>
@@ -73,7 +74,7 @@
     <div class="modal fade" id="qrModal" aria-hidden="true" aria-labelledby="qrModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header d-flex align-items-center"style="height: 47px; padding-top:3px; " >
                     <h5 class="modal-title" id="qrModalLabel">QR Code Thanh Toán</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -87,7 +88,7 @@
                 </div>
 
 
-                <div class="modal-footer" d-flex align-items-center" style="height: 47px; border: 1px solid #ccc; ">
+                <div class="modal-footer d-flex align-items-center"style="height: 57px; padding:5px; ">
                     <button class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
@@ -201,36 +202,6 @@
 
         <!-- Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // Hàm reset modal "napTienModal"
-                function resetNapTienModal() {
-                    document.getElementById('soTien').value = '';
-                    document.getElementById('phiQuangCao').value = '0 VND';
-                    document.getElementById('tongSoTien').value = '0 VND';
-                }
-
-                // Đặt lại giao diện khi modal "qrModal" đóng
-                const qrModal = document.getElementById('qrModal');
-                qrModal.addEventListener('hidden.bs.modal', () => {
-                    location.reload(); // Tải lại trang khi modal 2 đóng
-                });
-
-                // Đặt lại modal khi modal "napTienModal" đóng
-                const napTienModal = document.getElementById('napTienModal');
-                napTienModal.addEventListener('hidden.bs.modal', resetNapTienModal);
-            });
-            const qrModal = document.getElementById('qrModal');
-            qrModal.addEventListener('hidden.bs.modal', () => {
-    location.reload(); // Tải lại trang khi modal 2 đóng
-});
-// Đếm số lượng lớp phủ hiện tại
-const overlays = document.querySelectorAll('.modal-backdrop');
-console.log(`Số lượng lớp phủ: ${overlays.length}`);
-
-
-        </script>
 
         </script>
     </body>

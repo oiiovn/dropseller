@@ -55,6 +55,16 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
+        a {
+    text-decoration: none !important;
+}
+body {
+    font-size: 14px !important;
+    font-family: Arial, sans-serif !important;
+}
+
+
+
         
     </style>
 

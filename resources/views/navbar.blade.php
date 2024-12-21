@@ -139,7 +139,7 @@
                     <div class="collapse menu-dropdown" id="thanhtoan">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{apps-chat.html}" class="nav-link" data-key="t-chat">Nạp</a>
+                            <a href="javascript:void(0);" class="nav-link" id="openNapTienModal">Nạp</a>
                             </li>
                             <li class="nav-item">
                                 <a href="apps-chat.html" class="nav-link" data-key="t-chat">Lịch sử nạp</a>
@@ -201,3 +201,20 @@
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#openNapTienModal').click(function () {
+            $.get('{{ route("naptien") }}', function (data) {
+                // Thêm modal vào body nếu chưa tồn tại
+                if ($('#napTienModal').length === 0) {
+                    $('body').append(data);
+                }
+
+                // Hiển thị modal
+                const napTienModal = new bootstrap.Modal(document.getElementById('napTienModal'));
+                napTienModal.show();
+            });
+        });
+    });
+</script>
