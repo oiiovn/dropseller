@@ -1,4 +1,3 @@
-
 <header id="page-topbar">
     <div class="layout-width">
         <div class="navbar-header">
@@ -118,6 +117,9 @@
                 </form>
             </div>
             <div class="d-flex align-items-center">
+                <div>
+                <a class="align-items-center " href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b>856,847 đ</b></span></a>
+                </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img id="header-lang-img" src="assets/images/flags/vn.svg" alt="Header Language" height="20" class="rounded">
@@ -392,10 +394,10 @@
                     </div>
                 </div>
 
-                <div class="dropdown ms-sm-3 header-item topbar-user bg-white" >
+                <div class="dropdown ms-sm-3 header-item topbar-user bg-white">
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                        <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
+                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Bùi Quốc Vũ</span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text border rounded p-1" style="background-color: #faa887; color: black;">Nhà Bán Tiềm Năng</span>
@@ -420,4 +422,3 @@
         </div>
     </div>
 </header>
-
