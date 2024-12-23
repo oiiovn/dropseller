@@ -61,11 +61,9 @@
 body {
     font-size: 14px !important;
     font-family: Arial, sans-serif !important;
+
 }
-
-
-
-        
+   
     </style>
 
 </head>
