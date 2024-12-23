@@ -1,4 +1,4 @@
-<!-- @extends('layout')
+@extends('layout')
 @section('title', 'sidebar')
 
 @section('main')
@@ -10,7 +10,7 @@
         </div>
         <ul class="navbar-nav" id="navbar-nav">
             <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-            <!-- <li class="nav-item">
+            <!-- <li class="nav-item"> -->
                 <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                 </a>
@@ -40,14 +40,14 @@
                     </ul>
                 </div>
             </li> end Dashboard Menu -->
-            <!-- <li class="nav-item">
+            <!-- <li class="nav-item"> -->
                 <a class="nav-link menu-link" href="{{route('list_products')}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                     <i class="ri-apps-2-line"></i> <span data-key="t-apps">Danh sách sản phẩm</span>
                 </a>
                 
             </li> -->
 
-            <!-- <li class="nav-item">
+            <!-- <li class="nav-item"> -->
                 <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                     <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Layouts</span> <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span>
                 </a>
@@ -67,7 +67,8 @@
                         </li>
                     </ul>
                 </div>
-            </li> end Dashboard Menu -->
+            </li> 
+            <!-- end Dashboard Menu -->
 
             <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span></li>
 
