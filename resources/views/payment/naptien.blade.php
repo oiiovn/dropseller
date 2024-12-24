@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modal Reset Example</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         .modal-backdrop.show {
             background-color: rgba(0, 0, 0, 0.9);
@@ -73,10 +72,11 @@
     <div class="modal fade" id="qrModal" aria-hidden="true" aria-labelledby="qrModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header d-flex align-items-center" style="height: 47px; padding-top:3px; ">
+                <div class="modal-header d-flex align-items-center" style="height: 37px; padding-top:3px; ">
                     <h5 class="modal-title" id="qrModalLabel">QR Code Thanh Toán</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+            
                 <div class="modal-body d-flex align-items-center justify-content-center"
                     style="height: 100%; min-height: 205px; position: relative; overflow: hidden;">
                     <!-- success Alert -->
@@ -101,7 +101,6 @@
         </div>
     </div>
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const qrImage = document.getElementById("qrCode");
         qrImage.onload = () => {
