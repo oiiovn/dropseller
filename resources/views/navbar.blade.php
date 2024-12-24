@@ -81,11 +81,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#thanhtoan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <a class="nav-link menu-link" href="#donhang" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Quản Lý đơn hàng</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="thanhtoan">
+                    <div class="collapse menu-dropdown" id="donhang">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('order_si')}}" class="nav-link" data-key="t-chat">Danh sách đơn sỉ</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Danh sách đơn hàng</a>
