@@ -88,14 +88,14 @@
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('order_si')}}" class="nav-link" data-key="t-chat">Danh sách đơn sỉ</a>
+                                <a href="{{route('order_si')}}" class="nav-link" data-key="t-chat">Đơn hàng sỉ</a>
                             </li>
                         </ul>
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Danh sách đơn hàng</a>
+                                <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Đơn hàng TMĐT</a>
                             </li>
                         </ul>
                     </div>
