@@ -2,8 +2,7 @@
 @section('title', 'main')
 
 @section('main')
-<div class="page-content bg-white">
-    <div class="container-fluid">
+    <div class="container-fluid bg-white p-3 ">
         <!-- Các nav này chứa các nội dung bảng khác nhau -->
         <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -963,6 +962,6 @@
         </div>
     </div>
 </div>
-</div>
+
 
 @endsection
