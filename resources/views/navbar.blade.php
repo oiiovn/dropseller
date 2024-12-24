@@ -162,7 +162,7 @@
                             <a href="javascript:void(0);" class="nav-link" id="openNapTienModal">Nạp</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử nạp</a>
+                                <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
                             <li class="nav-item">
                                 <a href="apps-chat.html" class="nav-link" data-key="t-chat">Hoá đơn Drops</a>

@@ -52,15 +52,16 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
-        a {
-    text-decoration: none !important;
-}
-body {
-    font-size: 14px !important;
-    font-family: Arial, sans-serif !important;
 
-}
-   
+        a {
+            text-decoration: none !important;
+        }
+
+        body {
+            font-size: 14px !important;
+            font-family: Arial, sans-serif !important;
+
+        }
     </style>
 
 </head>
@@ -81,21 +82,12 @@ body {
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content">
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-
+        <div class="page-content " style="padding-top:80px;">
+            @include('noti.noti')
+         
             @yield('main')
             <!-- End Page-content -->
+    </div>     
 
             <footer class="footer">
                 <div class="container-fluid">
