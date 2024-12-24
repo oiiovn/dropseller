@@ -36,10 +36,13 @@ Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 
 
 Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
-Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
+Route::get('/transaction',[TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
 Route::get('/next_page', [AuthController::class, 'next_page'])->name('next_page');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth.jwt');
 
 Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
+Route::get('/export-orders', [OrderController::class, 'exportOrders']);
+
+Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);
