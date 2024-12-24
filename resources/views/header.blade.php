@@ -118,6 +118,14 @@
             </div>
             <div class="d-flex align-items-center">
                 <div>
+                <form action="/import-order-tiktok" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" required>
+    <button type="submit">Import Orders</button>
+</form>
+
+                </div>
+                <div>
                 <a class="align-items-center " href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">856,847 đ</b></span></a>
                 </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
