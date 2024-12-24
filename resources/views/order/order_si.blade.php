@@ -2,7 +2,6 @@
 @section('title', 'main')
 
 @section('main')
-<div class="page-content">
     <div class="container-fluid">
         <!-- end page title -->
         <div class="row">
@@ -176,7 +175,7 @@
 
     </div>
     <!-- container-fluid -->
-</div>
+
 
 
 @endsection
