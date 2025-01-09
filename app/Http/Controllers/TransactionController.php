@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
@@ -11,7 +12,9 @@ class TransactionController extends Controller
      */
     public function fetchTransactionHistory()
     {
-        return view('payment.transaction');
+        $Transactions = Transaction::all();
+        return view('payment.transaction',compact('Transactions'));
 
     }
+    
 }
