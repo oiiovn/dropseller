@@ -2,7 +2,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Light Logo -->
-        <a href="{{route('Dashboard')}}" class="logo logo-light">
+        <a href="{{route('dashboard')}}" class="logo logo-light">
             <span class="logo-sm">
                 <img src="assets/images/logo-sm.png" alt="" height="22">
             </span>
@@ -75,7 +75,7 @@
                     <span data-key="t-menu">Menu</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{route('Dashboard')}}">
+                    <a class="nav-link menu-link" href="{{route('dashboard')}}">
                         <i class="ri-dashboard-2-line"></i>
                         <span>Dashboards</span>
                     </a>

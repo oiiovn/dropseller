@@ -31,7 +31,6 @@
                                                     <i class="ri-calendar-2-line"></i>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-soft-info btn-icon waves-effect material-shadow-none waves-light layout-rightside-btn"><i class="ri-pulse-line"></i></button>
