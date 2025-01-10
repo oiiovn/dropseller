@@ -18,7 +18,6 @@ class UserController extends Controller
         try {
             // Lấy thông tin user từ JWT
             $user = JWTAuth::parseToken()->authenticate();
-            dd($user);
             if (!$user) {
                 return response()->json(['error' => 'User not found'], 404);
             }
