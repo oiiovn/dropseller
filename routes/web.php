@@ -6,6 +6,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\ProfileController;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -25,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
 
     Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
+    Route::get('/portfolio', [ProfileController::class, 'viewProfile'])->name('portfolio');
     Route::get('/export-orders', [OrderController::class, 'exportOrders']);
     Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);
 });
