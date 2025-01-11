@@ -1,31 +1,40 @@
-﻿@extends('layouts.app')
+﻿@extends('layout')
+@section('title', 'main')
+@section('main')
+<div class="container mt-4">
+    <h1 class="text-center">Báo cáo sản phẩm</h1>
 
-@section('content')
-<div class="container">
-    <h1>Product Report</h1>
-    @if(isset($report['data']['product_report']))
-        <table class="table">
+    @if (!empty($filteredProducts))
+        <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity Sold</th>
-                    <th>Total Revenue</th>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng bán</th>
+                    <th>Doanh thu</th>
+                    <th>Hình ảnh</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($report['data']['product_report'] as $product)
+                @foreach ($filteredProducts as $product)
                     <tr>
-                        <td>{{ $product['product_id'] }}</td>
-                        <td>{{ $product['product_name'] }}</td>
-                        <td>{{ $product['quantity_sold'] }}</td>
-                        <td>{{ $product['total_revenue'] }}</td>
+                        <td>{{ $product['code'] ?? 'Không rõ' }}</td>
+                        <td>{{ $product['name'] ?? 'Không rõ' }}</td>
+                        <td>{{ $product['amount'] ?? 0 }}</td>
+                        <td>{{ number_format($product['revenue'] ?? 0) }} VNĐ</td>
+                        <td>
+                            @if (!empty($product['image']))
+                                <img src="{{ $product['image'] }}" alt="Hình ảnh" style="width: 100px;">
+                            @else
+                                Không có hình ảnh
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @else
-        <p>No data available for the selected time period.</p>
+        <p>Không tìm thấy sản phẩm nào phù hợp với bộ lọc.</p>
     @endif
 </div>
 @endsection

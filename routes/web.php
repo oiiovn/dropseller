@@ -7,7 +7,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\ProductReportController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -30,4 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/portfolio', [ProfileController::class, 'viewProfile'])->name('portfolio');
     Route::get('/export-orders', [OrderController::class, 'exportOrders']);
     Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);
+
+
+
+
+Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+
 });
