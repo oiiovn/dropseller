@@ -50,8 +50,6 @@
                             <td style="width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 {{$Transaction->description}}
                             </td>
-
-
                             <td>{{$Transaction->transaction_date}}</td>
                             <td>
                                 @if ($Transaction->type === 'IN')

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -16,51 +16,33 @@ class ProductController extends Controller
        $apiUrl = "https://salework.net/api/open/stock/v1/report/product";
        $clientId = "1605";
        $token = "+AXBRK19RPa6MG5wxYOhD7BPUGgibb76FnxirVzkW/9FMf9nSmJIg9OINUDk8X5L";
-   
-       // Xử lý thời gian
        $startDate = $request->input('start_date');
        $endDate = $request->input('end_date');
-   
-       if ($startDate === $endDate) {
-           $timeStart = strtotime($startDate . ' 00:00:00') * 1000;
-           $timeEnd = strtotime($endDate . ' 23:59:59') * 1000;
-       } else {
-           $timeStart = strtotime($startDate . ' 00:00:00') * 1000;
-           $timeEnd = strtotime($endDate . ' 23:59:59') * 1000;
+       if (!$startDate || !$endDate) {
+           return back()->with('error', 'Ngày bắt đầu và ngày kết thúc là bắt buộc.');
        }
-   
-       // Tạo payload gửi lên API
+       $timeStart = Carbon::parse($startDate . ' 00:00:00', 'Asia/Ho_Chi_Minh')->timestamp * 1000;
+       $timeEnd = Carbon::parse($endDate . ' 23:59:59', 'Asia/Ho_Chi_Minh')->timestamp * 1000;
        $payload = [
            "time_start" => $timeStart,
            "time_end" => $timeEnd,
-           "platform" => $request->input('platform', '') // Lọc theo nền tảng
+           "platform" => $request->input('platform', ''),
        ];
-   
-       // Gửi yêu cầu đến API
        $response = $this->sendApiRequest($apiUrl, $payload, $clientId, $token);
-   
        if (!$response) {
            return back()->with('error', 'Không thể kết nối tới API.');
        }
-   
        $data = json_decode($response, true);
-   
-       if ($data['status'] !== 'success') {
+       if (!isset($data['status']) || $data['status'] !== 'success') {
            return back()->with('error', 'API trả về lỗi: ' . ($data['message'] ?? 'Không xác định.'));
        }
-   
-       // Lấy dữ liệu sản phẩm từ nền tảng được chọn
        $productReport = $data['data']['product_report'][$request->input('platform')] ?? [];
-   
-       // Lọc theo shop ID nếu được cung cấp
        $shopId = $request->input('shop_id');
        if ($shopId) {
            $productReport = array_filter($productReport, function ($shop) use ($shopId) {
                return isset($shop['shopId']) && $shop['shopId'] == $shopId;
            });
        }
-   
-       // Lấy danh sách sản phẩm từ shop ID
        $filteredProducts = [];
        foreach ($productReport as $shop) {
            if (isset($shop['products']) && is_array($shop['products'])) {
@@ -69,13 +51,11 @@ class ProductController extends Controller
                }
            }
        }
-   
+       $filterDate = $startDate . ' - ' . $endDate;
+    //    return response()->json($filteredProducts);
        // Trả về view với dữ liệu sản phẩm đã lọc
-       return view('product.report', compact('filteredProducts', 'startDate', 'endDate'));
+       return view('product.report', compact('filteredProducts', 'filterDate'));
    }
-   
-   
-   
    
    
    /**
@@ -97,6 +77,10 @@ class ProductController extends Controller
        curl_close($ch);
    
        return $response;
+   }
+   public function lish(Request $request)
+   {
+       return view('product.report');
    }
    
 }

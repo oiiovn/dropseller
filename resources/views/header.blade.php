@@ -415,6 +415,7 @@
                                 @endif
                                  </span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text border rounded p-1" style="background-color: #faa887; color: black;">Nhà Bán Tiềm Năng</span>
+                                
                             </span>
                         </span>
                     </button>
