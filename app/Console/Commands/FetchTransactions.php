@@ -22,11 +22,10 @@ class FetchTransactions extends Command
         $secretKey = "1ece1f568539eeb7b971578c32a317369defbf0e64b8336124bdc47399a3419e";
         $token = base64_encode($secretKey);
 
-        // Body request
         $requestBody = [
-            "bankAccounts" => "62886838888",
-            "begin" => "12/12/2024",
-            "end" => date('Y-m-d') // Ngày hiện tại
+            "bankAccounts" => "62886838888", // Số tài khoản chính xác
+            "begin" => "12/12/2024",        // Ngày bắt đầu
+            "end" => "20/11/2029"          // Ngày kết thúc
         ];
 
         // Gửi request tới API

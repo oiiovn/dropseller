@@ -8,7 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductReportController;
-
+use App\Http\Controllers\ShopController;
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -32,8 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);
 
 
-
-
+    Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
+    Route::get('/shops', [ShopController::class, 'shop_one'])->name('shops');
+    Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
 Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+Route::post('/order', [OrderController::class, 'order'])->name('order.im');
+
+
+
+
 
 });

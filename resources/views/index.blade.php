@@ -15,29 +15,6 @@
                             <div class="flex-grow-1">
                                 <h4 class="fs-16 mb-1">Cứ làm đi, đừng chở giỏi!</h4>
                                 <p class="text-muted mb-0">Bạn không cần 1 kế hoạch rồi mới bắt đầu.</p>
-                                <form action="{{ route('product.report') }}" method="post">
-                                @csrf
-                                <label for="start_date">Ngày bắt đầu:</label>
-                                <input type="date" name="start_date" required>
-                                
-                                <label for="end_date">Ngày kết thúc:</label>
-                                <input type="date" name="end_date" required>
-                                
-                                <label for="platform">Nền tảng:</label>
-                                <select name="platform">
-                                    <option value="Tiktok">Tiktok</option>
-                                    <option value="Shopee">Shopee</option>
-                                    <option value="Lazada">Lazada</option>
-                                </select>
-
-                                <label for="shop_id">Shop ID:</label>
-                                <input type="text" name="shop_id" placeholder="Nhập Shop ID (nếu có)">
-
-                                <button type="submit">Lọc dữ liệu</button>
-                            </form>
-
-
-
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
