@@ -28,6 +28,11 @@ class ShopController extends Controller
     {
         return view('shops.shops');
     }
+    public function shops()
+    {
+        return view('shops.shops_info');
+    }
+    
     
 
     
