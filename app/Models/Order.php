@@ -31,4 +31,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class, 'order_id');
     }
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id', 'shop_id'); // Trường kết nối shop_id
+    }
 }
+

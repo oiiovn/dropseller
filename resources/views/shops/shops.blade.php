@@ -32,6 +32,46 @@
         <button type="submit">Nhập Dữ Liệu</button>
     </form>
     
+    <form action="{{ route('products.import') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div>
+        <label for="file">Chọn file Excel:</label>
+        <input type="file" name="file" id="file" required>
+    </div>
+    <button type="submit" style="margin-top: 10px;">Nhập dữ liệu</button>
+</form>
+@if (session('success'))
+    <p style="color: green;">{{ session('success') }}</p>
+@endif
+
+
+@if (session('updated'))
+    <p>SKU được cập nhật giá:</p>
+    <ul>
+        @foreach (session('updated') as $sku)
+            <li>{{ $sku }}</li>
+        @endforeach
+    </ul>
+@endif
+
+@if (session('inserted'))
+    <p>SKU được thêm mới:</p>
+    <ul>
+        @foreach (session('inserted') as $sku)
+            <li>{{ $sku }}</li>
+        @endforeach
+    </ul>
+@endif
+@if (session('skipped'))
+    <p>SKU bị bỏ qua (trùng giá):</p>
+    <ul>
+        @foreach (session('skipped') as $sku)
+            <li>{{ $sku }}</li>
+        @endforeach
+    </ul>
+@endif
+
+
 
 
 

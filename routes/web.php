@@ -33,7 +33,9 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
+    Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
     Route::get('/shops', [ShopController::class, 'shop_one'])->name('shops');
+    Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
 Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
 Route::post('/order', [OrderController::class, 'order'])->name('order.im');
