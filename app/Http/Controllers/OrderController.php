@@ -19,11 +19,13 @@ class OrderController extends Controller
         return view('order.order');
     }
 
-    function order_si()
+    public function order_si()
     {
-        $orders = Order::with('shop')->get();
-        return view('order.order_si',compact('orders'));
+        $orders = Order::with(['shop', 'orderDetails'])->get();
+        return view('order.order_si', compact('orders'));
     }
+    
+    
     public function exportOrders()
     {
         // Xuất dữ liệu sang file orders.xlsx
@@ -74,7 +76,7 @@ class OrderController extends Controller
         }
         
         $total_tong = $totalRevenue + $total_dropship;
-        $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 8);
+        $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 12);
         $totalAmounts = array_sum(array_column($filteredProducts, 'amount'));
         try {
             // Lưu đơn hàng vào bảng orders
@@ -96,6 +98,7 @@ class OrderController extends Controller
                     'order_id' => $order->id, // Truy cập ID từ $order
                     'shop_id' => $order->shop_id, // Lấy shop_name từ bảng orders
                     'sku' => $detail['code'],
+                    'image' => $detail['image'],
                     'product_name' => $detail['name'],
                     'quantity' => $detail['amount'],
                     'unit_cost' => $detail['db_price'],

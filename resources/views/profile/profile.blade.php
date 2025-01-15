@@ -127,7 +127,7 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" href="#privacy" role="tab">
-                                                <i class="far fa-envelope"></i> Privacy Policy
+                                                <i class="far fa-envelope"></i> Danh sách shop
                                             </a>
                                         </li>
                                     </ul>
@@ -459,117 +459,91 @@
                                             </form>
                                         </div>
                                         <!--end tab-pane-->
-                                        <div class="tab-pane" id="privacy" role="tabpanel">
-                                            <div class="mb-4 pb-2">
-                                                <h5 class="card-title text-decoration-underline mb-3">Security:</h5>
-                                                <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="fs-14 mb-1">Two-factor Authentication</h6>
-                                                        <p class="text-muted">Two-factor authentication is an enhanced security meansur. Once enabled, you'll be required to give two types of identification when you log into Google Authentication and SMS are Supported.</p>
-                                                    </div>
-                                                    <div class="flex-shrink-0 ms-sm-3">
-                                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary">Enable Two-facor Authentication</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="fs-14 mb-1">Secondary Verification</h6>
-                                                        <p class="text-muted">The first factor is a password and the second commonly includes a text with a code sent to your smartphone, or biometrics using your fingerprint, face, or retina.</p>
-                                                    </div>
-                                                    <div class="flex-shrink-0 ms-sm-3">
-                                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary">Set up secondary method</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="fs-14 mb-1">Backup Codes</h6>
-                                                        <p class="text-muted mb-sm-0">A backup code is automatically generated for you when you turn on two-factor authentication through your iOS or Android Twitter app. You can also generate a backup code on twitter.com.</p>
-                                                    </div>
-                                                    <div class="flex-shrink-0 ms-sm-3">
-                                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary">Generate backup codes</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <h5 class="card-title text-decoration-underline mb-3">Application Notifications:</h5>
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="d-flex">
-                                                        <div class="flex-grow-1">
-                                                            <label for="directMessage" class="form-check-label fs-14">Direct messages</label>
-                                                            <p class="text-muted">Messages from people you follow</p>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="directMessage" checked />
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="d-flex mt-2">
-                                                        <div class="flex-grow-1">
-                                                            <label class="form-check-label fs-14" for="desktopNotification">
-                                                                Show desktop notifications
-                                                            </label>
-                                                            <p class="text-muted">Choose the option you want as your default setting. Block a site: Next to "Not allowed to send notifications," click Add.</p>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="desktopNotification" checked />
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="d-flex mt-2">
-                                                        <div class="flex-grow-1">
-                                                            <label class="form-check-label fs-14" for="emailNotification">
-                                                                Show email notifications
-                                                            </label>
-                                                            <p class="text-muted"> Under Settings, choose Notifications. Under Select an account, choose the account to enable notifications for. </p>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="emailNotification" />
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="d-flex mt-2">
-                                                        <div class="flex-grow-1">
-                                                            <label class="form-check-label fs-14" for="chatNotification">
-                                                                Show chat notifications
-                                                            </label>
-                                                            <p class="text-muted">To prevent duplicate mobile notifications from the Gmail and Chat apps, in settings, turn off Chat notifications.</p>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="chatNotification" />
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="d-flex mt-2">
-                                                        <div class="flex-grow-1">
-                                                            <label class="form-check-label fs-14" for="purchaesNotification">
-                                                                Show purchase notifications
-                                                            </label>
-                                                            <p class="text-muted">Get real-time purchase alerts to protect yourself from fraudulent charges.</p>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="purchaesNotification" />
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <h5 class="card-title text-decoration-underline mb-3">Delete This Account:</h5>
-                                                <p class="text-muted">Go to the Data & Privacy section of your profile Account. Scroll to "Your data & privacy options." Delete your Profile Account. Follow the instructions to delete your account :</p>
-                                                <div>
-                                                    <input type="password" class="form-control" id="passwordInput" placeholder="Enter your password" value="make@321654987" style="max-width: 265px;">
-                                                </div>
-                                                <div class="hstack gap-2 mt-3">
-                                                    <a href="javascript:void(0);" class="btn btn-soft-danger">Close & Delete This Account</a>
-                                                    <a href="javascript:void(0);" class="btn btn-light">Cancel</a>
-                                                </div>
+                                        <div class="row">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="fw-medium text-muted mb-0">Users</p>
+                                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="28.05">0</span>k</h2>
+                                            <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 16.24 % </span> vs. previous month</p>
+                                        </div>
+                                        <div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-info-subtle rounded-circle fs-2">
+                                                    <i data-feather="users" class="text-info material-shadow"></i>
+                                                </span>
                                             </div>
                                         </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="fw-medium text-muted mb-0">Sessions</p>
+                                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="97.66">0</span>k</h2>
+                                            <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"><i class="ri-arrow-down-line align-middle"></i> 3.96 % </span> vs. previous month</p>
+                                        </div>
+                                        <div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-info-subtle rounded-circle fs-2 material-shadow">
+                                                    <i data-feather="activity" class="text-info"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-animate bg-primary">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="fw-medium text-white-50 mb-0">Avg. Visit Duration</p>
+                                            <h2 class="mt-4 ff-secondary fw-semibold text-white"><span class="counter-value" data-target="3">0</span>m <span class="counter-value" data-target="40">0</span>sec</h2>
+                                            <p class="mb-0 text-white-50"><span class="badge bg-white bg-opacity-25 text-white mb-0"><i class="ri-arrow-down-line align-middle"></i> 0.24 % </span> vs. previous month</p>
+                                        </div>
+                                        <div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-white bg-opacity-25 rounded-circle fs-2 material-shadow">
+                                                    <i data-feather="clock" class="text-white"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="fw-medium text-muted mb-0">Bounce Rate</p>
+                                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="33.48">0</span>%</h2>
+                                            <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 7.05 % </span> vs. previous month</p>
+                                        </div>
+                                        <div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-info-subtle rounded-circle fs-2 material-shadow">
+                                                    <i data-feather="external-link" class="text-info"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+                    </div> <!-- end row-->
                                         <!--end tab-pane-->
                                     </div>
                                 </div>
