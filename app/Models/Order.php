@@ -27,10 +27,12 @@ class Order extends Model
     /**
      * Quan hệ với bảng order_details
      */
-    public function details()
+    public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class, 'order_id');
+        return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
+    
+
     public function shop()
     {
         return $this->belongsTo(Shop::class, 'shop_id', 'shop_id'); // Trường kết nối shop_id
