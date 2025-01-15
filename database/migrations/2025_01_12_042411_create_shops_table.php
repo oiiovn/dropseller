@@ -8,7 +8,7 @@ class CreateShopsTable extends Migration
 {
     public function up()
     {
-        Schema::create('shop_name', function (Blueprint $table) {
+        Schema::create('shops_name', function (Blueprint $table) {
             $table->id(); 
             $table->string('shop_id')->unique(); 
             $table->string('shop_name'); 
@@ -18,6 +18,6 @@ class CreateShopsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('shop_name'); 
+        Schema::dropIfExists('shops_name'); 
     }
 }
