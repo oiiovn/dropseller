@@ -101,7 +101,7 @@
                                         <td class="id">
                                             <ul style="list-style: none; padding: 0; margin: 0;">
                                                 <li>
-                                                    <a  class="fw-medium link-primary">{{$item->order_code}}</a>
+                                                    <a class="fw-medium link-primary">{{$item->order_code}}</a>
                                                 </li>
                                                 <li>
                                                     <a style="font-size: 12px;">{{$item->filter_date}}</a>
@@ -114,8 +114,8 @@
                                         <td class="customer_cost">{{ $item->shop->shop_name ?? 'N/A' }}</td>
                                         <td class="date">{{$item->export_date}}</td>
                                         <td class="customer_cost">{{$item->total_products}}</td>
-                                        <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</td>
-                                        <td class="product_code">{{ number_format($item->total_bill, 0, ',', '.') }} VNĐ</td>
+                                        <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
+                                        <td class="product_code">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
                                         <td class="date">{{$item->payment_status}}</td>
                                         <td class="date">{{$item->payment_code}}</td>
                                         <td>
@@ -160,15 +160,15 @@
                                                                                                     </div>
                                                                                                     <div class="flex-grow-1 ms-3">
                                                                                                         <h5 class="fs-13">
-                                                                                                            <a  >{{$detail->product_name}}</a>
+                                                                                                            <a>{{$detail->product_name}}</a>
                                                                                                         </h5>
                                                                                                         <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td>{{$detail->quantity}}</td>
-                                                                                            <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} VNĐ</td>
-                                                                                            <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} VNĐ</td>
+                                                                                            <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
+                                                                                            <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
                                                                                         </tr>
                                                                                         @endforeach
                                                                                     </tbody>
@@ -191,16 +191,16 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>Tổng phí Dropship :</td>
-                                                                                    <td class="text-end">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</td>
+                                                                                    <td class="text-end">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>Tổng tiền nhập hàng :</td>
-                                                                                    <td class="text-end">{{ number_format($item->total_bill-$item->total_dropship, 0, ',', '.') }} VNĐ</td>
+                                                                                    <td class="text-end">{{ number_format($item->total_bill-$item->total_dropship, 0, ',', '.') }} đ</td>
                                                                                 </tr>
 
                                                                                 <tr class="border-top border-top-dashed">
-                                                                                    <th scope="row">Tổng tiền đơn hàng (VNĐ) :</th>
-                                                                                    <th class="text-end">{{ number_format($item->total_bill, 0, ',', '.') }} VNĐ</th>
+                                                                                    <th scope="row">Tổng tiền đơn hàng (đ) :</th>
+                                                                                    <th class="text-end">{{ number_format($item->total_bill, 0, ',', '.') }} đ</th>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
