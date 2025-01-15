@@ -34,7 +34,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
     Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
-    Route::get('/shops', [ShopController::class, 'shop_one'])->name('shops');
+    Route::get('/shops_insert', [ShopController::class, 'shop_one'])->name('shops');
+    Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
+    Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
+    Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shops.destroy');
     Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
 Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');

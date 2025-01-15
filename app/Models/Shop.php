@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Shop extends Model
 {
     use HasFactory;
-    protected $table = 'shop_name';
+    protected $table = 'shops_name';
 
     protected $fillable = [
         'shop_id',
-        'shop_name'
+        'shop_name',
+        'user_id'
     ];
     
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id'); 
+    }
 }
