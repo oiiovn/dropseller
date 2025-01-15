@@ -7,15 +7,6 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card" id="orderList">
-                <div class="card-header border-0">
-                    <div class="row align-items-center gy-3">
-                        <div class="col-sm">
-                            <h5 class="card-title mb-0">Lịch sử đơn hàng</h5>
-                        </div>
-                        <div class="col-sm-auto">
-                        </div>
-                    </div>
-                </div>
                 <div class="card-body border border-dashed border-end-0 border-start-0">
                     <form>
                         <div class="row g-3">
@@ -33,13 +24,9 @@
                             <div class="col-xxl-2 col-sm-4">
                                 <div>
                                     <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                        <option value="all" selected>Tất cả đơn</option>
-                                        <option value="Pending">Chờ xác nhận</option>
-                                        <option value="Inprogress">Đơn mới</option>
-                                        <option value="Cancelled">Đang đóng gói</option>
-                                        <option value="Pickups">Đang nhận</option>
-                                        <option value="Returns">Đã trả hàng</option>
-                                        <option value="Delivered">Đã giao</option>
+                                        <option value="all" selected>Thanh toán</option>
+                                        <option value="Pending">Đã thanh toán</option>
+                                        <option value="Pending">Chưa thanh toán</option>
                                     </select>
                                 </div>
                             </div>
@@ -74,27 +61,17 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="Delivered" href="#delivered" role="tab" aria-selected="false">
-                                    <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Đã giao
+                                    <i class=" me-1 align-bottom"></i> lovito.vn
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Pickups" data-bs-toggle="tab" id="Pickups" href="#pickups" role="tab" aria-selected="false">
-                                    <i class="ri-truck-line me-1 align-bottom"></i> Đang nhận hàng <span class="badge bg-danger align-middle ms-1">2</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link py-3 Returns" data-bs-toggle="tab" id="Returns" href="#returns" role="tab" aria-selected="false">
-                                    <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> Đã trả hàng
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link py-3 Cancelled" data-bs-toggle="tab" id="Cancelled" href="#cancelled" role="tab" aria-selected="false">
-                                    <i class="ri-close-circle-line me-1 align-bottom"></i> Đã hủy
+                                    <i class=" me-1 align-bottom"></i> diva.vn </span>
                                 </a>
                             </li>
                         </ul>
                         <div class="table-responsive table-card mb-1">
-                            <table class="table table-nowrap align-middle" id="orderTable">
+                            <table class="table table-nowrap align-middle table-hover " id="orderTable">
                                 <thead class="text-muted table-light ">
                                     <tr class="text-uppercase ">
                                         <th scope="col" style="width: 25px;">
@@ -102,13 +79,13 @@
                                                 <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        <th class="sort" data-sort="id">Mã đơn hàng</th>
+                                        <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
                                         <th class="sort" data-sort="shop_name">Shop</th>
                                         <th class="sort" data-sort="date">Ngày tạo đơn</th>
-                                        <th class="sort" data-sort="doanhso">Tổng số sản phẩm</th>
+                                        <th class="sort" data-sort="doanhso">Số lượng</th>
                                         <th class="sort" data-sort="phidrop">Phí drop</th>
-                                        <th class="sort" data-sort="product_cost">Bill sỉ</th>
-                                        <th class="sort" data-sort="shop_name">Trạng thái thanh toán</th>
+                                        <th class="sort" data-sort="product_cost">Tổng Bill</th>
+                                        <th class="sort" data-sort="shop_name">Thanh toán</th>
                                         <th class="sort" data-sort="shop_name">Mã thanh toán</th>
                                         <th class="sort" data-sort="hanhdong">Hành động</th>
                                     </tr>
@@ -116,19 +93,25 @@
                                 <tbody class="list form-check-all">
                                     @foreach($orders as $item)
                                     <tr>
-
-
                                         <th scope="row">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
                                             </div>
                                         </th>
-                                        <td class="id"><a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">{{$item->order_code}}</a><br>
+                                        <td class="id">
+                                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                                <li>
+                                                    <a  class="fw-medium link-primary">{{$item->order_code}}</a>
+                                                </li>
+                                                <li>
+                                                    <a style="font-size: 12px;">{{$item->filter_date}}</a>
+
+                                                </li>
+                                            </ul>
+
 
                                         </td>
-                                        <td class="customer_cost">
-                                            {{ $item->shop->shop_name}}
-                                        </td>
+                                        <td class="customer_cost">{{ $item->shop->shop_name ?? 'N/A' }}</td>
                                         <td class="date">{{$item->export_date}}</td>
                                         <td class="customer_cost">{{$item->total_products}}</td>
                                         <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</td>
@@ -136,106 +119,133 @@
                                         <td class="date">{{$item->payment_status}}</td>
                                         <td class="date">{{$item->payment_code}}</td>
                                         <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                Xem chi tiết
-                                            </button>
-
+                                            <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
+                                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
+                                                    <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$item->id}}">
+                                                        <i class="ri-eye-fill fs-16"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-xl ">
+                                            <div class="modal fade" id="staticBackdrop-{{$item->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog" style="max-width: 70%; width: 100%;">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="staticBackdropLabel">Chi tiết đơn hàng</h5>
+                                                            <h6 class="modal-title" id="staticBackdropLabel">ID Đơn Hàng: {{ $item->order_code }}</h6>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <div style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
-                                                                <table class="table table-hover table-nowrap mb-0 bg-white">
-                                                                    <thead style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">
-                                                                        <tr class="bg-light">
-                                                                            <th scope="col">Mã sản phẩm</th>
-                                                                            <th scope="col">Tên sản phẩm</th>
-                                                                            <th scope="col">Lượt bán (50)</th>
-                                                                            <th scope="col">Giá sỉ</th>
-                                                                            <th scope="col">Tổng giá</th>
-                                                                            <th scope="col" style="max-width: 50px;">Hình ảnh</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr style="vertical-align: middle;">
-                                                                            <td>SP001</td>
-                                                                            <td>Sản phẩm 1</td>
-                                                                            <td style="text-align: center;">10</td>
-                                                                            <td>50,000 VNĐ</td>
-                                                                            <td>500,000 VNĐ</td>
-                                                                            <td><img src="https://via.placeholder.com/50" alt="Hình ảnh" style="width: 50px; height: auto; border-radius: 10px;"></td>
-                                                                        </tr>
-                                                                        <tr style="vertical-align: middle;">
-                                                                            <td>SP002</td>
-                                                                            <td>Sản phẩm 2</td>
-                                                                            <td style="text-align: center;">20</td>
-                                                                            <td>100,000 VNĐ</td>
-                                                                            <td>2,000,000 VNĐ</td>
-                                                                            <td><img src="https://via.placeholder.com/50" alt="Hình ảnh" style="width: 50px; height: auto; border-radius: 10px;"></td>
-                                                                        </tr>
-                                                                        <tr style="vertical-align: middle;">
-                                                                            <td>SP003</td>
-                                                                            <td>Sản phẩm 3</td>
-                                                                            <td style="text-align: center;">15</td>
-                                                                            <td>70,000 VNĐ</td>
-                                                                            <td>1,050,000 VNĐ</td>
-                                                                            <td>Không có hình ảnh</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
+                                                        <!-- Phần chi tiết sản phẩm -->
+                                                        <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 800px;">
+                                                            <div class="col-xl-9" style="flex: 0 0 70%;">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="table-responsive table-card">
+                                                                            <div class="table-responsive" style="max-height: 800px; overflow-y: auto;">
+                                                                                <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
+                                                                                    <thead class="table-light text-muted">
+                                                                                        <tr>
+                                                                                            <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Sản Phẩm</th>
+                                                                                            <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Số Lượng</th>
+                                                                                            <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Giá Nhập</th>
+                                                                                            <th scope="col" class="text-end" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Tổng Giá Nhập</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        @foreach($item->orderDetails as $detail)
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <div class="d-flex">
+                                                                                                    <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
+                                                                                                        <img src="{{$detail->image}}" alt="" class="img-fluid d-block">
+                                                                                                    </div>
+                                                                                                    <div class="flex-grow-1 ms-3">
+                                                                                                        <h5 class="fs-13">
+                                                                                                            <a  >{{$detail->product_name}}</a>
+                                                                                                        </h5>
+                                                                                                        <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>{{$detail->quantity}}</td>
+                                                                                            <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} VNĐ</td>
+                                                                                            <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} VNĐ</td>
+                                                                                        </tr>
+                                                                                        @endforeach
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
 
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Phần thanh toán tổng -->
+                                                            <div class="col-xl-4" style="flex: 0 0 25%; position: sticky; top: 0;">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless mb-0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>Tổng số sản phẩm :</td>
+                                                                                    <td class="text-end">{{ $item->total_products}} </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Tổng phí Dropship :</td>
+                                                                                    <td class="text-end">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Tổng tiền nhập hàng :</td>
+                                                                                    <td class="text-end">{{ number_format($item->total_bill-$item->total_dropship, 0, ',', '.') }} VNĐ</td>
+                                                                                </tr>
+
+                                                                                <tr class="border-top border-top-dashed">
+                                                                                    <th scope="row">Tổng tiền đơn hàng (VNĐ) :</th>
+                                                                                    <th class="text-end">{{ number_format($item->total_bill, 0, ',', '.') }} VNĐ</th>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-
-
                                     </tr>
                                     @endforeach
+
                                 </tbody>
-                            </table>
-                            <div class="noresult" style="display: none">
-                                <div class="text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
-                                    <h5 class="mt-2">Rất tiếc! Không tìm thấy kết quả</h5>
-                                    <p class="text-muted">Chúng tôi đã tìm kiếm hơn 150+ đơn hàng nhưng không thấy kết quả phù hợp.</p>
-                                </div>
-                            </div>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <div class="pagination-wrap hstack gap-2">
-                                <a class="page-item pagination-prev disabled" href="#">
-                                    Trước
-                                </a>
-                                <ul class="pagination listjs-pagination mb-0"></ul>
-                                <a class="page-item pagination-next" href="#">
-                                    Tiếp theo
-                                </a>
-                            </div>
+                    </div>
+                    </td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    <div class="noresult" style="display: none">
+                        <div class="text-center">
+                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                            <h5 class="mt-2">Rất tiếc! Không tìm thấy kết quả</h5>
+                            <p class="text-muted">Chúng tôi đã tìm kiếm hơn 150+ đơn hàng nhưng không thấy kết quả phù hợp.</p>
                         </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div class="pagination-wrap hstack gap-2">
+                        <a class="page-item pagination-prev disabled" href="#">
+                            Trước
+                        </a>
+                        <ul class="pagination listjs-pagination mb-0"></ul>
+                        <a class="page-item pagination-next" href="#">
+                            Tiếp theo
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!--end row-->
-
 </div>
-<!-- container-fluid -->
-
-
-
+</div>
+</div>
 @endsection
