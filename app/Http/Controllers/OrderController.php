@@ -98,7 +98,7 @@ class OrderController extends Controller
                     'order_id' => $order->id, // Truy cập ID từ $order
                     'shop_id' => $order->shop_id, // Lấy shop_name từ bảng orders
                     'sku' => $detail['code'],
-                    'image' => $detail['image'],
+                    'image' => $detail['name'],
                     'product_name' => $detail['name'],
                     'quantity' => $detail['amount'],
                     'unit_cost' => $detail['db_price'],

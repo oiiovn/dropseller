@@ -53,4 +53,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+    public function shops()
+{
+    return $this->hasMany(Shop::class, 'user_id', 'id'); // Một user có nhiều shop
+}
+
 }

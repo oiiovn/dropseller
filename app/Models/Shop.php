@@ -20,4 +20,15 @@ class Shop extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id'); 
     }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'shop_id', 'id'); // Một shop có nhiều order
+    }
+    public function revenue()
+{
+    return $this->relatedOrders()->sum('total_bill');
+}
+    
+
+
 }
