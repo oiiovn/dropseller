@@ -99,19 +99,32 @@
                                             </div>
                                         </th>
                                         <td class="id">
-                                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                                <li>
-                                                    <a class="fw-medium link-primary">{{$item->order_code}}</a>
+                                            <ul style="list-style: none; padding: 0; margin: 0Í;">
+                                                <li
+                                                    style="position: relative; color: black; list-style: none; text-decoration: none; display: flex; align-items: center;"
+                                                    onmouseover="this.querySelector('a').style.color='blue'; this.querySelector('a').style.textDecoration='underline'; this.querySelector('i').style.display='inline-block';"
+                                                    onmouseout="this.querySelector('a').style.color='black'; this.querySelector('a').style.textDecoration='none'; this.querySelector('i').style.display='none';">
+                                                    <a
+                                                        class="fw-medium link-primary"
+                                                        href="#"
+                                                        style="color: inherit; text-decoration: inherit;"
+                                                        data-order-code="{{ $item->order_code }}">
+                                                        {{$item->order_code}}
+                                                    </a>
+                                                    <i
+                                                        class="ri-checkbox-multiple-blank-line"
+                                                        style="display: none; cursor: pointer; margin-left: 5px;"
+                                                        onclick="copyOrderCode(this)"
+                                                        title="Copy Order Code"></i>
                                                 </li>
                                                 <li>
-                                                    <a style="font-size: 12px;">{{$item->filter_date}}</a>
-
+                                                    <a style="font-size: 11px; color: #A9A9A9; ">{{$item->filter_date}}</a>
                                                 </li>
                                             </ul>
-
-
                                         </td>
-                                        <td class="customer_cost">{{ $item->shop->shop_name ?? 'N/A' }}</td>
+                                        <td class="customer_cost" data-shop-id="{{ $item->shop->id ?? 0 }}">
+                                            {{ $item->shop->shop_name ?? 'N/A' }}
+                                        </td>
                                         <td class="date">{{$item->export_date}}</td>
                                         <td class="customer_cost">{{$item->total_products}}</td>
                                         <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
@@ -215,7 +228,6 @@
                                         </td>
                                     </tr>
                                     @endforeach
-
                                 </tbody>
                         </div>
                     </div>
@@ -246,6 +258,48 @@
         </div>
     </div>
 </div>
-</div>
-</div>
+<script>
+    document.querySelectorAll('.customer_cost').forEach(td => {
+        const shopId = td.dataset.shopId; // Gắn shopId vào dataset
+        if (shopId) {
+            const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+            td.style.color = color;
+        }
+    });
+</script>
+<script>
+    // Copy mã order code 
+    function copyOrderCode(iconElement) {
+        try {
+            // Lấy mã order_code từ thẻ <a>
+            const orderCode = iconElement.previousElementSibling.getAttribute('data-order-code');
+
+            if (!orderCode) {
+                alert("No order code found!");
+                return;
+            }
+
+            // Tạo textarea tạm để sao chép
+            const tempInput = document.createElement('textarea');
+            tempInput.value = orderCode;
+            document.body.appendChild(tempInput);
+
+            // Sao chép nội dung
+            tempInput.select();
+            document.execCommand('copy');
+
+            // Xóa textarea tạm
+            document.body.removeChild(tempInput);
+
+            // Thông báo sao chép thành công
+            alert(`Copied: ${orderCode}`);
+        } catch (error) {
+            console.error("Error copying order code: ", error);
+            alert("Failed to copy order code!");
+        }
+    }
+</script>
+
+
+
 @endsection
