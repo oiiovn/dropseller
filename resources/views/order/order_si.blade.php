@@ -101,18 +101,20 @@
                                         <td class="id">
                                             <ul style="list-style: none; padding: 0; margin: 0;">
                                                 <li>
-                                                    <a class="fw-medium link-primary text-pgitrimary">{{$item->order_code}}</a>
+                                                    <a class="fw-medium link-primary">{{$item->order_code}}</a>
                                                 </li>
                                                 <li>
                                                     <a style="font-size: 12px;">{{$item->filter_date}}</a>
                                                 </li>
                                             </ul>
+                                        <td class="customer_cost" data-shop-id="{{ $item->shop->id ?? 0 }}">
+                                            {{ $item->shop->shop_name ?? 'N/A' }}
                                         </td>
-                                        <td class="customer_cost">{{ $item->shop->shop_name ?? 'N/A' }}</td>
+                                        </td>
                                         <td class="date">{{$item->export_date}}</td>
                                         <td class="customer_cost">{{$item->total_products}}</td>
-                                        <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</td>
-                                        <td class="product_code">{{ number_format($item->total_bill, 0, ',', '.') }} VNĐ</td>
+                                        <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
+                                        <td class="product_code">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
                                         <td class="date">{{$item->payment_status}}</td>
                                         <td class="date">{{$item->payment_code}}</td>
                                         <td>
@@ -164,8 +166,8 @@
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td>{{$detail->quantity}}</td>
-                                                                                            <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} VNĐ</td>
-                                                                                            <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} VNĐ</td>
+                                                                                            <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
+                                                                                            <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
                                                                                         </tr>
                                                                                         @endforeach
                                                                                     </tbody>
@@ -187,15 +189,15 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>Tổng phí Dropship :</td>
-                                                                                    <td class="text-end">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</td>
+                                                                                    <td class="text-end">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>Tổng tiền nhập hàng :</td>
-                                                                                    <td class="text-end">{{ number_format($item->total_bill-$item->total_dropship, 0, ',', '.') }} VNĐ</td>
+                                                                                    <td class="text-end">{{ number_format($item->total_bill-$item->total_dropship, 0, ',', '.') }} đ</td>
                                                                                 </tr>
                                                                                 <tr class="border-top border-top-dashed">
-                                                                                    <th scope="row">Tổng tiền đơn hàng (VNĐ) :</th>
-                                                                                    <th class="text-end">{{ number_format($item->total_bill, 0, ',', '.') }} VNĐ</th>
+                                                                                    <th scope="row">Tổng tiền đơn hàng (đ) :</th>
+                                                                                    <th class="text-end">{{ number_format($item->total_bill, 0, ',', '.') }} đ</th>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -239,6 +241,46 @@
         </div>
     </div>
 </div>
-</div>
-</div>
+<script>
+    document.querySelectorAll('.customer_cost').forEach(td => {
+        const shopId = td.dataset.shopId; // Gắn shopId vào dataset
+        if (shopId) {
+            const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+            td.style.color = color;
+        }
+    });
+    // Copy mã order code 
+    function copyOrderCode(iconElement) {
+        try {
+            // Lấy mã order_code từ thẻ <a>
+            const orderCode = iconElement.previousElementSibling.getAttribute('data-order-code');
+
+            if (!orderCode) {
+                alert("No order code found!");
+                return;
+            }
+
+            // Tạo textarea tạm để sao chép
+            const tempInput = document.createElement('textarea');
+            tempInput.value = orderCode;
+            document.body.appendChild(tempInput);
+
+            // Sao chép nội dung
+            tempInput.select();
+            document.execCommand('copy');
+
+            // Xóa textarea tạm
+            document.body.removeChild(tempInput);
+
+            // Thông báo sao chép thành công
+            alert(`Copied: ${orderCode}`);
+        } catch (error) {
+            console.error("Error copying order code: ", error);
+            alert("Failed to copy order code!");
+        }
+    }
+</script>
+
+
+
 @endsection
