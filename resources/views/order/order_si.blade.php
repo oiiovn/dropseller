@@ -249,6 +249,8 @@
             td.style.color = color;
         }
     });
+</script>
+<script>
     // Copy mã order code 
     function copyOrderCode(iconElement) {
         try {
