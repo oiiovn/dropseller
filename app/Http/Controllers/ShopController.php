@@ -49,8 +49,6 @@ public function store(Request $request)
     ]);
 
     // Debug dữ liệu được gửi
-   
-
     // Kiểm tra shop_id đã tồn tại
     $exists = Shop::where('shop_id', $validated['shop_id'])->exists();
     if ($exists) {
