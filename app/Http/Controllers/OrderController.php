@@ -24,10 +24,16 @@ class OrderController extends Controller
     public function order_si(Request $request)
     {
         $user = Auth::user();
+        
         $shops = Shop::where('user_id', $user->id)->get();
-        $orders = Order::whereIn('shop_id', $shops->pluck('shop_id'))
-                       ->with(['shop', 'orderDetails'])
-                       ->get();
+        $ordersQuery = Order::whereIn('shop_id', $shops->pluck('shop_id'))
+                            ->with(['shop', 'orderDetails'])
+                            ->orderBy('created_at', 'desc');
+        if ($request->has('order_code') && !empty($request->order_code)) {
+            $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
+        }
+    
+        $orders = $ordersQuery->get();
         return view('order.order_si', compact('orders', 'shops'));
     }
     
@@ -38,7 +44,6 @@ class OrderController extends Controller
         // Xuất dữ liệu sang file orders.xlsx
         return Excel::download(new OrderTiktokExport, 'order_tiktok.xlsx');
     }
-
     public function importOrders(Request $request)
     {
         $request->validate([
@@ -49,10 +54,6 @@ class OrderController extends Controller
 
         return back()->with('success', 'Orders imported successfully.');
     }
-
-
-
-
     public function order(Request $request)
     {
         $filteredProducts = json_decode($request->input('data'), true);
