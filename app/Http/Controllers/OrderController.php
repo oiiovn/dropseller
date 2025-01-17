@@ -19,13 +19,24 @@ class OrderController extends Controller
         return view('order.order');
     }
 
-    public function order_si()
+    public function order_si(Request $request)
     {
-        $orders = Order::with(['shop', 'orderDetails'])->get();
-        return view('order.order_si', compact('orders'));
+        $shopFilter = $request->input('shop_filter', 'all'); // Get filter value from request, default to 'all'
+
+        $query = Order::with(['shop', 'orderDetails'])->orderBy('created_at', 'desc');
+
+        if ($shopFilter !== 'all') {
+            $query->whereHas('shop', function ($q) use ($shopFilter) {
+                $q->where('shop_name', $shopFilter);
+            });
+        }
+
+        $orders = $query->get();
+
+        return view('order.order_si', compact('orders', 'shopFilter'));
     }
-    
-    
+
+
     public function exportOrders()
     {
         // Xuất dữ liệu sang file orders.xlsx
@@ -72,9 +83,8 @@ class OrderController extends Controller
             $total_dropship = $totalAmount * 5000;
         } else {
             $total_dropship = 0;
-          
         }
-        
+
         $total_tong = $totalRevenue + $total_dropship;
         $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 12);
         $totalAmounts = array_sum(array_column($filteredProducts, 'amount'));
@@ -116,5 +126,5 @@ class OrderController extends Controller
         return view('product.report', compact('filteredProducts', 'filterDate', 'totalAmounts'))
             ->with('success', 'Dữ liệu đã được xử lý thành công!');
     }
-    
+
 }
