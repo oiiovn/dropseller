@@ -19,14 +19,21 @@ class OrderController extends Controller
         return view('order.order');
     }
 
-    public function order_si()
+    public function order_si(Request $request)
     {
-        // Sắp xếp giảm dần theo ngày tạo (created_at)
-        $orders = Order::with(['shop', 'orderDetails'])
-            ->orderBy('created_at', 'desc') // Sắp xếp giảm dần
-            ->get();
-    
-        return view('order.order_si', compact('orders'));
+        $shopFilter = $request->input('shop_filter', 'all'); // Get filter value from request, default to 'all'
+
+        $query = Order::with(['shop', 'orderDetails'])->orderBy('created_at', 'desc');
+
+        if ($shopFilter !== 'all') {
+            $query->whereHas('shop', function ($q) use ($shopFilter) {
+                $q->where('shop_name', $shopFilter);
+            });
+        }
+
+        $orders = $query->get();
+
+        return view('order.order_si', compact('orders', 'shopFilter'));
     }
 
 
