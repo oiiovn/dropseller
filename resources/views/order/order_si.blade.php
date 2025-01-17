@@ -18,15 +18,28 @@
         <div class="col-lg-12">
             <div class="card" id="orderList">
                 <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form>
+                    <form id="searchForm" method="GET" action="{{ route('order_si') }}">
                         <div class="row g-3">
                             <div class="col-xxl-5 col-sm-6">
                                 <div class="search-box">
-                                    <input type="text" class="form-control search" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác...">
-                                    <i class="ri-search-line search-icon"></i>
+                                    <div class="position-relative">
+                                        <input type="text" class="form-control search" name="order_code" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác..." value="{{ request('order_code') }}">
+                                        <i class="ri-search-line search-icon"></i>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xxl-2 col-sm-6">
+                            
+                            <div class="col-xxl-2 col-sm-3">
+                                <div>
+                                    <button type="submit" class="btn btn-secondary " onclick="SearchData();">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Lọc
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- <div class="col-xxl-2 col-sm-6">
                                 <div>
                                     <input type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" id="demo-datepicker" placeholder="Chọn ngày">
                                 </div>
@@ -50,16 +63,8 @@
                                         <option value="COD">COD</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-xxl-1 col-sm-4">
-                                <div>
-                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                        Lọc
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                            </div> -->
+
                 </div>
                 <div class="card-body pt-0">
                     <div>
@@ -84,11 +89,7 @@
                                     <table class="table table-nowrap align-middle table-hover" id="orderTable">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th scope="col" style="width: 25px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                                    </div>
-                                                </th>
+
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
@@ -103,11 +104,6 @@
                                         <tbody class="list form-check-all">
                                             @foreach($orders as $item)
                                             <tr>
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
-                                                    </div>
-                                                </th>
                                                 <td class="id" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
@@ -240,11 +236,6 @@
                                     <table class="table table-nowrap align-middle table-hover">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
-                                                <th scope="col" style="width: 25px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                                    </div>
-                                                </th>
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
@@ -259,11 +250,6 @@
                                         <tbody>
                                             @foreach($orders->where('shop_id', $shop->shop_id) as $order)
                                             <tr>
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
-                                                    </div>
-                                                </th>
                                                 <td class="id" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
