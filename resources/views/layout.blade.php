@@ -67,7 +67,7 @@
         .toast {
             display: inline-block;
             padding: 10px 20px;
-            background-color: rgb(255,250,55);
+            background-color: rgb(80,199,199);
             color: black;
             border-radius: 5px;
             margin-top: 10px;
