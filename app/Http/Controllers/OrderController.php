@@ -10,6 +10,8 @@ use App\Models\OrderDetail;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Shop;
 
 
 class OrderController extends Controller
@@ -21,22 +23,16 @@ class OrderController extends Controller
 
     public function order_si(Request $request)
     {
-        $shopFilter = $request->input('shop_filter', 'all'); // Get filter value from request, default to 'all'
-
-        $query = Order::with(['shop', 'orderDetails'])->orderBy('created_at', 'desc');
-
-        if ($shopFilter !== 'all') {
-            $query->whereHas('shop', function ($q) use ($shopFilter) {
-                $q->where('shop_name', $shopFilter);
-            });
-        }
-
-        $orders = $query->get();
-
-        return view('order.order_si', compact('orders', 'shopFilter'));
+        $user = Auth::user();
+        $shops = Shop::where('user_id', $user->id)->get();
+        $orders = Order::whereIn('shop_id', $shops->pluck('shop_id'))
+                       ->with(['shop', 'orderDetails'])
+                       ->get();
+        return view('order.order_si', compact('orders', 'shops'));
     }
-
-
+    
+    
+    
     public function exportOrders()
     {
         // Xuất dữ liệu sang file orders.xlsx
