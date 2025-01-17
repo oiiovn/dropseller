@@ -319,7 +319,7 @@
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($item->orderDetails as $detail)
+                                                                                                @foreach($order->orderDetails as $detail)
                                                                                                 <tr>
                                                                                                     <td>
                                                                                                         <div class="d-flex">
