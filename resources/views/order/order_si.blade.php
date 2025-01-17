@@ -2,6 +2,16 @@
 @section('title', 'main')
 
 @section('main')
+<style>
+    .order-link .icon {
+        display: none;
+        cursor: pointer;
+    }
+
+    .order-link:hover .icon {
+        display: inline;
+    }
+</style>
 <div class="container-fluid">
     <!-- end page title -->
     <div class="row">
@@ -79,10 +89,10 @@
                                                 <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
+                                        <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
                                         <th class="sort" data-sort="shop_name">Shop</th>
                                         <th class="sort" data-sort="date">Ngày tạo đơn</th>
-                                        <th class="sort" data-sort="doanhso">Số lượng</th>
+                                        <th class="sort" data-sort="soluong">Số lượng</th>
                                         <th class="sort" data-sort="phidrop">Phí drop</th>
                                         <th class="sort" data-sort="product_cost">Tổng Bill</th>
                                         <th class="sort" data-sort="shop_name">Thanh toán</th>
@@ -98,18 +108,21 @@
                                                 <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
                                             </div>
                                         </th>
-                                        <td class="id">
+                                        <td class="id" style="max-width: 5px;" >
                                             <ul style="list-style: none; padding: 0; margin: 0;">
-                                                <li>
-                                                    <a class="fw-medium link-primary">{{$item->order_code}}</a>
+                                                <li class="order-link">
+                                                    <a class="fw-medium link-primary  text-dark" data-order-code="{{$item->order_code}}">
+                                                        {{$item->order_code}}
+                                                        <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                    </a>
                                                 </li>
                                                 <li>
-                                                    <a style="font-size: 12px;">{{$item->filter_date}}</a>
+                                                    <a class="text-body-secondary" style="font-size: 11px;">{{$item->filter_date}}</a>
                                                 </li>
                                             </ul>
+                                        </td>
                                         <td class="customer_cost" data-shop-id="{{ $item->shop->id ?? 0 }}">
                                             {{ $item->shop->shop_name ?? 'N/A' }}
-                                        </td>
                                         </td>
                                         <td class="date">{{$item->export_date}}</td>
                                         <td class="customer_cost">{{$item->total_products}}</td>
@@ -251,38 +264,34 @@
     });
 </script>
 <script>
-    // Copy mã order code 
-    function copyOrderCode(iconElement) {
-        try {
-            // Lấy mã order_code từ thẻ <a>
-            const orderCode = iconElement.previousElementSibling.getAttribute('data-order-code');
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderLinks = document.querySelectorAll('.order-link');
 
-            if (!orderCode) {
-                alert("No order code found!");
-                return;
-            }
+        orderLinks.forEach(link => {
+            const icon = link.querySelector('.icon');
+            const orderCode = link.getAttribute('data-order-code');
+            let isThrottled = false;
 
-            // Tạo textarea tạm để sao chép
-            const tempInput = document.createElement('textarea');
-            tempInput.value = orderCode;
-            document.body.appendChild(tempInput);
+            icon.addEventListener('click', function() {
+                if (isThrottled) return;
 
-            // Sao chép nội dung
-            tempInput.select();
-            document.execCommand('copy');
-
-            // Xóa textarea tạm
-            document.body.removeChild(tempInput);
-
-            // Thông báo sao chép thành công
-            alert(`Copied: ${orderCode}`);
-        } catch (error) {
-            console.error("Error copying order code: ", error);
-            alert("Failed to copy order code!");
-        }
-    }
+                isThrottled = true;
+                // Copy the order code to clipboard
+                navigator.clipboard.writeText(orderCode)
+                    .then(() => {
+                        // Show notification
+                        showToast(`Đã copy mã :  ${orderCode} !`);
+                    })
+                    .catch(err => {
+                        console.error('Không có dữ liệu copy: ', err);
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            isThrottled = false;
+                        }, 2200);
+                    });
+            });
+        });
+    });
 </script>
-
-
-
 @endsection

@@ -116,4 +116,5 @@ class OrderController extends Controller
         return view('product.report', compact('filteredProducts', 'filterDate', 'totalAmounts'))
             ->with('success', 'Dữ liệu đã được xử lý thành công!');
     }
+    
 }
