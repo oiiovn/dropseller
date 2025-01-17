@@ -21,7 +21,7 @@ class OrderController extends Controller
         return view('order.order');
     }
 
-    public function order_si(Request $request)
+    public function order_si()
     {
         $user = Auth::user();
         $shops = Shop::where('user_id', $user->id)->get();
