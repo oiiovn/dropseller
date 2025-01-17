@@ -11,6 +11,13 @@
     .hienthicopy:hover .icon {
         display: inline;
     }
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background: #f8f9fa;
+        z-index: 2;
+    }
 </style>
 <div class="container-fluid">
     <!-- end page title -->
@@ -24,38 +31,6 @@
                                 <div class="search-box">
                                     <input type="text" class="form-control search" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác...">
                                     <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-6">
-                                <div>
-                                    <input type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" id="demo-datepicker" placeholder="Chọn ngày">
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                        <option value="all" selected>Thanh toán</option>
-                                        <option value="Pending">Đã thanh toán</option>
-                                        <option value="Pending">Chưa thanh toán</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idPayment">
-                                        <option value="all" selected>Tất cả</option>
-                                        <option value="Mastercard">Mastercard</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Visa">Visa</option>
-                                        <option value="COD">COD</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xxl-1 col-sm-4">
-                                <div>
-                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                        Lọc
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -84,11 +59,6 @@
                                     <table class="table table-nowrap align-middle table-hover" id="orderTable">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th scope="col" style="width: 25px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                                    </div>
-                                                </th>
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
@@ -100,18 +70,13 @@
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="list form-check-all">
+                                        <tbody class="list form-check-all text-black-50">
                                             @foreach($orders as $item)
                                             <tr>
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
-                                                    </div>
-                                                </th>
-                                                <td class="id" style="max-width: 5px;">
+                                                <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-dark" data-order-code="{{$item->order_code}}">
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
                                                                 {{$item->order_code}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
@@ -156,10 +121,10 @@
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Sản Phẩm</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Số Lượng</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col">Sản Phẩm</th>
+                                                                                                    <th scope="col">Số Lượng</th>
+                                                                                                    <th scope="col">Giá Nhập</th>
+                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
@@ -240,11 +205,6 @@
                                     <table class="table table-nowrap align-middle table-hover">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
-                                                <th scope="col" style="width: 25px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                                    </div>
-                                                </th>
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
@@ -256,18 +216,13 @@
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="text-black-50">
                                             @foreach($orders->where('shop_id', $shop->shop_id) as $order)
                                             <tr>
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
-                                                    </div>
-                                                </th>
-                                                <td class="id" style="max-width: 5px;">
+                                                <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-dark" data-order-code="{{$item->order_code}}">
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
                                                                 {{$order->order_code}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
@@ -312,10 +267,10 @@
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Sản Phẩm</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Số Lượng</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col">Sản Phẩm</th>
+                                                                                                    <th scope="col">Số Lượng</th>
+                                                                                                    <th scope="col">Giá Nhập</th>
+                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
