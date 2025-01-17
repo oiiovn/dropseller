@@ -12,7 +12,7 @@
         display: inline;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid ">
     <!-- end page title -->
     <div class="row">
         <div class="col-lg-12">
@@ -111,9 +111,9 @@
                                         <td class="id" style="max-width: 5px;">
                                             <ul style="list-style: none; padding: 0; margin: 0;">
                                                 <li class="order-link">
-                                                    <a class="fw-medium link-primary  text-dark" data-order-code="{{$item->order_code}}">
+                                                    <a class=" text-success" data-order-code="{{$item->order_code}}">
                                                         {{$item->order_code}}
-                                                        <span class="  ri-checkbox-multiple-blank-line icon"></span>
+                                                        <span class=" text-body  ri-checkbox-multiple-blank-line icon"></span>
                                                     </a>
                                                 </li>
                                                 <li>
@@ -124,12 +124,12 @@
                                         <td class="customer_cost" data-shop-id="{{ $item->shop->id ?? 0 }}">
                                             {{ $item->shop->shop_name ?? 'N/A' }}
                                         </td>
-                                        <td class="date">{{$item->export_date}}</td>
-                                        <td class="customer_cost">{{$item->total_products}}</td>
-                                        <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
-                                        <td class="product_code">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
-                                        <td class="date">{{$item->payment_status}}</td>
-                                        <td class="date">{{$item->payment_code}}</td>
+                                        <td class="date text-dark-emphasis">{{$item->export_date}}</td>
+                                        <td class="customer_cost text-dark-emphasis">{{$item->total_products}}</td>
+                                        <td class="product_name text-dark-emphasis">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
+                                        <td class="product_code text-dark-emphasis">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
+                                        <td class="date text-dark-emphasis">{{$item->payment_status}}</td>
+                                        <td class="date text-dark-emphasis">{{$item->payment_code}}</td>
                                         <td>
                                             <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                 <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
@@ -196,7 +196,7 @@
                                                                         <table class="table table-borderless mb-0">
                                                                             <tbody>
                                                                                 <h6 class="modal-title" id="staticBackdropLabel">ID Đơn Hàng: {{ $item->order_code }}
-                                                                                    <h7><i class="d-flex">{{$item->export_date}}</i></h7> <span class="badge badge-gradient-danger">{{ $item->shop->shop_name ?? 'N/A' }}</span>
+                                                                                    <h7><i class="d-flex">{{$item->export_date}}</i></h7> <span class="badge badge-label bg-dark"><i class="mdi mdi-circle-medium"></i>{{ $item->shop->shop_name ?? 'N/A' }}</span>
                                                                                 </h6>
                                                                                 <tr>
                                                                                     <td>Tổng số sản phẩm :</td>
