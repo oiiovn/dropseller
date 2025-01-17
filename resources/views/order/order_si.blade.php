@@ -319,7 +319,7 @@
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($item->orderDetails as $detail)
+                                                                                                @foreach($order->orderDetails as $detail)
                                                                                                 <tr>
                                                                                                     <td>
                                                                                                         <div class="d-flex">
@@ -365,7 +365,7 @@
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td>Tổng tiền nhập hàng :</td>
-                                                                                            <td class="text-end">{{ number_format($order->total_bill-$item->total_dropship, 0, ',', '.') }} đ</td>
+                                                                                            <td class="text-end">{{ number_format($order->total_bill-$order->total_dropship, 0, ',', '.') }} đ</td>
                                                                                         </tr>
                                                                                         <tr class="border-top border-top-dashed">
                                                                                             <th scope="row">Tổng tiền đơn hàng (đ) :</th>
