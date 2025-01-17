@@ -22,11 +22,11 @@
                         <div class="row g-3">
                             <div class="col-xxl-5 col-sm-6">
                                 <div class="search-box">
-                                    <input type="text" class="form-control search" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác...">
+                                    <input type="text" class="form-control search" placeholder="Tìm kiếm theo mã đơn hàng hoặc mã thanh toán...">
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
-                            <div class="col-xxl-2 col-sm-6">
+                            <!-- <div class="col-xxl-2 col-sm-6">
                                 <div>
                                     <input type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" id="demo-datepicker" placeholder="Chọn ngày">
                                 </div>
@@ -50,10 +50,10 @@
                                         <option value="COD">COD</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-xxl-1 col-sm-4">
                                 <div>
-                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                    <button type="button" class="btn btn-info waves-effect waves-light w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                         Lọc
                                     </button>
                                 </div>
@@ -108,12 +108,12 @@
                                                 <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
                                             </div>
                                         </th>
-                                        <td class="id" style="max-width: 5px;" >
+                                        <td class="id" style="max-width: 5px;">
                                             <ul style="list-style: none; padding: 0; margin: 0;">
                                                 <li class="order-link">
                                                     <a class="fw-medium link-primary  text-dark" data-order-code="{{$item->order_code}}">
                                                         {{$item->order_code}}
-                                                        <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                        <span class="  ri-checkbox-multiple-blank-line icon"></span>
                                                     </a>
                                                 </li>
                                                 <li>
@@ -143,7 +143,6 @@
                                                 <div class="modal-dialog" style="max-width: 70%; width: 100%;">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h6 class="modal-title" id="staticBackdropLabel">ID Đơn Hàng: {{ $item->order_code }}</h6>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <!-- Phần chi tiết sản phẩm -->
@@ -196,6 +195,9 @@
                                                                     <div class="card-body">
                                                                         <table class="table table-borderless mb-0">
                                                                             <tbody>
+                                                                                <h6 class="modal-title" id="staticBackdropLabel">ID Đơn Hàng: {{ $item->order_code }}
+                                                                                    <h7><i class="d-flex">{{$item->export_date}}</i></h7> <span class="badge badge-gradient-danger">{{ $item->shop->shop_name ?? 'N/A' }}</span>
+                                                                                </h6>
                                                                                 <tr>
                                                                                     <td>Tổng số sản phẩm :</td>
                                                                                     <td class="text-end">{{ $item->total_products}} </td>
