@@ -285,7 +285,6 @@
                                     </div>
                                 </div>
                                 <div id="newForm" style="display: none;">
-
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2">
@@ -303,23 +302,18 @@
                                 <div class="card card-height-100">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
-                                
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-warning-subtle text-warning rounded-2 fs-2 material-shadow">
                                                     <i class="bx bxs-user-account"></i>
                                                 </span>
                                             </div>
-
                                             <div class="flex-grow-1 ms-3">
-                                              
                                                 <h4 class="fs-4 mb-3">{{$shop->shop_name}}</h4>
-                                                <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
-                                               </p>
+                                                <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td></p>
                                             </div>
                                             <div class="flex-shrink-0 align-self-center">
                                                 <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>10.35 %</span>
                                             </div>                                                   
-                                         
                                         </div>
                                     </div><!-- end card body -->
                                 </div>
