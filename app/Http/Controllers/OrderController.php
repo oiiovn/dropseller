@@ -21,11 +21,15 @@ class OrderController extends Controller
 
     public function order_si()
     {
-        $orders = Order::with(['shop', 'orderDetails'])->get();
+        // Sắp xếp giảm dần theo ngày tạo (created_at)
+        $orders = Order::with(['shop', 'orderDetails'])
+            ->orderBy('created_at', 'desc') // Sắp xếp giảm dần
+            ->get();
+    
         return view('order.order_si', compact('orders'));
     }
-    
-    
+
+
     public function exportOrders()
     {
         // Xuất dữ liệu sang file orders.xlsx
@@ -72,9 +76,8 @@ class OrderController extends Controller
             $total_dropship = $totalAmount * 5000;
         } else {
             $total_dropship = 0;
-          
         }
-        
+
         $total_tong = $totalRevenue + $total_dropship;
         $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 12);
         $totalAmounts = array_sum(array_column($filteredProducts, 'amount'));
@@ -116,5 +119,5 @@ class OrderController extends Controller
         return view('product.report', compact('filteredProducts', 'filterDate', 'totalAmounts'))
             ->with('success', 'Dữ liệu đã được xử lý thành công!');
     }
-    
+
 }
