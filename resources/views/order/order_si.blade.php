@@ -11,6 +11,13 @@
     .hienthicopy:hover .icon {
         display: inline;
     }
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background: #f8f9fa;
+        z-index: 2;
+    }
 </style>
 <div class="container-fluid">
     <!-- end page title -->
@@ -89,7 +96,6 @@
                                     <table class="table table-nowrap align-middle table-hover" id="orderTable">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
@@ -101,13 +107,13 @@
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="list form-check-all">
+                                        <tbody class="list form-check-all text-black-50">
                                             @foreach($orders as $item)
                                             <tr>
-                                                <td class="id" style="max-width: 5px;">
+                                                <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-dark" data-order-code="{{$item->order_code}}">
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
                                                                 {{$item->order_code}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
@@ -152,10 +158,10 @@
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Sản Phẩm</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Số Lượng</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col">Sản Phẩm</th>
+                                                                                                    <th scope="col">Số Lượng</th>
+                                                                                                    <th scope="col">Giá Nhập</th>
+                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
@@ -247,13 +253,13 @@
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="text-black-50">
                                             @foreach($orders->where('shop_id', $shop->shop_id) as $order)
                                             <tr>
-                                                <td class="id" style="max-width: 5px;">
+                                                <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-dark" data-order-code="{{$item->order_code}}">
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
                                                                 {{$order->order_code}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
@@ -298,10 +304,10 @@
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Sản Phẩm</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Số Lượng</th>
-                                                                                                    <th scope="col" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end" style="position: sticky; top: 0; background: #f8f9fa; z-index: 2;">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col">Sản Phẩm</th>
+                                                                                                    <th scope="col">Số Lượng</th>
+                                                                                                    <th scope="col">Giá Nhập</th>
+                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
