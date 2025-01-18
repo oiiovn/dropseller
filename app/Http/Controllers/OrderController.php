@@ -21,7 +21,7 @@ class OrderController extends Controller
         return view('order.order');
     }
 
-    public function order_si()
+    public function order_si(Request $request)
     {
         $user = Auth::user();
         
