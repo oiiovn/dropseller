@@ -97,10 +97,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($Transactions as $Transaction)
+                        @foreach($Transactions_Drop as $Transaction)
                         <tr>
                             <td>
-                                {{$Transaction->transaction_id}}
+                                <ul style="list-style: none; padding: 0; margin: 0;">
+                                    <li class="hienthicopy">
+                                        <a class="fw-medium link-primary order-link text-secondary">
+                                            {{$Transaction->transaction_id}}
+                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-body-secondary" style="font-size: 11px;">
+                                            @if(optional($Transaction->order)->reconciled === 1)
+                                            Chưa đối soát
+                                            @elseif(optional($Transaction->order)->reconciled === 0)
+                                            Đã đối soát
+                                            @else
+                                            Thanh toán hoàn tiền
+                                            @endif
+
+                                        </a>
+
+                                    </li>
+                                </ul>
                             </td>
                             <!-- <td><span class="badge bg-warning">{{$Transaction->bank}}</span></td>
                                     <td>{{$Transaction->account_number}}</td> -->
