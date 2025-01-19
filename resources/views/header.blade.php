@@ -119,6 +119,7 @@
             <div class="d-flex align-items-center">
                 <div>
                     <a class="align-items-center " href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.'); }} VNĐ</b></span></a>
+                    <i class=" text-body-tertiary ">(Chờ đối soát:{{ number_format($balace, 0, ',', '.'); }} VNĐ )</i>
                 </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

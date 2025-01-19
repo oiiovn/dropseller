@@ -103,7 +103,7 @@
     console.log("Referral Code:", referralCode); 
     const bankAccount = "62886838888";
     const accountName = "BUI QUOC VU";
-    const addInfo = encodeURIComponent(`NAP ${referralCode}`);
+    const addInfo = encodeURIComponent(`${referralCode}`);
     const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}&accountName=${encodeURIComponent(accountName)}`;
     console.log("Generated QR URL:", qrUrl); 
     const qrImage = document.getElementById("qrCode");

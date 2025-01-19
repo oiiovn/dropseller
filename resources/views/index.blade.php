@@ -13,7 +13,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Cứ làm đi, đừng chở giỏi!</h4>
+                                <h4 class="fs-16 mb-1">Cứ làm đi, đừng chờ giỏi!</h4>
                                 <p class="text-muted mb-0">Bạn không cần 1 kế hoạch rồi mới bắt đầu.</p>
                             </div>
                             <div class="mt-3 mt-lg-0">

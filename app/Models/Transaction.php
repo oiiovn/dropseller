@@ -10,11 +10,18 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'bank', 'account_number',
-        'transaction_date', 'transaction_id', 'amount',
-        'type', 'description'
+        'id',
+        'bank',
+        'account_number',
+        'transaction_date',
+        'transaction_id',
+        'amount',
+        'type',
+        'description'
     ];
-
-
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'transaction_id', 'transaction_id'); // Chỉnh theo cột liên kết của bạn
+    }
+    
 }
-
