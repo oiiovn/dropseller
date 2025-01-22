@@ -15,23 +15,20 @@ class TransactionController extends Controller
     public function fetchTransactionHistory()
     {
         $userCode = Auth::user()->referral_code;
-
-        $Transactions = Transaction::with('order') // Eager Load quan hệ 'order'
+        $Transactions = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
-            ->get();
-
-        $Transaction_nap = Transaction::with('order') // Eager Load quan hệ 'order'
+            ->paginate(2); 
+        $Transaction_nap = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
             ->where('type', '=', 'IN')
-            ->get();
-
-        $Transactions_Drop = Transaction::with('order') // Eager Load quan hệ 'order'
+            ->paginate(2);
+        $Transactions_Drop = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
             ->where('bank', 'DROP')
-            ->get();
-
+            ->paginate(2); 
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop'));
     }
+    
 
 
 

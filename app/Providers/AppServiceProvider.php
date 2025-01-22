@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Shop;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transaction;
-
+use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         // Chia sẻ biến $shop_get cho view `index`
         View::composer('product.report', function ($view) {
             $shop_get = Shop::select('shop_id', 'shop_name')->get()->toArray();
