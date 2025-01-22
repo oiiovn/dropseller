@@ -6,43 +6,46 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Auth\AuthController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductReportController;
+use App\Http\Controllers\ShopController;
 
 Route::get('/', function () {
-    return view('index');
+    return view('auth.login');
 });
-Route::get('/Dashboard', function () {
-    return view('index');
-})->name('Dashboard');
+
+// Nhóm tất cả các route yêu cầu đăng nhập
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('index');
+    })->name('dashboard');
+
+    Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
+    Route::get('order', [OrderController::class, 'Getorder'])->name('order');
+    Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
+
+    Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
+    Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
+
+    Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
+    Route::get('/portfolio', [ProfileController::class, 'viewProfile'])->name('portfolio');
+    Route::get('/export-orders', [OrderController::class, 'exportOrders']);
+    Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);
 
 
+    Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
+    Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
+    Route::get('/shops_insert', [ShopController::class, 'shop_one'])->name('shops');
+    Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
+    Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
+    Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shops.destroy');
+    Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
+    Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
+    Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+    Route::post('/order', [OrderController::class, 'order'])->name('order.im');
 
-Route::get('/dashboard', function () {
-    return view('index');
-})->name('dashboard');
-Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
-Route::get('order', [OrderController::class, 'Getorder'])->name('order');
-Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
+    Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])
+        ->name('update.reconciled');
 
-
-Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
-Route::get('/transaction',[TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
-Route::get('/next_page', [AuthController::class, 'next_page'])->name('next_page');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth.jwt');
-
-Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
-Route::get('/export-orders', [OrderController::class, 'exportOrders']);
-
-Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);
+    Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
+});

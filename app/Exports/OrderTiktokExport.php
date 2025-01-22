@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\OrderTiktok;
+use App\Models\Order;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class OrderTiktokExport implements FromCollection
@@ -12,6 +12,6 @@ class OrderTiktokExport implements FromCollection
     */
     public function collection()
     {
-        return OrderTiktok::all();
+        return Order::all();
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -82,4 +83,14 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Logged out successfully!'], 200);
     }
+
+
+    public function showQrModal()
+    {
+        $user = Auth::user(); // Lấy thông tin người dùng đang đăng nhập
+        $referralCode = $user->referral_code; // Lấy mã referral_code
+
+        return view('payment.naptien', compact('referralCode'));
+    }
+
 }

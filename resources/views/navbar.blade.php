@@ -2,7 +2,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Light Logo -->
-        <a href="{{route('Dashboard')}}" class="logo logo-light">
+        <a href="{{route('dashboard')}}" class="logo logo-light">
             <span class="logo-sm">
                 <img src="assets/images/logo-sm.png" alt="" height="22">
             </span>
@@ -75,7 +75,7 @@
                     <span data-key="t-menu">Menu</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{route('Dashboard')}}">
+                    <a class="nav-link menu-link" href="{{route('dashboard')}}">
                         <i class="ri-dashboard-2-line"></i>
                         <span>Dashboards</span>
                     </a>
@@ -88,14 +88,28 @@
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('order_si')}}" class="nav-link" data-key="t-chat">Danh sách đơn sỉ</a>
+                                <a href="{{route('order_si')}}" class="nav-link" data-key="t-chat">Đơn hàng sỉ</a>
                             </li>
                         </ul>
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Danh sách đơn hàng</a>
+                                <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Đơn hàng TMĐT</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="collapse menu-dropdown" id="donhang">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('productsss')}}" class="nav-link" data-key="t-chat">Lọc</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="collapse menu-dropdown" id="donhang">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('shops')}}" class="nav-link" data-key="t-chat">Shop</a>
                             </li>
                         </ul>
                     </div>
@@ -162,7 +176,7 @@
                             <a href="javascript:void(0);" class="nav-link" id="openNapTienModal">Nạp</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử nạp</a>
+                                <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
                             <li class="nav-item">
                                 <a href="apps-chat.html" class="nav-link" data-key="t-chat">Hoá đơn Drops</a>
