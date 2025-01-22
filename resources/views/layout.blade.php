@@ -52,20 +52,42 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
-        a {
-    text-decoration: none !important;
-}
-body {
-    font-size: 14px !important;
-    font-family: Arial, sans-serif !important;
 
-}
-   
+        a {
+            text-decoration: none !important;
+        }
+
+        body {
+            font-size: 14px !important;
+            font-family: Arial, sans-serif !important;
+
+        }
+
+        /* SCC thống báo ngắn */
+        .toast {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgb(80,199,199);
+            color: black;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 
 </head>
 
 <body>
+    <!-- Thông báo 3 giây -->
+    <div id="toast-container" style="position: fixed; top: 90px; right: 20px; z-index: 1000;"></div>
 
     <!-- Begin page -->
     <div id="layout-wrapper">
@@ -81,21 +103,24 @@ body {
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content">
-            @if (session('success'))
+            <div class="page-content " style="padding-top:80px;">
+                @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
-            @endif
+                @endif
 
-            @if (session('error'))
+                @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
                 </div>
-            @endif
+                @endif
 
+                @include('noti.noti')
 
-            @yield('main')
-            <!-- End Page-content -->
+                @yield('main')
+                <!-- End Page-content -->
+            </div>
 
             <footer class="footer">
                 <div class="container-fluid">
@@ -103,11 +128,11 @@ body {
                         <div class="col-sm-6">
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> © Velzon.
+                            </script> © dropseller.vn
                         </div>
                         <div class="col-sm-6">
                             <div class="text-sm-end d-none d-sm-block">
-                                Design & Develop by Themesbrand
+                                Design & Develop by Vũ Bùi và Viết Hoàng
                             </div>
                         </div>
                     </div>
@@ -166,6 +191,28 @@ body {
 
     <!-- App js -->
     <script src="assets/js/app.js"></script>
+    <script>
+        // Gọi lại hàm thông báo ngắn
+        function showToast(message) {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+
+            toastContainer.appendChild(toast);
+
+            // Show the toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            // Hide the toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 100);
+            }, 2000);
+        }
+    </script>
 </body>
 
 
