@@ -19,26 +19,33 @@
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
                                     <div class="row g-3 mb-0 align-items-center">
+                                        <!-- Input chọn ngày -->
                                         <div class="col-sm-auto">
                                             <div class="input-group">
-                                                <input type="text" class="form-control border-0 minimal-border dash-filter-picker shadow"
+                                                <input type="text"
+                                                    class="form-control border-0 minimal-border dash-filter-picker shadow"
+                                                    name="date_range"
                                                     data-provider="flatpickr"
-                                                    data-range-date="true"
+                                                    data-mode="range"
                                                     data-date-format="d M, Y"
-                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022"
-                                                    placeholder="Th11 01, 2024 - Th11 30, 2024">
+                                                    data-default-date="01 Jan, 2022 to 31 Jan, 2022"
+                                                    placeholder="Chọn khoảng thời gian">
                                                 <div class="input-group-text bg-primary border-primary text-white">
                                                     <i class="ri-calendar-2-line"></i>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Nút bấm -->
                                         <div class="col-auto">
-                                            <button type="button" class="btn btn-soft-info btn-icon waves-effect material-shadow-none waves-light layout-rightside-btn"><i class="ri-pulse-line"></i></button>
+                                            <button type="button"
+                                                class="btn btn-soft-info btn-icon waves-effect material-shadow-none waves-light layout-rightside-btn">
+                                                <i class="ri-pulse-line"></i>
+                                            </button>
                                         </div>
-                                        <!--end col-->
                                     </div>
-                                    <!--end row-->
                                 </form>
+
                             </div>
                         </div><!-- end card header -->
                     </div>
@@ -172,171 +179,80 @@
                                 <div class="flex-shrink-0">
                                     <div class="dropdown card-header-dropdown">
                                         <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="fw-semibold text-uppercase fs-12">Xem theo :
-                                            </span><span class="text-muted">Hôm nay<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                            <span class="fw-semibold text-uppercase fs-12">Xem theo :</span>
+                                            <span class="text-muted">
+                                                {{ request('date_range', '30 ngày trước') }} <i class="mdi mdi-chevron-down ms-1"></i>
+                                            </span>
+
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="#">Hôm nay</a>
-                                            <a class="dropdown-item" href="#">Hôm qua</a>
-                                            <a class="dropdown-item" href="#">7 ngày trước</a>
-                                            <a class="dropdown-item" href="#">30 ngày trước</a>
-                                            <a class="dropdown-item" href="#">Tháng trước</a>
-                                            <a class="dropdown-item" href="#">Tháng này</a>
+                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm nay']) }}">Hôm nay</a>
+
+                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDay()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->subDay()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm qua']) }}">Hôm qua</a>
+
+                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDays(7)->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => '7 ngày trước']) }}">7 ngày trước</a>
+
+                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDays(30)->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => '30 ngày trước']) }}">30 ngày trước</a>
+
+                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subMonth()->startOfMonth()->format('Y-m-d H:i:s'), 'end_date' => now()->subMonth()->endOfMonth()->format('Y-m-d H:i:s'), 'date_range' => 'Tháng trước']) }}">Tháng trước</a>
+
+                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfMonth()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Tháng này']) }}">Tháng này</a>
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div><!-- end card header -->
 
                             <div class="card-body">
                                 <div class="table-responsive table-card">
-                                    <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                                    <table class="table table-hover table-centered align-middle table-nowrap mb-0 " style="height: 400px">
                                         <tbody>
+                                            @if($Products->isEmpty())
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">
+                                                    <h5 class="fs-14 my-3">Không có đơn hàng nào trong khoảng thời gian này.</h5>
+                                                </td>
+                                            </tr>
+                                            @else
+                                            @foreach($Products as $product)
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <img src="assets/images/products/sp1.png" alt="" class="img-fluid d-block" />
+                                                            <img src="{{ $product->image }}" alt="" class="img-fluid d-block" />
                                                         </div>
                                                         <div>
-                                                            <h5 class="fs-14 my-1"><a href="apps-ecommerce-product-details.html" class="text-reset">Áo Cổ Lọ Tay Dài DAILYSTYLE ĐEN</a></h5>
-                                                            <span class="text-muted">CR40_DEN</span>
+                                                            <h5 class="fs-14 my-1">
+                                                                <a href="apps-ecommerce-product-details.html" class="text-reset">
+                                                                    {{ $product->product_name }}
+                                                                </a>
+                                                            </h5>
+                                                            <span class="text-muted">{{ $product->sku }}</span>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">158.000 đ</h5>
                                                     <span class="text-muted">Giá</span>
+                                                    <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->unit_cost, 0) }} VNĐ</h5>
                                                 </td>
                                                 <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">62</h5>
                                                     <span class="text-muted">Đơn hàng</span>
+                                                    <h5 class="fs-14 my-1 fw-normal">{{ $product->order_count }}</h5>
                                                 </td>
                                                 <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">510</h5>
                                                     <span class="text-muted">Lượt bán</span>
+                                                    <h5 class="fs-14 my-1 fw-normal">{{ $product->total_quantity }}</h5>
                                                 </td>
                                                 <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">80,580,000 đ</h5>
                                                     <span class="text-muted">Doanh số tổng</span>
+                                                    <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_revenue, 0) }} VNĐ</h5>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <img src="assets/images/products/sp2.png" alt="" class="img-fluid d-block" />
-                                                        </div>
-                                                        <div>
-                                                            <h5 class="fs-14 my-1"><a href="apps-ecommerce-product-details.html" class="text-reset">Set bộ nhún Màu HỒNG PIG</a></h5>
-                                                            <span class="text-muted">SET188_HONGPIG</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">133.000 đ</h5>
-                                                    <span class="text-muted">Giá</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Lượt bán</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">46,550,000 đ</h5>
-                                                    <span class="text-muted">Doanh số tổng</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <img src="assets/images/products/sp2.png" alt="" class="img-fluid d-block" />
-                                                        </div>
-                                                        <div>
-                                                            <h5 class="fs-14 my-1"><a href="apps-ecommerce-product-details.html" class="text-reset">Set bộ nhún Màu HỒNG PIG</a></h5>
-                                                            <span class="text-muted">SET188_HONGPIG</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">133.000 đ</h5>
-                                                    <span class="text-muted">Giá</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Lượt bán</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">46,550,000 đ</h5>
-                                                    <span class="text-muted">Doanh số tổng</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <img src="assets/images/products/sp2.png" alt="" class="img-fluid d-block" />
-                                                        </div>
-                                                        <div>
-                                                            <h5 class="fs-14 my-1"><a href="apps-ecommerce-product-details.html" class="text-reset">Set bộ nhún Màu HỒNG PIG</a></h5>
-                                                            <span class="text-muted">SET188_HONGPIG</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">133.000 đ</h5>
-                                                    <span class="text-muted">Giá</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Lượt bán</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">46,550,000 đ</h5>
-                                                    <span class="text-muted">Doanh số tổng</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <img src="assets/images/products/sp2.png" alt="" class="img-fluid d-block" />
-                                                        </div>
-                                                        <div>
-                                                            <h5 class="fs-14 my-1"><a href="apps-ecommerce-product-details.html" class="text-reset">Set bộ nhún Màu HỒNG PIG</a></h5>
-                                                            <span class="text-muted">SET188_HONGPIG</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">133.000 đ</h5>
-                                                    <span class="text-muted">Giá</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">350</h5>
-                                                    <span class="text-muted">Lượt bán</span>
-                                                </td>
-                                                <td>
-                                                    <h5 class="fs-14 my-1 fw-normal">46,550,000 đ</h5>
-                                                    <span class="text-muted">Doanh số tổng</span>
-                                                </td>
-                                            </tr>
+                                            @endforeach
+                                            @endif
                                         </tbody>
+
                                     </table>
                                 </div>
 
@@ -713,5 +629,37 @@
     </div>
 
 </div>
-<!-- container-fluid -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".dash-filter-picker", {
+            mode: "range", // Chế độ chọn khoảng ngày
+            dateFormat: "d M, Y", // Định dạng ngày
+            defaultDate: ["01 Jan, 2022", "31 Jan, 2022"], // Giá trị mặc định
+            locale: "vn", // Hiển thị tiếng Việt
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    let startDate = selectedDates[0].toLocaleDateString("vi-VN"); // Ngày bắt đầu
+                    let endDate = selectedDates[1].toLocaleDateString("vi-VN"); // Ngày kết thúc
+                    console.log("Từ ngày:", startDate, "Đến ngày:", endDate);
+                }
+            }
+        });
+
+        // Xử lý khi form submit
+        document.querySelector("form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let dateRange = document.querySelector("input[name='date_range']").value;
+
+            if (dateRange.includes(" to ")) {
+                let [startDate, endDate] = dateRange.split(" to ");
+                console.log("Từ ngày:", startDate, "Đến ngày:", endDate);
+            } else {
+                console.log("Vui lòng chọn khoảng ngày hợp lệ!");
+            }
+        });
+    });
+</script>
+
+
+
 @endsection

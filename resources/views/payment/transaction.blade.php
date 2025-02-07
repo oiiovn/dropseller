@@ -14,12 +14,12 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link .bg-info mx-2" id="pills-nap-tab" data-bs-toggle="pill" data-bs-target="#pills-nap" type="button" role="tab" aria-controls="pills-nap" aria-selected="false">Nạp tiền</button>
         </li>
-        <li class="nav-item" role="presentation">
+        <!-- <li class="nav-item" role="presentation">
             <button class="nav-link .bg-warning mx-2" id="pills-ads-tab" data-bs-toggle="pill" data-bs-target="#pills-ads" type="button" role="tab" aria-controls="pills-ads" aria-selected="false">Chi tiêu ADS</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link .bg-primary mx-2" id="pills-dich-vu-tab" data-bs-toggle="pill" data-bs-target="#pills-dich-vu" type="button" role="tab" aria-controls="pills-dich-vu" aria-selected="false">Hoá đơn dịch vụ</button>
-        </li>
+        </li> -->
     </ul>
 
     <!-- Tabs Content -->
@@ -53,9 +53,9 @@
                             <td>{{$Transaction->transaction_date}}</td>
                             <td>
                                 @if ($Transaction->type === 'IN')
-                                <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                <span class="badge bg-secondary-subtle text-secondary badge-border">+{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
                                 @elseif ($Transaction->type === 'OUT')
-                                <span class="badge bg-danger-subtle text-danger badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                <span class="badge bg-danger-subtle text-danger badge-border">-{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
                                 @else
                                 <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
                                 @endif
@@ -140,10 +140,26 @@
 
 
                         <td>{{$Transaction->transaction_date}}</td>
-                        <td><span class="badge bg-info">{{ number_format($Transaction->amount, 0, '.', ',') }}VNĐ</span></td>
+                        <td>
+                                @if ($Transaction->type === 'IN')
+                                <span class="badge bg-secondary-subtle text-secondary badge-border">+{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                @elseif ($Transaction->type === 'OUT')
+                                <span class="badge bg-danger-subtle text-danger badge-border">-{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                @else
+                                <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                @endif
+                            </td>
 
                         <td>
-                            {{$Transaction->type}}
+                        <span>
+                                    @if ($Transaction->type === 'IN')
+                                    <span class="badge rounded-pill border border-primary text-primary">Nạp số dư</span>
+                                    @elseif ($Transaction->type === 'OUT')
+                                    <span class="badge rounded-pill border border-danger text-danger">Chi số dư</span>
+                                    @else
+                                    <span>Unknown Type</span>
+                                    @endif
+                                </span>
                         </td>
                     </tr>
                     @endforeach
@@ -186,9 +202,9 @@
                         <td>{{$Transaction->transaction_date}}</td>
                         <td>
                             @if ($Transaction->type === 'IN')
-                            <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                            <span class="badge bg-secondary-subtle text-secondary badge-border">+{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
                             @elseif ($Transaction->type === 'OUT')
-                            <span class="badge bg-danger-subtle text-danger badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
+                            <span class="badge bg-danger-subtle text-danger badge-border">-{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
                             @else
                             <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ</span>
                             @endif
