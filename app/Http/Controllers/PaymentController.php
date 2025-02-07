@@ -40,33 +40,35 @@ class PaymentController extends Controller
     public function thanhtoan()
     {
         $user = Auth::user(); 
-        $total_amout = $user->total_amount;
+        $total_amount = $user->total_amount; 
+    
         $shops = Shop::where('user_id', $user->id)->get(); 
         $allOrders = [];
+    
         foreach ($shops as $shop) {
             $orders = Order::where('shop_id', $shop->shop_id)
                 ->where('payment_status', 'Chưa thanh toán')
                 ->orderBy('created_at', 'asc')
                 ->get();
-
+    
             $allOrders = array_merge($allOrders, $orders->toArray()); 
         }
+    
         foreach ($allOrders as $orderData) {
             $transactionId = $this->generateUniqueTransactionId();
             $uniqueId = $this->generateUniqueId(); 
             $order = Order::find($orderData['id']); 
-
+    
             if (!$order) {
                 continue; 
             }
-
-            if ($total_amout >= $order->total_bill) {
+            if ($total_amount >= $order->total_bill) {
                 $order->payment_status = 'Đã thanh toán';
                 $order->transaction_id = $transactionId; 
                 $order->save(); 
-
-
-
+                $total_amount -= $order->total_bill;
+                $user->total_amount = $total_amount;
+                $user->save();
                 Transaction::create([
                     'id' =>  $uniqueId, 
                     'bank' => 'DROP',
@@ -77,20 +79,18 @@ class PaymentController extends Controller
                     'type' => 'OUT',
                     'amount' => $order->total_bill,
                 ]);
-            }
+            } 
         }
-
-
+    
         return redirect()->route('order_si')->with('success', 'Thanh toán thành công!');
     }
-
+    
 
     private function generateUniqueTransactionId()
     {
         do {
             $transactionId = 'FT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
-        } while (Transaction::where('transaction_id', $transactionId)->exists()); // Thay `Order` bằng model bạn sử dụng
-
+        } while (Transaction::where('transaction_id', $transactionId)->exists()); 
         return $transactionId;
     }
     private function generateUniqueId($length = 8)

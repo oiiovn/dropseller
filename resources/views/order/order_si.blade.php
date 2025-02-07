@@ -61,6 +61,19 @@
                     <a href="{{route('payment')}}" class="btn btn-info">payment</a>
                     <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                 </div>
+                <li class="nav-item">
+                    <form method="GET" action="{{ request()->url() }}">
+                        <input type="hidden" name="page" value="{{ request('page', 1) }}">
+                        <select name="limit" id="limit" class="form-control" onchange="this.form.submit()">
+                            <option value="5" {{ request('limit', 10) == 5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ request('limit', 10) == 10 ? 'selected' : '' }}>10</option>
+                            <option value="20" {{ request('limit', 10) == 20 ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ request('limit', 10) == 50 ? 'selected' : '' }}>50</option>
+                        </select>
+                    </form>
+
+                </li>
+
                 <div class="card-body pt-0">
                     <div>
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -76,6 +89,7 @@
                                 </a>
                             </li>
                             @endforeach
+
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
@@ -128,7 +142,7 @@
                                                     @if($item->reconciled == 1)
                                                     Chưa đối soát
                                                     @elseif($item->reconciled == 0)
-                                                    Đã đối soát       
+                                                    Đã đối soát
                                                     @endif
                                                 </td>
 
@@ -234,6 +248,11 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <!-- Hiển thị phân trang -->
+
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    {{ $orders->links() }}
                                 </div>
                             </div>
                             <!-- Đơn hàng theo từng shop -->
@@ -376,6 +395,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                   
                                 </div>
                             </div>
                             @endforeach

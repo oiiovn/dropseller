@@ -44,8 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
     Route::post('/order', [OrderController::class, 'order'])->name('order.im');
 
-    Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])
-        ->name('update.reconciled');
+    Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])->name('update.reconciled');
+    Route::get('/top-products', [ProductController::class, 'Get_product_top'])->name('products.top');
 
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
+    
 });
