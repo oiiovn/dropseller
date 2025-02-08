@@ -17,34 +17,10 @@
                                 <p class="text-muted mb-0">Bạn không cần 1 kế hoạch rồi mới bắt đầu.</p>
                             </div>
                             <div class="mt-3 mt-lg-0">
-                                <form action="javascript:void(0);">
-                                    <div class="row g-3 mb-0 align-items-center">
-                                        <!-- Input chọn ngày -->
-                                        <div class="col-sm-auto">
-                                            <div class="input-group">
-                                                <input type="text"
-                                                    class="form-control border-0 minimal-border dash-filter-picker shadow"
-                                                    name="date_range"
-                                                    data-provider="flatpickr"
-                                                    data-mode="range"
-                                                    data-date-format="d M, Y"
-                                                    data-default-date="01 Jan, 2022 to 31 Jan, 2022"
-                                                    placeholder="Chọn khoảng thời gian">
-                                                <div class="input-group-text bg-primary border-primary text-white">
-                                                    <i class="ri-calendar-2-line"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+                               
+            
 
-                                        <!-- Nút bấm -->
-                                        <div class="col-auto">
-                                            <button type="button"
-                                                class="btn btn-soft-info btn-icon waves-effect material-shadow-none waves-light layout-rightside-btn">
-                                                <i class="ri-pulse-line"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+
 
                             </div>
                         </div><!-- end card header -->
@@ -70,7 +46,19 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="55645360"></span> vnđ </h4>
+
+
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>
+                                                @if(isset($totalBillPaid_all) && $totalBillPaid_all > 0)
+                                                {{ number_format($totalBillPaid_all, 0) ?? 0 }}
+                                                @elseif(isset($totalBillPaid) && $totalBillPaid > 0)
+                                                {{ number_format($totalBillPaid, 0) ?? 0 }}
+                                                @else
+                                              0
+                                                @endif
+                                            </span>
+                                            VNĐ
+                                        </h4>
                                         <a href="#" class="text-decoration-underline"></a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -99,7 +87,7 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="368"></span> Đơn</h4>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span >{{number_format($totalOrders,0 ??0)}}</span> Đơn</h4>
                                         <a href="#" class="text-decoration-underline"></a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -128,7 +116,7 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="1335"></span> Sản phẩm </h4>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span >{{number_format($totalQuantitySold,0 ??0)}}</span> Sản phẩm </h4>
                                         <a href="#" class="text-decoration-underline"></a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -157,7 +145,7 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"> <span class="counter-value" data-target="1765895"></span> vnđ</h4>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"> <span>{{number_format($total_dropship,0 ?? 0)}}</span> VNĐ</h4>
                                         <a href="#" class="text-decoration-underline"></a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -630,13 +618,13 @@
 
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         flatpickr(".dash-filter-picker", {
             mode: "range", // Chế độ chọn khoảng ngày
             dateFormat: "d M, Y", // Định dạng ngày
             defaultDate: ["01 Jan, 2022", "31 Jan, 2022"], // Giá trị mặc định
             locale: "vn", // Hiển thị tiếng Việt
-            onClose: function (selectedDates, dateStr, instance) {
+            onClose: function(selectedDates, dateStr, instance) {
                 if (selectedDates.length === 2) {
                     let startDate = selectedDates[0].toLocaleDateString("vi-VN"); // Ngày bắt đầu
                     let endDate = selectedDates[1].toLocaleDateString("vi-VN"); // Ngày kết thúc
@@ -646,7 +634,7 @@
         });
 
         // Xử lý khi form submit
-        document.querySelector("form").addEventListener("submit", function (e) {
+        document.querySelector("form").addEventListener("submit", function(e) {
             e.preventDefault();
             let dateRange = document.querySelector("input[name='date_range']").value;
 

@@ -73,8 +73,10 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('index', function ($view) {
             $excludedCodes = ['QUA_TRANG', 'QUA001'];
-            $startDate = request()->input('start_date', Carbon::now()->subDays(30)->format('Y-m-d 00:00:00'));
-            $endDate = request()->input('end_date', Carbon::now()->format('Y-m-d 23:59:59'));
+            $startDate = request()->input('start_date', Carbon::now()->subDays(30)->startOfDay());
+            $endDate = request()->input('end_date', Carbon::now()->endOfDay());
+            $startDate = Carbon::parse($startDate)->startOfDay();
+            $endDate = Carbon::parse($endDate)->endOfDay();
 
             $Products = OrderDetail::select(
                 'sku',
@@ -87,29 +89,32 @@ class AppServiceProvider extends ServiceProvider
                 DB::raw('GROUP_CONCAT(order_id) as order_ids'),
                 DB::raw('COUNT(DISTINCT order_id) as order_count')
             )
-                ->whereBetween('created_at', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay()
-                ]) // Lọc theo ngày
+                ->whereBetween('created_at', [$startDate, $endDate])
                 ->whereNotIn('sku', $excludedCodes)
                 ->groupBy('sku')
                 ->orderByDesc('total_quantity')
                 ->take(5)
                 ->get();
+                $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
+                ->whereNotIn('sku', $excludedCodes)
+                ->sum('quantity'); 
+                $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])
+                    ->sum('total_bill');
+                $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])
+                    ->count(); 
+                $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
+                ->sum('total_dropship');
+              
 
-            // Lấy tổng số tiền của các đơn hàng đã thanh toán
-            $totalBillPaid = Order::whereBetween('created_at', [
-                Carbon::parse($startDate)->startOfDay(),
-                Carbon::parse($endDate)->endOfDay()
-            ])
-                ->where('payment_status', 'paid') // Chỉ lấy đơn hàng đã thanh toán
-                ->sum('total_bill'); // Tổng tiền của đơn hàng
 
-            $view->with([
-                'Products' => $Products,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-                'totalBillPaid' => $totalBillPaid // Gửi tổng tiền về view
+                $view->with([
+                    'Products' => $Products,
+                    'startDate' => $startDate,
+                    'endDate' => $endDate,
+                    'totalBillPaid' => $totalBillPaid,
+                    'totalQuantitySold' => $totalQuantitySold,
+                    'totalOrders' => $totalOrders,
+                    'total_dropship' => $total_dropship  
             ]);
         });
     }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -46,7 +47,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])->name('update.reconciled');
     Route::get('/top-products', [ProductController::class, 'Get_product_top'])->name('products.top');
-
+    Route::post('/get-total-revenue', [HomeController::class, 'data'])->name('getTotalRevenue');
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
     
 });
