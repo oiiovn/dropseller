@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('fetch:transactions')->hourly();
+        $schedule->command('auto:task')->daily(); // Chạy mỗi ngày
     }
+    
 
     /**
      * Register the commands for the application.

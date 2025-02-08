@@ -34,7 +34,7 @@ class OrderController extends Controller
             $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
         }
     
-        $orders = $ordersQuery->paginate(5); 
+        $orders = $ordersQuery->get(); 
         return view('order.order_si', compact('orders', 'shops'));
     }
     

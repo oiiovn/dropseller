@@ -93,11 +93,11 @@
                         </ul>
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
-                        <ul class="nav nav-sm flex-column">
+                        <!-- <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Đơn hàng TMĐT</a>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">

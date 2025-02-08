@@ -2,6 +2,8 @@
 @section('title', 'main')
 
 @section('main')
+
+
 <style>
     .hienthicopy .icon {
         display: none;
@@ -32,48 +34,12 @@
         display: inline;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
     <!-- end page title -->
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row" >
+        <div class="col-lg-12"  >
             <div class="card" id="orderList">
-                <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form id="searchForm" method="GET" action="{{ route('order_si') }}">
-                        <div class="row g-3">
-                            <div class="col-xxl-5 col-sm-6">
-                                <div class="search-box">
-                                    <div class="position-relative">
-                                        <input type="text" class="form-control search" name="order_code" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác..." value="{{ request('order_code') }}">
-                                        <i class="ri-search-line search-icon"></i>
-                                        <i class="ri-close-circle-line clear-icon" onclick="clearSearchInput()"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-3">
-                                <div>
-                                    <button type="submit" class="btn btn-secondary " onclick="SearchData();">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Lọc
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <a href="{{route('payment')}}" class="btn btn-info">payment</a>
-                    <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
-                </div>
-                <li class="nav-item">
-                    <form method="GET" action="{{ request()->url() }}">
-                        <input type="hidden" name="page" value="{{ request('page', 1) }}">
-                        <select name="limit" id="limit" class="form-control" onchange="this.form.submit()">
-                            <option value="5" {{ request('limit', 10) == 5 ? 'selected' : '' }}>5</option>
-                            <option value="10" {{ request('limit', 10) == 10 ? 'selected' : '' }}>10</option>
-                            <option value="20" {{ request('limit', 10) == 20 ? 'selected' : '' }}>20</option>
-                            <option value="50" {{ request('limit', 10) == 50 ? 'selected' : '' }}>50</option>
-                        </select>
-                    </form>
-
-                </li>
-
+                 
                 <div class="card-body pt-0">
                     <div>
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -89,13 +55,15 @@
                                 </a>
                             </li>
                             @endforeach
-
+                            <a href="{{route('payment')}}" class="btn btn-info">payment</a>
+                            <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
                             <div class="tab-pane fade show active" id="home1" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-nowrap align-middle table-hover" id="orderTable">
+                                    <table id="orderTable" class="table table-hover">
+
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
@@ -248,18 +216,16 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    <!-- Hiển thị phân trang -->
+
 
                                 </div>
-                                <div class="d-flex justify-content-center">
-                                    {{ $orders->links() }}
-                                </div>
+
                             </div>
                             <!-- Đơn hàng theo từng shop -->
                             @foreach($shops as $shop)
                             <div class="tab-pane fade" id="shop-{{$shop->id}}-content" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-nowrap align-middle table-hover">
+                                    <table class="table table-nowrap align-middle table-hover" id="orderTableSHOP{{$shop->id}}">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
@@ -395,7 +361,34 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                   
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#orderTableSHOP{{$shop->id}}').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [ 10, 20, 50, 100,150], // Số lượng dòng hiển thị
+
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "🔍",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
+                                                }
+                                            });
+
+                                        });
+                                    </script>
                                 </div>
                             </div>
                             @endforeach
@@ -406,6 +399,9 @@
         </div>
     </div>
 </div>
+<!-- Include DataTables JS -->
+
+
 <script>
     document.querySelectorAll('.customer_cost').forEach(td => {
         const shopId = td.dataset.shopId; // Gắn shopId vào dataset
@@ -441,6 +437,34 @@
                     });
             });
         });
+
+        $(document).ready(function() {
+            $('#orderTable').DataTable({
+                "paging": true, // Bật phân trang
+                "searching": true, // Bật tìm kiếm
+                "ordering": true, // Bật sắp xếp
+                "info": true, // Hiển thị thông tin
+                "lengthMenu": [ 10, 20, 50, 100,150], // Số lượng dòng hiển thị
+
+                // Chỉnh Tiếng Việt
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                    "zeroRecords": "Không tìm thấy dữ liệu",
+                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                    "search": "🔍",
+                    "paginate": {
+                        "first": "Trang đầu",
+                        "last": "Trang cuối",
+                        "next": "Tiếp theo",
+                        "previous": "Quay lại"
+                    }
+                }
+            });
+
+        });
+
     });
 
     function clearSearchInput() {
