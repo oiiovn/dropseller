@@ -95,27 +95,46 @@ class AppServiceProvider extends ServiceProvider
                 ->orderByDesc('total_quantity')
                 ->take(5)
                 ->get();
-                $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
+            $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
                 ->whereNotIn('sku', $excludedCodes)
-                ->sum('quantity'); 
-                $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])
-                    ->sum('total_bill');
-                $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])
-                    ->count(); 
-                $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
+                ->sum('quantity');
+            $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])
+                ->sum('total_bill');
+            $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])
+                ->count();
+            $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
                 ->sum('total_dropship');
-              
-
-
-                $view->with([
-                    'Products' => $Products,
-                    'startDate' => $startDate,
-                    'endDate' => $endDate,
-                    'totalBillPaid' => $totalBillPaid,
-                    'totalQuantitySold' => $totalQuantitySold,
-                    'totalOrders' => $totalOrders,
-                    'total_dropship' => $total_dropship  
+            $totalOrdersByShop = Order::select(
+                'shop_id',
+                DB::raw('COUNT(*) as order_count'),
+                DB::raw('SUM(total_bill) as total_revenue')
+            )
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->groupBy('shop_id')
+                ->orderByDesc('total_revenue')
+                ->take(5)
+                ->get();
+            $view->with([
+                'Products' => $Products,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'totalBillPaid' => $totalBillPaid,
+                'totalQuantitySold' => $totalQuantitySold,
+                'totalOrders' => $totalOrders,
+                'total_dropship' => $total_dropship,
+                'totalOrdersByShop' => $totalOrdersByShop
             ]);
+        });
+        View::composer('*', function ($view) {
+          
+            $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
+            ->whereHas('shop', function ($query) {
+                $query->where('user_id', Auth::id()); // Kiểm tra shop thuộc về user đăng nhập
+            })
+            ->where('created_at', '<', Carbon::now()->subDay())
+            ->get();
+
+            $view->with( 'orders_unpaid',$orders_unpaid);
         });
     }
 }
