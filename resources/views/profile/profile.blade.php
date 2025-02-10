@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 
-    <div class="position-relative mx-n4 mt-n4">
+    <div class="position-relative mx-n4 ">
         <div class="profile-wid-bg profile-setting-img">
             <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
             <!-- <div class="overlay-content">
@@ -36,8 +36,8 @@
                                 </label>
                             </div>
                         </div>
-                        <h5 class="fs-16 mb-1">Show tên người dùng</h5>
-                        <p class="text-muted mb-0">Nhà bán hàng tiềm năng</p>
+                        <h5 class="fs-16 mb-1">{{ Auth::user()->name }}</h5>
+                        <p class="text-muted mb-0"> Mã Code:  {{ Auth::user()->referral_code }}</p>
                     </div>
                 </div>
             </div>
