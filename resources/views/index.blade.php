@@ -4,12 +4,12 @@
 @section('main')
 
 <div class="container-fluid">
-   
+
     <div class="row">
         <div class="col">
 
             <div class="h-100">
-                
+
                 <!--end row-->
 
                 <div class="row">
@@ -285,7 +285,14 @@
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="flex-shrink-0 me-2">
-                                                            <img src="assets/images/companies/img-1.png" alt="" class="avatar-sm p-2" />
+                                                            <img src="
+                                                              @if(isset($shop->shop->user->image) && !empty($shop->shop->user->image))
+                                                                    {{ $shop->shop->user->image }}
+                                                                @else
+                                                                   assets/images/companies/img-1.png
+                                                                @endif
+
+                                                            " alt="" class="avatar-sm p-2" />
                                                         </div>
                                                         <div>
                                                             <h5 class="fs-14 my-1 fw-medium">

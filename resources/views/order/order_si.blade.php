@@ -263,7 +263,7 @@
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
                                                 <td class="date">{{$order->payment_status}}</td>
-                                                <td class="date">{{$order->payment_code}}</td>
+                                                <td class="transaction_id">{{$order->transaction_id}}</td>
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$order->order_code}}">

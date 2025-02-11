@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Transaction;
 use Carbon\Carbon;
-
+use App\Models\Notification;
 class UpdateReconciledOrders extends Command
 {
     protected $signature = 'orders:update-reconciled';
@@ -36,6 +36,12 @@ class UpdateReconciledOrders extends Command
                 $amount -= $transaction->order->total_bill;
                 $transaction->order->update(['reconciled' => 0]);
                 $updatedCount++;
+            Notification::create([
+                'user_id' => $transaction->order->shop->user->id, 
+                'shop_id' => $transaction->order->shop_id,
+                'title' => 'Cập nhật giao dịch',
+                'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã bị hoàn hoặc hủy. Số tiền hoàn: ' . number_format($amount) . ' VND.',
+            ]);
             }
 
             Transaction::create([
@@ -56,7 +62,7 @@ class UpdateReconciledOrders extends Command
     private function generateUniqueTransactionId()
     {
         do {
-            $transactionId = 'FT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+            $transactionId = 'PT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
         } while (Transaction::where('transaction_id', $transactionId)->exists());
 
         return $transactionId;

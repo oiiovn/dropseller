@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\OrderDetail;
 use App\Models\Order;
+use App\Models\Notification;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -126,15 +127,26 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
         View::composer('*', function ($view) {
-          
-            $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
-            ->whereHas('shop', function ($query) {
-                $query->where('user_id', Auth::id()); // Kiểm tra shop thuộc về user đăng nhập
-            })
-            ->where('created_at', '<', Carbon::now()->subDay())
-            ->get();
+            $Notifications = Notification::where('user_id', Auth::id())
+                ->with('user','shop') // Load quan hệ với User
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-            $view->with( 'orders_unpaid',$orders_unpaid);
+            $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
+                ->whereHas('shop', function ($query) {
+                    $query->where('user_id', Auth::id()); // Kiểm tra shop thuộc về user đăng nhập
+                })
+                ->where('created_at', '<', Carbon::now()->subDay())
+                ->get();
+
+
+            $view->with(
+                [
+                    'orders_unpaid' => $orders_unpaid,
+                    'Notifications' => $Notifications
+                ]
+
+            );
         });
     }
 }

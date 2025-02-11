@@ -9,12 +9,14 @@ class CreateShopNameTable extends Migration
     public function up()
     {
         Schema::create('shops_name', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('shop_id')->unique(); 
+            $table->id();
+            $table->string('shop_id')->unique(); // Giữ shop_id là VARCHAR nhưng phải UNIQUE
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('shop_name'); 
-            $table->timestamps(); 
+            $table->timestamps();
         });
+        
+        
     }
 
     public function down()

@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'image',
         'password',
         'referral_code'
     ];
@@ -54,8 +55,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
     public function shops()
-{
-    return $this->hasMany(Shop::class, 'user_id', 'id'); // Một user có nhiều shop
-}
-
+    {
+        return $this->hasMany(Shop::class, 'user_id', 'id'); // Một user có nhiều shop
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
 }

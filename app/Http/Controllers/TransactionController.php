@@ -20,7 +20,7 @@ class TransactionController extends Controller
             ->get(); 
         $Transaction_nap = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
-            ->where('bank', 'bank')
+            ->where('bank', 'MBB')
             ->where('type', '=', 'IN')
             ->get();
         $Transactions_Drop = Transaction::with('order') 

@@ -49,5 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/top-products', [ProductController::class, 'Get_product_top'])->name('products.top');
     // Route::post('/get-total-revenue', [HomeController::class, 'data'])->name('getTotalRevenue');
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
+    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
+
+
+
+    
+
     
 });
