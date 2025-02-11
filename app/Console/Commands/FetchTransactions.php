@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Http;
+use App\Models\Notification;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class FetchTransactions extends Command
 {
@@ -24,7 +28,7 @@ class FetchTransactions extends Command
 
         $requestBody = [
             "bankAccounts" => "62886838888", // Số tài khoản chính xác
-            "begin" => "12/12/2024",        // Ngày bắt đầu
+            "begin" => "01/02/2025",        // Ngày bắt đầu
             "end" => "20/11/2029"          // Ngày kết thúc
         ];
 
@@ -39,23 +43,35 @@ class FetchTransactions extends Command
             return;
         }
 
-        // Lấy dữ liệu từ API
         $transactions = $response->json()['transactions'] ?? [];
-
-        // Lưu dữ liệu vào cơ sở dữ liệu
         foreach ($transactions as $transaction) {
-            Transaction::updateOrCreate(
-                ['id' => $transaction['id']], // Dùng `id` làm khóa chính
-                [
-                    'bank' => $transaction['bank'],
-                    'account_number' => $transaction['account_number'],
-                    'transaction_date' => $transaction['transaction_date'],
-                    'transaction_id' => $transaction['transaction_id'],
-                    'amount' => $transaction['amount'],
-                    'type' => $transaction['type'],
-                    'description' => $transaction['description']
-                ]
-            );
+            if (Transaction::where('transaction_id', $transaction['transaction_id'])->exists()) {
+                continue; 
+            }
+            Transaction::create([
+                'id' => $transaction['id'],
+                'bank' => $transaction['bank'],
+                'account_number' => $transaction['account_number'],
+                'transaction_date' => $transaction['transaction_date'],
+                'transaction_id' => $transaction['transaction_id'],
+                'amount' => $transaction['amount'],
+                'type' => $transaction['type'],
+                'description' => $transaction['description']
+            ]);
+        
+        
+            
+            $user = User::where('referral_code', $transaction['description'])->first();
+            if ($user) {
+                Notification::create([
+                    'user_id' => $user->id, 
+                    'shop_id' => null,
+                    'title' => 'Bạn có giao dịch mới',
+                    'message' => 'Bạn vừa nhận được một giao dịch mới với số tiền ' . number_format($transaction['amount']) . ' VND.',
+                ]);
+            } else {
+                Log::error("Không tìm thấy user có referral_code: " . $transaction['description']);
+            }
         }
 
         $this->info('Transactions fetched and stored successfully.');

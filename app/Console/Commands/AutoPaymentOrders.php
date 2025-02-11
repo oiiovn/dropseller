@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Shop;
 use App\Models\Order;
 use App\Models\Transaction;
-
+use App\Models\Notification;
 class AutoPaymentOrders extends Command
 {
     protected $signature = 'orders:auto-payment';
@@ -70,6 +70,12 @@ class AutoPaymentOrders extends Command
                     'type' => 'OUT',
                     'amount' => $order->total_bill,
                 ]);
+                Notification::create([
+                    'user_id' => $order->shop->user->id ??'6', 
+                    'shop_id' => $order->shop_id,
+                    'title' => 'Đơn hàng của bạn đã được thanh toán',
+                    'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán . Tổng tiền: ' . number_format($order->total_bill) . ' VND.',
+                ]);
             }
         }
     }
@@ -77,7 +83,7 @@ class AutoPaymentOrders extends Command
     private function generateUniqueTransactionId()
     {
         do {
-            $transactionId = 'FT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+            $transactionId = 'PT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
         } while (Transaction::where('transaction_id', $transactionId)->exists());
 
         return $transactionId;

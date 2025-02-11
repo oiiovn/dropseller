@@ -27,7 +27,7 @@
         <!-- Tất cả giao dịch -->
         <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             <div class="table-responsive">
-                <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="all">
+                <table style=" width: 100%;" class="table table-nowrap " id="all">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">ID giao dịch</th>
@@ -95,7 +95,7 @@
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
                                 "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                "search": "🔍",
+                                "search": "Tìm kiếm:",
                                 "paginate": {
                                     "first": "Trang đầu",
                                     "last": "Trang cuối",
@@ -180,7 +180,7 @@
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
                                 "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                "search": "🔍",
+                                "search": "Tìm kiếm:",
                                 "paginate": {
                                     "first": "Trang đầu",
                                     "last": "Trang cuối",
@@ -265,7 +265,7 @@
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
                                 "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                "search": "🔍",
+                                "search": "Tìm kiếm:",
                                 "paginate": {
                                     "first": "Trang đầu",
                                     "last": "Trang cuối",

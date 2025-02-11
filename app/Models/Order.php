@@ -42,6 +42,10 @@ class Order extends Model
     {
         return $this->hasOne(Transaction::class, 'transaction_id', 'transaction_id');
     }
+    public function notification()
+    {
+        return $this->hasOne(Notification::class, 'order_id', 'id'); // Một Order có một Notification
+    }
     
 }
 

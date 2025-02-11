@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Shop;
-
+use App\Models\Notification;
 class PaymentController extends Controller
 {
     public function Getnaptien()
@@ -78,6 +78,11 @@ class PaymentController extends Controller
                     'description' => $user->referral_code .' '. $order->order_code,
                     'type' => 'OUT',
                     'amount' => $order->total_bill,
+                ]);
+                Notification::create([
+                    'user_id' => $order->shop->user->id, 
+                    'title' => 'Thanh toán đơn hàng',
+                    'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán.',
                 ]);
             } 
         }
