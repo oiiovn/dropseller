@@ -32,8 +32,8 @@
             }
         }
     </style>
- <script>
-        const referralCode = "{{ $referralCode }}"; 
+    <script>
+        const referralCode = "{{ $referralCode }}";
     </script>
 </head>
 
@@ -50,7 +50,15 @@
                     <form>
                         <div class="mb-3">
                             <label for="soTien" class="form-label">Số tiền</label>
+                            @if (isset($orders_unpaid) && $orders_unpaid->isNotEmpty())
+                            @php
+                            $total_bill = $orders_unpaid->sum('total_bill');
+                            @endphp
+                            <input type="text" class="form-control" id="soTien" placeholder="Số tiền ít nhất phải nạp {{ number_format($total_bill, 0, ',', '.') }} VNĐ" />
+                            @else
                             <input type="text" class="form-control" id="soTien" placeholder="Nhập số tiền" />
+                            @endif
+
                         </div>
                     </form>
                 </div>
@@ -91,39 +99,38 @@
     </div>
 
     <!-- Bootstrap Bundle with Popper -->
-     
+
     <script>
-    document.getElementById("generateQrButton").addEventListener("click", function () {
-    let soTien = input.value.replace(/[^0-9]/g, ""); 
-    if (!soTien || parseInt(soTien) <= 0) {
-        alert("Vui lòng nhập số tiền hợp lệ!");
-        return;
-    }
-    input.value = new Intl.NumberFormat("vi-VN").format(soTien) + " VND";
-    console.log("Referral Code:", referralCode); 
-    const bankAccount = "62886838888";
-    const accountName = "BUI QUOC VU";
-    const addInfo = encodeURIComponent(`NAP ${referralCode}`);
-    const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}&accountName=${encodeURIComponent(accountName)}`;
-    console.log("Generated QR URL:", qrUrl); 
-    const qrImage = document.getElementById("qrCode");
-    const spinner = document.getElementById("spinner");
-    spinner.classList.remove("d-none");
-    qrImage.classList.add("d-none");
-    qrImage.src = qrUrl;
-    qrImage.onload = () => {
-        spinner.classList.add("d-none");
-        qrImage.classList.remove("d-none");
-    };
-});
+        document.getElementById("generateQrButton").addEventListener("click", function() {
+            let soTien = input.value.replace(/[^0-9]/g, "");
+            if (!soTien || parseInt(soTien) <= 0) {
+                alert("Vui lòng nhập số tiền hợp lệ!");
+                return;
+            }
+            input.value = new Intl.NumberFormat("vi-VN").format(soTien) + " VND";
+            console.log("Referral Code:", referralCode);
+            const bankAccount = "62886838888";
+            const accountName = "BUI QUOC VU";
+            const addInfo = encodeURIComponent(`${referralCode}`);
+            const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}&accountName=${encodeURIComponent(accountName)}`;
+            console.log("Generated QR URL:", qrUrl);
+            const qrImage = document.getElementById("qrCode");
+            const spinner = document.getElementById("spinner");
+            spinner.classList.remove("d-none");
+            qrImage.classList.add("d-none");
+            qrImage.src = qrUrl;
+            qrImage.onload = () => {
+                spinner.classList.add("d-none");
+                qrImage.classList.remove("d-none");
+            };
+        });
 
-const input = document.getElementById("soTien");
-input.addEventListener("input", function (e) {
-    const value = e.target.value.replace(/[^0-9]/g, "");
-    const formattedValue = new Intl.NumberFormat("vi-VN").format(value)
-    e.target.value = formattedValue; 
-});
-
+        const input = document.getElementById("soTien");
+        input.addEventListener("input", function(e) {
+            const value = e.target.value.replace(/[^0-9]/g, "");
+            const formattedValue = new Intl.NumberFormat("vi-VN").format(value)
+            e.target.value = formattedValue;
+        });
     </script>
 </body>
 

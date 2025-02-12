@@ -24,21 +24,22 @@ class OrderController extends Controller
     public function order_si(Request $request)
     {
         $user = Auth::user();
-        
         $shops = Shop::where('user_id', $user->id)->get();
+    
         $ordersQuery = Order::whereIn('shop_id', $shops->pluck('shop_id'))
-                            ->with(['shop', 'orderDetails'])
-                            ->orderBy('created_at', 'desc');
+            ->with(['shop', 'orderDetails'])
+            ->orderBy('created_at', 'desc');
+    
         if ($request->has('order_code') && !empty($request->order_code)) {
             $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
         }
     
-        $orders = $ordersQuery->get();
+        $orders = $ordersQuery->get(); 
         return view('order.order_si', compact('orders', 'shops'));
     }
     
-    
-    
+
+
     public function exportOrders()
     {
         // Xuất dữ liệu sang file orders.xlsx
@@ -58,35 +59,76 @@ class OrderController extends Controller
     {
         $filteredProducts = json_decode($request->input('data'), true);
         $filterDate = $request->input('filterDate');
-        $excludedCodes = ['QUA_TRANG', 'QUA001'];
+        $shopId = (string) $request->input('shop_id');
 
+        $excludedCodes = ['QUA_TRANG', 'QUA001'];
+        $excludedShopIds = ['7495109251985279454', '7495962777620351819'];
         $totalAmount = 0;
         $totalRevenue = 0;
-
-        // Tính tổng revenue và amount, bỏ qua các mã cần loại trừ
         foreach ($filteredProducts as $order) {
             $totalRevenue += $order['db_price'] * $order['amount'];
             if (!in_array($order['code'], $excludedCodes)) {
                 $totalAmount += $order['amount'];
             }
         }
-        // Danh sách shopId không tính phí
-        $excludedShopIds = ['7495109251985279454', '7495962777620351819'];
-
-        // Kiểm tra và tính toán phí
-        $shopId = (string) $request->input('shop_id');
-        // dd($shopId, $excludedShopIds);
-        if (!in_array($shopId, $excludedShopIds, true)) {
-            $total_dropship = $totalAmount * 5000;
-        } else {
-            $total_dropship = 0;
-        }
-
+        $total_dropship = in_array($shopId, $excludedShopIds, true) ? 0 : $totalAmount * 5000;
         $total_tong = $totalRevenue + $total_dropship;
+
         $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 12);
         $totalAmounts = array_sum(array_column($filteredProducts, 'amount'));
-        try {
-            // Lưu đơn hàng vào bảng orders
+        $order = Order::where('filter_date', $filterDate)
+            ->where('shop_id', $shopId)
+            ->first();
+        if ($order) {
+            $isSame = (
+                $order->total_products == $totalAmount &&
+                $order->total_dropship == $total_dropship &&
+                $order->total_bill == $total_tong
+            );
+
+            if ($isSame) {
+                return redirect()->route('productsss')->with('error', 'Đơn hàng này đã có sẵn');
+            } else {
+                $order->update([
+                    'total_products' => $totalAmount,
+                    'total_dropship' => $total_dropship,
+                    'total_bill' => $total_tong,
+                ]);
+                $existingSkus = collect($filteredProducts)->pluck('code')->toArray();
+                OrderDetail::where('order_id', $order->id)
+                    ->whereNotIn('sku', $existingSkus)
+                    ->delete();
+                foreach ($filteredProducts as $detail) {
+                    $orderDetail = OrderDetail::where('order_id', $order->id)
+                        ->where('sku', $detail['code'])
+                        ->first();
+                    if ($orderDetail) {
+                        $orderDetail->update([
+                            'shop_id' => $order->shop_id,
+                            'sku' => $detail['code'],
+                            'image' => $detail['image'],
+                            'product_name' => $detail['name'],
+                            'quantity' => $detail['amount'],
+                            'unit_cost' => $detail['db_price'],
+                            'total_cost' => $detail['amount'] * $detail['db_price'],
+                        ]);
+                    } else {
+                        OrderDetail::create([
+                            'order_id' => $order->id,
+                            'shop_id' => $order->shop_id,
+                            'sku' => $detail['code'],
+                            'image' => $detail['image'],
+                            'product_name' => $detail['name'],
+                            'quantity' => $detail['amount'],
+                            'unit_cost' => $detail['db_price'],
+                            'total_cost' => $detail['amount'] * $detail['db_price'],
+                        ]);
+                    }
+                }
+
+                return redirect()->route('productsss')->with('success', 'Đơn hàng đã được cập nhật thành công!');
+            }
+        } else {
             $order = Order::create([
                 'order_code' => $orderCode,
                 'export_date' => now(),
@@ -96,14 +138,12 @@ class OrderController extends Controller
                 'total_dropship' => $total_dropship,
                 'total_bill' => $total_tong,
                 'payment_status' => 'Chưa thanh toán',
-                'payment_code' => 'null',
+                'payment_code' => null,
             ]);
-
-            // Lưu chi tiết đơn hàng vào bảng order_details
             foreach ($filteredProducts as $detail) {
                 OrderDetail::create([
-                    'order_id' => $order->id, // Truy cập ID từ $order
-                    'shop_id' => $order->shop_id, // Lấy shop_name từ bảng orders
+                    'order_id' => $order->id,
+                    'shop_id' => $order->shop_id,
                     'sku' => $detail['code'],
                     'image' => $detail['image'],
                     'product_name' => $detail['name'],
@@ -112,16 +152,8 @@ class OrderController extends Controller
                     'total_cost' => $detail['amount'] * $detail['db_price'],
                 ]);
             }
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Không thể lưu hóa đơn. Vui lòng thử lại.',
-                'error' => $e->getMessage()
-            ], 500);
+
+            return redirect()->route('productsss')->with('success', 'Đơn hàng này đã được tạo mới!');
         }
-
-        // Trả về view với thông báo thành công
-        return view('product.report', compact('filteredProducts', 'filterDate', 'totalAmounts'))
-            ->with('success', 'Dữ liệu đã được xử lý thành công!');
     }
-
 }

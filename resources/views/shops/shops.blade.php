@@ -29,7 +29,7 @@
         @csrf
         <label for="file">Chọn file Excel:</label>
         <input type="file" name="file" id="file" accept=".xlsx,.xls,.csv" required>
-        <button type="submit">Nhập Dữ Liệu</button>
+        <button type="submit">Nhập Dữ Liệu SHOP</button>
     </form>
     
     <form action="{{ route('products.import') }}" method="POST" enctype="multipart/form-data">
