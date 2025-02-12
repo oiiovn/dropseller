@@ -33,7 +33,7 @@
                             <th scope="col">ID giao dịch</th>
                             <!-- <th scope="col">Ngân hàng</th>
                                     <th scope="col">Số tài khoản</th> -->
-                            <th style="col">Nội dung</th>
+                            <th scope="col">Nội dung</th>
                             <th scope="col">Ngày</th>
                             <th scope="col">Tổng tiền</th>
                             <th scope="col">Loại</th>
@@ -86,7 +86,10 @@
                             "searching": true, // Bật tìm kiếm
                             "ordering": true, // Bật sắp xếp
                             "info": true, // Hiển thị thông tin
-                            "lengthMenu": [10, 20, 50, 100,200], // Số lượng dòng hiển thị
+                            "lengthMenu": [10, 20, 50, 100, 200], // Số lượng dòng hiển thị
+                            "order": [
+                                [2, "desc"]
+                            ], // Sắp xếp theo cột thứ 3 (Ngày giao dịch) theo ngày mới nhất (desc)
 
                             // Chỉnh Tiếng Việt
                             "language": {
@@ -104,21 +107,21 @@
                                 }
                             }
                         });
-
                     });
                 </script>
+
             </div>
         </div>
         <!-- Giao dịch đơn sỉ -->
         <div class="tab-pane fade" id="pills-bill-si" role="tabpanel" aria-labelledby="pills-bill-si-tab">
-        <div class="table-responsive">
+            <div class="table-responsive">
                 <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="bill-si">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">ID giao dịch</th>
                             <!-- <th scope="col">Ngân hàng</th>
                                     <th scope="col">Số tài khoản</th> -->
-                            <th style="col">Nội dung</th>
+                            <th scope="col">Nội dung</th>
                             <th scope="col">Ngày</th>
                             <th scope="col">Tổng tiền</th>
                             <th scope="col">Loại</th>
@@ -171,7 +174,10 @@
                             "searching": true, // Bật tìm kiếm
                             "ordering": true, // Bật sắp xếp
                             "info": true, // Hiển thị thông tin
-                            "lengthMenu": [10, 20, 50, 100,200], // Số lượng dòng hiển thị
+                            "lengthMenu": [10, 20, 50, 100, 200], // Số lượng dòng hiển thị
+                            "order": [
+                                [2, "desc"]
+                            ], // Sắp xếp theo cột thứ 3 (Ngày giao dịch) theo ngày mới nhất (desc)
 
                             // Chỉnh Tiếng Việt
                             "language": {
@@ -196,14 +202,14 @@
         </div>
         <!-- Nạp tiền -->
         <div class="tab-pane fade" id="pills-nap" role="tabpanel" aria-labelledby="pills-nap-tab">
-        <div class="table-responsive">
+            <div class="table-responsive">
                 <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="nap">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">ID giao dịch</th>
                             <!-- <th scope="col">Ngân hàng</th>
                                     <th scope="col">Số tài khoản</th> -->
-                            <th style="col">Nội dung</th>
+                            <th scope="col">Nội dung</th>
                             <th scope="col">Ngày</th>
                             <th scope="col">Tổng tiền</th>
                             <th scope="col">Loại</th>
@@ -256,7 +262,11 @@
                             "searching": true, // Bật tìm kiếm
                             "ordering": true, // Bật sắp xếp
                             "info": true, // Hiển thị thông tin
-                            "lengthMenu": [ 10, 20, 50, 100,200], // Số lượng dòng hiển thị
+                            "lengthMenu": [10, 20, 50, 100, 200], // Số lượng dòng hiển thị
+                            "order": [
+                                [2, "desc"]
+                            ], // Sắp xếp theo cột thứ 3 (Ngày giao dịch) theo ngày mới nhất (desc)
+
 
                             // Chỉnh Tiếng Việt
                             "language": {

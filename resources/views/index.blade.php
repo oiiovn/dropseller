@@ -394,6 +394,7 @@
     });
 </script>
 
-
+Fashion Trends
 
 @endsection
+

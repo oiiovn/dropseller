@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Shop;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Request $request)
     {
+        Carbon::setLocale('vi');
         Paginator::useBootstrap();
         // Chia sẻ biến $shop_get cho view `index`
         View::composer('product.report', function ($view) {
@@ -128,24 +130,28 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('*', function ($view) {
             $Notifications = Notification::where('user_id', Auth::id())
-                ->with('user','shop') // Load quan hệ với User
+                ->with('user', 'shop')
                 ->orderBy('created_at', 'desc')
                 ->get();
-
+            $unreadNotificationsCount = $Notifications->where('is_read', 0)->count();
+            $unreadNotifications = $Notifications->where('is_read', 0)->values(); // Dùng `values()` để giữ lại collection hợp lệ
+            $NotificationsCount = $Notifications->count();
+            
             $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
                 ->whereHas('shop', function ($query) {
-                    $query->where('user_id', Auth::id()); // Kiểm tra shop thuộc về user đăng nhập
+                    $query->where('user_id', Auth::id());
                 })
                 ->where('created_at', '<', Carbon::now()->subDay())
                 ->get();
 
-
             $view->with(
                 [
                     'orders_unpaid' => $orders_unpaid,
-                    'Notifications' => $Notifications
+                    'Notifications' => $Notifications,
+                    'NotificationsCount' => $NotificationsCount,
+                    'unreadNotificationsCount' => $unreadNotificationsCount,
+                    'unreadNotifications' => $unreadNotifications
                 ]
-
             );
         });
     }
