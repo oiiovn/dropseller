@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TikTokController;
+use App\Http\Controllers\NotificationController;
 
 
 /*
@@ -22,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
+// // routes/api.php
+// Route::middleware('auth:sanctum')->put('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
 
 Route::get('/tiktok', [TikTokController::class, 'fetchTikTokData']);
 

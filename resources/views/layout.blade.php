@@ -225,6 +225,30 @@
             }, 2000);
         }
     </script>
+    <script>
+    // Gắn sự kiện click vào nút
+    document.getElementById('markReadButton').addEventListener('click', function() {
+        // Gửi AJAX request để đánh dấu các thông báo là đã đọc
+        fetch("{{ route('notifications.markRead') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo gửi CSRF token
+                },
+                body: JSON.stringify({
+                    user_id: "{{ Auth::id() }}" // Thêm thông tin người dùng nếu cần
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật lại số lượng thông báo chưa đọc trên giao diện
+                document.getElementById('nav-profile-tab').innerText = 'Thông báo mới (0)';
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+            });
+    });
+</script>
 </body>
 
 

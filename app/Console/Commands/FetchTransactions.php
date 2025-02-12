@@ -28,7 +28,7 @@ class FetchTransactions extends Command
 
         $requestBody = [
             "bankAccounts" => "62886838888", // Số tài khoản chính xác
-            "begin" => "01/02/2025",        // Ngày bắt đầu
+            "begin" => "10/02/2025",        // Ngày bắt đầu
             "end" => "20/11/2029"          // Ngày kết thúc
         ];
 
@@ -66,8 +66,9 @@ class FetchTransactions extends Command
                 Notification::create([
                     'user_id' => $user->id, 
                     'shop_id' => null,
+                    'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331620/e738bc7c592fe771be3e_yvabzb.jpg',
                     'title' => 'Bạn có giao dịch mới',
-                    'message' => 'Bạn vừa nhận được một giao dịch mới với số tiền ' . number_format($transaction['amount']) . ' VND.',
+                    'message' => 'Bạn vừa nạp ' . number_format($transaction['amount']) . ' VND.',
                 ]);
             } else {
                 Log::error("Không tìm thấy user có referral_code: " . $transaction['description']);

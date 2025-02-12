@@ -71,10 +71,11 @@ class AutoPaymentOrders extends Command
                     'amount' => $order->total_bill,
                 ]);
                 Notification::create([
-                    'user_id' => $order->shop->user->id ??'6', 
+                    'user_id' => $order->shop->user->id, 
                     'shop_id' => $order->shop_id,
+                    'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
                     'title' => 'Đơn hàng của bạn đã được thanh toán',
-                    'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán . Tổng tiền: ' . number_format($order->total_bill) . ' VND.',
+                    'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
                 ]);
             }
         }

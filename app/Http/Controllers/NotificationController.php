@@ -10,7 +10,7 @@ class NotificationController extends Controller
 {
     public function index()
     {
-       $Notification = Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $Notification = Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
     }
 
     public function store(Request $request)
@@ -25,11 +25,19 @@ class NotificationController extends Controller
         $notification = Notification::create($request->all());
         return response()->json($notification, 201);
     }
-
-    public function markAsRead($id)
+    public function markRead(Request $request)
     {
-        $notification = Notification::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        $notification->update(['is_read' => true]);
-        return response()->json(['message' => 'Notification marked as read']);
+        $user = Auth::user();
+        if (!$user->id) {
+            return response()->json(['error' => 'User not found'], 400);
+        }
+
+        // Cập nhật tất cả thông báo chưa đọc thành đã đọc
+        $notifications = Notification::where('user_id', $user->id)
+            ->where('is_read', 0) // Lọc thông báo chưa đọc
+            ->update(['is_read' => 1]);
+
+        // Trả về phản hồi xác nhận
+        return response()->json(['success' => 'Notifications marked as read']);
     }
 }

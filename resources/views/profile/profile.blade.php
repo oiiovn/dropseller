@@ -26,7 +26,13 @@
                 <div class="card-body p-4">
                     <div class="text-center">
                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                            <img src=" {{ Auth::user()->image }}" class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
+                            <img src=" 
+                             @if (Auth::check() && Auth::user()->image)
+                                    {{ Auth::user()->image }}
+                                    @else
+                                assets/images/users/avatar-1.jpg
+                                    @endif
+                                    " class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
                             <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
                                
                                 <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
@@ -103,9 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
 
-            </div>
             <!--end card-->
         </div>
         <!--end col-->
@@ -356,9 +360,9 @@
                                                 <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
                                                 </p>
                                             </div>
-                                            <div class="flex-shrink-0 align-self-center">
+                                            <!-- <div class="flex-shrink-0 align-self-center">
                                                 <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>10.35 %</span>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div><!-- end card body -->
                                 </div>

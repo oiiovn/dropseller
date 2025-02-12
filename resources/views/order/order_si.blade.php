@@ -36,10 +36,10 @@
 </style>
 <div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
     <!-- end page title -->
-    <div class="row" >
-        <div class="col-lg-12"  >
+    <div class="row">
+        <div class="col-lg-12">
             <div class="card" id="orderList">
-                 
+
                 <div class="card-body pt-0">
                     <div>
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -66,7 +66,7 @@
 
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="id" >Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
@@ -105,7 +105,15 @@
                                                 <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
                                                 <td class="payment_status">{{$item->payment_status}}</td>
-                                                <td class="transaction_id">{{$item->transaction_id}}</td>
+                                                <td class="transaction_id">
+
+                                                    <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->transaction_id}}">
+                                                            {{$item->transaction_id}}
+                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                        </a>
+                                                    </li>
+                                                </td>
                                                 <td class="reconciled">
                                                     @if($item->reconciled == 1)
                                                     Chưa đối soát
@@ -228,7 +236,7 @@
                                     <table class="table table-nowrap align-middle table-hover" id="orderTableSHOP{{$shop->id}}">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
-                                                <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
@@ -262,8 +270,15 @@
                                                 <td class="customer_cost">{{$order->total_products}}</td>
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="date">{{$order->payment_status}}</td>
-                                                <td class="transaction_id">{{$order->transaction_id}}</td>
+                                                <td class="date">{{$order->payment_status}}</td>                                             
+                                                <td class="transaction_id">
+                                                    <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id}}">
+                                                            {{$order->transaction_id}}
+                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                        </a>
+                                                    </li>
+                                                </td>
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$order->order_code}}">
@@ -368,11 +383,14 @@
                                                 "searching": true, // Bật tìm kiếm
                                                 "ordering": true, // Bật sắp xếp
                                                 "info": true, // Hiển thị thông tin
-                                                "lengthMenu": [ 10, 20, 50, 100,150], // Số lượng dòng hiển thị
+                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [2, "desc"]
+                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
                                                 // Chỉnh Tiếng Việt
                                                 "language": {
-                                                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
                                                     "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
@@ -386,7 +404,6 @@
                                                     }
                                                 }
                                             });
-
                                         });
                                     </script>
                                 </div>
@@ -444,7 +461,10 @@
                 "searching": true, // Bật tìm kiếm
                 "ordering": true, // Bật sắp xếp
                 "info": true, // Hiển thị thông tin
-                "lengthMenu": [ 10, 20, 50, 100,150], // Số lượng dòng hiển thị
+                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                "order": [
+                    [2, "desc"]
+                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
                 // Chỉnh Tiếng Việt
                 "language": {
