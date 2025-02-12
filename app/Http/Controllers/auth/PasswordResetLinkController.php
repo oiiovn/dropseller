@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class PasswordResetLinkController extends Controller
 {
@@ -35,8 +36,9 @@ class PasswordResetLinkController extends Controller
         $status = Password::sendResetLink(
             $request->only('email')
         );
-        
-        // \Log::info('Password reset status: ' . $status);
+        Log::info('Password reset status: ' . $status);
+
+      
         
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))

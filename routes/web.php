@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -51,9 +52,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
     Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
 
-
-
-    
-
-    
+    Route::post('/notifications/mark-read', [NotificationController::class, 'markRead'])->name('notifications.markRead');
 });

@@ -184,8 +184,9 @@ class ProcessOrderCommand extends Command
                     ]);
                 }
                 Notification::create([
-                    'user_id' => $order->shop->user->id ??'6', 
+                    'user_id' => $order->shop->user->id ?? null, 
                     'shop_id' => $order->shop_id,
+                    'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/36a74a55af0611584817_sjt6tv.jpg',
                     'title' => 'Bạn có đơn hàng mới',
                     'message' => 'Đơn hàng ' . $order->order_code . ' đã được tạo mới. Tổng tiền: ' . number_format($total_tong) . ' VND.',
                 ]);
