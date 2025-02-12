@@ -2,6 +2,8 @@
 @section('title', 'main')
 
 @section('main')
+
+
 <style>
     .hienthicopy .icon {
         display: none;
@@ -18,61 +20,26 @@
         background: #f8f9fa;
         z-index: 2;
     }
+
+    .search-box .clear-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        display: none;
+    }
+
+    .search-box input:valid~.clear-icon {
+        display: inline;
+    }
 </style>
-<div class="container-fluid">
+<div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
     <!-- end page title -->
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row" >
+        <div class="col-lg-12"  >
             <div class="card" id="orderList">
-                <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form id="searchForm" method="GET" action="{{ route('order_si') }}">
-                        <div class="row g-3">
-                            <div class="col-xxl-5 col-sm-6">
-                                <div class="search-box">
-                                    <div class="position-relative">
-                                        <input type="text" class="form-control search" name="order_code" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác..." value="{{ request('order_code') }}">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-xxl-2 col-sm-3">
-                                <div>
-                                    <button type="submit" class="btn btn-secondary " onclick="SearchData();">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Lọc
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- <div class="col-xxl-2 col-sm-6">
-                                <div>
-                                    <input type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" id="demo-datepicker" placeholder="Chọn ngày">
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                        <option value="all" selected>Thanh toán</option>
-                                        <option value="Pending">Đã thanh toán</option>
-                                        <option value="Pending">Chưa thanh toán</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idPayment">
-                                        <option value="all" selected>Tất cả</option>
-                                        <option value="Mastercard">Mastercard</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Visa">Visa</option>
-                                        <option value="COD">COD</option>
-                                    </select>
-                                </div>
-                            </div> -->
-
-                </div>
+                 
                 <div class="card-body pt-0">
                     <div>
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -88,12 +55,15 @@
                                 </a>
                             </li>
                             @endforeach
+                            <a href="{{route('payment')}}" class="btn btn-info">payment</a>
+                            <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
                             <div class="tab-pane fade show active" id="home1" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-nowrap align-middle table-hover" id="orderTable">
+                                    <table id="orderTable" class="table table-hover">
+
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
@@ -104,6 +74,7 @@
                                                 <th class="sort" data-sort="product_cost">Tổng Bill</th>
                                                 <th class="sort" data-sort="shop_name">Thanh toán</th>
                                                 <th class="sort" data-sort="shop_name">Mã thanh toán</th>
+                                                <th class="sort" data-sort="shop_name">Đối soát</th>
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
@@ -123,15 +94,26 @@
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td class="customer_cost" data-shop-id="{{ $item->shop->id ?? 0 }}">
+
+
+
+                                                <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
                                                     {{ $item->shop->shop_name ?? 'N/A' }}
                                                 </td>
-                                                <td class="date">{{$item->export_date}}</td>
-                                                <td class="customer_cost">{{$item->total_products}}</td>
-                                                <td class="product_name">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
-                                                <td class="product_code">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="date">{{$item->payment_status}}</td>
-                                                <td class="date">{{$item->payment_code}}</td>
+                                                <td class="export_date">{{$item->export_date}}</td>
+                                                <td class="total_products">{{$item->total_products}}</td>
+                                                <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
+                                                <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
+                                                <td class="payment_status">{{$item->payment_status}}</td>
+                                                <td class="transaction_id">{{$item->transaction_id}}</td>
+                                                <td class="reconciled">
+                                                    @if($item->reconciled == 1)
+                                                    Chưa đối soát
+                                                    @elseif($item->reconciled == 0)
+                                                    Đã đối soát
+                                                    @endif
+                                                </td>
+
                                                 <td>
                                                     <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
@@ -199,8 +181,11 @@
                                                                                 <table class="table table-borderless mb-0">
                                                                                     <tbody>
                                                                                         <tr>
-                                                                                            <h6 class="modal-title" id="staticBackdropLabel">ID Đơn Hàng: {{ $item->order_code }}
-                                                                                                <h7><i class="d-flex">{{$item->export_date}}</i></h7> <span class="badge badge-gradient-danger">{{ $item->shop->shop_name ?? 'N/A' }}</span>
+                                                                                            <h6 class="fw-medium order-link text-dark" data-order-code="{{$item->order_code}}">
+                                                                                                {{$item->order_code}}
+                                                                                                <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                                                                <i class="d-flex text-dark ">{{$item->export_date}}</i>
+                                                                                                <span class="badge badge-gradient-danger">{{ $item->shop->shop_name ?? 'N/A' }}</span>
                                                                                             </h6>
                                                                                             <td>Tổng số sản phẩm :</td>
                                                                                             <td class="text-end">{{ $item->total_products}} </td>
@@ -232,14 +217,15 @@
                                         </tbody>
                                     </table>
 
+
                                 </div>
+
                             </div>
                             <!-- Đơn hàng theo từng shop -->
                             @foreach($shops as $shop)
                             <div class="tab-pane fade" id="shop-{{$shop->id}}-content" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-
-                                    <table class="table table-nowrap align-middle table-hover">
+                                    <table class="table table-nowrap align-middle table-hover" id="orderTableSHOP{{$shop->id}}">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
                                                 <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
@@ -277,7 +263,7 @@
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
                                                 <td class="date">{{$order->payment_status}}</td>
-                                                <td class="date">{{$order->payment_code}}</td>
+                                                <td class="transaction_id">{{$order->transaction_id}}</td>
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$order->order_code}}">
@@ -285,7 +271,6 @@
                                                             <i class="ri-eye-fill fs-16 text-primary"></i>
                                                         </li>
                                                     </a>
-
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="exampleModal{{$order->order_code}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 70%; width: 100%;">
@@ -294,7 +279,6 @@
                                                                     <h5 class="modal-title" id="exampleModalLabel"></h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
-
                                                                 <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 800px;">
                                                                     <div class="col-xl-9" style="flex: 0 0 70%;">
                                                                         <div class="card">
@@ -369,8 +353,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -379,6 +361,34 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#orderTableSHOP{{$shop->id}}').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [ 10, 20, 50, 100,150], // Số lượng dòng hiển thị
+
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "🔍",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
+                                                }
+                                            });
+
+                                        });
+                                    </script>
                                 </div>
                             </div>
                             @endforeach
@@ -389,6 +399,9 @@
         </div>
     </div>
 </div>
+<!-- Include DataTables JS -->
+
+
 <script>
     document.querySelectorAll('.customer_cost').forEach(td => {
         const shopId = td.dataset.shopId; // Gắn shopId vào dataset
@@ -401,15 +414,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const orderLinks = document.querySelectorAll('.order-link');
-
         orderLinks.forEach(link => {
             const icon = link.querySelector('.icon');
             const orderCode = link.getAttribute('data-order-code');
             let isThrottled = false;
-
             icon.addEventListener('click', function() {
                 if (isThrottled) return;
-
                 isThrottled = true;
                 // Copy the order code to clipboard
                 navigator.clipboard.writeText(orderCode)
@@ -427,6 +437,39 @@
                     });
             });
         });
+
+        $(document).ready(function() {
+            $('#orderTable').DataTable({
+                "paging": true, // Bật phân trang
+                "searching": true, // Bật tìm kiếm
+                "ordering": true, // Bật sắp xếp
+                "info": true, // Hiển thị thông tin
+                "lengthMenu": [ 10, 20, 50, 100,150], // Số lượng dòng hiển thị
+
+                // Chỉnh Tiếng Việt
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                    "zeroRecords": "Không tìm thấy dữ liệu",
+                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                    "search": "🔍",
+                    "paginate": {
+                        "first": "Trang đầu",
+                        "last": "Trang cuối",
+                        "next": "Tiếp theo",
+                        "previous": "Quay lại"
+                    }
+                }
+            });
+
+        });
+
     });
+
+    function clearSearchInput() {
+        document.querySelector('.search-box input').value = '';
+        document.querySelector('.search-box input').dispatchEvent(new Event('input'));
+    }
 </script>
 @endsection

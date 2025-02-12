@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductReportController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\HomeController;
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -40,14 +42,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shops.destroy');
     Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
-Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
-Route::post('/order', [OrderController::class, 'order'])->name('order.im');
+    Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+    Route::post('/order', [OrderController::class, 'order'])->name('order.im');
+
+    Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])->name('update.reconciled');
+    Route::get('/top-products', [ProductController::class, 'Get_product_top'])->name('products.top');
+    // Route::post('/get-total-revenue', [HomeController::class, 'data'])->name('getTotalRevenue');
+    Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
+    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
 
 
 
+    
 
-
-
-
-
+    
 });

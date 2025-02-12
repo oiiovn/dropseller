@@ -119,6 +119,7 @@
             <div class="d-flex align-items-center">
                 <div>
                     <a class="align-items-center " href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.'); }} VNĐ</b></span></a>
+                    <i class=" text-body-tertiary ">(Chờ đối soát:{{ number_format($balace, 0, ',', '.'); }} VNĐ )</i>
                 </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -176,8 +177,13 @@
                         <div class="tab-content position-relative" id="notificationItemsTabContent">
                             <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
                                 <div data-simplebar style="max-height: 300px;" class="pe-2">
+                                    @if(isset($Notifications))
+                                    @foreach($Notifications as $notification)
                                     <div class="text-reset notification-item d-block dropdown-item position-relative">
+
+
                                         <div class="d-flex">
+
                                             <div class="avatar-xs me-3 flex-shrink-0">
                                                 <span class="avatar-title bg-info-subtle text-info rounded-circle fs-16">
                                                     <i class="bx bx-badge-check"></i>
@@ -185,11 +191,14 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-2 lh-base">Shop <b>lovito.vn</b> có đơn hàng mới <span class="text-secondary">579782528716277862</span>!
+                                                    <h6 class="mt-0 mb-2 lh-base"> {{$notification->shop->shop_name ?? ''}} <b>
+                                                         
+                                                      
+                                                            </b><span class="text-secondary">{{$notification->title}}</span>
                                                     </h6>
                                                 </a>
                                                 <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                    <span><i class="mdi mdi-clock-outline"></i> Vừa xong</span>
+                                                    <span><i class="mdi mdi-clock-outline"> </i> {{$notification->created_at}}</span>
                                                 </p>
                                             </div>
                                             <div class="px-2 fs-15">
@@ -198,80 +207,16 @@
                                                     <label class="form-check-label" for="all-notification-check01"></label>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                        <div class="d-flex">
-                                            <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
-                                            <div class="flex-grow-1">
-                                                <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
-                                                </a>
-                                                <div class="fs-13 text-muted">
-                                                    <p class="mb-1">Answered to your comment on the cash flow forecast's
-                                                        graph 🔔.</p>
-                                                </div>
-                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                    <span><i class="mdi mdi-clock-outline"></i> 48 min ago</span>
-                                                </p>
-                                            </div>
-                                            <div class="px-2 fs-15">
-                                                <div class="form-check notification-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check02">
-                                                    <label class="form-check-label" for="all-notification-check02"></label>
-                                                </div>
-                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                        <div class="d-flex">
-                                            <div class="avatar-xs me-3 flex-shrink-0">
-                                                <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-16">
-                                                    <i class='bx bx-message-square-dots'></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-2 fs-13 lh-base">You have received <b class="text-success">20</b> new messages in the conversation
-                                                    </h6>
-                                                </a>
-                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                    <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
-                                                </p>
-                                            </div>
-                                            <div class="px-2 fs-15">
-                                                <div class="form-check notification-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check03">
-                                                    <label class="form-check-label" for="all-notification-check03"></label>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
+                                    @endforeach
+                                    @else
+                                    <p class="text-muted">Không có thông báo nào</p>
+                                    @endif
 
-                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                        <div class="d-flex">
-                                            <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
-                                            <div class="flex-grow-1">
-                                                <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
-                                                </a>
-                                                <div class="fs-13 text-muted">
-                                                    <p class="mb-1">We talked about a project on linkedin.</p>
-                                                </div>
-                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                    <span><i class="mdi mdi-clock-outline"></i> 4 hrs ago</span>
-                                                </p>
-                                            </div>
-                                            <div class="px-2 fs-15">
-                                                <div class="form-check notification-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check04">
-                                                    <label class="form-check-label" for="all-notification-check04"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                                     <div class="my-3 text-center view-all">
                                         <button type="button" class="btn btn-soft-success waves-effect waves-light">View
@@ -397,7 +342,11 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user bg-white">
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
+                            <img class="rounded-circle header-profile-user" src=" @if (Auth::check())
+                                    {{ Auth::user()->image }}
+                                    @else
+                                assets/images/users/avatar-1.jpg
+                                    @endif" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                                     @if (Auth::check())
@@ -413,15 +362,15 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">Chào {{ Auth::user()->name }}!</h6>
+
                         <a class="dropdown-item" href="{{route('portfolio')}}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ Sơ</span></a>
                         <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
-                        <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
+                        <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success ">856,847 đ</b></span></a>
                         <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
-                        <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
+                        <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a> -->
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
