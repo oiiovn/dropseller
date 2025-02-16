@@ -96,7 +96,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-5">
                         <div class="flex-grow-1">
-                            <h5 class="card-title mb-0">Nhà bán hàng tiềm năng</h5>
+                            <h5 class="card-title mb-0">Nhà bán mới</h5>
                         </div>
                         <div class="flex-shrink-0">
                             <!-- <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-edit-box-line align-bottom me-1"></i> Edit</a> -->
