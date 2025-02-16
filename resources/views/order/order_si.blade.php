@@ -100,7 +100,7 @@
                                                 <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
                                                     {{ $item->shop->shop_name ?? 'N/A' }}
                                                 </td>
-                                                <td class="export_date">{{$item->export_date}}</td>
+                                                <td class="export_date">{{$item->created_at}}</td>
                                                 <td class="total_products">{{$item->total_products}}</td>
                                                 <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
