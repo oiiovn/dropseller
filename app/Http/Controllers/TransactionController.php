@@ -17,15 +17,16 @@ class TransactionController extends Controller
         $userCode = Auth::user()->referral_code;
         $Transactions = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
-            ->paginate(2); 
+            ->get(); 
         $Transaction_nap = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
+            ->where('bank', 'MBB')
             ->where('type', '=', 'IN')
-            ->paginate(2);
+            ->get();
         $Transactions_Drop = Transaction::with('order') 
             ->where('description', 'LIKE', "%$userCode%")
             ->where('bank', 'DROP')
-            ->paginate(2); 
+            ->get(); 
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop'));
     }
     
