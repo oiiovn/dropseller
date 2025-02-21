@@ -69,7 +69,7 @@ class ProductController extends Controller
                }
            }
        }
-   
+
        $totalAmounts = array_sum(array_column($filteredProducts, 'amount'));
    
        $filterDate = $startDate . ' - ' . $endDate;

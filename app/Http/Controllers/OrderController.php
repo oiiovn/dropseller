@@ -24,19 +24,20 @@ class OrderController extends Controller
     public function order_si(Request $request)
     {
         $user = Auth::user();
-
         $shops = Shop::where('user_id', $user->id)->get();
+    
         $ordersQuery = Order::whereIn('shop_id', $shops->pluck('shop_id'))
             ->with(['shop', 'orderDetails'])
             ->orderBy('created_at', 'desc');
+    
         if ($request->has('order_code') && !empty($request->order_code)) {
             $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
         }
-
-        $orders = $ordersQuery->get();
+    
+        $orders = $ordersQuery->get(); 
         return view('order.order_si', compact('orders', 'shops'));
     }
-
+    
 
 
     public function exportOrders()
@@ -78,7 +79,6 @@ class OrderController extends Controller
         $order = Order::where('filter_date', $filterDate)
             ->where('shop_id', $shopId)
             ->first();
-
         if ($order) {
             $isSame = (
                 $order->total_products == $totalAmount &&

@@ -93,11 +93,11 @@
                         </ul>
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
-                        <ul class="nav nav-sm flex-column">
+                        <!-- <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Đơn hàng TMĐT</a>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
@@ -114,7 +114,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Dịch vụ Drops</span>
@@ -164,21 +164,22 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#thanhtoan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-apps-2-line"></i>
+                        <i class="ri-money-dollar-circle-line"></i>
                         <span data-key="t-apps">Thanh toán</span>
+
                     </a>
                     <div class="collapse menu-dropdown" id="thanhtoan">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                            <a href="javascript:void(0);" class="nav-link" id="openNapTienModal">Nạp</a>
+                                <a href="javascript:void(0);" class="nav-link" id="openNapTienModal">Nạp</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="apps-chat.html" class="nav-link" data-key="t-chat">Hoá đơn Drops</a>
                             </li>
                             <li class="nav-item">
@@ -203,11 +204,11 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Layouts</span>
@@ -229,7 +230,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -237,9 +238,9 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#openNapTienModal').click(function () {
-            $.get('{{ route("naptien") }}', function (data) {
+    $(document).ready(function() {
+        $('#openNapTienModal').click(function() {
+            $.get('{{ route("naptien") }}', function(data) {
                 // Thêm modal vào body nếu chưa tồn tại
                 if ($('#napTienModal').length === 0) {
                     $('body').append(data);

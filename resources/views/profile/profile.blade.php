@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 
-    <div class="position-relative mx-n4 mt-n4">
+    <div class="position-relative mx-n4 ">
         <div class="profile-wid-bg profile-setting-img">
             <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
             <!-- <div class="overlay-content">
@@ -26,18 +26,68 @@
                 <div class="card-body p-4">
                     <div class="text-center">
                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                            <img src="assets/images/users/avatar-1.jpg" class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
+                            <img src=" 
+                             @if (Auth::check() && Auth::user()->image)
+                                    {{ Auth::user()->image }}
+                                    @else
+                                assets/images/users/avatar-1.jpg
+                                    @endif
+                                    " class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
                             <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                                <input id="profile-img-file-input" type="file" class="profile-img-file-input">
+                               
                                 <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                    <span class="avatar-title rounded-circle bg-light text-body material-shadow">
-                                        <i class="ri-camera-fill"></i>
-                                    </span>
+                                    
                                 </label>
                             </div>
                         </div>
-                        <h5 class="fs-16 mb-1">Show tên người dùng</h5>
-                        <p class="text-muted mb-0">Nhà bán hàng tiềm năng</p>
+                        <h5 class="fs-16 mb-1">{{ Auth::user()->name }}</h5>
+                        <p class="text-muted mb-0"> Mã Code: {{ Auth::user()->referral_code }}</p>
+                        <!-- Nút mở modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            Chỉnh sửa hồ sơ
+                        </button>
+
+                        <!-- Modal cập nhật hồ sơ -->
+                        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editProfileModalLabel">Cập nhật hồ sơ</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+
+                                            <!-- Tên -->
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Tên:</label>
+                                                <input type="text" class="form-control" id="name" name="name" value="{{ auth()->user()->name }}" required>
+                                            </div>
+
+                                            <!-- Email -->
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email:</label>
+                                                <input type="email" class="form-control" id="email" name="email" value="{{ auth()->user()->email }}" required>
+                                            </div>
+
+                                            <!-- Ảnh đại diện -->
+                                            <div class="mb-3">
+                                                <label for="image" class="form-label">Ảnh đại diện:</label>
+                                                <input type="file" class="form-control" id="image" name="image">
+                                                @if(auth()->user()->image)
+                                                <div class="mt-2">
+                                                    <img src="{{ auth()->user()->image }}" alt="Avatar" width="100">
+                                                </div>
+                                                @endif
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,7 +96,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-5">
                         <div class="flex-grow-1">
-                            <h5 class="card-title mb-0">Nhà bán hàng tiềm năng</h5>
+                            <h5 class="card-title mb-0">Nhà bán mới</h5>
                         </div>
                         <div class="flex-shrink-0">
                             <!-- <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-edit-box-line align-bottom me-1"></i> Edit</a> -->
@@ -59,9 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
 
-            </div>
             <!--end card-->
         </div>
         <!--end col-->
@@ -297,7 +345,7 @@
                         </div>
                         <!--end tab-pane-->
                         <div class="row">
-                        @foreach($shops as $shop)
+                            @foreach($shops as $shop)
                             <div class="col-xl-4 col-md-6">
                                 <div class="card card-height-100">
                                     <div class="card-body">
@@ -309,11 +357,12 @@
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h4 class="fs-4 mb-3">{{$shop->shop_name}}</h4>
-                                                <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td></p>
+                                                <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
+                                                </p>
                                             </div>
-                                            <div class="flex-shrink-0 align-self-center">
+                                            <!-- <div class="flex-shrink-0 align-self-center">
                                                 <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>10.35 %</span>
-                                            </div>                                                   
+                                            </div> -->
                                         </div>
                                     </div><!-- end card body -->
                                 </div>

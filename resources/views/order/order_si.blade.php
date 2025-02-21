@@ -2,6 +2,8 @@
 @section('title', 'main')
 
 @section('main')
+
+
 <style>
     .hienthicopy .icon {
         display: none;
@@ -32,35 +34,12 @@
         display: inline;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
     <!-- end page title -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card" id="orderList">
-                <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form id="searchForm" method="GET" action="{{ route('order_si') }}">
-                        <div class="row g-3">
-                            <div class="col-xxl-5 col-sm-6">
-                                <div class="search-box">
-                                    <div class="position-relative">
-                                        <input type="text" class="form-control search" name="order_code" placeholder="Tìm kiếm theo mã đơn hàng, khách hàng, trạng thái đơn hàng hoặc thông tin khác..." value="{{ request('order_code') }}">
-                                        <i class="ri-search-line search-icon"></i>
-                                        <i class="ri-close-circle-line clear-icon" onclick="clearSearchInput()"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-3">
-                                <div>
-                                    <button type="submit" class="btn btn-secondary " onclick="SearchData();">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Lọc
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <a href="{{route('payment')}}" class="btn btn-info">payment</a>
-                    <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
-                </div>
+
                 <div class="card-body pt-0">
                     <div>
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -76,15 +55,18 @@
                                 </a>
                             </li>
                             @endforeach
+                            <a href="{{route('payment')}}" class="btn btn-info">payment</a>
+                            <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
                             <div class="tab-pane fade show active" id="home1" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-nowrap align-middle table-hover" id="orderTable">
+                                    <table id="orderTable" class="table table-hover">
+
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="id" >Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
@@ -123,12 +105,20 @@
                                                 <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
                                                 <td class="payment_status">{{$item->payment_status}}</td>
-                                                <td class="transaction_id">{{$item->transaction_id}}</td>
+                                                <td class="transaction_id">
+
+                                                    <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->transaction_id}}">
+                                                            {{$item->transaction_id}}
+                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                        </a>
+                                                    </li>
+                                                </td>
                                                 <td class="reconciled">
                                                     @if($item->reconciled == 1)
                                                     Chưa đối soát
                                                     @elseif($item->reconciled == 0)
-                                                    Đã đối soát       
+                                                    Đã đối soát
                                                     @endif
                                                 </td>
 
@@ -234,16 +224,19 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+
+
                                 </div>
+
                             </div>
                             <!-- Đơn hàng theo từng shop -->
                             @foreach($shops as $shop)
                             <div class="tab-pane fade" id="shop-{{$shop->id}}-content" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-nowrap align-middle table-hover">
+                                    <table class="table table-nowrap align-middle table-hover" id="orderTableSHOP{{$shop->id}}">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
-                                                <th class="sort" data-sort="id" style="max-wigh">Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
@@ -277,8 +270,15 @@
                                                 <td class="customer_cost">{{$order->total_products}}</td>
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="date">{{$order->payment_status}}</td>
-                                                <td class="date">{{$order->payment_code}}</td>
+                                                <td class="date">{{$order->payment_status}}</td>                                             
+                                                <td class="transaction_id">
+                                                    <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id}}">
+                                                            {{$order->transaction_id}}
+                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                        </a>
+                                                    </li>
+                                                </td>
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$order->order_code}}">
@@ -376,6 +376,36 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#orderTableSHOP{{$shop->id}}').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [2, "desc"]
+                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "🔍",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             </div>
                             @endforeach
@@ -386,6 +416,9 @@
         </div>
     </div>
 </div>
+<!-- Include DataTables JS -->
+
+
 <script>
     document.querySelectorAll('.customer_cost').forEach(td => {
         const shopId = td.dataset.shopId; // Gắn shopId vào dataset
@@ -421,6 +454,37 @@
                     });
             });
         });
+
+        $(document).ready(function() {
+            $('#orderTable').DataTable({
+                "paging": true, // Bật phân trang
+                "searching": true, // Bật tìm kiếm
+                "ordering": true, // Bật sắp xếp
+                "info": true, // Hiển thị thông tin
+                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                "order": [
+                    [2, "desc"]
+                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+
+                // Chỉnh Tiếng Việt
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                    "zeroRecords": "Không tìm thấy dữ liệu",
+                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                    "search": "🔍",
+                    "paginate": {
+                        "first": "Trang đầu",
+                        "last": "Trang cuối",
+                        "next": "Tiếp theo",
+                        "previous": "Quay lại"
+                    }
+                }
+            });
+
+        });
+
     });
 
     function clearSearchInput() {
