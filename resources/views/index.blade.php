@@ -32,9 +32,8 @@
 
 
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>
-                                                @if(isset($totalBillPaid_all) && $totalBillPaid_all > 0)
-                                                {{ number_format($totalBillPaid_all, 0) ?? 0 }}
-                                                @elseif(isset($totalBillPaid) && $totalBillPaid > 0)
+                                             
+                                                @if(isset($totalBillPaid) && $totalBillPaid > 0)
                                                 {{ number_format($totalBillPaid, 0) ?? 0 }}
                                                 @else
                                                 0
@@ -363,36 +362,7 @@
 
 
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr(".dash-filter-picker", {
-            mode: "range", // Chế độ chọn khoảng ngày
-            dateFormat: "d M, Y", // Định dạng ngày
-            defaultDate: ["01 Jan, 2022", "31 Jan, 2022"], // Giá trị mặc định
-            locale: "vn", // Hiển thị tiếng Việt
-            onClose: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
-                    let startDate = selectedDates[0].toLocaleDateString("vi-VN"); // Ngày bắt đầu
-                    let endDate = selectedDates[1].toLocaleDateString("vi-VN"); // Ngày kết thúc
-                    console.log("Từ ngày:", startDate, "Đến ngày:", endDate);
-                }
-            }
-        });
 
-        // Xử lý khi form submit
-        document.querySelector("form").addEventListener("submit", function(e) {
-            e.preventDefault();
-            let dateRange = document.querySelector("input[name='date_range']").value;
-
-            if (dateRange.includes(" to ")) {
-                let [startDate, endDate] = dateRange.split(" to ");
-                console.log("Từ ngày:", startDate, "Đến ngày:", endDate);
-            } else {
-                console.log("Vui lòng chọn khoảng ngày hợp lệ!");
-            }
-        });
-    });
-</script>
 
 Fashion Trends
 

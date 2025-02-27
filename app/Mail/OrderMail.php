@@ -12,19 +12,22 @@ class OrderMail extends Mailable
     use Queueable, SerializesModels;
 
     public $order; // Biến lưu đơn hàng
+    public $orderDetail; // Biến lưu đơn hàng
 
-    public function __construct($order)
+    public function __construct($order, $orderDetail)
     {
         $this->order = $order;
+        $this->orderDetail = $orderDetail;
     }
 
     public function build()
     {
         return $this->from(env('MAIL_FROM_ADDRESS'))
-                    ->subject('Xác nhận đơn hàng của bạn')
+                    ->subject('Bạn có đơn hàng mới')
                     ->view('emails.order_mail')
                     ->with([
-                        'order' => $this->order
+                        'order' => $this->order,
+                        'orderDetail' => $this->orderDetail,
                     ]);
     }
 }
