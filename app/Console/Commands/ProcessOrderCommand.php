@@ -38,17 +38,19 @@ class ProcessOrderCommand extends Command
         $clientId = "1605";
         $token = "+AXBRK19RPa6MG5wxYOhD7BPUGgibb76FnxirVzkW/9FMf9nSmJIg9OINUDk8X5L";
 
-        $endDate = Carbon::today(); // Ngày hôm nay
-        $startDate = Carbon::now()->subDays(20);
+        $today = Carbon::today();
+        $firstRunDate = Carbon::createFromFormat('Y-m-d', '2025-03-01');
+        $startDate = $today->subDays(20); 
+        if ($startDate < $firstRunDate) {
+            $startDate = $firstRunDate;
+        }
 
-        // Duyệt qua từng ngày từ 20 ngày trước đến hôm qua
+        $endDate = Carbon::today();
         while ($startDate <= $endDate) {
             $timeStart = Carbon::parse($startDate->format('Y-m-d') . ' 00:00:00', 'Asia/Ho_Chi_Minh')->timestamp * 1000;
             $timeEnd = Carbon::parse($startDate->format('Y-m-d') . ' 23:59:59', 'Asia/Ho_Chi_Minh')->timestamp * 1000;
-            // In giá trị để debug (kiểm tra kết quả)
-            echo "Start: " . $startDate->toDateString() . " - Time Start: " . $timeStart . "\n";
 
-            // Hiển thị kết thúc ngày với thời gian cụ thể
+            echo "Start: " . $startDate->toDateString() . " - Time Start: " . $timeStart . "\n";
             echo "End: " . $startDate->toDateString() . " 23:59:59 - Time End: " . $timeEnd . "\n";
 
             $startDate->addDay();
@@ -132,10 +134,10 @@ class ProcessOrderCommand extends Command
                     if ($isSame) {
                         Log::info("✅ Đơn hàng này đã có sẵn!");
                     } else {
+                        $total_tong_up = $order->total_dropship + $totalRevenue;
                         $order->update([
                             'total_products' => $totalAmount,
-                            'total_dropship' => $total_dropship,
-                            'total_bill' => $total_tong,
+                            'total_bill' => $total_tong_up,
                         ]);
                         $existingSkus = collect($filteredProducts)->pluck('code')->toArray();
                         OrderDetail::where('order_id', $order->id)
@@ -184,7 +186,7 @@ class ProcessOrderCommand extends Command
                     ]);
 
                     foreach ($filteredProducts as $detail) {
-                        OrderDetail::create([
+                        $OrderDetail = OrderDetail::create([
                             'order_id' => $order->id,
                             'shop_id' => $order->shop_id,
                             'sku' => $detail['code'],
@@ -202,8 +204,13 @@ class ProcessOrderCommand extends Command
                         'title' => 'Bạn có đơn hàng mới',
                         'message' => 'Đơn hàng ' . $order->order_code . ' đã được tạo mới. Tổng tiền: ' . number_format($total_tong) . ' VND.',
                     ]);
-                    $email = $order->shop->user->email ;
-                    Mail::to($email)->send(new OrderMail($order));
+                    $email = optional($order->shop->user)->email;
+
+                    if (!empty($email)) {
+                        Mail::to($email)->send(new OrderMail($order, $OrderDetail));
+                    }
+
+
                     Log::info("✅ Đơn hàng được tạo mới!");
                 }
 

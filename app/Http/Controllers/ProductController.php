@@ -44,7 +44,7 @@ class ProductController extends Controller
        if (!isset($data['status']) || $data['status'] !== 'success') {
            return back()->with('error', 'API trả về lỗi: ' . ($data['message'] ?? 'Không xác định.'));
        }
-   
+  
        $productReport = $data['data']['product_report'][$platforms] ?? [];
        $shopId = $request->input('shop_id');
        if ($shopId) {
@@ -69,7 +69,6 @@ class ProductController extends Controller
                }
            }
        }
-
        $totalAmounts = array_sum(array_column($filteredProducts, 'amount'));
    
        $filterDate = $startDate . ' - ' . $endDate;
