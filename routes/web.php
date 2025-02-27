@@ -41,7 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
     Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
     Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shops.destroy');
-    Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
+
+    Route::middleware('checkrole')->group(function () {
+        Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
+    });
+    
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
     Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
     Route::post('/order', [OrderController::class, 'order'])->name('order.im');

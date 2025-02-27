@@ -9,6 +9,8 @@ use App\Models\Shop;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentMail;
 class AutoPaymentOrders extends Command
 {
     protected $signature = 'orders:auto-payment';
@@ -25,8 +27,7 @@ class AutoPaymentOrders extends Command
 
         foreach ($users as $user) {
             $this->thanhtoan($user);
-        }
-
+        }            
         $this->info("✅ Đã thanh toán tự động cho tất cả users có số dư!");
     }
 
@@ -78,6 +79,10 @@ class AutoPaymentOrders extends Command
                     'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
                 ]);
             }
+            $email = $user->email;
+            if (!empty($email)) {
+                Mail::to($email)->send(new PaymentMail($order));
+            }  
         }
     }
 
