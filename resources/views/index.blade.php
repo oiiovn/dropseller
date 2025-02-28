@@ -363,8 +363,5 @@
 
 </div>
 
-
-Fashion Trends
-
 @endsection
 
