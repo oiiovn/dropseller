@@ -55,8 +55,6 @@
                                 </a>
                             </li>
                             @endforeach
-                            <a href="{{route('payment')}}" class="btn btn-info">payment</a>
-                            <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
