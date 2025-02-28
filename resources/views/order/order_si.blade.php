@@ -34,7 +34,7 @@
         display: inline;
     }
 </style>
-<div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
+<div class="container-fluid" style="position: absolute;  width: 84%; background: white; ">
     <!-- end page title -->
     <div class="row">
         <div class="col-lg-12">

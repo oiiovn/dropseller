@@ -44,6 +44,8 @@ class FetchTransactions extends Command
         }
 
         $transactions = $response->json()['transactions'] ?? [];
+
+        đd($transactions);
         foreach ($transactions as $transaction) {
             if (Transaction::where('transaction_id', $transaction['transaction_id'])->exists()) {
                 continue; 
