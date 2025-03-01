@@ -168,7 +168,7 @@
                                             @else
                                             @foreach($Products as $product)
                                             <tr>
-                                                <td style="width: 38%;">
+                                                <td style="width: 35%;">
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar-sm bg-light rounded p-1 me-2">
                                                             <img src="{{ $product->image }}" alt="" class="img-fluid d-block" />
@@ -187,7 +187,7 @@
                                                     <span class="text-muted">Giá</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->unit_cost, 0) }} VNĐ</h5>
                                                 </td>
-                                                <td style="width: 15%;">
+                                                <td style="width: 13%;">
                                                     <span class="text-muted">Đơn hàng</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ $product->order_count }}</h5>
                                                 </td>
@@ -195,7 +195,7 @@
                                                     <span class="text-muted">Lượt bán</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ $product->total_quantity }}</h5>
                                                 </td>
-                                                <td style="width: 15%;">
+                                                <td style="width: 20%;">
                                                     <span class="text-muted">Doanh số tổng</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_revenue, 0) }} VNĐ</h5>
                                                 </td>
