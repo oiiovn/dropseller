@@ -95,6 +95,7 @@ public function Overdue_Order(){
     $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
     ->where('created_at', '<', Carbon::now()->subDay())
     ->get();
+
     return view('order.order', compact('orders_unpaid'));
 }
 }
