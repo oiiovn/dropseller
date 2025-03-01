@@ -138,32 +138,32 @@
                                                     </ul>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="staticBackdrop-{{$item->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 70%; width: 100%;">
+                                                        <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h6 class="modal-title" id="staticBackdropLabel"></h6>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <!-- Phần chi tiết sản phẩm -->
-                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 800px;">
-                                                                    <div class="col-xl-9" style="flex: 0 0 70%;">
+                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 1000px;">
+                                                                    <div class="col-xl-9" style="flex: 0 0 67%;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <div class="table-responsive table-card">
-                                                                                    <div class="table-responsive" style="max-height: 800px; overflow-y: auto;">
+                                                                                    <div class="table-responsive" style="max-height: 1000px; overflow-y: auto;">
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col">Sản Phẩm</th>
-                                                                                                    <th scope="col">Số Lượng</th>
-                                                                                                    <th scope="col">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col" style="width: 50%;">Sản Phẩm</th>
+                                                                                                    <th scope="col"style="width: 12%;">Số Lượng</th>
+                                                                                                    <th scope="col" style="width: 15%;">Giá Nhập</th>
+                                                                                                    <th scope="col" style="width: 20%;">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
                                                                                                 @foreach($item->orderDetails as $detail)
                                                                                                 <tr>
-                                                                                                    <td>
+                                                                                                    <td >
                                                                                                         <div class="d-flex">
                                                                                                             <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
                                                                                                                 <img src="{{$detail->image}}" alt="" class="img-fluid d-block">
@@ -176,9 +176,9 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </td>
-                                                                                                    <td>{{$detail->quantity}}</td>
-                                                                                                    <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
-                                                                                                    <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{$detail->quantity}}</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
                                                                                                 </tr>
                                                                                                 @endforeach
                                                                                             </tbody>
@@ -189,7 +189,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!-- Phần thanh toán tổng -->
-                                                                    <div class="col-xl-4" style="flex: 0 0 25%; position: sticky; top: 0;">
+                                                                    <div class="col-xl-4" style="flex: 0 0 27%; position: sticky; top: 0;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <table class="table table-borderless mb-0">
