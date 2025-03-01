@@ -61,7 +61,7 @@ class FetchTransactions extends Command
         
         
             
-            $user = User::where('referral_code', $transaction['description'])->first();
+            $user = User::where('referral_code', 'LIKE', '%' . $transaction['description'] . '%')->first();
             if ($user) {
                 Notification::create([
                     'user_id' => $user->id, 
