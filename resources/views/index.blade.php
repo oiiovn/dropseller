@@ -21,20 +21,13 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG DOANH SỐ</p>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-success fs-14 mb-0">
-                                            <i class="ri-arrow-right-up-line fs-13 align-middle"></i> + 16.24 %
-                                        </h5>
-                                    </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
 
 
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>
-                                                @if(isset($totalBillPaid_all) && $totalBillPaid_all > 0)
-                                                {{ number_format($totalBillPaid_all, 0) ?? 0 }}
-                                                @elseif(isset($totalBillPaid) && $totalBillPaid > 0)
+                                                @if(isset($totalBillPaid) && $totalBillPaid > 0)
                                                 {{ number_format($totalBillPaid, 0) ?? 0 }}
                                                 @else
                                                 0
@@ -62,11 +55,7 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">ĐƠN HÀNG</p>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-danger fs-14 mb-0">
-                                            <i class="ri-arrow-right-down-line fs-13 align-middle"></i> - 3.57 %
-                                        </h5>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -90,11 +79,6 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">SẢN PHẨM BÁN RA</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-success fs-14 mb-0">
-                                            <i class="ri-arrow-right-up-line fs-13 align-middle"></i> + 29.08 %
-                                        </h5>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
@@ -120,11 +104,7 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> PHÍ DROP</p>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-muted fs-14 mb-0">
-                                            + 0.00 %
-                                        </h5>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -146,7 +126,7 @@
                     <div class="col-xl-7">
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm</h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm toàn sàn</h4>
                                 <div class="flex-shrink-0">
                                     <div class="dropdown card-header-dropdown">
                                         <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -176,8 +156,8 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <div class="table-responsive table-card">
-                                    <table class="table table-hover table-centered align-middle table-nowrap mb-0 " style="height: 400px">
+                                <div class="table-card" style="height: 430px">
+                                    <table class="table table-hover table-centered align-middle" style="height: 430px">
                                         <tbody>
                                             @if($Products->isEmpty())
                                             <tr>
@@ -188,14 +168,14 @@
                                             @else
                                             @foreach($Products as $product)
                                             <tr>
-                                                <td>
+                                                <td style="width: 35%;">
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar-sm bg-light rounded p-1 me-2">
                                                             <img src="{{ $product->image }}" alt="" class="img-fluid d-block" />
                                                         </div>
                                                         <div>
                                                             <h5 class="fs-14 my-1">
-                                                                <a href="apps-ecommerce-product-details.html" class="text-reset">
+                                                                <a class="text-reset">
                                                                     {{ $product->product_name }}
                                                                 </a>
                                                             </h5>
@@ -203,19 +183,19 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td style="width: 15%;">
                                                     <span class="text-muted">Giá</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->unit_cost, 0) }} VNĐ</h5>
                                                 </td>
-                                                <td>
+                                                <td style="width: 13%;">
                                                     <span class="text-muted">Đơn hàng</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ $product->order_count }}</h5>
                                                 </td>
-                                                <td>
+                                                <td style="width: 15%;">
                                                     <span class="text-muted">Lượt bán</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ $product->total_quantity }}</h5>
                                                 </td>
-                                                <td>
+                                                <td style="width: 20%;">
                                                     <span class="text-muted">Doanh số tổng</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_revenue, 0) }} VNĐ</h5>
                                                 </td>
@@ -230,26 +210,16 @@
                                 <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
                                     <div class="col-sm">
                                         <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> trên tổng <span class="fw-semibold">15</span> Sản phẩm
+                                            Hiển thị <span class="fw-semibold">5</span> Sản phẩm
                                         </div>
                                     </div>
                                     <div class="col-sm-auto  mt-3 mt-sm-0">
                                         <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a href="#" class="page-link">←</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">→</a>
-                                            </li>
+                                            <div>
+                                                {{ $Products->onEachSide(1)->links() }}
+                                            </div>
+
+
                                         </ul>
                                     </div>
                                 </div>
@@ -259,7 +229,7 @@
                     </div>
 
                     <div class="col-xl-5">
-                        <div class="card card-height-100">
+                        <div class="card ">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Top nhà bán</h4>
                                 <!-- <div class="flex-shrink-0">
@@ -277,9 +247,16 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <div class="table-responsive table-card">
-                                    <table class="table table-centered table-hover align-middle table-nowrap mb-0" style="height: 400px">
+                                <div class=" table-card">
+                                    <table class="table table-centered table-hover align-middle" style="height: 442px">
                                         <tbody>
+                                            @if($totalOrdersByShop->isEmpty())
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">
+                                                    <h5 class="fs-14 my-3">Không có nhà bán nào trong khoảng thời gian này.</h5>
+                                                </td>
+                                            </tr>
+                                            @else
                                             @foreach($totalOrdersByShop as $shop)
                                             <tr>
                                                 <td>
@@ -316,7 +293,7 @@
                                                 </td> -->
                                             </tr><!-- end -->
                                             @endforeach
-
+                                            @endif
                                         </tbody>
                                     </table><!-- end table -->
                                 </div>
@@ -324,10 +301,10 @@
                                 <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
                                     <div class="col-sm">
                                         <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> / <span class="fw-semibold">125</span> nhà bán
+                                            Hiển thị <span class="fw-semibold">5</span> nhà bán
                                         </div>
                                     </div>
-                                    <div class="col-sm-auto  mt-3 mt-sm-0">
+                                    <!-- <div class="col-sm-auto  mt-3 mt-sm-0">
                                         <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
                                             <li class="page-item disabled">
                                                 <a href="#" class="page-link">←</a>
@@ -345,7 +322,7 @@
                                                 <a href="#" class="page-link">→</a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                             </div> <!-- .card-body-->
@@ -363,38 +340,5 @@
 
 
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr(".dash-filter-picker", {
-            mode: "range", // Chế độ chọn khoảng ngày
-            dateFormat: "d M, Y", // Định dạng ngày
-            defaultDate: ["01 Jan, 2022", "31 Jan, 2022"], // Giá trị mặc định
-            locale: "vn", // Hiển thị tiếng Việt
-            onClose: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
-                    let startDate = selectedDates[0].toLocaleDateString("vi-VN"); // Ngày bắt đầu
-                    let endDate = selectedDates[1].toLocaleDateString("vi-VN"); // Ngày kết thúc
-                    console.log("Từ ngày:", startDate, "Đến ngày:", endDate);
-                }
-            }
-        });
-
-        // Xử lý khi form submit
-        document.querySelector("form").addEventListener("submit", function(e) {
-            e.preventDefault();
-            let dateRange = document.querySelector("input[name='date_range']").value;
-
-            if (dateRange.includes(" to ")) {
-                let [startDate, endDate] = dateRange.split(" to ");
-                console.log("Từ ngày:", startDate, "Đến ngày:", endDate);
-            } else {
-                console.log("Vui lòng chọn khoảng ngày hợp lệ!");
-            }
-        });
-    });
-</script>
-
-Fashion Trends
 
 @endsection
-

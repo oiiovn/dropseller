@@ -76,8 +76,10 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('index', function ($view) {
             $excludedCodes = ['QUA_TRANG', 'QUA001'];
+
             $startDate = request()->input('start_date', Carbon::now()->subDays(30)->startOfDay());
             $endDate = request()->input('end_date', Carbon::now()->endOfDay());
+
             $startDate = Carbon::parse($startDate)->startOfDay();
             $endDate = Carbon::parse($endDate)->endOfDay();
 
@@ -96,17 +98,47 @@ class AppServiceProvider extends ServiceProvider
                 ->whereNotIn('sku', $excludedCodes)
                 ->groupBy('sku')
                 ->orderByDesc('total_quantity')
-                ->take(5)
-                ->get();
-            $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
-                ->whereNotIn('sku', $excludedCodes)
-                ->sum('quantity');
-            $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])
-                ->sum('total_bill');
-            $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])
-                ->count();
-            $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
-                ->sum('total_dropship');
+                ->paginate(5);
+
+            // Kiểm tra người dùng có đăng nhập không
+            $user = Auth::user();
+            if ($user && $user->role == '2') {
+                $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
+                    ->whereNotIn('sku', $excludedCodes)
+                    ->sum('quantity');
+
+                $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])
+                    ->sum('total_bill');
+
+                $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])
+                    ->count();
+
+                $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
+                    ->sum('total_dropship');
+            } else {
+                // Lấy danh sách shop của user hiện tại
+                $userShopIds = Shop::where('user_id', optional($user)->id)->pluck('shop_id');
+
+                $totalQuantitySold = OrderDetail::whereHas('order', function ($query) use ($userShopIds, $startDate, $endDate) {
+                    $query->whereIn('shop_id', $userShopIds)
+                        ->whereBetween('created_at', [$startDate, $endDate]);
+                })
+                    ->whereNotIn('sku', $excludedCodes)
+                    ->sum('quantity');
+
+                $totalBillPaid = Order::whereIn('shop_id', $userShopIds)
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->sum('total_bill');
+
+                $totalOrders = Order::whereIn('shop_id', $userShopIds)
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->count();
+
+                $total_dropship = Order::whereIn('shop_id', $userShopIds)
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->sum('total_dropship');
+            }
+
             $totalOrdersByShop = Order::select(
                 'shop_id',
                 DB::raw('COUNT(*) as order_count'),
@@ -117,6 +149,7 @@ class AppServiceProvider extends ServiceProvider
                 ->orderByDesc('total_revenue')
                 ->take(5)
                 ->get();
+
             $view->with([
                 'Products' => $Products,
                 'startDate' => $startDate,
@@ -128,6 +161,7 @@ class AppServiceProvider extends ServiceProvider
                 'totalOrdersByShop' => $totalOrdersByShop
             ]);
         });
+
         View::composer('*', function ($view) {
             $Notifications = Notification::where('user_id', Auth::id())
                 ->with('user', 'shop')
@@ -136,7 +170,7 @@ class AppServiceProvider extends ServiceProvider
             $unreadNotificationsCount = $Notifications->where('is_read', 0)->count();
             $unreadNotifications = $Notifications->where('is_read', 0)->values(); // Dùng `values()` để giữ lại collection hợp lệ
             $NotificationsCount = $Notifications->count();
-            
+
             $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
                 ->whereHas('shop', function ($query) {
                     $query->where('user_id', Auth::id());

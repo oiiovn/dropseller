@@ -92,12 +92,14 @@
                             </li>
                         </ul>
                     </div>
+                    
+                    @if(Auth::check() && Auth::user()->role == '2')
                     <div class="collapse menu-dropdown" id="donhang">
-                        <!-- <ul class="nav nav-sm flex-column">
+                        <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Đơn hàng TMĐT</a>
+                                <a href="{{route('Overdue_Order')}}" class="nav-link" data-key="t-chat">Đơn hàng trễ thanh toán</a>
                             </li>
-                        </ul> -->
+                        </ul>
                     </div>
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
@@ -112,7 +114,9 @@
                                 <a href="{{route('shops')}}" class="nav-link" data-key="t-chat">Shop</a>
                             </li>
                         </ul>
-                    </div>
+                    </div>                    
+                    @endif
+                   
                 </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">

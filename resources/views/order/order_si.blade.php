@@ -34,7 +34,7 @@
         display: inline;
     }
 </style>
-<div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
+<div class="container-fluid" style=" width: 100%; background: white; ">
     <!-- end page title -->
     <div class="row">
         <div class="col-lg-12">
@@ -55,8 +55,6 @@
                                 </a>
                             </li>
                             @endforeach
-                            <a href="{{route('payment')}}" class="btn btn-info">payment</a>
-                            <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
@@ -100,11 +98,19 @@
                                                 <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
                                                     {{ $item->shop->shop_name ?? 'N/A' }}
                                                 </td>
-                                                <td class="export_date">{{$item->export_date}}</td>
+                                                <td class="export_date">{{$item->created_at}}</td>
                                                 <td class="total_products">{{$item->total_products}}</td>
                                                 <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="payment_status">{{$item->payment_status}}</td>
+                                                @if($item->payment_status == 'Chưa thanh toán')
+                                                <td class="payment_status" style="color:red;">
+                                                    {{ $item->payment_status }}
+                                                </td>
+                                                 @else
+                                                 <td class="payment_status" style="color:green;">
+                                                    {{ $item->payment_status }}
+                                                </td>
+                                                @endif
                                                 <td class="transaction_id">
 
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
@@ -132,32 +138,32 @@
                                                     </ul>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="staticBackdrop-{{$item->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 70%; width: 100%;">
+                                                        <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h6 class="modal-title" id="staticBackdropLabel"></h6>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <!-- Phần chi tiết sản phẩm -->
-                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 800px;">
-                                                                    <div class="col-xl-9" style="flex: 0 0 70%;">
+                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 1000px;">
+                                                                    <div class="col-xl-9" style="flex: 0 0 67%;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <div class="table-responsive table-card">
-                                                                                    <div class="table-responsive" style="max-height: 800px; overflow-y: auto;">
+                                                                                    <div class="table-responsive" style="max-height: 1000px; overflow-y: auto;">
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col">Sản Phẩm</th>
-                                                                                                    <th scope="col">Số Lượng</th>
-                                                                                                    <th scope="col">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col" style="width: 50%;">Sản Phẩm</th>
+                                                                                                    <th scope="col"style="width: 12%;">Số Lượng</th>
+                                                                                                    <th scope="col" style="width: 15%;">Giá Nhập</th>
+                                                                                                    <th scope="col" style="width: 20%;">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
                                                                                                 @foreach($item->orderDetails as $detail)
                                                                                                 <tr>
-                                                                                                    <td>
+                                                                                                    <td >
                                                                                                         <div class="d-flex">
                                                                                                             <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
                                                                                                                 <img src="{{$detail->image}}" alt="" class="img-fluid d-block">
@@ -170,9 +176,9 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </td>
-                                                                                                    <td>{{$detail->quantity}}</td>
-                                                                                                    <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
-                                                                                                    <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{$detail->quantity}}</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
                                                                                                 </tr>
                                                                                                 @endforeach
                                                                                             </tbody>
@@ -183,7 +189,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!-- Phần thanh toán tổng -->
-                                                                    <div class="col-xl-4" style="flex: 0 0 25%; position: sticky; top: 0;">
+                                                                    <div class="col-xl-4" style="flex: 0 0 27%; position: sticky; top: 0;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <table class="table table-borderless mb-0">
@@ -427,69 +433,5 @@
             td.style.color = color;
         }
     });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const orderLinks = document.querySelectorAll('.order-link');
-        orderLinks.forEach(link => {
-            const icon = link.querySelector('.icon');
-            const orderCode = link.getAttribute('data-order-code');
-            let isThrottled = false;
-            icon.addEventListener('click', function() {
-                if (isThrottled) return;
-                isThrottled = true;
-                // Copy the order code to clipboard
-                navigator.clipboard.writeText(orderCode)
-                    .then(() => {
-                        // Show notification
-                        showToast(`Đã copy mã :  ${orderCode} !`);
-                    })
-                    .catch(err => {
-                        console.error('Không có dữ liệu copy: ', err);
-                    })
-                    .finally(() => {
-                        setTimeout(() => {
-                            isThrottled = false;
-                        }, 2200);
-                    });
-            });
-        });
-
-        $(document).ready(function() {
-            $('#orderTable').DataTable({
-                "paging": true, // Bật phân trang
-                "searching": true, // Bật tìm kiếm
-                "ordering": true, // Bật sắp xếp
-                "info": true, // Hiển thị thông tin
-                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                "order": [
-                    [2, "desc"]
-                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                // Chỉnh Tiếng Việt
-                "language": {
-                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                    "zeroRecords": "Không tìm thấy dữ liệu",
-                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                    "infoEmpty": "Không có dữ liệu để hiển thị",
-                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                    "search": "🔍",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Tiếp theo",
-                        "previous": "Quay lại"
-                    }
-                }
-            });
-
-        });
-
-    });
-
-    function clearSearchInput() {
-        document.querySelector('.search-box input').value = '';
-        document.querySelector('.search-box input').dispatchEvent(new Event('input'));
-    }
 </script>
 @endsection

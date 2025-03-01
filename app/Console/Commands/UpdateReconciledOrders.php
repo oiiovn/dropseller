@@ -32,29 +32,30 @@ class UpdateReconciledOrders extends Command
         $updatedCount = 0;
         foreach ($transactions as $transaction) {
             if ($transaction->order) {
-                $amount = $transaction->amount;
-                $amount -= $transaction->order->total_bill;
-                $transaction->order->update(['reconciled' => 0]);
-                $updatedCount++;
-            Notification::create([
-                'user_id' => $transaction->order->shop->user->id, 
-                'shop_id' => $transaction->order->shop_id,
-                'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
-                'title' => 'Cập nhật giao dịch',
-                'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã bị hoàn hoặc hủy. Số tiền hoàn: ' . number_format($amount) . ' VND.',
-            ]);
+                if($transaction->amount != $transaction->order->total_bill ){
+                    $amount = $transaction->amount;
+                    $amount -= $transaction->order->total_bill;
+                    $transaction->order->update(['reconciled' => 0]);
+                    $updatedCount++;
+                Notification::create([
+                    'user_id' => $transaction->order->shop->user->id, 
+                    'shop_id' => $transaction->order->shop_id,
+                    'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
+                    'title' => 'Đối soát đơn hàng',
+                    'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã bị hoàn hoặc hủy. Số tiền hoàn: ' . number_format($amount) . ' VND.',
+                ]);
+                Transaction::create([
+                    'id' =>  $uniqueId, 
+                    'bank' => 'DROP',
+                    'account_number' => $transaction->order->shop_id,
+                    'transaction_date' => now(),
+                    'transaction_id' => $transactionId,
+                    'description' => $transaction->order->shop->user->referral_code . ' Thanh toán tiền hoàn, huỷ đơn ' . $transaction->order->order_code,
+                    'type' => 'IN',
+                    'amount' => $amount,
+                ]);
+                }
             }
-          
-            Transaction::create([
-                'id' =>  $uniqueId, 
-                'bank' => 'DROP',
-                'account_number' => $transaction->order->shop_id,
-                'transaction_date' => now(),
-                'transaction_id' => $transactionId,
-                'description' => $transaction->order->shop->user->referral_code . ' Thanh toán tiền hoàn, huỷ đơn ' . $transaction->order->order_code,
-                'type' => 'IN',
-                'amount' => $amount,
-            ]);
         }
 
         $this->info("✅ Đã cập nhật $updatedCount đơn hàng!");
