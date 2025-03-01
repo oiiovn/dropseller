@@ -21,18 +21,12 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG DOANH SỐ</p>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-success fs-14 mb-0">
-                                            <i class="ri-arrow-right-up-line fs-13 align-middle"></i> + 16.24 %
-                                        </h5>
-                                    </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
 
 
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>
-                                             
                                                 @if(isset($totalBillPaid) && $totalBillPaid > 0)
                                                 {{ number_format($totalBillPaid, 0) ?? 0 }}
                                                 @else
@@ -61,11 +55,7 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">ĐƠN HÀNG</p>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-danger fs-14 mb-0">
-                                            <i class="ri-arrow-right-down-line fs-13 align-middle"></i> - 3.57 %
-                                        </h5>
-                                    </div>
+                                   
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -89,11 +79,6 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">SẢN PHẨM BÁN RA</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-success fs-14 mb-0">
-                                            <i class="ri-arrow-right-up-line fs-13 align-middle"></i> + 29.08 %
-                                        </h5>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
@@ -119,11 +104,7 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> PHÍ DROP</p>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-muted fs-14 mb-0">
-                                            + 0.00 %
-                                        </h5>
-                                    </div>
+                                    
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -142,10 +123,10 @@
                     </div><!-- end col -->
                 </div> <!-- end row-->
                 <div class="row">
-                    <div class="col-xl-7">
+                    <div class="col-xl-7" >
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm</h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm toàn sàn</h4>
                                 <div class="flex-shrink-0">
                                     <div class="dropdown card-header-dropdown">
                                         <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -175,8 +156,8 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <div class="table-responsive table-card">
-                                    <table class="table table-hover table-centered align-middle table-nowrap mb-0 " style="height: 400px">
+                                <div class="table-card">
+                                    <table class="table table-hover table-centered align-middle  " style="height: 400px">
                                         <tbody>
                                             @if($Products->isEmpty())
                                             <tr>
@@ -187,14 +168,14 @@
                                             @else
                                             @foreach($Products as $product)
                                             <tr>
-                                                <td>
+                                                <td style="width: 38%;">
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar-sm bg-light rounded p-1 me-2">
                                                             <img src="{{ $product->image }}" alt="" class="img-fluid d-block" />
                                                         </div>
                                                         <div>
                                                             <h5 class="fs-14 my-1">
-                                                                <a href="apps-ecommerce-product-details.html" class="text-reset">
+                                                                <a class="text-reset">
                                                                     {{ $product->product_name }}
                                                                 </a>
                                                             </h5>
@@ -202,19 +183,19 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td style="width: 15%;">
                                                     <span class="text-muted">Giá</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->unit_cost, 0) }} VNĐ</h5>
                                                 </td>
-                                                <td>
+                                                <td style="width: 15%;">
                                                     <span class="text-muted">Đơn hàng</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ $product->order_count }}</h5>
                                                 </td>
-                                                <td>
+                                                <td style="width: 15%;">
                                                     <span class="text-muted">Lượt bán</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ $product->total_quantity }}</h5>
                                                 </td>
-                                                <td>
+                                                <td style="width: 15%;">
                                                     <span class="text-muted">Doanh số tổng</span>
                                                     <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_revenue, 0) }} VNĐ</h5>
                                                 </td>
