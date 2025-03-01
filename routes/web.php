@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
-    Route::get('order', [OrderController::class, 'Getorder'])->name('order');
+    Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
     Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+    Route::post('/get_shop', [ProductController::class, 'Getshopid'])->name('get_shop');
     Route::post('/order', [OrderController::class, 'order'])->name('order.im');
 
     Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])->name('update.reconciled');

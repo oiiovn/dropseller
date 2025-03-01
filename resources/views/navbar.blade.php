@@ -92,15 +92,15 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="collapse menu-dropdown" id="donhang">
-                        <!-- <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{route('order')}}" class="nav-link" data-key="t-chat">Đơn hàng TMĐT</a>
-                            </li>
-                        </ul> -->
-                    </div>
+                    
                     @if(Auth::check() && Auth::user()->role == '2')
-                        
+                    <div class="collapse menu-dropdown" id="donhang">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('Overdue_Order')}}" class="nav-link" data-key="t-chat">Đơn hàng trễ thanh toán</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">

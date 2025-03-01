@@ -55,7 +55,7 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">ĐƠN HÀNG</p>
                                     </div>
-                                   
+
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -104,7 +104,7 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> PHÍ DROP</p>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -123,7 +123,7 @@
                     </div><!-- end col -->
                 </div> <!-- end row-->
                 <div class="row">
-                    <div class="col-xl-7" >
+                    <div class="col-xl-7">
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm toàn sàn</h4>
@@ -156,8 +156,8 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <div class="table-card">
-                                    <table class="table table-hover table-centered align-middle  " style="height: 400px">
+                                <div class="table-card" style="height: 430px">
+                                    <table class="table table-hover table-centered align-middle" style="height: 430px">
                                         <tbody>
                                             @if($Products->isEmpty())
                                             <tr>
@@ -210,26 +210,16 @@
                                 <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
                                     <div class="col-sm">
                                         <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> trên tổng <span class="fw-semibold">15</span> Sản phẩm
+                                            Hiển thị <span class="fw-semibold">5</span> Sản phẩm
                                         </div>
                                     </div>
                                     <div class="col-sm-auto  mt-3 mt-sm-0">
                                         <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a href="#" class="page-link">←</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">→</a>
-                                            </li>
+                                            <div>
+                                                {{ $Products->onEachSide(1)->links() }}
+                                            </div>
+
+
                                         </ul>
                                     </div>
                                 </div>
@@ -239,7 +229,7 @@
                     </div>
 
                     <div class="col-xl-5">
-                        <div class="card card-height-100">
+                        <div class="card ">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Top nhà bán</h4>
                                 <!-- <div class="flex-shrink-0">
@@ -257,8 +247,8 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <div class="table-responsive table-card">
-                                    <table class="table table-centered table-hover align-middle table-nowrap mb-0" style="height: 400px">
+                                <div class=" table-card">
+                                    <table class="table table-centered table-hover align-middle" style="height: 442px">
                                         <tbody>
                                             @foreach($totalOrdersByShop as $shop)
                                             <tr>
@@ -304,10 +294,10 @@
                                 <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
                                     <div class="col-sm">
                                         <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> / <span class="fw-semibold">125</span> nhà bán
+                                            Hiển thị <span class="fw-semibold">5</span> nhà bán
                                         </div>
                                     </div>
-                                    <div class="col-sm-auto  mt-3 mt-sm-0">
+                                    <!-- <div class="col-sm-auto  mt-3 mt-sm-0">
                                         <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
                                             <li class="page-item disabled">
                                                 <a href="#" class="page-link">←</a>
@@ -325,7 +315,7 @@
                                                 <a href="#" class="page-link">→</a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                             </div> <!-- .card-body-->
@@ -345,4 +335,3 @@
 </div>
 
 @endsection
-
