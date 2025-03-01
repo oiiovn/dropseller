@@ -250,6 +250,13 @@
                                 <div class=" table-card">
                                     <table class="table table-centered table-hover align-middle" style="height: 442px">
                                         <tbody>
+                                            @if($totalOrdersByShop->isEmpty())
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">
+                                                    <h5 class="fs-14 my-3">Không có nhà bán nào trong khoảng thời gian này.</h5>
+                                                </td>
+                                            </tr>
+                                            @else
                                             @foreach($totalOrdersByShop as $shop)
                                             <tr>
                                                 <td>
@@ -286,7 +293,7 @@
                                                 </td> -->
                                             </tr><!-- end -->
                                             @endforeach
-
+                                            @endif
                                         </tbody>
                                     </table><!-- end table -->
                                 </div>
