@@ -103,12 +103,10 @@
 
 
                                                 <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
-                                                    @if($shop->platform == 'Tiktok')
+                                                    @if($item->shop->platform == 'Tiktok')
                                                     <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
-                                                    @elseif($shop->platform == 'Shopee')
+                                                    @elseif($item->shop->platform == 'Shopee')
                                                     <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 20px; height: 20px;">
-                                                    @else
-                                                    <i class="fas fa-store me-1"></i>
                                                     @endif
                                                     {{ $item->shop->shop_name ?? 'N/A' }}
                                                 </td>
