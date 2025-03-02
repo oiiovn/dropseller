@@ -50,10 +50,9 @@
                             </li>
                             @foreach($shops as $shop)
                             <li class="nav-item">
-                             
-                                <a class="nav-link py-3 Delivered">
+                                <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shop->id}}" href="#shop-{{$shop->id}}-content" role="tab" aria-selected="false">
                                     @if($shop->platform == 'Tiktok')
-                                   <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
+                                    <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
                                     @elseif($shop->platform == 'Shopee')
                                     <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 20px; height: 20px;">
                                     @else
@@ -63,7 +62,6 @@
                                 </a>
                             </li>
                             @endforeach
-
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
