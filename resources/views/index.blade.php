@@ -263,19 +263,19 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="flex-shrink-0 me-2">
                                                             <img src="
-                                                              @if(isset($shop->shop->user->image) && !empty($shop->shop->user->image))
+                                                                @if(isset($shop->shop->user->image) && !empty($shop->shop->user->image))
                                                                     {{ $shop->shop->user->image }}
                                                                 @else
-                                                                   assets/images/companies/img-1.png
+                                                                    assets/images/companies/img-1.png
                                                                 @endif
-
-                                                            " alt="" class="avatar-sm p-2" />
+                                                            " alt="" class="avatar-sm border border-primary rounded-circle" />
                                                         </div>
+
                                                         <div>
                                                             <h5 class="fs-14 my-1 fw-medium">
-                                                                <a href="apps-ecommerce-seller-details.html" class="text-reset">{{$shop->shop->user->name ?? 'Vô Danh'}}</a>
+                                                                <a class="text-reset">{{$shop->shop->user->name ?? 'Vô Danh'}}</a>
                                                             </h5>
-                                                            <span >
+                                                            <span>
                                                                 @if($shop->shop->platform == 'Tiktok')
                                                                 <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
                                                                 @elseif($shop->shop->platform == 'Shopee')

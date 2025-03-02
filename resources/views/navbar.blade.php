@@ -4,10 +4,10 @@
         <!-- Light Logo -->
         <a href="{{route('dashboard')}}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png" alt="" height="25">
+                <img src="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png" alt="" height="60">
+                <img src="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png" alt="" height="58">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
