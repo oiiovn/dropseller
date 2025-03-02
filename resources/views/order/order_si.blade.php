@@ -50,11 +50,20 @@
                             </li>
                             @foreach($shops as $shop)
                             <li class="nav-item">
-                                <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shop->id}}" href="#shop-{{$shop->id}}-content" role="tab" aria-selected="false">
-                                    <i class="me-1 align-bottom"></i> {{$shop->shop_name}}
+                             
+                                <a class="nav-link py-3 Delivered">
+                                    @if($shop->platform == 'Tiktok')
+                                   <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
+                                    @elseif($shop->platform == 'Shopee')
+                                    <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 20px; height: 20px;">
+                                    @else
+                                    <i class="fas fa-store me-1"></i>
+                                    @endif
+                                    {{$shop->shop_name}}
                                 </a>
                             </li>
                             @endforeach
+
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
@@ -64,7 +73,7 @@
 
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="id" >Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
@@ -106,8 +115,8 @@
                                                 <td class="payment_status" style="color:red;">
                                                     {{ $item->payment_status }}
                                                 </td>
-                                                 @else
-                                                 <td class="payment_status" style="color:green;">
+                                                @else
+                                                <td class="payment_status" style="color:green;">
                                                     {{ $item->payment_status }}
                                                 </td>
                                                 @endif
@@ -155,7 +164,7 @@
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
                                                                                                     <th scope="col" style="width: 50%;">Sản Phẩm</th>
-                                                                                                    <th scope="col"style="width: 12%;">Số Lượng</th>
+                                                                                                    <th scope="col" style="width: 12%;">Số Lượng</th>
                                                                                                     <th scope="col" style="width: 15%;">Giá Nhập</th>
                                                                                                     <th scope="col" style="width: 20%;">Tổng Giá Nhập</th>
                                                                                                 </tr>
@@ -163,7 +172,7 @@
                                                                                             <tbody>
                                                                                                 @foreach($item->orderDetails as $detail)
                                                                                                 <tr>
-                                                                                                    <td >
+                                                                                                    <td>
                                                                                                         <div class="d-flex">
                                                                                                             <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
                                                                                                                 <img src="{{$detail->image}}" alt="" class="img-fluid d-block">
@@ -276,7 +285,7 @@
                                                 <td class="customer_cost">{{$order->total_products}}</td>
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="date">{{$order->payment_status}}</td>                                             
+                                                <td class="date">{{$order->payment_status}}</td>
                                                 <td class="transaction_id">
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
                                                         <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id}}">
