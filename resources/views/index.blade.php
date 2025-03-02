@@ -268,7 +268,7 @@
                                                                 @else
                                                                     assets/images/companies/img-1.png
                                                                 @endif
-                                                            " alt="" class="avatar-sm border border-primary rounded-circle" />
+                                                            " alt="" class="avatar-sm " style=" border-radius:10px"/>
                                                         </div>
 
                                                         <div>
@@ -277,9 +277,9 @@
                                                             </h5>
                                                             <span>
                                                                 @if($shop->shop->platform == 'Tiktok')
-                                                                <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
+                                                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
                                                                 @elseif($shop->shop->platform == 'Shopee')
-                                                                <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 20px; height: 20px;">
+                                                                <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                                 @else
                                                                 <i class="fas fa-store me-1"></i>
                                                                 @endif
