@@ -34,9 +34,9 @@
                                     @endif
                                     " class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
                             <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                               
+
                                 <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                    
+
                                 </label>
                             </div>
                         </div>
@@ -333,12 +333,20 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-warning-subtle text-warning rounded-2 fs-2 material-shadow">
-                                                    <i class="bx bxs-user-account"></i>
+                                                <span class="">
+                                                @if($shop->platform == 'Tiktok')
+                                                    <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 50px; height: 50px;">
+                                                    @elseif($shop->platform == 'Shopee')
+                                                    <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 50px; height: 50px;">
+                                                    @else
+                                                    <i class="fas fa-store me-1"></i>
+                                                    @endif
                                                 </span>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h4 class="fs-4 mb-3">{{$shop->shop_name}}</h4>
+                                                <h4 class="fs-4 mb-3">
+                                                    {{$shop->shop_name}}
+                                                </h4>
                                                 <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
                                                 </p>
                                             </div>

@@ -275,7 +275,16 @@
                                                             <h5 class="fs-14 my-1 fw-medium">
                                                                 <a href="apps-ecommerce-seller-details.html" class="text-reset">{{$shop->shop->user->name ?? 'Vô Danh'}}</a>
                                                             </h5>
-                                                            <span class="text-muted">{{$shop->shop->shop_name}}</span>
+                                                            <span >
+                                                                @if($shop->shop->platform == 'Tiktok')
+                                                                <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 20px; height: 20px;">
+                                                                @elseif($shop->shop->platform == 'Shopee')
+                                                                <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 20px; height: 20px;">
+                                                                @else
+                                                                <i class="fas fa-store me-1"></i>
+                                                                @endif
+                                                                {{$shop->shop->shop_name}}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </td>
