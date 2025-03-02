@@ -335,7 +335,7 @@
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="">
                                                 @if($shop->platform == 'Tiktok')
-                                                    <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740887008/avatars/qiy9vtcrex1p4teq57lc.png" alt="" style="width: 50px; height: 50px;">
+                                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 50px; height: 50px;">
                                                     @elseif($shop->platform == 'Shopee')
                                                     <img src="https://res.cloudinary.com/dup7bxiei/image/upload/v1740886059/avatars/n3hv3omjxgvebrjey2rv.png" alt="" style="width: 50px; height: 50px;">
                                                     @else
