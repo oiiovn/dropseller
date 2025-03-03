@@ -2,6 +2,7 @@
 @section('title', 'main')
 
 @section('main')
+<pre>{{ print_r($orders_unpaid, true) }}</pre>
 
 
 <style>
@@ -34,6 +35,8 @@
         display: inline;
     }
 </style>
+
+
 <div class="container-fluid" style=" width: 100%; background: white; ">
     <!-- end page title -->
     <div class="row">
@@ -76,7 +79,7 @@
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
                                                             <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
-                                                                {{$item->order_code}}
+                                                                {{$item['order_code']}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
                                                         </li>
@@ -142,6 +145,7 @@
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
+                                                                                             
                                                                                                 @foreach($item->orderDetails as $detail)
                                                                                                 <tr>
                                                                                                     <td>
