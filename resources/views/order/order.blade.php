@@ -2,8 +2,6 @@
 @section('title', 'main')
 
 @section('main')
-<pre>{{ print_r($orders_unpaid, true) }}</pre>
-
 
 <style>
     .hienthicopy .icon {
@@ -73,7 +71,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
-                                            @foreach($orders_unpaid as $item)
+                                            @foreach($orders_unpaiddd as $item)
                                             <tr>
                                                 <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
