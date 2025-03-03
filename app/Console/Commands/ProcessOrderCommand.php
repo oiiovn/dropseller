@@ -181,7 +181,18 @@ class ProcessOrderCommand extends Command
                             'total_cost' => $detail['amount'] * $detail['db_price'],
                         ]);
                     }
+                    Notification::create([
+                        'user_id' => $order->shop->user->id ?? null,
+                        'shop_id' => $order->shop_id,
+                        'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/36a74a55af0611584817_sjt6tv.jpg',
+                        'title' => 'Bạn có đơn hàng mới',
+                        'message' => 'Đơn hàng ' . $order->order_code . ' đã được tạo mới. Tổng tiền: ' . number_format($total_tong) . ' VND.',
+                    ]);
+                    $email = optional($order->shop->user)->email;
 
+                    if (!empty($email)) {
+                        Mail::to($email)->send(new OrderMail($order));
+                    }
                     Log::info("✅ Đơn hàng mới đã được tạo cho shop_id: $shopId!");
                 }
             }
