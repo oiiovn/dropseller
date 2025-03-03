@@ -34,6 +34,8 @@
         display: inline;
     }
 </style>
+
+
 <div class="container-fluid" style=" width: 100%; background: white; ">
     <!-- end page title -->
     <div class="row">
@@ -49,6 +51,7 @@
                                 </a>
                             </li>
                             @foreach($shops as $shop)
+
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shop->id}}" href="#shop-{{$shop->id}}-content" role="tab" aria-selected="false">
                                     @if($shop->platform == 'Tiktok')

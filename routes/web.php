@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
-    Route::get('Overdue_Order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
+    Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');

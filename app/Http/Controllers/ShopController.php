@@ -91,4 +91,11 @@ public function destroy(Shop $shop)
         return redirect()->back()->with('error', 'Xóa shop thất bại! Vui lòng thử lại.');
     }
 }
+public function Overdue_Order(){
+    $orders_unpaiddd = Order::where('payment_status', 'Chưa thanh toán')
+    ->where('created_at', '<', Carbon::now()->subDay())
+    ->get();
+
+    return view('order.order', compact('orders_unpaiddd'));
+}
 }
