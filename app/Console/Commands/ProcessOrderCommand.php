@@ -188,11 +188,6 @@ class ProcessOrderCommand extends Command
                         'title' => 'Bạn có đơn hàng mới',
                         'message' => 'Đơn hàng ' . $order->order_code . ' đã được tạo mới. Tổng tiền: ' . number_format($total_tong) . ' VND.',
                     ]);
-                    $email = optional($order->shop->user)->email;
-
-                    if (!empty($email)) {
-                        Mail::to($email)->send(new OrderMail($order));
-                    }
                     Log::info("✅ Đơn hàng mới đã được tạo cho shop_id: $shopId!");
                 }
             }
