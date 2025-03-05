@@ -78,10 +78,6 @@ class AutoPaymentOrders extends Command
                     'title' => 'Đơn hàng của bạn đã được thanh toán',
                     'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
                 ]);
-                $email = $user->email;
-                if (!empty($email)) {
-                    Mail::to($email)->send(new PaymentMail($order));
-                }  
             }
         }
     }
