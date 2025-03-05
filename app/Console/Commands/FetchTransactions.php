@@ -80,24 +80,11 @@ class FetchTransactions extends Command
         $users = User::all();
             
             foreach ($users as $user) {
-                $balace = $user->balance;
                 $totalAmount = 0;
                 $userCode = $user->referral_code;
                 
                 $transactions = Transaction::where('description', 'LIKE', "%$userCode%")
                     ->get();
-                
-                $Transactions_Drop = Transaction::with('order')
-                    ->where('description', 'LIKE', "%$userCode%")
-                    ->where('bank', 'DROP')
-                    ->whereHas('order', function ($query) {
-                        $query->where('reconciled', 1);
-                    })
-                    ->get();
-                
-                foreach ($Transactions_Drop as $transaction) {
-                    $balace += $transaction->amount;
-                }
                 
                 foreach ($transactions as $transaction) {
                     if ($transaction->type == 'IN') {
@@ -108,7 +95,6 @@ class FetchTransactions extends Command
                 }
                 
                 $user->total_amount = $totalAmount;
-                $user->balance = $balace;
                 $user->save();
             }
             $this->info(' cộng tiền cho user');
