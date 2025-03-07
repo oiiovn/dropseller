@@ -82,12 +82,12 @@
                                                     @foreach ($user->shops as $shop)
                                                     <p><b>
                                                     @if($shop->platform == 'Tiktok')
-                                                                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                                                    @elseif($shop->platform == 'Shopee')
-                                                                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
-                                                                                    @else
-                                                                                    <i class="fas fa-store me-1"></i>
-                                                                                    @endif
+                                                            <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                                            @elseif($shop->platform == 'Shopee')
+                                                            <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                                            @else
+                                                            <i class="fas fa-store me-1"></i>
+                                                            @endif
                                                             {{ $shop->shop_name }}
                                                         </b>: <strong>{{ $shop->orders_unpaid_count ?? 0 }} Đơn</strong></p>
                                                     @endforeach
