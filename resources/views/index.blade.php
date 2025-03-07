@@ -278,7 +278,7 @@
                                                             <span>
                                                                 @if(isset($shop->shop) && $shop->shop->platform == 'Tiktok')
                                                                 <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                                @elseif(isset($shop->shop) && is_null($shop->shop->platform))
+                                                                @elseif(isset($shop->shop) && $shop->shop->platform == 'Shoppe')
                                                                 <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                                 @else
                                                                 <i class="fas fa-store me-1"></i>
