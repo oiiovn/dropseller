@@ -91,8 +91,16 @@
                                                 <td class="customer_cost">
                                                     {{ $item->shop->user->name?? 'N/A' }}
                                                 </td>
-                                                <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
-                                                    {{ $item->shop->shop_name ?? 'N/A' }}
+                                                <td class="customer_cost" data-shop-id="{{ optional($item->shop)->id ?? 0 }}">
+                                                    @if(strcasecmp(optional($item->shop)->platform, 'Tiktok') == 0)
+                                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="Tiktok" style="width: 20px; height: 20px;">
+                                                    @elseif(strcasecmp(optional($item->shop)->platform, 'Shoppe') == 0)
+                                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="Shopee" style="width: 20px; height: 20px;">
+                                                    @else
+                                                    <i class="fas fa-store me-1"></i>
+                                                    @endif
+
+                                                    {{ optional($item->shop)->shop_name ?? 'N/A' }}
                                                 </td>
 
                                                 <td class="export_date">{{$item->created_at}}</td>
@@ -143,7 +151,7 @@
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                             
+
                                                                                                 @foreach($item->orderDetails as $detail)
                                                                                                 <tr>
                                                                                                     <td>

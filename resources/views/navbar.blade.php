@@ -97,7 +97,8 @@
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('Overdue_Order')}}" class="nav-link" data-key="t-chat">Đơn hàng trễ thanh toán</a>
+                                <a href="{{route('Overdue_Order')}}" class="nav-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
+                                
                             </li>
                         </ul>
                     </div>
@@ -212,18 +213,19 @@
                         </ul>
                     </div>
                 </li>
-                <!-- <li class="nav-item">
+                @if(Auth::check() && Auth::user()->role == '2')
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Layouts</span>
-                        <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span>
+                        <span data-key="t-layouts">Quản lý khách hàng</span>
+                        
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="layouts-horizontal.html" target="_blank" class="nav-link" data-key="t-horizontal">Horizontal</a>
+                                <a href="{{route('Get_all')}}"  class="nav-link" data-key="t-horizontal">Thông tin khách hàng</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
                             </li>
                             <li class="nav-item">
@@ -231,10 +233,12 @@
                             </li>
                             <li class="nav-item">
                                 <a href="layouts-vertical-hovered.html" target="_blank" class="nav-link" data-key="t-hovered">Hovered</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
-                </li> -->
+                </li>
+                @endif
+               
             </ul>
         </div>
 
