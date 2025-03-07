@@ -108,7 +108,7 @@
                                                 <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
                                                     @if($item->shop->platform == 'Tiktok')
                                                     <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                    @elseif($item->shop->platform == 'Shopee')
+                                                    @elseif($item->shop->platform == 'Shoppe')
                                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                     @endif
                                                     {{ $item->shop->shop_name ?? 'N/A' }}

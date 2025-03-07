@@ -283,6 +283,7 @@
                                                                 @else
                                                                 <i class="fas fa-store me-1"></i>
                                                                 @endif
+                                                                
 
                                                                 {{ $shop->shop->shop_name ?? 'Vô Danh' }}
 
