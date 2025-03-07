@@ -30,7 +30,7 @@
                              @if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
                                     @else
-                                assets/images/users/avatar-1.jpg
+                             https://img.icons8.com/ios-filled/100/user-male-circle.png
                                     @endif
                                     " class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
                             <div class="avatar-xs p-0 rounded-circle profile-photo-edit">

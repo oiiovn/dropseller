@@ -296,7 +296,7 @@
                             @if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
                                     @else
-                                assets/images/users/avatar-1.jpg
+                               https://img.icons8.com/ios-filled/100/user-male-circle.png
                                     @endif
                                     " alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
