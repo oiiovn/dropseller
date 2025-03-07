@@ -57,31 +57,56 @@
                                     <table id="user_list" class="table table-hover">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="soluong">Hình ảnh</th>
-                                                <th class="sort" data-sort="id">Tên Khách hàng</th>
-                                                <th class="sort" data-sort="shop_name">Mã Code</th>
-                                                <th class="sort" data-sort="date">Email</th>
+                                                <th class="sort" data-sort="soluong">Thông tin khách hàng</th>
                                                 <th class="sort" data-sort="phidrop">Số Sư</th>
                                                 <th class="sort" data-sort="product_cost">Đơn quá hạn thanh toán</th>
+                                                <th class="sort" data-sort="date">Email</th>
                                                 <th class="sort" data-sort="product_cost">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
                                             @foreach($users as $user)
                                             <tr>
-                                                <td class="total_dropship" style=" vertical-align: middle;">
-                                                    <img src="{{ $user->image }}" alt="Ảnh của {{ $user->name }}" width="100" class="avatar-sm" style="border-radius:10px">
+                                                <td class="total_dropship" style="vertical-align: middle; width: 25%;">
+                                                    <div class="position-relative d-flex align-items-center">
+
+                                                        <!-- Thêm dòng chữ thông báo trên cùng -->
+
+
+                                                        <div class="flex-shrink-0 me-2">
+                                                            <img src="
+                                                                @if(isset($user->image) && !empty($user->image))
+                                                                    {{ $user->image }}
+                                                                @else
+                                                                   https://img.icons8.com/ios-filled/100/user-male-circle.png
+                                                                @endif
+                                                            " alt="" class="avatar-sm" style="border-radius:10px" />
+                                                        </div>
+
+                                                        <div>
+                                                            <h5 class="fs-14 my-1 fw-medium">
+                                                                <b> <a class="text-reset">{{$user->name ?? 'Vô Danh'}}</a></b>
+                                                            </h5>
+                                                            <span>Code: <b style="color:#2e397f;">{{ $user->referral_code ?? 'CODE' }}</b></span>
+                                                        </div>
+                                                        @foreach ($user->shops as $shop)
+                                                        @if($shop->orders_unpaid_count > 0)
+                                                        <div class="h-100 d-flex align-items-center">
+                                                            <span class="badge bg-danger m-4 py-2">
+                                                                Chậm Thanh Toán
+                                                            </span>
+                                                        </div>
+                                                        @endif
+                                                        @endforeach
+                                                    </div>
                                                 </td>
-                                                <td class="customer_cost" style=" vertical-align: middle;">{{$user->name}}<i class="fas fa-exclamation-triangle text-danger"></i></td>
-                                                <td class="export_date" style=" vertical-align: middle;">{{$user->referral_code}}</td>
-                                                <td class="total_products" style=" vertical-align: middle;">{{$user->email}}</td>
                                                 <td class="total_products" style=" vertical-align: middle;">
                                                     {{ number_format($user->total_amount, 0, ',', '.') }} VNĐ
                                                 </td>
                                                 <td class="total_products" style=" vertical-align: middle;">
                                                     @foreach ($user->shops as $shop)
                                                     <p><b>
-                                                    @if($shop->platform == 'Tiktok')
+                                                            @if($shop->platform == 'Tiktok')
                                                             <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
                                                             @elseif($shop->platform == 'Shoppe')
                                                             <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
@@ -92,7 +117,7 @@
                                                         </b>: <strong>{{ $shop->orders_unpaid_count ?? 0 }} Đơn</strong></p>
                                                     @endforeach
                                                 </td>
-
+                                                <td class="total_products" style=" vertical-align: middle;">{{$user->email}}</td>
                                                 <td style="vertical-align: middle;">
                                                     <ul class="list-inline d-flex justify-content-center gap-2 mb-0">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">

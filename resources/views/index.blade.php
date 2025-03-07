@@ -266,7 +266,7 @@
                                                                 @if(isset($shop->shop->user->image) && !empty($shop->shop->user->image))
                                                                     {{ $shop->shop->user->image }}
                                                                 @else
-                                                                    assets/images/companies/img-1.png
+                                                                  https://img.icons8.com/ios-filled/100/user-male-circle.png
                                                                 @endif
                                                             " alt="" class="avatar-sm " style=" border-radius:10px" />
                                                         </div>
