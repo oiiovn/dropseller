@@ -153,10 +153,8 @@
                                                                                     @elseif($shop->platform == 'Shoppe')
                                                                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                                                     @else
-                                                                                   okok <i class="fas fa-store me-1"></i>
+                                                                                    <i class="fas fa-store me-1"></i>
                                                                                     @endif
-
-                                                                                   
 
                                                                                     {{ optional($orders_unpai->shop)->shop_name ?? 'N/A' }}
                                                                                 </td>
