@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
 
     Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
+    Route::get('/Khach_hang', [ProfileController::class, 'Get_all'])->name('Get_all');
     Route::get('/portfolio', [ProfileController::class, 'viewProfile'])->name('portfolio');
     Route::get('/export-orders', [OrderController::class, 'exportOrders']);
     Route::post('/import-order-tiktok', [OrderController::class, 'importOrders']);

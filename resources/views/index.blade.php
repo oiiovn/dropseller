@@ -268,7 +268,7 @@
                                                                 @else
                                                                     assets/images/companies/img-1.png
                                                                 @endif
-                                                            " alt="" class="avatar-sm " style=" border-radius:10px"/>
+                                                            " alt="" class="avatar-sm " style=" border-radius:10px" />
                                                         </div>
 
                                                         <div>
@@ -276,8 +276,16 @@
                                                                 <a class="text-reset">{{$shop->shop->user->name ?? 'Vô Danh'}}</a>
                                                             </h5>
                                                             <span>
-                                                                
-                                                                {{$shop->shop->shop_name ?? 'Vô Danh'}}
+                                                                @if(isset($shop->shop) && $shop->shop->platform == 'Tiktok')
+                                                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                                                @elseif(isset($shop->shop) && is_null($shop->shop->platform))
+                                                                <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                                                @else
+                                                                <i class="fas fa-store me-1"></i>
+                                                                @endif
+
+                                                                {{ $shop->shop->shop_name ?? 'Vô Danh' }}
+
                                                             </span>
                                                         </div>
                                                     </div>
