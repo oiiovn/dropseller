@@ -83,7 +83,7 @@
                                                     <p><b>
                                                     @if($shop->platform == 'Tiktok')
                                                             <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                            @elseif($shop->platform == 'Shopee')
+                                                            @elseif($shop->platform == 'Shoppe')
                                                             <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                             @else
                                                             <i class="fas fa-store me-1"></i>
@@ -150,7 +150,7 @@
                                                                                 <td class="customer_cost" data-shop-id="{{ optional($orders_unpai->shop)->id ?? 0 }}">
                                                                                     @if($shop->platform == 'Tiktok')
                                                                                     <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                                                    @elseif($shop->platform == 'Shopee')
+                                                                                    @elseif($shop->platform == 'Shoppe')
                                                                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                                                     @else
                                                                                    okok <i class="fas fa-store me-1"></i>
