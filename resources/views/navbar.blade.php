@@ -238,7 +238,29 @@
                     </div>
                 </li>
                 @endif
-               
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#congcu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Công cụ tiện ích</span>
+                        
+                    </a>
+                    <div class="collapse menu-dropdown" id="congcu">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('campaign')}}"  class="nav-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="layouts-two-column.html" target="_blank" class="nav-link" data-key="t-two-column">Two Column</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="layouts-vertical-hovered.html" target="_blank" class="nav-link" data-key="t-hovered">Hovered</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
 
