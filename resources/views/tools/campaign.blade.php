@@ -101,7 +101,7 @@
         let giamGiaTiktok = parseFloat(document.getElementById("tiktok-discount").value) || 0;
         let giaSauGiamShop = giaGoc * (1 - giamGiaShop / 100);
         let giaSauGiamChienDich = giaSauGiamShop + (giaSauGiamShop / 100 * giamGiaTiktok);
-        let phanTramGiamDung = 100 - (giaSauGiamChienDich / giaGoc * 100);
+        let phanTramGiamDung = 100 - (giaSauGiamChienDich / giaGoc * 100) + 1;
         document.getElementById("ket-qua-giam-gia").innerText = phanTramGiamDung.toFixed(0) + "(%)";
     }
 </script>
