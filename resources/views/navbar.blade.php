@@ -184,9 +184,8 @@
                             <li class="nav-item">
                                 <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="apps-chat.html" class="nav-link" data-key="t-chat">Hoá đơn Drops</a>
-                            </li>
+                            
+                             <!--
                             <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
                                 <div class="collapse menu-dropdown" id="sidebarEmail">
@@ -224,6 +223,9 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('Get_all')}}"  class="nav-link" data-key="t-horizontal">Thông tin khách hàng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('transaction_all')}}" class="nav-link" data-key="t-chat">Lịch sử nạp </a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>

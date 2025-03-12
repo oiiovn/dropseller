@@ -51,6 +51,48 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- <div class="row ">
+                                <div class="col-lg-7 m-2 card ribbon-box border shadow-none mb-lg-0 material-shadow">
+                                    <div class="card-body text-muted">
+                                        <div class="ribbon-three ribbon-three-success mt-1"><span>Chú ý!</span></div>
+                                        <p class="mb-2">hi tiết
+                                            Cổng đăng ký Voucher Siêu Sao tham gia chương trình Thứ Hai Freeship 17/03 ! Còn chần chừ gì nữa mà không thu thập nhiều ưu đãi đang chờ đón các nhà bán hàng !
+
+                                            Thời gian chương trình: 17/3/2025
+                                            Thời gian đăng ký: từ ngày 08/3/2025 đến hết 17/3/2025
+                                            Ưu đãi đối với sản phẩm được chọn
+
+                                            Mã giảm độc quyền - Mã giảm giá của Voucher Siêu sao có mệnh giá hấp dẫn hơn mã giảm giá toàn sàn
+                                            Sản phẩm được chấp thuận tham gia sẽ có nhãn "Voucher Siêu Sao" chuyên dụng trên trang sản phẩm
+                                            Được áp dụng các Mã Miễn phí vận chuyển dành riêng cho chương trình từ TikTok Shop
+                                            Yêu cầu:
+
+                                            BẮT BUỘC:
+                                            Chia sẻ đồng tài trợ "Voucher Siêu Sao" : Sàn TTS 20% - Người bán 80%
+                                            Sau khi nhấp vào nút đăng ký, cửa sổ ký kết thỏa thuận sẽ bật lên. Nhấn vào nút “Đồng ý" để bước vào quá trình đăng ký sản phẩm.
+                                            Người bán cần đăng kí giá chiến dịch (bằng hoặc thấp hơn giá bán lẻ) và số lượng hàng tồn trong chiến dịch.
+                                            KHUYẾN KHÍCH (Không bắt buộc):
+                                            Khuyến khích tối thiểu 10 sản phẩm/nhà bán hàng
+                                            Tồn kho tối thiểu 30/sản phẩm
+                                            Không có đánh giá tiêu cực từ người mua
+                                            LƯU Ý:
+                                            Số lượng hàng tồn đăng kí sẽ bị khóa cho chiến dịch này, Nhà Bán Hàng hãy chuẩn bị hàng tồn và đăng kí lượng hàng tồn thích hợp
+                                            NBH không được đăng kí tồn là 0 - Voucher siêu sao sẽ không chạy khi tồn bằng 0.
+                                            Lưu ý: TikTok Shop sẽ có quyền thu hồi, tạm dừng các chương trình khuyến mãi khi phát hiện nhà bán hàng có hành vi gian lận trong thời gian diễn ra chương trình
+
+                                            Rất mong nhận được sự tham gia của quý nhà bán!
+
+                                            (Tất cả quyền lợi của TikTok Shop được bảo lưu）
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <div class=" col-lg-4 m-2 mx-1 card ribbon-box border shadow-none mb-lg-0 material-shadow">
+                                    <div class="card-body">
+                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/9g-ju82dNS4?si=yJ1XWMFP_UX2tZqy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

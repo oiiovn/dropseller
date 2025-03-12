@@ -58,6 +58,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/chien-dich', [CampaignController::class, 'campaign'])->name('campaign');
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
     Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
-
+    Route::get('/tat-ca-giao-dich', [TransactionController::class, 'Get_transaction_all'])->name('transaction_all');
     Route::post('/notifications/mark-read', [NotificationController::class, 'markRead'])->name('notifications.markRead');
 });

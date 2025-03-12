@@ -15,4 +15,3 @@ class CampaignController extends Controller
         return view('tools.campaign');
     }
 }
- 

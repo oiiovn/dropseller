@@ -201,7 +201,10 @@
 
     <!-- Dashboard init -->
     <script src="assets/js/pages/dashboard-ecommerce.init.js"></script>
-
+    <script src="{{ asset('js/gridjs.init.js') }}"></script>
+    <script src="assets/libs/gridjs/gridjs.umd.js"></script>
+    <!-- gridjs init -->
+    <script src="assets/js/pages/gridjs.init.js"></script>
     <!-- App js -->
     <script src="assets/js/app.js"></script>
     <script>
