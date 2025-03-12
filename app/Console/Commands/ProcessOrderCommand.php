@@ -131,7 +131,7 @@ class ProcessOrderCommand extends Command
                     Carbon::createFromTimestampMs($timeEnd, 'Asia/Ho_Chi_Minh')->format('Y-m-d');
 
                 $excludedCodes = ['QUA_TRANG', 'QUA001'];
-                $excludedShopIds = ['7495109251985279454', '7495962777620351819', '7495178219156178956', '7495013968145386053', '269548567'];
+                $excludedShopIds = ['7495109251985279454', '7495962777620351819', '7495178219156178956', '7495013968145386053', '269548567','7496094160800418034'];
 
                 $totalAmount = 0;
                 $totalRevenue = 0;

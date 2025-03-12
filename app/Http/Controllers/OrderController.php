@@ -18,7 +18,7 @@ class OrderController extends Controller
 {
     function Getorder()
     {
-        return view('order.order');
+        return view('payment.transaction_all');
     }
 
     public function order_si(Request $request)
