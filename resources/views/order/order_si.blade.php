@@ -160,8 +160,8 @@
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <!-- Phần chi tiết sản phẩm -->
-                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 1000px;">
-                                                                    <div class="col-xl-9" style="flex: 0 0 67%;">
+                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 1200px;">
+                                                                    <div class="col-xl-9" style="flex: 0 0 70%;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <div class="table-responsive table-card">
@@ -169,7 +169,7 @@
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col" style="width: 50%;">Sản Phẩm</th>
+                                                                                                    <th scope="col" style="width: 40%;">Sản Phẩm</th>
                                                                                                     <th scope="col" style="width: 12%;">Số Lượng</th>
                                                                                                     <th scope="col" style="width: 15%;">Giá Nhập</th>
                                                                                                     <th scope="col" style="width: 20%;">Tổng Giá Nhập</th>
@@ -185,7 +185,7 @@
                                                                                                             </div>
                                                                                                             <div class="flex-grow-1 ms-3">
                                                                                                                 <h5 class="fs-13">
-                                                                                                                    <a>{{$detail->product_name}}</a>
+                                                                                                                <a style="max-width: 150px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
                                                                                                                 </h5>
                                                                                                                 <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
                                                                                                             </div>
