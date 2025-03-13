@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Exports\OrderTiktokExport;
 use App\Imports\OrderTiktokimport;
 use App\Models\OrderDetail;
+use App\Models\User;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,6 +21,25 @@ class OrderController extends Controller
     {
         return view('payment.transaction_all');
     }
+    public function Get_orders_all()
+    {   
+        $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
+        $orders_all = [];
+    
+        foreach ($shops as $shop) {
+            $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
+    
+            if (!isset($orders_all[$userName])) {
+                $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
+            }
+    
+            $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
+        }
+
+        return view('order.orders_all', compact('orders_all'));
+    }
+    
+
 
     public function order_si(Request $request)
     {

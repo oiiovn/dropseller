@@ -14,7 +14,7 @@
 </div>
 </a>
 @endif
-@unless (Request::is('chien-dich'))
+<!-- @unless (Request::is('chien-dich'))
     <div class="alert alert-success alert-dismissible alert-additional fade show mb-0 material-shadow" role="alert">
         <div class="alert-body">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -34,7 +34,7 @@
             </div>
         </a>
     </div>
-@endunless
+@endunless -->
 
 
 <!-- Primary Alert

@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
         return view('index');
     })->name('dashboard');
 
-    Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
+   
     Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 
@@ -46,18 +46,19 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('checkrole')->group(function () {
         Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
+        Route::get('/tat-ca-giao-dich', [TransactionController::class, 'Get_transaction_all'])->name('transaction_all');
+        Route::get('/tat-ca-don-hang', [OrderController::class, 'Get_orders_all'])->name('Get_orders_all');
+        Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
+        Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
     });
     
-    Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
-    Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+    Route::get('/lish', [ProductController::class, 'lish'])->name('productsss'); 
     Route::post('/get_shop', [ProductController::class, 'Getshopid'])->name('get_shop');
     Route::post('/order', [OrderController::class, 'order'])->name('order.im');
-
     Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])->name('update.reconciled');
     Route::get('/top-products', [ProductController::class, 'Get_product_top'])->name('products.top');
     Route::get('/chien-dich', [CampaignController::class, 'campaign'])->name('campaign');
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
-    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
-    Route::get('/tat-ca-giao-dich', [TransactionController::class, 'Get_transaction_all'])->name('transaction_all');
+    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');  
     Route::post('/notifications/mark-read', [NotificationController::class, 'markRead'])->name('notifications.markRead');
 });
