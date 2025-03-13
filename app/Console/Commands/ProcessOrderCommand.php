@@ -108,7 +108,7 @@ class ProcessOrderCommand extends Command
                                     'amount' => $product['amount'],
                                     'api_price' => $product['revenue'],
                                     'image' => $product['image'],
-                                    'db_price' => $productFromDb ? $productFromDb->price : 'Không tìm thấy',
+                                    'db_price' => $productFromDb ? $productFromDb->price : '0',
                                 ];
                             }
                         }
@@ -131,12 +131,14 @@ class ProcessOrderCommand extends Command
                     Carbon::createFromTimestampMs($timeEnd, 'Asia/Ho_Chi_Minh')->format('Y-m-d');
 
                 $excludedCodes = ['QUA_TRANG', 'QUA001'];
-                $excludedShopIds = ['7495109251985279454', '7495962777620351819', '7495178219156178956', '7495013968145386053', '269548567','7496094160800418034'];
-
+                $excludedShopIds = ['7495109251985279454', '7495962777620351819', '7495178219156178956', '7495013968145386053', '7496094160800418034', '269548567'];
                 $totalAmount = 0;
                 $totalRevenue = 0;
                 foreach ($filteredProducts as $order) {
-                    $totalRevenue += $order['db_price'] * $order['amount'];
+                    $db_price = is_numeric($order['db_price']) ? (float) $order['db_price'] : 0;
+                    $amount = is_numeric($order['amount']) ? (int) $order['amount'] : 0;
+                    $totalRevenue += $db_price * $amount;
+
                     if (!in_array($order['code'], $excludedCodes)) {
                         $totalAmount += $order['amount'];
                     }
