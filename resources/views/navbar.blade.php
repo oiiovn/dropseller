@@ -227,10 +227,10 @@
                             <li class="nav-item">
                                 <a href="{{route('transaction_all')}}" class="nav-link" data-key="t-chat">Lịch sử nạp </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
+                             <li class="nav-item">
+                                <a href="{{route('Get_orders_all')}}"  class="nav-link" data-key="t-detached">Tất cả đơn hàng</a>
                             </li>
-                            <li class="nav-item">
+                            <!--<li class="nav-item">
                                 <a href="layouts-two-column.html" target="_blank" class="nav-link" data-key="t-two-column">Two Column</a>
                             </li>
                             <li class="nav-item">
