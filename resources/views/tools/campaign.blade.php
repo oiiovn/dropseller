@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="row ">
-                                <div class="col-lg-7 m-2 card ribbon-box border shadow-none mb-lg-0 material-shadow">
+                                <!-- <div class="col-lg-7 m-2 card ribbon-box border shadow-none mb-lg-0 material-shadow">
                                     <div class="card-body text-muted">
                                         <div class="ribbon-three ribbon-three-success mt-1"><span>Chú ý!</span></div>
                                         <p class="mb-2">hi tiết
@@ -103,8 +103,10 @@
                                         </p>
 
                                     </div>
-                                </div>
+                                </div> -->
+                                <h2>Video hướng dẫn</h2>
                                 <div class="col-lg-4 m-2 mx-3 card ribbon-box border shadow-none mb-lg-0 material-shadow">
+                                    
                                     <div class="card-body text-center">
                                         <div class="video-container">
                                             <iframe src="https://www.youtube.com/embed/BgyFSo58CzQ?si=1Fnq5VJXCuKi7LAz"
