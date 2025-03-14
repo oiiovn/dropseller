@@ -9,7 +9,7 @@ class ADS extends Model
 {
     use HasFactory;
 
-    protected $table = 'ADS'; // Tên bảng trong database
+    protected $table = 'ADS'; 
 
     protected $fillable = [
         'invoice_id',
