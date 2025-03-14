@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('order:process')->dailyAt('02:00'); // Chạy lúc 2h mỗi ngày
         $schedule->command('orders:auto-payment')->everyFiveMinutes(); //5 phút 1 lần
         $schedule->command('orders:update-reconciled')->dailyAt('02:00'); // Chạy lúc 2h sáng mỗi ngày
+        $schedule->command('ads:auto-payment')->everyFiveMinutes();
+
        
     }
     
@@ -29,6 +31,10 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+    protected $commands = [
+        \App\Console\Commands\AutoPaymentAds::class,
+    ];
+    
     
     
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\ADSController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -50,8 +51,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/tat-ca-don-hang', [OrderController::class, 'Get_orders_all'])->name('Get_orders_all');
         Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
         Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
+        Route::get('/quang-cao', [ADSController::class, 'ADS'])->name('quang-cao');
+        Route::post('/them-quang-cao', [ADSController::class, 'store'])->name('add.ads');
+        Route::get('/quang-cao_all', [ADSController::class, 'ads_all'])->name('quang_cao_all'); 
     });
-    
+    Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop'); 
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss'); 
     Route::post('/get_shop', [ProductController::class, 'Getshopid'])->name('get_shop');
     Route::post('/order', [OrderController::class, 'order'])->name('order.im');

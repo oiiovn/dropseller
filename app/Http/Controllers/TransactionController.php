@@ -29,7 +29,11 @@ class TransactionController extends Controller
             ->where('description', 'LIKE', "%$userCode%")
             ->where('bank', 'DROP')
             ->get();
-        return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop'));
+        $Transactions_ads = Transaction::with('ads')
+            ->where('description', 'LIKE', "%$userCode%")
+            ->where('bank', 'ADS')
+            ->get();    
+        return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads'));
     }
 
     public function updateOrderReconciled()

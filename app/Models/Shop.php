@@ -33,4 +33,8 @@ class Shop extends Model
     {
         return $this->hasMany(Notification::class, 'shop_id', 'shop_id');
     }
+    public function ads()
+    {
+        return $this->hasMany(ADS::class, 'shop_id', 'shop_id');  // Chỉnh sửa `shop_id` -> `id`
+    }
 }

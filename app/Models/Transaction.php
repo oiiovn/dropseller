@@ -23,5 +23,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Order::class, 'transaction_id', 'transaction_id'); // Chỉnh theo cột liên kết của bạn
     }
+    public function ads()
+    {
+        return $this->belongsTo(ADS::class, 'transaction_id', 'payment_code');  // Chỉnh sửa `shop_id` -> `id`
+    }
     
 }
