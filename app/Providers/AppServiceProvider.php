@@ -149,8 +149,6 @@ class AppServiceProvider extends ServiceProvider
                 ->orderByDesc('total_revenue')
                 ->take(5)
                 ->get();
-               
-            
             $view->with([
                 'Products' => $Products,
                 'startDate' => $startDate,

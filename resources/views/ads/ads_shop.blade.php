@@ -111,7 +111,7 @@
                         @foreach($ads_shop as $shopName => $ads)
                         <div class="tab-pane fade" id="shop-{{ Str::slug($shopName) }}-content" role="tabpanel">
                             <div class="table-responsive table-card mb-1">
-                                <table id="ads-{{ Str::slug($shopName)}}" class="table table-nowrap align-middle table-hover">
+                                <table id="ads_shop-{{ Str::slug($shopName)}}" class="table table-nowrap align-middle table-hover">
                                     <thead class="text-muted table-light">
                                         <tr class="text-uppercase">
                                             <th>Mã Hóa Đơn</th>
@@ -143,7 +143,7 @@
                                 </table>
                                 <script>
                                     $(document).ready(function() {
-                                        $('#ads-{{ Str::slug($shopName)}}').DataTable({
+                                        $('#ads_shop-{{ Str::slug($shopName)}}').DataTable({
                                             "paging": true, // Bật phân trang
                                             "searching": true, // Bật tìm kiếm
                                             "ordering": true, // Bật sắp xếp
