@@ -2,7 +2,24 @@
 @section('title', 'main')
 
 @section('main')
+<style>
+    .video-container {
+    position: relative;
+    width: 100%;  /* Video sẽ tự điều chỉnh theo chiều rộng của card */
+    padding-top: 56.25%; /* Tỉ lệ 16:9 (9 / 16 * 100%) */
+    overflow: hidden;
+    border-radius: 8px; /* Bo góc nếu cần */
+}
 
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+    </style>
 
 <div class="col-xl-12 " style="padding-top:-50px;">
     <div class="card  h-75">
@@ -51,7 +68,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="row ">
+                            <div class="row ">
                                 <div class="col-lg-7 m-2 card ribbon-box border shadow-none mb-lg-0 material-shadow">
                                     <div class="card-body text-muted">
                                         <div class="ribbon-three ribbon-three-success mt-1"><span>Chú ý!</span></div>
@@ -87,12 +104,18 @@
 
                                     </div>
                                 </div>
-                                <div class=" col-lg-4 m-2 mx-1 card ribbon-box border shadow-none mb-lg-0 material-shadow">
-                                    <div class="card-body">
-                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/9g-ju82dNS4?si=yJ1XWMFP_UX2tZqy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <div class="col-lg-4 m-2 mx-3 card ribbon-box border shadow-none mb-lg-0 material-shadow">
+                                    <div class="card-body text-center">
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/BgyFSo58CzQ?si=1Fnq5VJXCuKi7LAz"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                            </iframe>
+                                        </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,7 +161,7 @@
 </div>
 <script>
     function tinhToanGiamGia() {
-        let giaGoc = 100000; 
+        let giaGoc = 100000;
         let giamGiaShop = parseFloat(document.getElementById("shop-discount").value) || 0;
         let giamGiaTiktok = parseFloat(document.getElementById("tiktok-discount").value) || 0;
         let giaSauGiamShop = giaGoc * (1 - giamGiaShop / 100);
@@ -154,11 +177,11 @@
                 input.value = input.value.replace(" (%)", "").trim();
             });
             input.addEventListener("input", function() {
-                let value = input.value.replace(/[^0-9]/g, ""); 
+                let value = input.value.replace(/[^0-9]/g, "");
                 if (value !== "" && parseInt(value) > 50) {
                     value = "50";
                 }
-                input.value = value; 
+                input.value = value;
             });
             input.addEventListener("blur", function() {
                 if (input.value !== "") {
