@@ -83,8 +83,8 @@ class AutoPaymentAds extends Command
                     'user_id' => $user->id,
                     'shop_id' => $ad->shop_id,
                     'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
-                    'title' => 'Chiến dịch quảng cáo đã được thanh toán',
-                    'message' => 'Chiến dịch quảng cáo ' . $ad->invoice_id . ' đã được thanh toán số tiền ' . number_format($ad->total_amount) . ' VND.',
+                    'title' => 'Quảng cáo đã được thanh toán',
+                    'message' => 'Hoá đơn  ' . $ad->invoice_id . 'quảng cáo đã được thanh toán số tiền ' . number_format($ad->total_amount) . ' VND.',
                 ]);
 
                 Log::info("✅ Thanh toán thành công cho quảng cáo: " . $ad->invoice_id);

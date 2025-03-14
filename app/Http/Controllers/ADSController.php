@@ -44,7 +44,7 @@ class ADSController extends Controller
             'shop_id' => $validated['shop_id'],
             'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
             'title' => 'Quảng cáo mới cần thanh toán',
-            'message' => 'Bạn có 1 quảng cáo mới cần thanh toán',
+            'message' => 'Mã '. $validated['invoice_id'] .'quảng cáo mới cần thanh toán',
         ]);
     }
         return redirect()->back()->with('success', 'Thêm quảng cáo thành công');

@@ -40,10 +40,10 @@
 
     <!-- Thư viện ngôn ngữ tiếng Việt -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
-<!-- Include DataTables JS -->
-<!-- Include DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Include DataTables JS -->
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 
     <style>
@@ -131,56 +131,17 @@
 
                 @include('noti.noti')
 
-                @yield('main')
+                <div id="main-content">
+                    @yield('main')
+                </div>
+
                 <!-- End Page-content -->
             </div>
-
-            <!-- <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script> © dropseller.vn
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Design & Develop by Vũ Bùi và Viết Hoàng
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer> -->
         </div>
         <!-- end main content-->
 
     </div>
-    <!-- END layout-wrapper -->
-
-
-
-    <!--start back-to-top-->
-    <!-- <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
-        <i class="ri-arrow-up-line"></i>
-    </button> -->
-    <!--end back-to-top-->
-
-    <!--preloader-->
-    <!-- <div id="preloader">
-        <div id="status">
-            <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- <div class="customizer-setting d-none d-md-block">
-        <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
-            data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-        </div>
-    </div> -->
-
+ 
     <!-- JAVASCRIPT -->
     <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/libs/simplebar/simplebar.min.js"></script>
@@ -207,6 +168,27 @@
     <script src="assets/js/pages/gridjs.init.js"></script>
     <!-- App js -->
     <script src="assets/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.ajax-link').on('click', function(e) {
+            e.preventDefault(); // Ngăn trang reload
+            
+            let url = $(this).attr('href'); // Lấy URL từ thẻ <a>
+            
+            $.get(url, function(data) {
+                $('#main-content').html($(data).find('#main-content').html()); // Cập nhật nội dung mới
+                window.history.pushState(null, "", url); // Cập nhật URL mà không reload trang
+            });
+        });
+
+        // Xử lý khi nhấn nút Back trên trình duyệt
+        window.onpopstate = function(event) {
+            location.reload();
+        };
+    });
+</script>
+
     <script>
         // Gọi lại hàm thông báo ngắn
         function showToast(message) {
@@ -230,122 +212,122 @@
         }
     </script>
     <script>
-    // Gắn sự kiện click vào nút
-    document.getElementById('markReadButton').addEventListener('click', function() {
-        // Gửi AJAX request để đánh dấu các thông báo là đã đọc
-        fetch("{{ route('notifications.markRead') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo gửi CSRF token
-                },
-                body: JSON.stringify({
-                    user_id: "{{ Auth::id() }}" // Thêm thông tin người dùng nếu cần
+        // Gắn sự kiện click vào nút
+        document.getElementById('markReadButton').addEventListener('click', function() {
+            // Gửi AJAX request để đánh dấu các thông báo là đã đọc
+            fetch("{{ route('notifications.markRead') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo gửi CSRF token
+                    },
+                    body: JSON.stringify({
+                        user_id: "{{ Auth::id() }}" // Thêm thông tin người dùng nếu cần
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Cập nhật lại số lượng thông báo chưa đọc trên giao diện
-                document.getElementById('nav-profile-tab').innerText = 'Thông báo mới (0)';
-            })
-            .catch(error => {
-                console.error('Có lỗi xảy ra:', error);
-            });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const orderLinks = document.querySelectorAll('.order-link');
-        orderLinks.forEach(link => {
-            const icon = link.querySelector('.icon');
-            const orderCode = link.getAttribute('data-order-code');
-            let isThrottled = false;
-            icon.addEventListener('click', function() {
-                if (isThrottled) return;
-                isThrottled = true;
-                // Copy the order code to clipboard
-                navigator.clipboard.writeText(orderCode)
-                    .then(() => {
-                        // Show notification
-                        showToast(`Đã copy mã :  ${orderCode} !`);
-                    })
-                    .catch(err => {
-                        console.error('Không có dữ liệu copy: ', err);
-                    })
-                    .finally(() => {
-                        setTimeout(() => {
-                            isThrottled = false;
-                        }, 2200);
-                    });
-            });
+                .then(response => response.json())
+                .then(data => {
+                    // Cập nhật lại số lượng thông báo chưa đọc trên giao diện
+                    document.getElementById('nav-profile-tab').innerText = 'Thông báo mới (0)';
+                })
+                .catch(error => {
+                    console.error('Có lỗi xảy ra:', error);
+                });
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderLinks = document.querySelectorAll('.order-link');
+            orderLinks.forEach(link => {
+                const icon = link.querySelector('.icon');
+                const orderCode = link.getAttribute('data-order-code');
+                let isThrottled = false;
+                icon.addEventListener('click', function() {
+                    if (isThrottled) return;
+                    isThrottled = true;
+                    // Copy the order code to clipboard
+                    navigator.clipboard.writeText(orderCode)
+                        .then(() => {
+                            // Show notification
+                            showToast(`Đã copy mã :  ${orderCode} !`);
+                        })
+                        .catch(err => {
+                            console.error('Không có dữ liệu copy: ', err);
+                        })
+                        .finally(() => {
+                            setTimeout(() => {
+                                isThrottled = false;
+                            }, 2200);
+                        });
+                });
+            });
 
-        $(document).ready(function() {
-            $('#orderTable').DataTable({
-                "paging": true, // Bật phân trang
-                "searching": true, // Bật tìm kiếm
-                "ordering": true, // Bật sắp xếp
-                "info": true, // Hiển thị thông tin
-                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                "order": [
-                    [2, "desc"]
-                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+            $(document).ready(function() {
+                $('#orderTable').DataTable({
+                    "paging": true, // Bật phân trang
+                    "searching": true, // Bật tìm kiếm
+                    "ordering": true, // Bật sắp xếp
+                    "info": true, // Hiển thị thông tin
+                    "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                    "order": [
+                        [2, "desc"]
+                    ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
-                // Chỉnh Tiếng Việt
-                "language": {
-                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                    "zeroRecords": "Không tìm thấy dữ liệu",
-                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                    "infoEmpty": "Không có dữ liệu để hiển thị",
-                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                    "search": "🔍",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Tiếp theo",
-                        "previous": "Quay lại"
+                    // Chỉnh Tiếng Việt
+                    "language": {
+                        "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                        "zeroRecords": "Không tìm thấy dữ liệu",
+                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                        "infoEmpty": "Không có dữ liệu để hiển thị",
+                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                        "search": "🔍",
+                        "paginate": {
+                            "first": "Trang đầu",
+                            "last": "Trang cuối",
+                            "next": "Tiếp theo",
+                            "previous": "Quay lại"
+                        }
                     }
-                }
+                });
+
             });
+            $(document).ready(function() {
+                $('#user_list').DataTable({
+                    "paging": true, // Bật phân trang
+                    "searching": true, // Bật tìm kiếm
+                    "ordering": true, // Bật sắp xếp
+                    "info": true, // Hiển thị thông tin
+                    "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                    "order": [
+                        [2, "desc"]
+                    ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
-        });
-        $(document).ready(function() {
-            $('#user_list').DataTable({
-                "paging": true, // Bật phân trang
-                "searching": true, // Bật tìm kiếm
-                "ordering": true, // Bật sắp xếp
-                "info": true, // Hiển thị thông tin
-                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                "order": [
-                    [2, "desc"]
-                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                // Chỉnh Tiếng Việt
-                "language": {
-                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                    "zeroRecords": "Không tìm thấy dữ liệu",
-                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                    "infoEmpty": "Không có dữ liệu để hiển thị",
-                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                    "search": "🔍",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Tiếp theo",
-                        "previous": "Quay lại"
+                    // Chỉnh Tiếng Việt
+                    "language": {
+                        "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                        "zeroRecords": "Không tìm thấy dữ liệu",
+                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                        "infoEmpty": "Không có dữ liệu để hiển thị",
+                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                        "search": "🔍",
+                        "paginate": {
+                            "first": "Trang đầu",
+                            "last": "Trang cuối",
+                            "next": "Tiếp theo",
+                            "previous": "Quay lại"
+                        }
                     }
-                }
+                });
+
             });
 
         });
 
-    });
-
-    function clearSearchInput() {
-        document.querySelector('.search-box input').value = '';
-        document.querySelector('.search-box input').dispatchEvent(new Event('input'));
-    }
-</script>
+        function clearSearchInput() {
+            document.querySelector('.search-box input').value = '';
+            document.querySelector('.search-box input').dispatchEvent(new Event('input'));
+        }
+    </script>
 </body>
 
 

@@ -75,7 +75,7 @@
                     <span data-key="t-menu">Menu</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{route('dashboard')}}">
+                    <a class="nav-link ajax-link" href="{{route('dashboard')}}">
                         <i class="ri-dashboard-2-line"></i>
                         <span>Dashboards</span>
                     </a>
@@ -88,10 +88,10 @@
                     <div class="collapse menu-dropdown" id="donhang">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('order_si')}}" class="nav-link" data-key="t-chat">Đơn hàng sỉ</a>
+                                <a href="{{route('order_si')}}" class="nav-link ajax-link" data-key="t-chat">Đơn hàng sỉ</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('quang_cao_shop')}}" class="nav-link" data-key="t-chat">Quảng cáo</a>
+                                <a href="{{route('quang_cao_shop')}}" class="nav-link ajax-link" data-key="t-chat">Quảng cáo</a>
                             </li>
                         </ul>
                     </div>
@@ -109,10 +109,10 @@
                     <div class="collapse menu-dropdown" id="thanhtoan">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" id="openNapTienModal">Nạp</a>
+                                <a href="javascript:void(0);" class="nav-link ajax-link" id="openNapTienModal">Nạp</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('transaction') }}" class="nav-link" data-key="t-chat">Lịch sử giao dịch</a>
+                                <a href="{{ route('transaction') }}" class="nav-link ajax-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
                             
                              <!--
@@ -151,24 +151,24 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{route('Get_all')}}"  class="nav-link" data-key="t-horizontal">Thông tin khách hàng</a>
+                            <li  class="nav-item">
+                                <a href="{{route('Get_all')}}" class="nav-link ajax-link" data-key="t-horizontal">Thông tin khách hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('transaction_all')}}" class="nav-link" data-key="t-chat">Lịch sử nạp </a>
+                                <a href="{{route('transaction_all')}}"class="nav-link ajax-link" data-key="t-chat">Lịch sử nạp </a>
                             </li>
                              <li class="nav-item">
-                                <a href="{{route('Get_orders_all')}}"  class="nav-link" data-key="t-detached">Tất cả đơn hàng</a>
+                                <a href="{{route('Get_orders_all')}}" class="nav-link ajax-link" data-key="t-detached">Tất cả đơn hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('Overdue_Order')}}" class="nav-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
+                                <a href="{{route('Overdue_Order')}}"class="nav-link ajax-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
                                 
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('productsss')}}" class="nav-link" data-key="t-chat">Lọc</a>
+                                <a href="{{route('productsss')}}"class="nav-link ajax-link" data-key="t-chat">Lọc</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('shops')}}" class="nav-link" data-key="t-chat">Shop</a>
+                                <a href="{{route('shops')}}"class="nav-link ajax-link" data-key="t-chat">Shop</a>
                             </li>
                         </ul>
                     </div>
@@ -196,10 +196,10 @@
                                 </div>
                             </li> -->
                             <li class="nav-item">
-                                <a href="{{route('quang-cao')}}" class="nav-link" data-key="t-chat"> Thêm Quảng Cáo</a>
+                                <a href="{{route('quang-cao')}}"class="nav-link ajax-link" data-key="t-chat"> Thêm Quảng Cáo</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('quang_cao_all')}}" class="nav-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
+                                <a href="{{route('quang_cao_all')}}"class="nav-link ajax-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
@@ -237,7 +237,7 @@
                     <div class="collapse menu-dropdown" id="congcu">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('campaign')}}"  class="nav-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
+                                <a href="{{route('campaign')}}"  class="nav-link ajax-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
