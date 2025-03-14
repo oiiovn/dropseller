@@ -185,7 +185,7 @@
                                                                                                             </div>
                                                                                                             <div class="flex-grow-1 ms-3">
                                                                                                                 <h5 class="fs-13">
-                                                                                                                <a style="max-width: 150px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
+                                                                                                                <a style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
                                                                                                                 </h5>
                                                                                                                 <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
                                                                                                             </div>
