@@ -26,13 +26,13 @@
                                 </a>
                             </li>
                             @foreach($ads_all as $userName => $shops)
-                                @foreach($shops as $shopName => $ads)
-                                    <li class="nav-item">
-                                        <a class="nav-link py-3" data-bs-toggle="tab" id="shop-{{ Str::slug($shopName) }}" href="#shop-{{ Str::slug($shopName) }}-content" role="tab" aria-selected="false">
-                                            <i class="fas fa-store me-1"></i> {{ $shopName }}
-                                        </a>
-                                    </li>
-                                @endforeach
+                            @foreach($shops as $shopName => $ads)
+                            <li class="nav-item">
+                                <a class="nav-link py-3" data-bs-toggle="tab" id="shop-{{ Str::slug($shopName) }}" href="#shop-{{ Str::slug($shopName) }}-content" role="tab" aria-selected="false">
+                                    <i class="fas fa-store me-1"></i> {{ $shopName }}
+                                </a>
+                            </li>
+                            @endforeach
                             @endforeach
                         </ul>
 
@@ -57,128 +57,130 @@
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
                                             @foreach($ads_all as $userName => $shops)
-                                                @foreach($shops as $shopName => $ads)
-                                                    @foreach($ads as $ad)
-                                                        <tr>
-                                                            <td>{{ $ad['invoice_id'] }}</td>
-                                                            <td>{{ $shopName }}</td>
-                                                            <td>{{ $ad['date_range'] }}</td>
-                                                            <td>{{ number_format($ad['amount'], 0, ',', '.') }} đ</td>
-                                                            <td>{{ number_format($ad['vat'], 0, ',', '.') }} đ</td>
-                                                            <td>{{ number_format($ad['total_amount'] ?? 0, 0, ',', '.') }} đ</td>
-                                                            <td class="{{ $ad['payment_status'] == 'Chưa thanh toán' ? 'text-danger' : 'text-success' }}">
-                                                                {{ $ad['payment_status'] }}
-                                                            </td>
-                                                            <td>{{ $ad['payment_code'] }}</td>
-                                                            <td>{{ $ad['created_at'] }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endforeach
+                                            @foreach($shops as $shopName => $ads)
+                                            @foreach($ads as $ad)
+                                            <tr>
+                                                <td>{{ $ad['invoice_id'] }}</td>
+                                                <td>{{ $shopName }}</td>
+                                                <td>{{ $ad['date_range'] }}</td>
+                                                <td>{{ number_format($ad['amount'], 0, ',', '.') }} đ</td>
+                                                <td>{{ number_format($ad['vat'], 0, ',', '.') }} đ</td>
+                                                <td>{{ number_format($ad['total_amount'] ?? 0, 0, ',', '.') }} đ</td>
+                                                <td class="{{ $ad['payment_status'] == 'Chưa thanh toán' ? 'text-danger' : 'text-success' }}">
+                                                    {{ $ad['payment_status'] }}
+                                                </td>
+                                                <td>{{ $ad['payment_code'] }}</td>
+                                                <td>{{ $ad['created_at'] }}</td>
+                                            </tr>
+                                            @endforeach
+                                            @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
                                     <script>
-                                    $(document).ready(function() {
-                                        $('#ads_all-{{ Str::slug($shopName)}}').DataTable({
-                                            "paging": true, // Bật phân trang
-                                            "searching": true, // Bật tìm kiếm
-                                            "ordering": true, // Bật sắp xếp
-                                            "info": true, // Hiển thị thông tin
-                                            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                                            "order": [
-                                                [8, "desc"]
-                                            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+                                        $(document).ready(function() {
+                                            $('#ads_all-{{ Str::slug($shopName)}}').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [8, "desc"]
+                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
-                                            // Chỉnh Tiếng Việt
-                                            "language": {
-                                                "lengthMenu": "Hiển thị _MENU_ đơn hàng",
-                                                "zeroRecords": "Không tìm thấy dữ liệu",
-                                                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                                                "infoEmpty": "Không có dữ liệu để hiển thị",
-                                                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                "search": "🔍",
-                                                "paginate": {
-                                                    "first": "Trang đầu",
-                                                    "last": "Trang cuối",
-                                                    "next": "Tiếp theo",
-                                                    "previous": "Quay lại"
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "🔍",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
                                                 }
-                                            }
+                                            });
                                         });
-                                    });
-                                </script>
+                                    </script>
                                 </div>
                             </div>
 
                             <!-- Quảng cáo theo từng Shop -->
                             @foreach($ads_all as $userName => $shops)
-                                @foreach($shops as $shopName => $ads)
-                                    <div class="tab-pane fade" id="shop-{{ Str::slug($shopName) }}-content" role="tabpanel">
-                                        <div class="table-responsive table-card mb-1">
-                                            <table class="table table-nowrap align-middle table-hover" id="shopName-{{Str::slug($userName)}}">
-                                                <thead class="text-muted table-light">
-                                                    <tr class="text-uppercase">
-                                                        <th>Mã Hóa Đơn</th>
-                                                        <th>Ngày Chi</th>
-                                                        <th>Số Tiền</th>
-                                                        <th>VAT</th>
-                                                        <th>Tổng Cộng</th>
-                                                        <th>Thanh Toán</th>
-                                                        <th>Mã Thanh Toán</th>
-                                                        <th>Ngày tạo</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="text-black-50">
-                                                    @foreach($ads as $ad)
-                                                        <tr>
-                                                            <td>{{ $ad['invoice_id'] }}</td>
-                                                            <td>{{ $ad['date_range'] }}</td>
-                                                            <td>{{ number_format($ad['amount'], 0, ',', '.') }} đ</td>
-                                                            <td>{{ number_format($ad['vat'], 0, ',', '.') }} đ</td>
-                                                            <td>{{ number_format($ad['total_amount'] ?? 0, 0, ',', '.') }} đ</td>
-                                                            <td class="{{ $ad['payment_status'] == 'Chưa thanh toán' ? 'text-danger' : 'text-success' }}">
-                                                                {{ $ad['payment_status'] }}
-                                                            </td>
-                                                            <td>{{ $ad['payment_code'] }}</td>
-                                                            <td>{{ $ad['created_at'] }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                            <script>
-                                    $(document).ready(function() {
-                                        
-                                        $('#shopName-{{ Str::slug($userName)}}').DataTable({
-                                            "paging": true, // Bật phân trang
-                                            "searching": true, // Bật tìm kiếm
-                                            "ordering": true, // Bật sắp xếp
-                                            "info": true, // Hiển thị thông tin
-                                            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                                            "order": [
-                                                [8, "desc"]
-                                            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+                            @foreach($shops as $shopName => $ads)
+                            <div class="tab-pane fade" id="shop-{{ Str::slug($shopName) }}-content" role="tabpanel">
+                                <div class="table-responsive table-card mb-1">
+                                    <table class="table table-nowrap align-middle table-hover" id="ads_shop_{{ Str::slug($shopName) }}_haha">
+                                        <thead class="text-muted table-light">
+                                            <tr class="text-uppercase">
+                                                <th>Mã Hóa Đơn</th>
+                                                <th>Ngày Chi</th>
+                                                <th>Số Tiền</th>
+                                                <th>VAT</th>
+                                                <th>Tổng Cộng</th>
+                                                <th>Thanh Toán</th>
+                                                <th>Mã Thanh Toán</th>
+                                                <th>Ngày tạo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-black-50">
+                                            @foreach($ads as $ad)
+                                            <tr>
+                                                <td>{{ $ad['invoice_id'] }}</td>
+                                                <td>{{ $ad['date_range'] }}</td>
+                                                <td>{{ number_format($ad['amount'], 0, ',', '.') }} đ</td>
+                                                <td>{{ number_format($ad['vat'], 0, ',', '.') }} đ</td>
+                                                <td>{{ number_format($ad['total_amount'] ?? 0, 0, ',', '.') }} đ</td>
+                                                <td class="{{ $ad['payment_status'] == 'Chưa thanh toán' ? 'text-danger' : 'text-success' }}">
+                                                    {{ $ad['payment_status'] }}
+                                                </td>
+                                                <td>{{ $ad['payment_code'] }}</td>
+                                                <td>{{ $ad['created_at'] }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#ads_shop_{{ Str::slug($shopName) }}_haha').DataTable().destroy();
+                                          
 
-                                            // Chỉnh Tiếng Việt
-                                            "language": {
-                                                "lengthMenu": "Hiển thị _MENU_ đơn hàng",
-                                                "zeroRecords": "Không tìm thấy dữ liệu",
-                                                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                                                "infoEmpty": "Không có dữ liệu để hiển thị",
-                                                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                "search": "🔍",
-                                                "paginate": {
-                                                    "first": "Trang đầu",
-                                                    "last": "Trang cuối",
-                                                    "next": "Tiếp theo",
-                                                    "previous": "Quay lại"
+                                            $('#ads_shop_{{ Str::slug($shopName) }}_haha').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [7, "desc"]
+                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "🔍",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
                                                 }
-                                            }
+                                            });
                                         });
-                                    });
-                                </script>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                    </script>
+                                </div>
+                            </div>
+                            @endforeach
                             @endforeach
                         </div> <!-- End Tab Content -->
                     </div>
