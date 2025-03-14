@@ -115,7 +115,7 @@
                                 @foreach($shops as $shopName => $ads)
                                     <div class="tab-pane fade" id="shop-{{ Str::slug($shopName) }}-content" role="tabpanel">
                                         <div class="table-responsive table-card mb-1">
-                                            <table class="table table-nowrap align-middle table-hover" id="ads_shopp-{{ Str::slug($userName)}}">
+                                            <table class="table table-nowrap align-middle table-hover" id="userName-{{Str::slug($userName)}}">
                                                 <thead class="text-muted table-light">
                                                     <tr class="text-uppercase">
                                                         <th>Mã Hóa Đơn</th>

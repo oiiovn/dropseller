@@ -185,7 +185,7 @@
                                                                                                             </div>
                                                                                                             <div class="flex-grow-1 ms-3">
                                                                                                                 <h5 class="fs-13">
-                                                                                                                <a style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
+                                                                                                                    <a style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
                                                                                                                 </h5>
                                                                                                                 <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
                                                                                                             </div>
@@ -245,7 +245,36 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#orderTable').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [2, "desc"]
+                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "🔍",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    </script>
 
                                 </div>
 

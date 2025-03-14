@@ -141,7 +141,32 @@
         <!-- end main content-->
 
     </div>
- 
+    <!-- END layout-wrapper -->
+
+
+
+    <!--start back-to-top-->
+    <!-- <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button> -->
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <!-- <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="customizer-setting d-none d-md-block">
+        <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
+            data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
+            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
+        </div>
+    </div> -->
+
     <!-- JAVASCRIPT -->
     <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/libs/simplebar/simplebar.min.js"></script>
@@ -168,27 +193,6 @@
     <script src="assets/js/pages/gridjs.init.js"></script>
     <!-- App js -->
     <script src="assets/js/app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.ajax-link').on('click', function(e) {
-            e.preventDefault(); // Ngăn trang reload
-            
-            let url = $(this).attr('href'); // Lấy URL từ thẻ <a>
-            
-            $.get(url, function(data) {
-                $('#main-content').html($(data).find('#main-content').html()); // Cập nhật nội dung mới
-                window.history.pushState(null, "", url); // Cập nhật URL mà không reload trang
-            });
-        });
-
-        // Xử lý khi nhấn nút Back trên trình duyệt
-        window.onpopstate = function(event) {
-            location.reload();
-        };
-    });
-</script>
-
     <script>
         // Gọi lại hàm thông báo ngắn
         function showToast(message) {
@@ -261,65 +265,7 @@
                         });
                 });
             });
-
-            $(document).ready(function() {
-                $('#orderTable').DataTable({
-                    "paging": true, // Bật phân trang
-                    "searching": true, // Bật tìm kiếm
-                    "ordering": true, // Bật sắp xếp
-                    "info": true, // Hiển thị thông tin
-                    "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                    "order": [
-                        [2, "desc"]
-                    ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                    // Chỉnh Tiếng Việt
-                    "language": {
-                        "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                        "zeroRecords": "Không tìm thấy dữ liệu",
-                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                        "infoEmpty": "Không có dữ liệu để hiển thị",
-                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                        "search": "🔍",
-                        "paginate": {
-                            "first": "Trang đầu",
-                            "last": "Trang cuối",
-                            "next": "Tiếp theo",
-                            "previous": "Quay lại"
-                        }
-                    }
-                });
-
-            });
-            $(document).ready(function() {
-                $('#user_list').DataTable({
-                    "paging": true, // Bật phân trang
-                    "searching": true, // Bật tìm kiếm
-                    "ordering": true, // Bật sắp xếp
-                    "info": true, // Hiển thị thông tin
-                    "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                    "order": [
-                        [2, "desc"]
-                    ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                    // Chỉnh Tiếng Việt
-                    "language": {
-                        "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                        "zeroRecords": "Không tìm thấy dữ liệu",
-                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                        "infoEmpty": "Không có dữ liệu để hiển thị",
-                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                        "search": "🔍",
-                        "paginate": {
-                            "first": "Trang đầu",
-                            "last": "Trang cuối",
-                            "next": "Tiếp theo",
-                            "previous": "Quay lại"
-                        }
-                    }
-                });
-
-            });
+           
 
         });
 
@@ -328,6 +274,78 @@
             document.querySelector('.search-box input').dispatchEvent(new Event('input'));
         }
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        function loadPage(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(data) {
+                    $('#main-content').html($(data).find('#main-content').html()); // Load nội dung mới
+                    window.history.pushState(null, "", url); // Cập nhật URL
+
+                    // **Gọi lại DataTables sau khi load nội dung mới**
+                    initDataTables();
+                },
+                error: function(xhr) {
+                    console.error('Lỗi tải trang:', xhr);
+                }
+            });
+        }
+
+        $('.ajax-link').on('click', function(e) {
+            e.preventDefault();
+            let url = $(this).attr('href');
+            loadPage(url);
+        });
+
+        // Xử lý khi nhấn Back trên trình duyệt
+        window.onpopstate = function(event) {
+            location.reload();
+        };
+
+        // **Hàm khởi tạo lại tất cả DataTables trên trang**
+        function initDataTables() {
+            $('.datatable').each(function() {
+                let tableID = $(this).attr('id');
+
+                if ($.fn.DataTable.isDataTable('#' + tableID)) {
+                    $('#' + tableID).DataTable().destroy(); 
+                }
+
+                $('#' + tableID).DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "lengthMenu": [10, 20, 50, 100, 150],
+                    "order": [[2, "desc"]],
+                    "language": {
+                        "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                        "zeroRecords": "Không tìm thấy dữ liệu",
+                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                        "infoEmpty": "Không có dữ liệu để hiển thị",
+                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                        "search": "🔍",
+                        "paginate": {
+                            "first": "Trang đầu",
+                            "last": "Trang cuối",
+                            "next": "Tiếp theo",
+                            "previous": "Quay lại"
+                        }
+                    }
+                });
+            });
+        }
+
+        // **Gọi lại DataTables ngay khi trang load lần đầu**
+        initDataTables();
+    });
+</script>
+
 </body>
 
 

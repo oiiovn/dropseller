@@ -292,7 +292,7 @@
         <!-- Chi tiêu ADS -->
         <div class="tab-pane fade" id="pills-ads" role="tabpanel" aria-labelledby="pills-ads-tab">
             <div class="table-responsive">
-            <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="ADS">
+                <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="ADS">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">ID giao dịch</th>
