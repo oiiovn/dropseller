@@ -123,7 +123,7 @@
     const createdDate = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
 
     // Cập nhật modal hiển thị
-    document.getElementById('modalInvoiceId').textContent = 'QC' + now.getTime();
+    document.getElementById('modalInvoiceId').textContent = 'AD' + now.getTime();
     document.getElementById('modalShopName').textContent = shopName;
     document.getElementById('modalStartDate').textContent = startDate;
     document.getElementById('modalEndDate').textContent = endDate;
@@ -133,7 +133,7 @@
     document.getElementById('modalCreatedDate').textContent = createdDate;
 
     // Gán giá trị vào hidden input để gửi về server
-    document.getElementById('hiddenInvoiceId').value = 'QC' + now.getTime();
+    document.getElementById('hiddenInvoiceId').value = 'AD' + now.getTime();
     document.getElementById('hiddenShopId').value = shopId;
     document.getElementById('hiddenStartDate').value = startDate;
     document.getElementById('hiddenEndDate').value = endDate;
