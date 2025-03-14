@@ -40,7 +40,7 @@
                         <!-- Tất cả quảng cáo -->
                         <div class="tab-pane fade show active" id="home1" role="tabpanel">
                             <div class="table-responsive table-card mb-1">
-                                <table class="table table-hover" id="ads_all-{{ Str::slug($shopName)}}">
+                                <table class="table table-hover" id="ads_all">
                                     <thead class="text-muted table-light">
                                         <tr class="text-uppercase">
                                             <th>Mã Hóa Đơn</th>
@@ -76,7 +76,7 @@
                                 </table>
                                 <script>
                                     $(document).ready(function() {
-                                        $('#ads_all-{{ Str::slug($shopName)}}').DataTable({
+                                        $('#ads_all').DataTable({
                                             "paging": true, // Bật phân trang
                                             "searching": true, // Bật tìm kiếm
                                             "ordering": true, // Bật sắp xếp
@@ -109,9 +109,9 @@
 
                         <!-- Quảng cáo theo từng Shop -->
                         @foreach($ads_shop as $shopName => $ads)
-                        <div class="tab-pane fade" id="shop-{{ Str::slug($shopName) }}-content" role="tabpanel">
+                        <div class="tab-pane fade" id="shop-{{ Str::slug($shopName)}}-content" role="tabpanel">
                             <div class="table-responsive table-card mb-1">
-                                <table id="ads_shop-{{ Str::slug($shopName)}}" class="table table-nowrap align-middle table-hover">
+                                <table  class="table table-nowrap align-middle table-hover" id="ads_shop_{{ Str::slug($shopName) }}_haha">  
                                     <thead class="text-muted table-light">
                                         <tr class="text-uppercase">
                                             <th>Mã Hóa Đơn</th>
@@ -143,14 +143,14 @@
                                 </table>
                                 <script>
                                     $(document).ready(function() {
-                                        $('#ads_shop-{{ Str::slug($shopName)}}').DataTable({
+                                        $('#ads_shop_{{ Str::slug($shopName) }}_haha').DataTable({
                                             "paging": true, // Bật phân trang
                                             "searching": true, // Bật tìm kiếm
                                             "ordering": true, // Bật sắp xếp
                                             "info": true, // Hiển thị thông tin
                                             "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
                                             "order": [
-                                                [8, "desc"]
+                                                [7, "desc"]
                                             ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
                                             // Chỉnh Tiếng Việt

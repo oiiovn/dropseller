@@ -57,7 +57,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="all-orders">
                                 <div class="table-responsive table-card mb-1">
-                                    <table id="orderTable" class="table table-hover">
+                                    <table id="orderddd" class="table table-hover">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
                                                 <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
@@ -231,6 +231,34 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#orderddd').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [10, 20, 50, 100, 200], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [2, "desc"]
+                                                ], // Sắp xếp theo cột thứ 3 (Ngày giao dịch) theo ngày mới nhất (desc)
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_giao dịch",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "Tìm kiếm:",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             </div>
                             @foreach($orders_all as $userName => $shops)
