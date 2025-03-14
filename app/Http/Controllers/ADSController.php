@@ -7,6 +7,7 @@ use App\Models\Shop;
 use App\Models\ADS;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Notification;
 class ADSController extends Controller
 {
     public function ADS()
@@ -25,7 +26,8 @@ class ADSController extends Controller
             'amount' => 'required',
             'vat' => 'required',
             'total' => 'required',
-        ]);
+        ]);   
+        $shop = Shop::where('shop_id',$validated['shop_id'])->get(); 
         $ad = new ADS();
         $ad->invoice_id = $validated['invoice_id'];
         $ad->shop_id = $validated['shop_id'];
@@ -36,6 +38,15 @@ class ADSController extends Controller
         $ad->payment_status = 'Chưa thanh toán';
         $ad->payment_code = null;
         $ad->save();
+        foreach($shop as $shop){
+        Notification::create([
+            'user_id' => $shop->user_id,
+            'shop_id' => $validated['shop_id'],
+            'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
+            'title' => 'Quảng cáo mới cần thanh toán',
+            'message' => 'Bạn có 1 quảng cáo mới cần thanh toán',
+        ]);
+    }
         return redirect()->back()->with('success', 'Thêm quảng cáo thành công');
     }
     public function ads_all()

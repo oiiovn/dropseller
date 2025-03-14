@@ -41,7 +41,7 @@
                             <!-- Tất cả quảng cáo -->
                             <div class="tab-pane fade show active" id="home1" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" id="ads_all-{{ Str::slug($shopName)}}">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
                                                 <th>Mã Hóa Đơn</th>
@@ -52,6 +52,7 @@
                                                 <th>Tổng Cộng</th>
                                                 <th>Thanh Toán</th>
                                                 <th>Mã Thanh Toán</th>
+                                                <th>Ngày Tạo</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
@@ -69,12 +70,43 @@
                                                                 {{ $ad['payment_status'] }}
                                                             </td>
                                                             <td>{{ $ad['payment_code'] }}</td>
+                                                            <td>{{ $ad['created_at'] }}</td>
                                                         </tr>
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <script>
+                                    $(document).ready(function() {
+                                        $('#ads_all-{{ Str::slug($shopName)}}').DataTable({
+                                            "paging": true, // Bật phân trang
+                                            "searching": true, // Bật tìm kiếm
+                                            "ordering": true, // Bật sắp xếp
+                                            "info": true, // Hiển thị thông tin
+                                            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                            "order": [
+                                                [8, "desc"]
+                                            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+
+                                            // Chỉnh Tiếng Việt
+                                            "language": {
+                                                "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                "zeroRecords": "Không tìm thấy dữ liệu",
+                                                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                "search": "🔍",
+                                                "paginate": {
+                                                    "first": "Trang đầu",
+                                                    "last": "Trang cuối",
+                                                    "next": "Tiếp theo",
+                                                    "previous": "Quay lại"
+                                                }
+                                            }
+                                        });
+                                    });
+                                </script>
                                 </div>
                             </div>
 
@@ -83,7 +115,7 @@
                                 @foreach($shops as $shopName => $ads)
                                     <div class="tab-pane fade" id="shop-{{ Str::slug($shopName) }}-content" role="tabpanel">
                                         <div class="table-responsive table-card mb-1">
-                                            <table class="table table-nowrap align-middle table-hover">
+                                            <table class="table table-nowrap align-middle table-hover" id="ads_shopp-{{ Str::slug($userName)}}">
                                                 <thead class="text-muted table-light">
                                                     <tr class="text-uppercase">
                                                         <th>Mã Hóa Đơn</th>
@@ -113,6 +145,36 @@
                                                     @endforeach
                                                 </tbody>
                                             </table>
+                                            <script>
+                                    $(document).ready(function() {
+                                        $('#userName-{{ Str::slug($shopName)}}').DataTable({
+                                            "paging": true, // Bật phân trang
+                                            "searching": true, // Bật tìm kiếm
+                                            "ordering": true, // Bật sắp xếp
+                                            "info": true, // Hiển thị thông tin
+                                            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                            "order": [
+                                                [8, "desc"]
+                                            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+
+                                            // Chỉnh Tiếng Việt
+                                            "language": {
+                                                "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                "zeroRecords": "Không tìm thấy dữ liệu",
+                                                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                "search": "🔍",
+                                                "paginate": {
+                                                    "first": "Trang đầu",
+                                                    "last": "Trang cuối",
+                                                    "next": "Tiếp theo",
+                                                    "previous": "Quay lại"
+                                                }
+                                            }
+                                        });
+                                    });
+                                </script>
                                         </div>
                                     </div>
                                 @endforeach
