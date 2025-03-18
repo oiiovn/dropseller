@@ -103,7 +103,7 @@ class TransactionController extends Controller
     private function generateUniqueTransactionId()
     {
         do {
-            $transactionId = 'FT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+            $transactionId = 'AT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
         } while (Transaction::where('transaction_id', $transactionId)->exists()); // Thay `Order` bằng model bạn sử dụng
 
         return $transactionId;
@@ -116,4 +116,33 @@ class TransactionController extends Controller
 
         return $id;
     }
+
+    public function show()
+    {
+        $users = User::all();
+        return view('naptien', compact('users'));
+    }
+    public function addTransaction()
+    {
+        $transactionId = $this->generateUniqueTransactionId();
+        $uniqueId = $this->generateUniqueId();
+        $amount = request('Amount');
+        $type = "IN";
+        $bank = "MBB";
+        $description = request('referral_code').' ADMIN Nạp tiền';
+        $account_number = request('referral_code');
+        $transaction = Transaction::create([
+            'id' => $uniqueId,
+            'bank' => $bank,
+            'account_number' => $account_number,
+            'transaction_date' => now(),
+            'transaction_id' => $transactionId,
+            'description' => $description,
+            'type' => $type,
+            'amount' => $amount,
+        ]);
+        return redirect()->back()->with('success', 'Giao dịch đã được thêm!');
+    }
+    
 }
+

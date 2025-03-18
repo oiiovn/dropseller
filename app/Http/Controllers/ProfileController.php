@@ -47,19 +47,6 @@ class ProfileController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:6|confirmed', // Nhập lại mật khẩu
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048', // Giới hạn 2MB
-        ]);
-        if ($validator->fails()) {
-            dd($validator->errors()); // In lỗi ra màn hình
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        
-
-        // Cập nhật thông tin nếu có
         if ($request->has('name')) {
             $user->name = $request->name;
         }
