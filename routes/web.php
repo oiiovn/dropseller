@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/quang-cao', [ADSController::class, 'ADS'])->name('quang-cao');
         Route::post('/them-quang-cao', [ADSController::class, 'store'])->name('add.ads');
         Route::get('/quang-cao_all', [ADSController::class, 'ads_all'])->name('quang_cao_all'); 
+        Route::get('/naptien-khach-hang', [TransactionController::class, 'show'])->name('naptien_khach_hang');
+        Route::post('/addTransaction', [TransactionController::class, 'addTransaction'])->name('transaction.store');
     });
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop'); 
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss'); 

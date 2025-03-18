@@ -95,11 +95,11 @@
                             </li>
                         </ul>
                     </div>
-                    
-                   
-                   
+
+
+
                 </li>
-               
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#thanhtoan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-money-dollar-circle-line"></i>
@@ -114,8 +114,8 @@
                             <li class="nav-item">
                                 <a href="{{ route('transaction') }}" class="nav-link ajax-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
-                            
-                             <!--
+
+                            <!--
                             <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
                                 <div class="collapse menu-dropdown" id="sidebarEmail">
@@ -147,28 +147,31 @@
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Quản lý khách hàng</span>
-                        
+
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts">
                         <ul class="nav nav-sm flex-column">
-                            <li  class="nav-item">
+                            <li class="nav-item">
                                 <a href="{{route('Get_all')}}" class="nav-link ajax-link" data-key="t-horizontal">Thông tin khách hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('transaction_all')}}"class="nav-link ajax-link" data-key="t-chat">Lịch sử nạp </a>
+                                <a class="nav-link" href="{{ route('naptien_khach_hang') }}">Nạp tiền cho khách hàng</a>
                             </li>
-                             <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{route('transaction_all')}}" class="nav-link ajax-link" data-key="t-chat">Lịch sử nạp </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{route('Get_orders_all')}}" class="nav-link ajax-link" data-key="t-detached">Tất cả đơn hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('Overdue_Order')}}"class="nav-link ajax-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
-                                
+                                <a href="{{route('Overdue_Order')}}" class="nav-link ajax-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
+
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('productsss')}}"class="nav-link ajax-link" data-key="t-chat">Lọc</a>
+                                <a href="{{route('productsss')}}" class="nav-link ajax-link" data-key="t-chat">Lọc</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('shops')}}"class="nav-link ajax-link" data-key="t-chat">Shop</a>
+                                <a href="{{route('shops')}}" class="nav-link ajax-link" data-key="t-chat">Shop</a>
                             </li>
                         </ul>
                     </div>
@@ -196,10 +199,10 @@
                                 </div>
                             </li> -->
                             <li class="nav-item">
-                                <a href="{{route('quang-cao')}}"class="nav-link ajax-link" data-key="t-chat"> Thêm Quảng Cáo</a>
+                                <a href="{{route('quang-cao')}}" class="nav-link ajax-link" data-key="t-chat"> Thêm Quảng Cáo</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('quang_cao_all')}}"class="nav-link ajax-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
+                                <a href="{{route('quang_cao_all')}}" class="nav-link ajax-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
@@ -232,12 +235,12 @@
                     <a class="nav-link menu-link" href="#congcu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Công cụ tiện ích</span>
-                        
+
                     </a>
                     <div class="collapse menu-dropdown" id="congcu">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('campaign')}}"  class="nav-link ajax-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
+                                <a href="{{route('campaign')}}" class="nav-link ajax-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
