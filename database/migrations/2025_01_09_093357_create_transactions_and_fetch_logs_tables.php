@@ -15,7 +15,7 @@ class CreateTransactionsAndFetchLogsTables extends Migration
     {
         // Tạo bảng transactions
         Schema::create('transactions', function (Blueprint $table) {
-            $table->string('id')->primary(); // ID giao dịch (khóa chính)
+            $table->id(); // ID giao dịch (khóa chính)
             $table->string('bank')->nullable(); // Ngân hàng
             $table->string('account_number')->nullable(); // Số tài khoản
             $table->date('transaction_date')->nullable(); // Ngày giao dịch

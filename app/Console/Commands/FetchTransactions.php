@@ -49,7 +49,6 @@ class FetchTransactions extends Command
                 continue; 
             }
             Transaction::create([
-                'id' => $transaction['id'],
                 'bank' => $transaction['bank'],
                 'account_number' => $transaction['account_number'],
                 'transaction_date' => $transaction['transaction_date'],

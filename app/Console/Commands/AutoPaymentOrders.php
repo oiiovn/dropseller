@@ -62,7 +62,6 @@ class AutoPaymentOrders extends Command
                 $user->total_amount = $total_amount;-
                 $user->save();
                 Transaction::create([
-                    'id' => $uniqueId,
                     'bank' => 'DROP',
                     'account_number' => $user->referral_code,
                     'transaction_date' => now(),

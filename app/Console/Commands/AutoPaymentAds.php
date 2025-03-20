@@ -68,7 +68,6 @@ class AutoPaymentAds extends Command
                     'payment_code' => $transactionId,
                 ]);
                 Transaction::create([
-                    'id' => $uniqueId,
                     'bank' => 'ADS',
                     'account_number' => $user->referral_code,
                     'transaction_date' => now(),
