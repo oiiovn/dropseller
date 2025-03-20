@@ -128,11 +128,11 @@ class TransactionController extends Controller
         $uniqueId = $this->generateUniqueId();
         $amount = request('Amount');
         $type = "IN";
-        $bank = "MBB";
+        $bank = "MBB"; 
         $description = request('referral_code').' ADMIN Nạp tiền';
         $account_number = request('referral_code');
         $transaction = Transaction::create([
-            'id' => $uniqueId,
+            'id' => $uniqueId, 
             'bank' => $bank,
             'account_number' => $account_number,
             'transaction_date' => now(),

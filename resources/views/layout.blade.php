@@ -118,16 +118,19 @@
         <div class="main-content">
             <div class="page-content " style="padding-top:80px;">
                 @if (session('success'))
-                <div class="alert alert-success">
+                <div class="alert alert-success" id="successMessage">
                     {{ session('success') }}
                 </div>
                 @endif
 
                 @if (session('error'))
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="errorMessage">
                     {{ session('error') }}
                 </div>
                 @endif
+
+
+
 
                 @include('noti.noti')
 
@@ -216,6 +219,25 @@
         }
     </script>
     <script>
+        // Tự động ẩn thông báo sau 3 giây (3000ms)
+        setTimeout(function() {
+            let successAlert = document.getElementById('successMessage');
+            let errorAlert = document.getElementById('errorMessage');
+
+            if (successAlert) {
+                successAlert.style.transition = "opacity 0.5s";
+                successAlert.style.opacity = 0;
+                setTimeout(() => successAlert.remove(), 500);
+            }
+
+            if (errorAlert) {
+                errorAlert.style.transition = "opacity 0.5s";
+                errorAlert.style.opacity = 0;
+                setTimeout(() => errorAlert.remove(), 500);
+            }
+        }, 3000);
+    </script>
+    <script>
         // Gắn sự kiện click vào nút
         document.getElementById('markReadButton').addEventListener('click', function() {
             // Gửi AJAX request để đánh dấu các thông báo là đã đọc
@@ -265,7 +287,7 @@
                         });
                 });
             });
-           
+
 
         });
 
@@ -275,76 +297,78 @@
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        function loadPage(url) {
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(data) {
-                    $('#main-content').html($(data).find('#main-content').html()); // Load nội dung mới
-                    window.history.pushState(null, "", url); // Cập nhật URL
+    <script>
+        $(document).ready(function() {
+            function loadPage(url) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#main-content').html($(data).find('#main-content').html()); // Load nội dung mới
+                        window.history.pushState(null, "", url); // Cập nhật URL
 
-                    // **Gọi lại DataTables sau khi load nội dung mới**
-                    initDataTables();
-                },
-                error: function(xhr) {
-                    console.error('Lỗi tải trang:', xhr);
-                }
-            });
-        }
-
-        $('.ajax-link').on('click', function(e) {
-            e.preventDefault();
-            let url = $(this).attr('href');
-            loadPage(url);
-        });
-
-        // Xử lý khi nhấn Back trên trình duyệt
-        window.onpopstate = function(event) {
-            location.reload();
-        };
-
-        // **Hàm khởi tạo lại tất cả DataTables trên trang**
-        function initDataTables() {
-            $('.datatable').each(function() {
-                let tableID = $(this).attr('id');
-
-                if ($.fn.DataTable.isDataTable('#' + tableID)) {
-                    $('#' + tableID).DataTable().destroy(); 
-                }
-
-                $('#' + tableID).DataTable({
-                    "paging": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "lengthMenu": [10, 20, 50, 100, 150],
-                    "order": [[2, "desc"]],
-                    "language": {
-                        "lengthMenu": "Hiển thị _MENU_ đơn hàng",
-                        "zeroRecords": "Không tìm thấy dữ liệu",
-                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                        "infoEmpty": "Không có dữ liệu để hiển thị",
-                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                        "search": "🔍",
-                        "paginate": {
-                            "first": "Trang đầu",
-                            "last": "Trang cuối",
-                            "next": "Tiếp theo",
-                            "previous": "Quay lại"
-                        }
+                        // **Gọi lại DataTables sau khi load nội dung mới**
+                        initDataTables();
+                    },
+                    error: function(xhr) {
+                        console.error('Lỗi tải trang:', xhr);
                     }
                 });
-            });
-        }
+            }
 
-        // **Gọi lại DataTables ngay khi trang load lần đầu**
-        initDataTables();
-    });
-</script>
+            $('.ajax-link').on('click', function(e) {
+                e.preventDefault();
+                let url = $(this).attr('href');
+                loadPage(url);
+            });
+
+            // Xử lý khi nhấn Back trên trình duyệt
+            window.onpopstate = function(event) {
+                location.reload();
+            };
+
+            // **Hàm khởi tạo lại tất cả DataTables trên trang**
+            function initDataTables() {
+                $('.datatable').each(function() {
+                    let tableID = $(this).attr('id');
+
+                    if ($.fn.DataTable.isDataTable('#' + tableID)) {
+                        $('#' + tableID).DataTable().destroy();
+                    }
+
+                    $('#' + tableID).DataTable({
+                        "paging": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "lengthMenu": [10, 20, 50, 100, 150],
+                        "order": [
+                            [2, "desc"]
+                        ],
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                            "zeroRecords": "Không tìm thấy dữ liệu",
+                            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                            "infoEmpty": "Không có dữ liệu để hiển thị",
+                            "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                            "search": "🔍",
+                            "paginate": {
+                                "first": "Trang đầu",
+                                "last": "Trang cuối",
+                                "next": "Tiếp theo",
+                                "previous": "Quay lại"
+                            }
+                        }
+                    });
+                });
+            }
+
+            // **Gọi lại DataTables ngay khi trang load lần đầu**
+            initDataTables();
+        });
+    </script>
 
 </body>
 
