@@ -7,13 +7,13 @@
 
 <head>
 
-    <meta charset="utf-8" />
-    <title>Drop_Ship_seller</title>
+<meta charset="utf-8" />
+    <title>Dropship | Seller - Custommer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/h.png">
+    <link rel="shortcut icon" href="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png">
 
     <!-- jsvectormap css -->
     <link href="assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
