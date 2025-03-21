@@ -18,17 +18,14 @@ class UpdateReconciledOrders extends Command
 
     public function handle()
     {
-        $dateThreshold = Carbon::now()->subDays(20);
+        $dateThreshold = Carbon::now()->subDays(19);
         $transactionId = $this->generateUniqueTransactionId();
-        $uniqueId = $this->generateUniqueId(); 
-
         $transactions = Transaction::with('order')
             ->where('transaction_date', '<', $dateThreshold)
             ->whereHas('order', function ($query) {
                 $query->where('reconciled', 1);
             })
             ->get();
-
         $updatedCount = 0;
         foreach ($transactions as $transaction) {
             if ($transaction->order) {
