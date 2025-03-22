@@ -40,15 +40,9 @@ class ProcessOrderCommand extends Command
         $clientId = "1605";
         $token = "+AXBRK19RPa6MG5wxYOhD7BPUGgibb76FnxirVzkW/9FMf9nSmJIg9OINUDk8X5L";
 
-        $today = Carbon::today();
-        $firstRunDate = Carbon::createFromFormat('Y-m-d', '2025-03-01');
+        $today = Carbon::today();     
         $startDate = $today->subDays(20);
-
-        if ($startDate < $firstRunDate) {
-            $startDate = $firstRunDate;
-        }
-
-        $endDate = Carbon::today();
+        $endDate = Carbon::yesterday();
 
         while ($startDate <= $endDate) {
             $timeStart = Carbon::parse($startDate->format('Y-m-d') . ' 00:00:00', 'Asia/Ho_Chi_Minh')->timestamp * 1000;
@@ -97,7 +91,6 @@ class ProcessOrderCommand extends Command
                             return isset($shop['shopId']) && $shop['shopId'] == $shopId;
                         });
                     }
-
                     foreach ($productReport as $shop) {
                         if (isset($shop['products']) && is_array($shop['products'])) {
                             foreach ($shop['products'] as $product) {
