@@ -183,21 +183,21 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
                                     Copy sản phẩm
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarCalendar">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="{{route('list_products')}}" class="nav-link" data-key="t-main-calender">Danh sách sản phẩm</a>
+                                            <a href="{{route('program_view')}}" class="nav-link" data-key="t-main-calender">Danh sách sản phẩm</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="apps-calendar-month-grid.html" class="nav-link" data-key="t-month-grid">Month Grid</a>
+                                            <a href="{{route('list_program')}}" class="nav-link" data-key="t-month-grid">Đăng sản phẩm</a>
                                         </li>
                                     </ul>
                                 </div>
-                            </li> -->
+                            </li>
                             <li class="nav-item">
                                 <a href="{{route('quang-cao')}}" class="nav-link ajax-link" data-key="t-chat"> Thêm Quảng Cáo</a>
                             </li>
