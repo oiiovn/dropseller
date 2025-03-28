@@ -30,7 +30,6 @@
 
     <!-- Tab Content -->
     <div class="tab-content" id="programTabContent">
-        <!-- Tất cả chương trình -->
         <div class="tab-pane fade show active" id="tabAllPrograms" role="tabpanel">
             <table class="table table-bordered">
                 <thead class="thead-dark">
@@ -182,9 +181,6 @@
                 </tbody>
             </table>
         </div>
-
-
-        <!-- Chương trình đã đăng ký -->
         <!-- Chương trình đã đăng ký -->
         <div class="tab-pane fade" id="tabRegisteredPrograms" role="tabpanel">
             <table class="table table-bordered">
@@ -192,107 +188,113 @@
                     <tr>
                         <th>Mã </th>
                         <th>Tên chương trình</th>
-                        <th>Mô tả</th>
-                        <th>Shop cần lên</th>
+                        <th>Shop đăng ký</th>
                         <th>Số lượng sản phẩm</th>
                         <th>Giá Sản phẩm (1 sản phẩm)</th>
                         <th>Tổng tiền</th>
+                        <th>Trạng thái thanh toán</th>
                         <th>Xem chi tiết</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($registeredPrograms as $program)
+                    @foreach($programs_shop_onl as $program)
+                    @php
+                    $programInfo = $program->program;
+                    $products = json_decode($programInfo->products ?? '[]', true);
+                    $productCount = count($products);
+                    $price_per_product = $productCount > 0 ? ($program->total_payment / $productCount) : 0;
+                    $totalPayment = $program->total_payment;
+                    @endphp
+
                     <tr>
                         <td>{{ $program->id }}</td>
-                        <td>{{ $program->name_program }}</td>
-                        <td>{{ $program->description }}</td>
+                        <td>{{ $programInfo->name_program ?? 'Không có tên' }}</td>
+
                         <td>
-                            @if(isset($registeredProgramShops[$program->id]) && count($registeredProgramShops[$program->id]) > 0)
-                            <div class="d-flex flex-column align-items-start">
-                                @foreach($registeredProgramShops[$program->id] as $shop)
-                                <div class="form-check">
-                                    <input class="form-check-input"
-                                        type="checkbox"
-                                        disabled
-                                        {{ $shop['is_registered'] ? 'checked' : '' }}>
-                                    <label class="form-check-label">
-                                        {{ $shop['shop_name'] }}
-                                        @if($shop['is_registered']) <span class="text-success">(Đã đăng ký)</span> @endif
-                                    </label>
-                                </div>
-                                @endforeach
-                            </div>
+                            {{ optional($program->shop)->shop_name ?? 'Không có shop' }}
+                        </td>
+                        <td>{{ $productCount }}</td>
+                        <td>{{ number_format($price_per_product) }} VNĐ</td>
+                        <td>{{ number_format($totalPayment) }} VNĐ</td>
+                        <td>
+                            @if($program->status_payment === 'Chưa thanh toán')
+                            <span class="badge bg-danger">Chưa thanh toán</span>
+                            @elseif($program->status_payment === 'Đã thanh toán')
+                            <span class="badge bg-success">Đã thanh toán</span>
                             @else
-                            Không có shop đã đăng ký
+                            <span class="badge bg-secondary">{{ $program->status_payment }}</span>
                             @endif
                         </td>
 
-                        <td>
-                            @php
-                            $products = json_decode($program->products, true);
-                            $productCount = is_array($products) ? count($products) : 0;
-                            $price_per_product = 2000;
 
-                            // Tính số lượng shop đã đăng ký
-                            $registeredShops = collect($registeredProgramShops[$program->id] ?? [])
-                            ->filter(fn($shop) => $shop['is_registered'])
-                            ->count();
-
-                            // Tổng tiền = số shop đã đăng ký * số sản phẩm * đơn giá
-                            $totalPayment = $registeredShops * $productCount * $price_per_product;
-                            @endphp
-                            {{ $productCount }}
-                        </td>
-
-                        <td>{{ number_format($price_per_product) }}VNĐ</td>
-
-                        <td>{{ number_format($totalPayment) }}VNĐ</td>
 
                         <td>
-                            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $program->id }}">
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ optional($program->shop)->shop_name}}">
                                 <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
                                     <i class="ri-eye-fill fs-16 text-primary"></i>
                                 </li>
                             </a>
+
                             <!-- Modal chi tiết -->
-                            <div class="modal fade" id="exampleModal{{$program->id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{$program->id}}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
+                            <div class="modal fade" id="exampleModal{{ optional($program->shop)->shop_name }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ optional($program->shop)->shop_name }}" aria-hidden="true">
+                                <div class="modal-dialog modal-fullscreen p-3" style="height: auto; max-height: none;"> <!-- Tăng lên xl cho rộng hơn -->
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel{{$program->id}}">Danh sách sản phẩm</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel{{ optional($program->shop)->shop_name }}">Chi tiết chương trình & sản phẩm</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                                         </div>
                                         <div class="modal-body">
-                                            @if($productCount > 0)
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>SKU</th>
-                                                        <th>Tên sản phẩm</th>
-                                                        <th>Hình ảnh</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($products as $product)
-                                                    <tr>
-                                                        <td>{{ $product['sku'] ?? 'N/A' }}</td>
-                                                        <td>{{ $product['name'] ?? 'Không có tên' }}</td>
-                                                        <td>
-                                                            @if(!empty($product['image']))
-                                                            <img src="{{ $product['image'] }}" alt="Hình ảnh" style="width: 50px; height: 50px;">
-                                                            @else
-                                                            Không có ảnh
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                            <p><strong>Tổng số sản phẩm:</strong> {{ $productCount }}</p>
-                                            @else
-                                            <p>Không có sản phẩm</p>
-                                            @endif
+                                            <div class="row">
+                                                <!-- Bên trái: Danh sách sản phẩm -->
+                                                <div class="col-md-7 border-end">
+                                                    <h6>Danh sách sản phẩm</h6>
+                                                    @if($productCount > 0)
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>SKU</th>
+                                                                <th>Tên sản phẩm</th>
+                                                                <th>Hình ảnh</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($products as $product)
+                                                            <tr>
+                                                                <td>{{ $product['sku'] ?? 'N/A' }}</td>
+                                                                <td>{{ $product['name'] ?? 'Không có tên' }}</td>
+                                                                <td>
+                                                                    @if(!empty($product['image']))
+                                                                    <img src="{{ $product['image'] }}" alt="Hình ảnh" style="width: 50px; height: 50px;">
+                                                                    @else
+                                                                    Không có ảnh
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    <p><strong>Tổng số sản phẩm:</strong> {{ $productCount }}</p>
+                                                    @else
+                                                    <p>Không có sản phẩm</p>
+                                                    @endif
+                                                </div>
+
+                                                <!-- Bên phải: Thông tin chương trình -->
+                                                <div class="col-md-5">
+                                                    <h6>Thông tin chương trình</h6>
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item"><strong>Tên chương trình:</strong> {{ $program->program->name_program ?? 'N/A' }}</li>
+                                                        <li class="list-group-item"><strong>Mô tả:</strong> {{ $program->program->description ?? 'N/A' }}</li>
+                                                        <li class="list-group-item"><strong>Shop:</strong> {{ optional($program->shop)->shop_name ?? $program->shop_id }}</li>
+                                                        <li class="list-group-item"><strong>Số lượng sản phẩm:</strong> {{ $productCount }}</li>
+                                                        <li class="list-group-item"><strong>Giá mỗi sản phẩm:</strong> {{ number_format($price_per_product) }} VNĐ</li>
+                                                        <li class="list-group-item"><strong>Tổng thanh toán:</strong> {{ number_format($program->total_payment) }} VNĐ</li>
+                                                        <li class="list-group-item"><strong>Trạng thái chương trình:</strong> {{ $program->status_program }}</li>
+                                                        <li class="list-group-item"><strong>Trạng thái thanh toán:</strong> {{ $program->status_payment }}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -300,12 +302,15 @@
                                     </div>
                                 </div>
                             </div>
+
                         </td>
+
                         <td>
                             <span class="text-muted">Đã đăng ký</span>
                         </td>
                     </tr>
                     @endforeach
+
                 </tbody>
             </table>
         </div>
