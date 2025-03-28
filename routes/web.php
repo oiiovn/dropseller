@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
         Route::get('/get-product/{sku}', [ProgramController::class, 'push_product'])->where('sku', '.*');
         Route::post('/program/store', [ProgramController::class, 'store'])->name('program.store');   // Xử lý lưu dữ liệu
-
+        Route::get('/program-list', [ProgramController::class, 'Program_processing'])->name('procerssing.list');
 
         Route::get('/quang-cao', [ADSController::class, 'ADS'])->name('quang-cao');
         Route::post('/them-quang-cao', [ADSController::class, 'store'])->name('add.ads');

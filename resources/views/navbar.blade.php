@@ -4,10 +4,10 @@
         <!-- Light Logo -->
         <a href="{{route('dashboard')}}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png" alt="" height="22">
+                <img src="https://img.icons8.com/?size=100&id=rfO6JiaCcd8a&format=png&color=000000" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="https://img.icons8.com/windows/512/FFFFFF/blog-logo.png" alt="" height="58">
+                <img src="https://img.icons8.com/?size=100&id=rfO6JiaCcd8a&format=png&color=000000" alt="" height="58">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -203,6 +203,9 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{route('quang_cao_all')}}" class="nav-link ajax-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('procerssing.list')}}" class="nav-link ajax-link"data-key="t-chat">Thêm sản phẩm lên shop</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>

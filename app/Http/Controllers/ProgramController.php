@@ -86,14 +86,18 @@ class ProgramController extends Controller
                 $query->orWhereJsonContains('shops', $shopId);
             }
         })->get();
+        $programs_shop_onl = ProgramShop::with('program','shop')
+        ->where(function ($query) use ($userShopIds) {
+            foreach ($userShopIds as $shopId) {
+                $query->orWhere('shop_id', $shopId);
+            }
+        })
+        ->get();
+    
         $registered = ProgramShop::whereIn('shop_id', $userShopIds)->get()->groupBy('program_id');
         $allShops = Shop::whereIn('shop_id', $userShopIds)->get()->keyBy('shop_id');
         $programs = [];
         $programShops = [];
-    
-        $registeredPrograms = [];
-        $registeredProgramShops = [];
-    
         foreach ($programs_all as $program) {
             $shopIds = $program->shops ?? [];
             $shopsForUser = [];
@@ -118,26 +122,23 @@ class ProgramController extends Controller
                     }
                 }
             }
-    
             if ($hasUnregistered) {
                 $programs[] = $program;
                 $programShops[$program->id] = $shopsForUser;
             }
-    
-            if ($hasRegistered) {
-                $registeredPrograms[] = $program;
-                $registeredProgramShops[$program->id] = $shopsForUser;
-            }
-        }
-    
+        }  
+    //   return response()->json($programs_shop_onl);
         return view('program.list_program', [
             'programs' => $programs,
             'programShops' => $programShops,
-            'registeredPrograms' => $registeredPrograms,
-            'registeredProgramShops' => $registeredProgramShops,
+            'programs_shop_onl' => $programs_shop_onl,
         ]);
     }
     
+    public function Program_processing(){
+        $Programs_list = ProgramShop::all();
+        return view('program.program_processing',compact('Programs_list'));
+    }
 
 
 
@@ -164,7 +165,7 @@ class ProgramController extends Controller
                 ProgramShop::create([
                     'shop_id' => $shopId,
                     'program_id' => $programId,
-                   'total_payment' => $total_payment_per_shop,
+                    'total_payment' => $total_payment_per_shop,
                     'status_program' => 'Chưa triển khai',
                     'status_payment' => 'Chưa thanh toán',
                     'payment_code' => null,
@@ -184,6 +185,7 @@ class ProgramController extends Controller
 
         return redirect()->back()->with('success', $message);
     }
+
 
     private function sendApiRequest_push_product($url, $clientId, $token)
     {
