@@ -127,7 +127,6 @@
                                                 </td>
                                                 @endif
                                                 <td class="transaction_id">
-
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
                                                         <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->transaction_id}}">
                                                             {{$item->transaction_id}}
@@ -142,7 +141,6 @@
                                                     Đã đối soát
                                                     @endif
                                                 </td>
-
                                                 <td>
                                                     <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
@@ -287,13 +285,13 @@
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
                                                 <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
-                                                <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
                                                 <th class="sort" data-sort="phidrop">Phí drop</th>
                                                 <th class="sort" data-sort="product_cost">Tổng Bill</th>
                                                 <th class="sort" data-sort="shop_name">Thanh toán</th>
                                                 <th class="sort" data-sort="shop_name">Mã thanh toán</th>
+                                                <th class="sort" data-sort="shop_name">Đối soát</th>
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
@@ -313,10 +311,7 @@
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
-                                                    {{ $order->shop->shop_name ?? 'N/A' }}
-                                                </td>
-                                                <td class="date">{{$order->export_date}}</td>
+                                                <td class="date">{{$order->created_at}}</td>
                                                 <td class="customer_cost">{{$order->total_products}}</td>
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
@@ -328,6 +323,13 @@
                                                             <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                         </a>
                                                     </li>
+                                                </td>
+                                                <td class="reconciled">
+                                                    @if($order->reconciled == 1)
+                                                    Chưa đối soát
+                                                    @elseif($order->reconciled == 0)
+                                                    Đã đối soát
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <!-- Button trigger modal -->
@@ -435,7 +437,7 @@
                                                 "info": true, // Hiển thị thông tin
                                                 "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
                                                 "order": [
-                                                    [2, "desc"]
+                                                    [1, "desc"]
                                                 ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
                                                 // Chỉnh Tiếng Việt

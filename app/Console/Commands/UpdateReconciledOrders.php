@@ -50,6 +50,16 @@ class UpdateReconciledOrders extends Command
                     'type' => 'IN',
                     'amount' => $amount,
                 ]);
+                }else
+                {
+                    $transaction->order->update(['reconciled' => 0]);
+                    Notification::create([
+                        'user_id' => $transaction->order->shop->user->id, 
+                        'shop_id' => $transaction->order->shop_id,
+                        'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
+                        'title' => 'Đối soát đơn hàng',
+                        'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã đối soát thành công và không có sai sót.',
+                    ]);
                 }
             }
         }
