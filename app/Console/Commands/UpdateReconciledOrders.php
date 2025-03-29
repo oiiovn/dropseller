@@ -19,7 +19,6 @@ class UpdateReconciledOrders extends Command
     public function handle()
     {
         $dateThreshold = Carbon::now()->subDays(19);
-        $transactionId = $this->generateUniqueTransactionId();
         $transactions = Transaction::with('order')
             ->where('transaction_date', '<', $dateThreshold)
             ->whereHas('order', function ($query) {
@@ -41,6 +40,7 @@ class UpdateReconciledOrders extends Command
                     'title' => 'Đối soát đơn hàng',
                     'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã bị hoàn hoặc hủy. Số tiền hoàn: ' . number_format($amount) . ' VND.',
                 ]);
+                $transactionId = $this->generateUniqueTransactionId();
                 Transaction::create([
                     'bank' => 'DROP',
                     'account_number' => $transaction->order->shop_id,
