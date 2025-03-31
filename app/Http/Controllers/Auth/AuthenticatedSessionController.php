@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
-
+        $request->session()->put('show_welcome_modal', true);
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

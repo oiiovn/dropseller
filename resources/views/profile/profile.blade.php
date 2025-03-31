@@ -336,7 +336,7 @@
                                                 <span class="">
                                                 @if($shop->platform == 'Tiktok')
                                                     <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 50px; height: 50px;">
-                                                    @elseif($shop->platform == 'Shopee')
+                                                    @elseif($shop->platform == 'Shoppe')
                                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 50px; height: 50px;">
                                                     @else
                                                     <i class="fas fa-store me-1"></i>

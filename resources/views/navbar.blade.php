@@ -95,16 +95,25 @@
                             </li>
                         </ul>
                     </div>
-
-
-
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#Push_sp" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <i class="ri-apps-2-line"></i>
+                        <span data-key="t-apps">Dịch Vụ DropShip</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="Push_sp">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('list_program')}}" class="nav-link ajax-link" data-key="t-chat">Đăng sản phẩm</a>
+                            </li>
 
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#thanhtoan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-money-dollar-circle-line"></i>
                         <span data-key="t-apps">Thanh toán</span>
-
                     </a>
                     <div class="collapse menu-dropdown" id="thanhtoan">
                         <ul class="nav nav-sm flex-column">
@@ -164,6 +173,9 @@
                                 <a href="{{route('Get_orders_all')}}" class="nav-link ajax-link" data-key="t-detached">Tất cả đơn hàng</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{route('get_all_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached">Lịch sử giao dịch</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{route('Overdue_Order')}}" class="nav-link ajax-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
 
                             </li>
@@ -184,17 +196,20 @@
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                                <a href="#sidebarCalendar" class="nav-link " data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
                                     Copy sản phẩm
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarCalendar">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="{{route('program_view')}}" class="nav-link" data-key="t-main-calender">Danh sách sản phẩm</a>
+                                            <a href="{{route('program_view')}}" class="nav-link ajax-link" data-key="t-main-calender">Tạo gói sản phẩm</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{route('list_program')}}" class="nav-link" data-key="t-month-grid">Đăng sản phẩm</a>
+                                            <a href="{{route('procerssing')}}" class="nav-link ajax-link">Thêm sản phẩm lên shop</a>
                                         </li>
+                                        <!-- <li class="nav-item">
+                                            <a href="{{route('list_program')}}" class="nav-link" data-key="t-month-grid">Danh sách sản phẩm</a>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </li>
@@ -203,9 +218,6 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{route('quang_cao_all')}}" class="nav-link ajax-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('procerssing.list')}}" class="nav-link ajax-link"data-key="t-chat">Thêm sản phẩm lên shop</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>

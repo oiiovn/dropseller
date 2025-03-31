@@ -32,7 +32,7 @@ class TransactionController extends Controller
         $Transactions_ads = Transaction::with('ads')
             ->where('description', 'LIKE', "%$userCode%")
             ->where('bank', 'ADS')
-            ->get();    
+            ->get();
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads'));
     }
 
@@ -84,11 +84,11 @@ class TransactionController extends Controller
     {
         $users = User::all();
         $transactionsByReferral = [];
-    
+
         foreach ($users as $user) {
             $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
-            ->where('type', 'IN')
-            ->get();
+                ->where('type', 'IN')
+                ->get();
             $transactionsByReferral[$user->referral_code] = [
                 'user' => $user,
                 'transactions' => $transactions
@@ -97,9 +97,19 @@ class TransactionController extends Controller
 
         return view('payment.transaction_all', compact('transactionsByReferral'));
     }
-    
-
-    
+    public function get_all_transaction()
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
+                ->get();
+            $transactionsByReferral[$user->referral_code] = [
+                'user' => $user,
+                'transactions' => $transactions
+            ];
+        }
+        return view('transaction.transaction_all', compact('transactionsByReferral'));
+    }
     private function generateUniqueTransactionId()
     {
         do {
@@ -128,11 +138,11 @@ class TransactionController extends Controller
         $uniqueId = $this->generateUniqueId();
         $amount = request('Amount');
         $type = "IN";
-        $bank = "MBB"; 
-        $description = request('referral_code').' ADMIN Nạp tiền';
+        $bank = "MBB";
+        $description = request('referral_code') . ' ADMIN Nạp tiền';
         $account_number = request('referral_code');
         $transaction = Transaction::create([
-            'id' => $uniqueId, 
+            'id' => $uniqueId,
             'bank' => $bank,
             'account_number' => $account_number,
             'transaction_date' => now(),
@@ -143,6 +153,4 @@ class TransactionController extends Controller
         ]);
         return redirect()->back()->with('success', 'Giao dịch đã được thêm!');
     }
-    
 }
-
