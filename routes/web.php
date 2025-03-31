@@ -55,13 +55,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');
         Route::get('/get-product/{sku}', [ProgramController::class, 'push_product'])->where('sku', '.*');
         Route::post('/program/store', [ProgramController::class, 'store'])->name('program.store');   // Xử lý lưu dữ liệu
-        Route::get('/program-list', [ProgramController::class, 'Program_processing'])->name('procerssing.list');
+        Route::get('/programlist', [ProgramController::class, 'Program_processing'])->name('procerssing');
+        Route::get('/tat-ca-giao-dịch', [TransactionController::class, 'get_all_transaction'])->name('get_all_transaction.list');
 
         Route::get('/quang-cao', [ADSController::class, 'ADS'])->name('quang-cao');
         Route::post('/them-quang-cao', [ADSController::class, 'store'])->name('add.ads');
         Route::get('/quang-cao_all', [ADSController::class, 'ads_all'])->name('quang_cao_all');
         Route::get('/naptien-khach-hang', [TransactionController::class, 'show'])->name('naptien_khach_hang');
         Route::post('/addTransaction', [TransactionController::class, 'addTransaction'])->name('transaction.store');
+        Route::post('/programs/{id}/change-status', [ProgramController::class, 'changeStatus_Program'])->name('program.changeStatus');
+
     });
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');

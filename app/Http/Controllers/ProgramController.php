@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
 use App\Models\Program;
 use App\Models\ProgramShop;
+use App\Models\Transaction;
 
 class ProgramController extends Controller
 {
@@ -45,13 +46,8 @@ class ProgramController extends Controller
         $program->created_by = auth()->id();
         $program->updated_by = auth()->id();
         $program->save();
-
         return redirect()->back()->with('success', 'Chương trình đã được tạo thành công!');
     }
-
-
-
-
     public function push_product($sku)
     {
         $cacheKey = "product_$sku";
@@ -86,14 +82,13 @@ class ProgramController extends Controller
                 $query->orWhereJsonContains('shops', $shopId);
             }
         })->get();
-        $programs_shop_onl = ProgramShop::with('program','shop')
-        ->where(function ($query) use ($userShopIds) {
-            foreach ($userShopIds as $shopId) {
-                $query->orWhere('shop_id', $shopId);
-            }
-        })
-        ->get();
-    
+        $programs_shop_onl = ProgramShop::with('program', 'shop')
+            ->where(function ($query) use ($userShopIds) {
+                foreach ($userShopIds as $shopId) {
+                    $query->orWhere('shop_id', $shopId);
+                }
+            })
+            ->get();
         $registered = ProgramShop::whereIn('shop_id', $userShopIds)->get()->groupBy('program_id');
         $allShops = Shop::whereIn('shop_id', $userShopIds)->get()->keyBy('shop_id');
         $programs = [];
@@ -103,18 +98,15 @@ class ProgramController extends Controller
             $shopsForUser = [];
             $hasUnregistered = false;
             $hasRegistered = false;
-    
             foreach ($shopIds as $shopId) {
                 if (isset($allShops[$shopId])) {
                     $isRegistered = isset($registered[$program->id]) &&
                         $registered[$program->id]->contains('shop_id', $shopId);
-    
                     $shopsForUser[] = [
                         'shop_id' => $shopId,
                         'shop_name' => $allShops[$shopId]->shop_name,
                         'is_registered' => $isRegistered,
                     ];
-    
                     if ($isRegistered) {
                         $hasRegistered = true;
                     } else {
@@ -126,41 +118,46 @@ class ProgramController extends Controller
                 $programs[] = $program;
                 $programShops[$program->id] = $shopsForUser;
             }
-        }  
-    //   return response()->json($programs_shop_onl);
+        }
+        //   return response()->json($programs_shop_onl);
         return view('program.list_program', [
             'programs' => $programs,
             'programShops' => $programShops,
             'programs_shop_onl' => $programs_shop_onl,
         ]);
     }
-    
-    public function Program_processing(){
-        $Programs_list = ProgramShop::all();
-        return view('program.program_processing',compact('Programs_list'));
+    public function Program_processing()
+    {
+        $Programs_list = ProgramShop::with('program', 'shop')->get();
+        // return response()->json($Programs_list);
+        return view('program.program_processing', compact('Programs_list'));
+    }
+    public function changeStatus_Program(Request $request, $id)
+    {
+        $user = Auth::user();
+        $program = ProgramShop::findOrFail($id);
+        $program->status_program = $request->status_program;
+        $program->confirmer = $user->id;
+        $program->save();
+        return redirect()->back()->with('success', 'Đã cập nhật trạng thái!');
     }
 
 
-
+    // shop đăng kí chương trình
     public function createProgramShop(Request $request)
     {
-        $user = Auth::user();
         $programId = $request['program_id'];
         $inserted = 0;
         $skipped = 0;
         $program = Program::findOrFail($programId);
-    
         $products = json_decode($program->products, true);
         $productCount = is_array($products) ? count($products) : 0;
-    
-        $price_per_product = 2000; // bạn có thể đặt biến cấu hình nếu sau này thay đổi
+        $price_per_product = 2000;
         $total_payment_per_shop = $productCount * $price_per_product;
-    
         foreach ($request->selected_shops as $shopId) {
             $exists = ProgramShop::where('shop_id', $shopId)
                 ->where('program_id', $programId)
                 ->exists();
-    
             if (!$exists) {
                 ProgramShop::create([
                     'shop_id' => $shopId,
@@ -177,15 +174,14 @@ class ProgramController extends Controller
             }
         }
         if ($inserted > 0) {
-            $message = "Đã thêm Shop vào chương trình đăng sản phẩm.";
+            $message = "Đã đăng ký chương trình thành ";
+        } elseif ($skipped > 0) {
+            $message = "Bạn đã đăng ký cho shop chương trình này trước đó.";
+        } else {
+            $message = "Không có shop nào được xử lý.";
         }
-        if ($skipped > 0) {
-            $message = " {$skipped} Shop của bạn đã đăng kí chương trình này vui lòng không đăng kí lại.";
-        }
-
-        return redirect()->back()->with('success', $message);
+        return response()->json(['message' => $message]);
     }
-
 
     private function sendApiRequest_push_product($url, $clientId, $token)
     {

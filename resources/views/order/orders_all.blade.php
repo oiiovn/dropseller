@@ -335,13 +335,13 @@
                                                 <td>
                                                     <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
-                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$order->id}}">
+                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop1-{{$order->id}}">
                                                                 <i class="ri-eye-fill fs-16"></i>
                                                             </a>
                                                         </li>
                                                     </ul>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="staticBackdrop-{{$order->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="staticBackdrop1-{{$order->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">

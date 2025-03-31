@@ -38,15 +38,15 @@ class UpdateReconciledOrders extends Command
                     'shop_id' => $transaction->order->shop_id,
                     'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
                     'title' => 'Đối soát đơn hàng',
-                    'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã bị hoàn hoặc hủy. Số tiền hoàn: ' . number_format($amount) . ' VND.',
+                    'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã thanh toán : ' . number_format($amount) . ' VND.',
                 ]);
                 $transactionId = $this->generateUniqueTransactionId();
                 Transaction::create([
                     'bank' => 'DROP',
-                    'account_number' => $transaction->order->shop_id,
+                    'account_number' => $transaction->order->shop->user->referral_code,
                     'transaction_date' => now(),
                     'transaction_id' => $transactionId,
-                    'description' => $transaction->order->shop->user->referral_code . ' Thanh toán tiền hoàn, huỷ đơn ' . $transaction->order->order_code,
+                    'description' => $transaction->order->shop->user->referral_code . ' Thanh toán tiền huỷ đơn ' . $transaction->order->order_code .' ,  Chúng tôi sẽ đối soát lại đơn hoàn cho bạn sau',
                     'type' => 'IN',
                     'amount' => $amount,
                 ]);
@@ -58,7 +58,7 @@ class UpdateReconciledOrders extends Command
                         'shop_id' => $transaction->order->shop_id,
                         'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
                         'title' => 'Đối soát đơn hàng',
-                        'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã đối soát thành công và không có sai sót.',
+                        'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã đối soát thành công .',
                     ]);
                 }
             }

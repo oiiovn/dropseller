@@ -136,9 +136,9 @@
                                                 </td>
                                                 <td class="reconciled">
                                                     @if($item->reconciled == 1)
-                                                    Chưa đối soát
+                                                    <span style="color:red;">Chưa đối soát</span>
                                                     @elseif($item->reconciled == 0)
-                                                    Đã đối soát
+                                                    <span style="color:green;">Đã đối soát</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -326,9 +326,9 @@
                                                 </td>
                                                 <td class="reconciled">
                                                     @if($order->reconciled == 1)
-                                                    Chưa đối soát
+                                                    <span style="color:red;">Chưa đối soát</span>
                                                     @elseif($order->reconciled == 0)
-                                                    Đã đối soát
+                                                    <span style="color:green;">Đã đối soát</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -340,7 +340,7 @@
                                                     </a>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="exampleModal{{$order->order_code}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 70%; width: 100%;">
+                                                        <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -429,18 +429,25 @@
                                         </tbody>
                                     </table>
                                     <script>
+                                        document.addEventListener('click', function(e) {
+                                            const icon = e.target.closest('.order-link .icon');
+                                            if (!icon) return;
+                                            const orderLink = icon.closest('.order-link');
+                                            const orderCode = orderLink.getAttribute('data-order-code');
+                                            if (!orderCode) return;
+                                            if (icon.dataset.throttled === "true") return;
+                                            icon.dataset.throttled = "true";
+                                        });
                                         $(document).ready(function() {
                                             $('#orderTableSHOP{{$shop->id}}').DataTable({
-                                                "paging": true, // Bật phân trang
-                                                "searching": true, // Bật tìm kiếm
-                                                "ordering": true, // Bật sắp xếp
-                                                "info": true, // Hiển thị thông tin
-                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "paging": true,
+                                                "searching": true,
+                                                "ordering": true,
+                                                "info": true,
+                                                "lengthMenu": [10, 20, 50, 100, 150],
                                                 "order": [
                                                     [1, "desc"]
-                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                                                // Chỉnh Tiếng Việt
+                                                ],
                                                 "language": {
                                                     "lengthMenu": "Hiển thị _MENU_ đơn hàng",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
