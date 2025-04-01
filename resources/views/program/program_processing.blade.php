@@ -155,6 +155,7 @@
                         <th>Số lượng sản phẩm</th>
                         <th>Trạng thái</th>
                         <th>Xem chi tiết</th>
+                        <th>Người thực hiện</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -249,6 +250,7 @@
                                 </div>
                             </div>
                         </td>
+                        <td>{{ $programs->confirmerUser->name}}</td>
                         <td>
                             <form action="{{ route('program.changeStatus', $programs->id) }}" method="POST" class="change-status-form">
                                 @csrf
@@ -273,6 +275,7 @@
                         <th>Số lượng sản phẩm</th>
                         <th>Trạng thái</th>
                         <th>Xem chi tiết</th>
+                        <th>Người thực hiện</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -311,16 +314,16 @@
                             @endif
                         </td>
                         <td style="text-align: center;">
-                            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$programs->id}}">
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal11{{$programs->id}}">
                                 <li class="list-inline-item" title="Xem chi tiết">
                                     <i class="ri-eye-fill fs-16 text-primary"></i>
                                 </li>
                             </a>
-                            <div class="modal fade" id="exampleModal{{$programs->id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{$programs->id}}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal fade" id="exampleModal11{{$programs->id}}" tabindex="-1" aria-labelledby="exampleModalLabel11{{$programs->id}}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                                 <div class="modal-dialog modal-xl" style="height: auto; max-height: none;">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel{{$programs->id}}">Danh sách sản phẩm</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel11{{$programs->id}}">Danh sách sản phẩm</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                                         </div>
                                         <div class="modal-body">
@@ -367,6 +370,7 @@
                                 </div>
                             </div>
                         </td>
+                        <td>{{ $programs->confirmerUser->name ?? "chưa có tên"}}</td>
                         <td>
                             <span class="text-muted color:success">Đã hoàn thành</span>
                         </td>

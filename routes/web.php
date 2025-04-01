@@ -14,6 +14,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ADSController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\BillwebController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -64,6 +65,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/naptien-khach-hang', [TransactionController::class, 'show'])->name('naptien_khach_hang');
         Route::post('/addTransaction', [TransactionController::class, 'addTransaction'])->name('transaction.store');
         Route::post('/programs/{id}/change-status', [ProgramController::class, 'changeStatus_Program'])->name('program.changeStatus');
+        Route::get('/phi-web', [BillwebController::class, 'view_total_bill'])->name('view_total_bill');
+        Route::post('/export-totalbill', [BillwebController::class, 'exportTotalBill'])->name('export.totalbill');
+
 
     });
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');

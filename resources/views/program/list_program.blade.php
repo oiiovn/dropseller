@@ -40,9 +40,10 @@
                         <th>Mô tả</th>
                         <th>Shop cần lên</th>
                         <th>Số lượng </th>
-                        <th>Giá Sản phẩm (1 sản phẩm)</th>
+                        <th>Giá Sản phẩm (1sp)</th>
                         <th>Tổng tiền</th>
                         <th>Xem chi tiết</th>
+                        <th>Ngày tạo</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -91,8 +92,8 @@
                             @endif
                         </td>
                         <td style="text-align: center; width:7%">{{ $productCount }}</td>
-                        <td style="text-align: center; width:16%">{{ number_format($price_per_product) }}VNĐ</td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center; ">{{ number_format($price_per_product) }}VNĐ</td>
+                        <td style="text-align: center; width:10%">
                             <span id="total-payment-{{ $program->id }}">
                                 {{ number_format($price_per_product * $productCount) }}VNĐ
                             </span>
@@ -148,6 +149,7 @@
                                 </div>
                             </div>
                         </td>
+                        <td style="text-align: center;">{{ $program->created_at }}</td>
                         <td style="text-align: center;">
                             <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#confirmModal{{ $program->id }}">
                                 Đăng ký ngay
