@@ -61,7 +61,7 @@
                             <!-- Tất cả đơn hàng -->
                             <div class="tab-pane fade show active" id="home1" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table id="transaction" class="table table-hover">
+                                    <table id="transaction_allll" class="table table-hover">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
                                                 <th class="sort" data-sort="id">Tên Người chuyển</th>
@@ -96,17 +96,23 @@
                                                 <td class="export_date" style="width:15%">{{$transaction->transaction_id}}</td>
                                                 <td class="total_products" style="width:35%">{{$transaction->description}}</td>
                                                 <td class="total_dropship" style="width:15%">
-                                                    <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @if ($transaction->type === 'IN')
+                                                <span class="badge bg-secondary-subtle text-secondary badge-border">+{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @elseif ($transaction->type === 'OUT')
+                                                <span class="badge bg-danger-subtle text-danger badge-border">-{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @else
+                                                <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @endif
                                                 </td>
                                                 <td class="total_products" style="width:15%">{{$transaction->created_at}}</td>
                                             </tr>
                                             @endforeach
                                             @endforeach
                                         </tbody>
-                                    </table>
+                                    </table> 
                                     <script>
                                         $(document).ready(function() {
-                                            $('#transaction').DataTable({
+                                            $('#transaction_allll').DataTable({
                                                 "paging": true, // Bật phân trang
                                                 "searching": true, // Bật tìm kiếm
                                                 "ordering": true, // Bật sắp xếp
@@ -140,7 +146,7 @@
                             @foreach($transactionsByReferral as $userId => $data)
                             <div class="tab-pane fade show " id="user-{{$userId}}-content" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table id="transaction-{{$userId}}" class="table table-hover">
+                                    <table id="transactionall-{{$userId}}" class="table table-hover">
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
                                                 <th class="sort" data-sort="id">Tên Người chuyển</th>
@@ -151,7 +157,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
-                                        @foreach($data['transactions'] as $transaction)
+                                            @foreach($data['transactions'] as $transaction)
                                             <tr>
                                                 <td style="width:15%">
                                                     <div class="d-flex align-items-center">
@@ -173,9 +179,13 @@
                                                 </td>
                                                 <td class="export_date" style="width:15%">{{$transaction->transaction_id}}</td>
                                                 <td class="total_products" style="width:35%">{{$transaction->description}}</td>
-                                                <td class="total_dropship" style="width:15%">
-                                                    <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
-                                                </td>
+                                                <td> @if ($transaction->type === 'IN')
+                                                <span class="badge bg-secondary-subtle text-secondary badge-border">+{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @elseif ($transaction->type === 'OUT')
+                                                <span class="badge bg-danger-subtle text-danger badge-border">-{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @else
+                                                <span class="badge bg-secondary-subtle text-secondary badge-border">{{ number_format($transaction->amount, 0, '.', ',') }} VNĐ</span>
+                                                @endif</td>
                                                 <td class="total_products" style="width:15%">{{$transaction->created_at}}</td>
                                             </tr>
                                             @endforeach
@@ -183,7 +193,7 @@
                                     </table>
                                     <script>
                                         $(document).ready(function() {
-                                            $('#transaction-{{$userId}}').DataTable({
+                                            $('#transactionall-{{$userId}}').DataTable({
                                                 "paging": true, // Bật phân trang
                                                 "searching": true, // Bật tìm kiếm
                                                 "ordering": true, // Bật sắp xếp
