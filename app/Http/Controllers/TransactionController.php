@@ -100,6 +100,7 @@ class TransactionController extends Controller
     public function get_all_transaction()
     {
         $users = User::all();
+        $transactionsByReferral = [];
         foreach ($users as $user) {
             $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
                 ->get();
@@ -108,7 +109,7 @@ class TransactionController extends Controller
                 'transactions' => $transactions
             ];
         }
-        return view('transaction.transaction_all', compact('transactionsByReferral'));
+        return view('payment.transaction_all', compact('transactionsByReferral'));
     }
     private function generateUniqueTransactionId()
     {

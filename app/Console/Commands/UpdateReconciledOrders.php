@@ -38,9 +38,9 @@ class UpdateReconciledOrders extends Command
                     'shop_id' => $transaction->order->shop_id,
                     'image' => '  https://res.cloudinary.com/dup7bxiei/image/upload/v1739331584/5d6b33d2d4816adf3390_iwkcee.jpg',
                     'title' => 'Đối soát đơn hàng',
-                    'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã thanh toán : ' . number_format($amount) . ' VND.',
+                    'message' => 'Đơn hàng ' . $transaction->order->order_code . ' đã hoàn tiền đơn huỷ và thanh toán : ' . number_format($amount) . ' VND.',
                 ]);
-                $transactionId = $this->generateUniqueTransactionId();
+                $transactionId = $this->generateUniqueTransactionId();   
                 Transaction::create([
                     'bank' => 'DROP',
                     'account_number' => $transaction->order->shop->user->referral_code,
