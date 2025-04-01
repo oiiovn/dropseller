@@ -83,7 +83,7 @@ class AutopaymentProgarm extends Command
                     'shop_id' => $ad->shop_id,
                     'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
                     'title' => 'Gói sản phẩm đã được thanh toán',
-                    'message' => 'Hoá đơn  ' . $ad->program->name_program . 'gói sản phẩm đã được thanh toán số tiền ' . number_format($ad->total_amount) . ' VND.',
+                    'message' => 'Hoá đơn  ' . $ad->program->name_program . ' gói sản phẩm đã được thanh toán số tiền ' . number_format($ad->total_payment) . ' VND.',
                 ]);
 
                 Log::info("✅ Thanh toán thành công cho quảng cáo: " . $ad->program->name_program);
