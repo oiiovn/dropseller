@@ -347,7 +347,7 @@
                                                 <h4 class="fs-4 mb-3">
                                                     {{$shop->shop_name}}
                                                 </h4>
-                                                <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
+                                                <p class="text-muted mb-0">TỔNG TIỀN HÀNG: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
                                                 </p>
                                             </div>
                                             <!-- <div class="flex-shrink-0 align-self-center">

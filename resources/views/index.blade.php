@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG DOANH SỐ</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐN</p>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
@@ -95,7 +95,6 @@
                             </div><!-- end card body -->
                         </div><!-- end card -->
                     </div><!-- end col -->
-
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
                         <div class="card card-animate" style="background: linear-gradient(to bottom,#dfb0ff, #ffffff, #ffffff);">
@@ -104,7 +103,6 @@
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> PHÍ DROP</p>
                                     </div>
-
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
@@ -114,7 +112,6 @@
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title rounded fs-3" style="background:#fae0ff">
                                             <i class="bx bx-wallet text-pastel" style="color: #dfb0ff;"></i>
-
                                         </span>
                                     </div>
                                 </div>

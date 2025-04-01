@@ -245,6 +245,46 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#drop" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="drop">
+                        <i class="ri-apps-2-line"></i>
+                        <span data-key="t-apps">Phí Web</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="drop">
+                        <ul class="nav nav-sm flex-column">
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('view_total_bill')}}" class="nav-link" >Phí Drop</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link ajax-link" data-key="t-chat"> Phí gói dịch vụ</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
+                                <div class="collapse menu-dropdown" id="sidebarEmail">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox">Mailbox</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#sidebaremailTemplates" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebaremailTemplates" data-key="t-email-templates">Email Templates</a>
+                                            <div class="collapse menu-dropdown" id="sidebaremailTemplates">
+                                                <ul class="nav nav-sm flex-column">
+                                                    <li class="nav-item">
+                                                        <a href="apps-email-basic.html" class="nav-link" data-key="t-basic-action">Basic Action</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="apps-email-ecommerce.html" class="nav-link" data-key="t-ecommerce-action">Ecommerce Action</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li> -->
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#congcu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
