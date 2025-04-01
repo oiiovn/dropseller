@@ -254,7 +254,7 @@
                         <ul class="nav nav-sm flex-column">
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('view_total_bill')}}" class="nav-link" >Phí Drop</a>
+                                <a href="{{route('view_total_bill')}}" class="nav-link ajax-link" >Phí Drop</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link ajax-link" data-key="t-chat"> Phí gói dịch vụ</a>

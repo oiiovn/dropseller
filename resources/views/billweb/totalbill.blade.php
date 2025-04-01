@@ -39,7 +39,8 @@
 
     <div class="alert alert-info">
         Tổng tiền dropship từ <strong>{{ $startDate->format('d/m/Y') }}</strong> đến <strong>{{ $endDate->format('d/m/Y') }}</strong> là:
-        <h4 class="mt-2 text-success">{{ number_format($total_dropship) }} VND</h4>
+            <h4 class="mt-2 text-success">{{ number_format($total_dropship) }} VND</h4>
+        Mỗi người nhận được: <h4 class="mt-2 text-success">{{ number_format($total_dropship_web) }} VND</h4>
     </div>
 
 </div>
