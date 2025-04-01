@@ -76,7 +76,7 @@ class AutopaymentProgarm extends Command
                     'transaction_id' => $transactionId,
                     'description' => $user->referral_code . " Thanh toán gói sản phẩm : " . $ad->program->name_program ?? 'Unknown',
                     'type' => 'OUT',
-                    'amount' => $ad->total_amount,
+                    'amount' => $ad->total_payment,
                 ]);
                 Notification::create([
                     'user_id' => $user->id,
