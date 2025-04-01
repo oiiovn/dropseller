@@ -21,11 +21,12 @@ class BillwebController extends Controller
             : Carbon::now()->subMonthNoOverflow()->endOfMonth();
         $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_dropship');
+        $total_dropship_web = $total_dropship/5/2;
         // 👉 Nếu có yêu cầu xuất Excel
         if ($request->has('export')) {
-            return Excel::download(new TotalBillExport($startDate, $endDate, $total_dropship), 'total_dropship.xlsx');
+            return Excel::download(new TotalBillExport($startDate, $endDate, $total_dropship,$total_dropship_web), 'total_dropship.xlsx');
         }
-        return view('billweb.totalbill', compact('startDate', 'endDate', 'total_dropship'));
+        return view('billweb.totalbill', compact('startDate', 'endDate', 'total_dropship_web', 'total_dropship'));
     }
     public function exportTotalBill(Request $request)
     {
@@ -33,6 +34,7 @@ class BillwebController extends Controller
         $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
         $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_dropship');
-        return Excel::download(new TotalBillExport($startDate, $endDate, $total_dropship), 'total_dropship.xlsx');
+        $total_dropship_web = $total_dropship/5/2;
+        return Excel::download(new TotalBillExport($startDate, $endDate, $total_dropship,$total_dropship_web), 'total_dropship.xlsx');
     }
 }
