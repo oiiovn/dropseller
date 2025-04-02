@@ -37,7 +37,6 @@
                     <tr>
                         <th>Mã </th>
                         <th>Tên chương trình</th>
-                        <th>Mô tả</th>
                         <th>Shop cần lên</th>
                         <th>Số lượng </th>
                         <th>Giá Sản phẩm (1sp)</th>
@@ -57,7 +56,6 @@
                     <tr>
                         <td style="text-align: center;">{{ $program->id }}</td>
                         <td style="text-align: center; width:12%">{{ $program->name_program }}</td>
-                        <td style="text-align: center; width:15%">{{ $program->description }}</td>
                         <td style="text-align: center;">
                             @if(isset($programShops[$program->id]) && count($programShops[$program->id]) > 0)
                             <div class="d-flex flex-column align-items-start shop-checkboxes"
