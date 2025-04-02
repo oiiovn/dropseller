@@ -14,7 +14,7 @@ class ProgramController extends Controller
 {
     function program()
     {
-        $shops = Shop::where('platform', 'Tiktok')->get();
+        $shops = Shop::all();
         return view('program.program', compact('shops'));
     }
 
