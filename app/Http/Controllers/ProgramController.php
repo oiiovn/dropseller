@@ -81,7 +81,7 @@ class ProgramController extends Controller
             foreach ($userShopIds as $shopId) {
                 $query->orWhereJsonContains('shops', $shopId);
             }
-        })->get('desc');
+        })->get();
         $programs_shop_onl = ProgramShop::with('program', 'shop')
             ->where(function ($query) use ($userShopIds) {
                 foreach ($userShopIds as $shopId) {
@@ -141,8 +141,6 @@ class ProgramController extends Controller
         $program->save();
         return redirect()->back()->with('success', 'Đã cập nhật trạng thái!');
     }
-
-
     // shop đăng kí chương trình
     public function createProgramShop(Request $request)
     {
@@ -182,7 +180,6 @@ class ProgramController extends Controller
         }
         return response()->json(['message' => $message]);
     }
-
     private function sendApiRequest_push_product($url, $clientId, $token)
     {
         $ch = curl_init($url);
