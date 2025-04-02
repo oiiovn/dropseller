@@ -271,6 +271,7 @@
                     <tr>
                         <th>Mã </th>
                         <th>Tên chương trình</th>
+                        <th>Giờ lưu gói </th>
                         <th>Shop </th>
                         <th>Số lượng sản phẩm</th>
                         <th>Trạng thái</th>
@@ -300,6 +301,7 @@
                     <tr>
                         <td>{{ $programs->id }}</td>
                         <td>{{ $programs->program->name_program ?? 'Không có tên' }}</td>
+                        <td>{{ $programs->program->description ?? 'không có mô tả' }}</td>
                         <td>{{ $programs->shop->shop_name ?? 'Không có shop' }}</td>
                         <td>{{ $productCount }}</td>
                         <td>
