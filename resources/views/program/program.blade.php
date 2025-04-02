@@ -60,6 +60,8 @@
                     </tbody>
 
                 </table>
+                <p id="product-count" class="fw-bold text-primary">Đã nhập: 0 sản phẩm</p>
+
             </div>
             <div class="mb-3">
                 <label for="package_description" class="form-label">Mô tả gói</label>
@@ -101,26 +103,43 @@
 
         if (sku.length === 0) return;
 
+        // Kiểm tra trùng SKU
+        const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
+        let duplicateCount = 0;
+        allSKUInputs.forEach(i => {
+            if (i.value.trim().toUpperCase() === sku) {
+                duplicateCount++;
+            }
+        });
+        if (duplicateCount > 1) {
+            alert("⚠️ SKU này đã được nhập rồi!");
+            input.value = '';
+            row.querySelector('.product-name').innerText = "";
+            row.querySelector('.product-image').src = "";
+            row.querySelector('.product-image').style.display = "none";
+            row.querySelector('input[name="name[]"]').value = "";
+            row.querySelector('input[name="image[]"]').value = "";
+            updateProductCount();
+            return;
+        }
+
         fetchProductBySKU(sku, function(product) {
             if (product.error) {
                 row.querySelector('.product-name').innerText = "Không tìm thấy";
                 row.querySelector('.product-image').src = "";
                 row.querySelector('.product-image').style.display = "none";
-
                 row.querySelector('input[name="name[]"]').value = "";
                 row.querySelector('input[name="image[]"]').value = "";
-                return;
+            } else {
+                row.querySelector('.product-name').innerText = product.name;
+                row.querySelector('.product-image').src = product.image;
+                row.querySelector('.product-image').style.display = "block";
+                row.querySelector('input[name="name[]"]').value = product.name;
+                row.querySelector('input[name="image[]"]').value = product.image;
             }
 
-            // Gán dữ liệu sản phẩm vào input ẩn & hiển thị lên giao diện
-            row.querySelector('.product-name').innerText = product.name;
-            row.querySelector('.product-image').src = product.image;
-            row.querySelector('.product-image').style.display = "block";
-
-            row.querySelector('input[name="name[]"]').value = product.name;
-            row.querySelector('input[name="image[]"]').value = product.image;
-
             addNewRowIfNeeded();
+            updateProductCount();
         });
     }
 
@@ -163,6 +182,20 @@
         const table = document.getElementById('product_table').getElementsByTagName('tbody')[0];
         if (table.rows.length > 1) {
             table.deleteRow(row.rowIndex - 1);
+            updateProductCount(); // cập nhật lại số lượng khi xóa
+        }
+    }
+
+    function updateProductCount() {
+        const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
+        let count = 0;
+        allSKUInputs.forEach(input => {
+            if (input.value.trim() !== "") count++;
+        });
+
+        const counter = document.getElementById("product-count");
+        if (counter) {
+            counter.innerText = `Đã nhập: ${count} sản phẩm`;
         }
     }
 
@@ -177,5 +210,9 @@
         }
         return true;
     }
+
+    // Khởi tạo số lượng khi trang load
+    document.addEventListener('DOMContentLoaded', updateProductCount);
 </script>
+
 @endsection
