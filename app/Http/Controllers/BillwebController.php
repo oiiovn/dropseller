@@ -22,7 +22,6 @@ class BillwebController extends Controller
         $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_dropship');
         $total_dropship_web = $total_dropship/5/2;
-        // 👉 Nếu có yêu cầu xuất Excel
         if ($request->has('export')) {
             return Excel::download(new TotalBillExport($startDate, $endDate, $total_dropship,$total_dropship_web), 'total_dropship.xlsx');
         }

@@ -43,7 +43,6 @@ class ProductController extends Controller
         }
 
         $data = json_decode($response, true);
-        dd($data);
         if (!isset($data['status']) || $data['status'] !== 'success') {
             return back()->with('error', 'API trả về lỗi: ' . ($data['message'] ?? 'Không xác định.'));
         }
