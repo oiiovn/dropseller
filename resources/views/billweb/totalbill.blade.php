@@ -33,15 +33,28 @@
             <button type="submit" class="btn btn-primary">Lọc dữ liệu</button>
         </div>
     </form>
-
-
-
-
     <div class="alert alert-info">
-        Tổng tiền dropship từ <strong>{{ $startDate->format('d/m/Y') }}</strong> đến <strong>{{ $endDate->format('d/m/Y') }}</strong> là:
-            <h4 class="mt-2 text-success">{{ number_format($total_dropship) }} VND</h4>
-        Mỗi người nhận được: <h4 class="mt-2 text-success">{{ number_format($total_dropship_web) }} VND</h4>
+        <h5><strong>Thống kê từ ngày</strong> {{ $startDate->format('d/m/Y') }} <strong>đến</strong> {{ $endDate->format('d/m/Y') }}</h5>
+        <hr>
+
+        <div class="mb-2">
+            <strong>Tổng tiền Dropship:</strong> <span class="text-primary">{{ number_format($total_dropship) }} VND</span><br>
+            <strong>Mỗi người nhận từ Dropship:</strong> <span class="text-success">{{ number_format($total_dropship_web) }} VND</span>
+        </div>
+
+        <div class="mb-2">
+            <strong>Tổng tiền Chương trình đã thanh toán:</strong> <span class="text-primary">{{ number_format($total_program) }} VND</span><br>
+            <strong>Mỗi người nhận từ Chương trình:</strong> <span class="text-success">{{ number_format($share_total_program) }} VND</span>
+        </div>
+
+        <hr>
+        <div>
+            <strong class="text-danger">Tổng cộng mỗi người nhận được:</strong>
+            <h4 class="mt-2 text-danger">{{ number_format($total_dropship_web + $share_total_program) }} VND</h4>
+        </div>
     </div>
+
+
 
 </div>
 @endsection

@@ -355,8 +355,8 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         ),
         'Spatie\\Ignition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            1 => __DIR__ . '/..' . '/spatie/ignition/src',
         ),
         'Spatie\\FlareClient\\' => 
         array (
@@ -629,14 +629,17 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\AutoPaymentAds' => __DIR__ . '/../..' . '/app/Console/Commands/AutoPaymentAds.php',
         'App\\Console\\Commands\\AutoPaymentOrders' => __DIR__ . '/../..' . '/app/Console/Commands/AutoPaymentOrders.php',
         'App\\Console\\Commands\\AutoTask' => __DIR__ . '/../..' . '/app/Console/Commands/AutoTask.php',
+        'App\\Console\\Commands\\AutopaymentProgarm' => __DIR__ . '/../..' . '/app/Console/Commands/AutopaymentProgarm.php',
         'App\\Console\\Commands\\FetchTransactions' => __DIR__ . '/../..' . '/app/Console/Commands/FetchTransactions.php',
         'App\\Console\\Commands\\ProcessOrderCommand' => __DIR__ . '/../..' . '/app/Console/Commands/ProcessOrderCommand.php',
         'App\\Console\\Commands\\UpdateReconciledOrders' => __DIR__ . '/../..' . '/app/Console/Commands/UpdateReconciledOrders.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Exports\\OrderTiktokExport' => __DIR__ . '/../..' . '/app/Exports/OrderTiktokExport.php',
+        'App\\Http\\Controllers\\ADSController' => __DIR__ . '/../..' . '/app/Http/Controllers/ADSController.php',
         'App\\Http\\Controllers\\Auth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -648,6 +651,8 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Http\\Controllers\\Auth\\RegisteredUserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisteredUserController.php',
         'App\\Http\\Controllers\\Auth\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/UserController.php',
         'App\\Http\\Controllers\\Auth\\VerifyEmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerifyEmailController.php',
+        'App\\Http\\Controllers\\BillwebController' => __DIR__ . '/../..' . '/app/Http/Controllers/BillwebController.php',
+        'App\\Http\\Controllers\\CampaignController' => __DIR__ . '/../..' . '/app/Http/Controllers/CampaignController.php',
         'App\\Http\\Controllers\\CloudinaryController' => __DIR__ . '/../..' . '/app/Http/Controllers/CloudinaryController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\NotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotificationController.php',
@@ -655,6 +660,7 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Http\\Controllers\\PaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/PaymentController.php',
         'App\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductController.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
+        'App\\Http\\Controllers\\ProgramController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProgramController.php',
         'App\\Http\\Controllers\\ShopController' => __DIR__ . '/../..' . '/app/Http/Controllers/ShopController.php',
         'App\\Http\\Controllers\\TikTokController' => __DIR__ . '/../..' . '/app/Http/Controllers/TikTokController.php',
         'App\\Http\\Controllers\\TransactionController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransactionController.php',
@@ -680,10 +686,13 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Mail\\PaymentMail' => __DIR__ . '/../..' . '/app/Mail/PaymentMail.php',
         'App\\Mail\\TestMail' => __DIR__ . '/../..' . '/app/Mail/TestMail.php',
         'App\\Mail\\UserNotification' => __DIR__ . '/../..' . '/app/Mail/UserNotification.php',
+        'App\\Models\\ADS' => __DIR__ . '/../..' . '/app/Models/ADS.php',
         'App\\Models\\Notification' => __DIR__ . '/../..' . '/app/Models/Notification.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
         'App\\Models\\OrderDetail' => __DIR__ . '/../..' . '/app/Models/OrderDetail.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
+        'App\\Models\\Program' => __DIR__ . '/../..' . '/app/Models/Program.php',
+        'App\\Models\\ProgramShop' => __DIR__ . '/../..' . '/app/Models/ProgramShop.php',
         'App\\Models\\Shop' => __DIR__ . '/../..' . '/app/Models/Shop.php',
         'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',

@@ -248,17 +248,15 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#drop" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="drop">
                         <i class="ri-apps-2-line"></i>
-                        <span data-key="t-apps">Phí Web</span>
+                        <span data-key="t-apps">Doanh thu Web</span>
                     </a>
                     <div class="collapse menu-dropdown" id="drop">
                         <ul class="nav nav-sm flex-column">
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('view_total_bill')}}" class="nav-link ajax-link" >Phí Drop</a>
+                                <a href="{{route('view_total_bill')}}" class="nav-link ajax-link" >Phí Drop & Gói sản phẩm</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link ajax-link" data-key="t-chat"> Phí gói dịch vụ</a>
-                            </li>
+                           
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
                                 <div class="collapse menu-dropdown" id="sidebarEmail">
