@@ -81,7 +81,7 @@ class ProgramController extends Controller
             foreach ($userShopIds as $shopId) {
                 $query->orWhereJsonContains('shops', $shopId);
             }
-        })->get();
+        })->get('desc');
         $programs_shop_onl = ProgramShop::with('program', 'shop')
             ->where(function ($query) use ($userShopIds) {
                 foreach ($userShopIds as $shopId) {
@@ -128,7 +128,7 @@ class ProgramController extends Controller
     }
     public function Program_processing()
     {
-        $Programs_list = ProgramShop::with('program', 'shop')->get();
+        $Programs_list = ProgramShop::with('program', 'shop')->orderByDesc('created_at')->get();
         // return response()->json($Programs_list);
         return view('program.program_processing', compact('Programs_list'));
     }
