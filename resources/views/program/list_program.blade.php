@@ -12,18 +12,18 @@
 </style>
 
 <div class="container-fluid bg-white p-4">
-    <h2 class="mb-4">Danh sách chương trình</h2>
+    <h2 class="mb-4">Danh sách gói đăng sản phẩm</h2>
 
     <!-- Tabs -->
     <ul class="nav nav-tabs mb-3" id="programTabs" role="tablist">
         <li class="nav-item">
             <button class="nav-link active" id="tab-all" data-bs-toggle="tab" data-bs-target="#tabAllPrograms" type="button" role="tab">
-                Tất cả chương trình
+                Tất cả gói sản phẩm
             </button>
         </li>
         <li class="nav-item">
             <button class="nav-link" id="tab-registered" data-bs-toggle="tab" data-bs-target="#tabRegisteredPrograms" type="button" role="tab">
-                Chương trình đã đăng ký
+                Gói sản phẩm đã đăng ký
             </button>
         </li>
     </ul>
@@ -36,7 +36,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>Mã </th>
-                        <th>Tên chương trình</th>
+                        <th>Tên gói</th>
                         <th>Shop cần lên</th>
                         <th>Số lượng </th>
                         <th>Giá Sản phẩm (1sp)</th>
@@ -180,7 +180,7 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Tên chương trình</th>
+                        <th>Tên gói</th>
                         <th>Shop đăng ký</th>
                         <th>Số lượng sản phẩm</th>
                         <th>Giá Sản phẩm (1 sản phẩm)</th>

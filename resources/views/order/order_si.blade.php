@@ -301,7 +301,7 @@
                                                 <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->order_code}}">
                                                                 {{$order->order_code}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
@@ -487,4 +487,5 @@
         }
     });
 </script>
+
 @endsection

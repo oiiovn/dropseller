@@ -130,7 +130,7 @@
                 @endif
                 @include('noti.noti')
                 <div id="main-content">
-            
+
 
                     @yield('main')
                 </div>
@@ -307,6 +307,7 @@
                         window.history.pushState(null, "", url); // Cập nhật URL
 
                         // **Gọi lại DataTables sau khi load nội dung mới**
+                        initOrderLinkCopy();
                         initDataTables();
                     },
                     error: function(xhr) {
@@ -365,6 +366,38 @@
             // **Gọi lại DataTables ngay khi trang load lần đầu**
             initDataTables();
         });
+    </script>
+    <script>
+        function initOrderLinkCopy() {
+            const orderLinks = document.querySelectorAll('.order-link');
+            orderLinks.forEach(link => {
+                const icon = link.querySelector('.icon');
+                const orderCode = link.getAttribute('data-order-code');
+                let isThrottled = false;
+
+                // Xoá event cũ trước khi thêm lại
+                icon?.removeEventListener('click', icon._copyHandler);
+
+                icon._copyHandler = function() {
+                    if (isThrottled) return;
+                    isThrottled = true;
+                    navigator.clipboard.writeText(orderCode)
+                        .then(() => {
+                            showToast(`Đã copy mã :  ${orderCode} !`);
+                        })
+                        .catch(err => {
+                            console.error('Không có dữ liệu copy: ', err);
+                        })
+                        .finally(() => {
+                            setTimeout(() => {
+                                isThrottled = false;
+                            }, 2200);
+                        });
+                };
+
+                icon?.addEventListener('click', icon._copyHandler);
+            });
+        }
     </script>
 
 </body>
