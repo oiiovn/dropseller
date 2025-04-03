@@ -266,24 +266,24 @@
                                 <div class="table-responsive table-card mb-1">
                                     <table id="orderTable-{{ Str::slug($userName)}}" class="table table-hover">
                                         <thead class="text-muted table-light ">
-                                            <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
-                                                <th class="sort" data-sort="shop_name">Shop</th>
-                                                <th class="sort " style="width:20%;" data-sort="date">Ngày tạo đơn</th>
-                                                <th class="sort" data-sort="soluong">Số lượng</th>
-                                                <th class="sort" data-sort="phidrop">Phí drop</th>
-                                                <th class="sort" data-sort="product_cost">Tổng Bill</th>
-                                                <th class="sort" data-sort="shop_name">Thanh toán</th>
-                                                <th class="sort" data-sort="shop_name">Mã thanh toán</th>
-                                                <th class="sort" data-sort="shop_name">Đối soát</th>
-                                                <th class="sort" data-sort="hanhdong">Hành động</th>
+                                            <tr class="text-uppercase">
+                                                <th class="sort" data-sort="id" style="width: 15%;">Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="shop_name" style="width: 10%;">Shop</th>
+                                                <th class="sort" data-sort="date" style="width: 13%;">Ngày tạo đơn</th>
+                                                <th class="sort" data-sort="soluong" style="width: 7%;">Số lượng</th>
+                                                <th class="sort" data-sort="phidrop" style="width: 10%;">Phí Drop</th>
+                                                <th class="sort" data-sort="product_cost" style="width: 10%;">Tổng Bill</th>
+                                                <th class="sort" data-sort="shop_name" style="width: 10%;">Thanh toán</th>
+                                                <th class="sort" data-sort="shop_name" style="width:5%;">Mã thanh toán</th>
+                                                <th class="sort" data-sort="shop_name" style="width: 8%;">Đối soát</th>
+                                                <th class="sort" data-sort="hanhdong" style="width: 5%;">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
                                             @foreach($shops as $shopName => $orders)
                                             @foreach($orders as $order)
                                             <tr>
-                                                <td class="id text-black-50" style="max-width: 5px;">
+                                                <td class="id text-black-50" style="width: 15%;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
                                                             <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->order_code}}">
@@ -304,7 +304,7 @@
                                                     @endif
                                                     {{ $order->shop->shop_name ?? 'N/A' }}
                                                 </td>
-                                                <td class="export_date" style="width:12%;" >{{$order->created_at}}</td>
+                                                <td class="export_date">{{$order->created_at}}</td>
                                                 <td class="total_products">{{$order->total_products}}</td>
                                                 <td class="total_dropship">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="total_bill">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
@@ -318,6 +318,7 @@
                                                 </td>
                                                 @endif
                                                 <td class="transaction_id">
+
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
                                                         <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id}}">
                                                             {{$order->transaction_id}}
@@ -335,13 +336,13 @@
                                                 <td>
                                                     <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
-                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop1-{{$order->id}}">
+                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$order->id}}">
                                                                 <i class="ri-eye-fill fs-16"></i>
                                                             </a>
                                                         </li>
                                                     </ul>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="staticBackdrop1-{{$order->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="staticBackdrop-{{$order->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -483,4 +484,6 @@
         }
     });
 </script>
+
+
 @endsection
