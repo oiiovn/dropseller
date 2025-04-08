@@ -5,7 +5,7 @@
 <div class="container-pluid p-5 bg-white">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-semibold">Quyết toán theo tháng</h3>
-        <a href="#" class="btn btn-success">Xuất Excel</a> {{-- Link export Excel nếu có --}}
+        <!-- <a href="#" class="btn btn-success">Xuất Excel</a> {{-- Link export Excel nếu có --}} -->
     </div>
 
     <form method="GET" class="row g-3 align-items-center mb-4">
@@ -31,9 +31,17 @@
             <span class="text-primary fw-bold">{{ number_format($totalPaid, 0, ',', '.') }} VND</span>
         </p>
 
-        <p class="mb-0 text-dark">
+        <p class="mb-2 text-dark">
             <strong class="text-dark">Tổng tiền đơn đã huỷ:</strong>
             <span class="text-danger fw-bold">{{ number_format($totalCanceled, 0, ',', '.') }} VND</span>
+        </p>
+        <p class="mb-2 text-dark">
+            <strong class="text-dark">Tổng tiền đơn đã hoàn:</strong>
+            <span class="text-danger fw-bold">Chúng tôi sẽ quyết toán đơn hoàn cho bạn sau</span>
+        </p>
+        <p class="mb-2 text-dark">
+            <strong class="text-dark">Số dư cuối tháng:</strong>
+            <span class="text-success fw-bold">{{ number_format($Ending_balance, 0, ',', '.') }} VND</span>
         </p>
     </div>
 </div>
