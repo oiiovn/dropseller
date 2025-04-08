@@ -340,36 +340,33 @@
         </div> <!-- end col -->
     </div>
 </div>
-<!-- @if(session('show_welcome_modal'))
-<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="welcomeModalLabel">🎉 Chào mừng bạn đến với DROPSHIP-SELLER!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-            </div>
-            <div class="modal-body">
-                <p>👋 Xin chào,</p>
-                <p>Chúng tôi vừa ra mắt <strong>tính năng đăng ký gói sản phẩm</strong> mới! 🎯</p>
-                <p>Bạn hãy thử <strong>đăng kí để được sản phẩm đầu tiên</strong> ngay bây giờ và trải nghiệm nhé.</p>
-                <div class="text-center mt-3">
-                    <a href="{{ route('list_program') }}" class="btn btn-primary">
-                        🚀 Bắt đầu đăng sản phẩm
-                    </a>
+@if(session('show_welcome_modal'))
+    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="welcomeModalLabel">🎉 Chào mừng bạn đến với DROPSHIP-SELLER!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <p>👋 Xin chào,</p>
+                    <p>Chúng tôi vừa ra mắt <strong>tính năng đăng ký gói sản phẩm</strong> mới! 🎯</p>
+                    <p>Bạn hãy thử <strong>đăng kí để được sản phẩm đầu tiên</strong> ngay bây giờ và trải nghiệm nhé.</p>
+                    <div class="text-center mt-3">
+                        <a href="{{ route('list_program') }}" class="btn btn-primary">
+                            🚀 Bắt đầu đăng sản phẩm
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
-        welcomeModal.show();
-    });
-</script>
-@endif -->
-
-
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+            welcomeModal.show();
+        });
+    </script>
+@endif
 @endsection

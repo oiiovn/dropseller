@@ -17,15 +17,12 @@
             <button type="submit" class="btn btn-primary w-100">Lọc dữ liệu</button>
         </div>
     </form>
-
     <div class="p-4 bg-light border rounded">
         <h5 class="fw-semibold mb-3">Thống kê tháng {{ \Carbon\Carbon::parse($month)->format('m/Y') }}</h5>
-
         <p class="mb-2 text-dark">
             <strong class="text-dark">Tổng tiền đã nạp:</strong>
             <span class="text-success fw-bold">{{ number_format($totalTopup, 0, ',', '.') }} VND</span>
         </p>
-
         <p class="mb-2 text-dark">
             <strong class="text-dark">Tổng tiền đã thanh toán đơn hàng:</strong>
             <span class="text-primary fw-bold">{{ number_format($totalPaid, 0, ',', '.') }} VND</span>
@@ -34,7 +31,6 @@
             <strong class="text-dark">Tổng tiền đã thanh toán Quảng cáo :</strong>
             <span class="text-primary fw-bold">{{ number_format($totalPaid_ads, 0, ',', '.') }} VND</span>
         </p>
-
         <p class="mb-2 text-dark">
             <strong class="text-dark">Tổng tiền đơn đã huỷ:</strong>
             <span class="text-danger fw-bold">{{ number_format($totalCanceled, 0, ',', '.') }} VND</span>
@@ -43,7 +39,6 @@
             <strong class="text-dark">Tổng tiền đơn đã hoàn:</strong>
             <span class="text-danger fw-bold">Chúng tôi sẽ quyết toán đơn hoàn cho bạn sau</span>
         </p>
-
         <p class="mb-2 text-dark">
             <strong class="text-dark">Tổng tiền đã chi tháng {{ \Carbon\Carbon::parse($month)->format('m/Y') }} : </strong>
             <span class="text-danger fw-bold">{{ number_format($total_chi, 0, ',', '.') }} VND</span>
