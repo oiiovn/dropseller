@@ -53,15 +53,16 @@
                                 <input type="hidden" name="image[]" value="">
                                 <img src="" class="product-image" style="width:50px; height:50px; display:none;">
                             </td>
-                            <td>
-                                <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
+                            <td class="col">
+                                <div class="d-flex gap-1">
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
+                                    <button type="button" class="btn btn-success" onclick="addNewRow()">Thêm sản phẩm</button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
-
                 </table>
                 <p id="product-count" class="fw-bold text-primary">Đã nhập: 0 sản phẩm</p>
-
             </div>
             <div class="mb-3">
                 <label for="package_description" class="form-label">Mô tả gói</label>
@@ -73,7 +74,42 @@
 </div>
 
 <script>
-    const productCache = {}; // Lưu cache sản phẩm
+    const productCache = {};
+
+    function generatePackageName() {
+        const date = new Date();
+        const today = `${date.getDate()}/${date.getMonth() + 1}`;
+        const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
+        let count = 0;
+        allSKUInputs.forEach(input => {
+            if (input.value.trim() !== "") count++;
+        });
+        const autoName = `${today} - Đăng ${count} sản phẩm - Sản phẩm mới`;
+
+        const nameInput = document.getElementById('package_name');
+        if (!nameInput.dataset.userEdited || nameInput.dataset.userEdited === "false") {
+            nameInput.value = autoName;
+        }
+    }
+
+    document.getElementById('package_name').addEventListener('input', function() {
+        this.dataset.userEdited = "true";
+    });
+
+    function updateProductCount() {
+        const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
+        let count = 0;
+        allSKUInputs.forEach(input => {
+            if (input.value.trim() !== "") count++;
+        });
+
+        const counter = document.getElementById("product-count");
+        if (counter) {
+            counter.innerText = `Đã nhập: ${count} sản phẩm`;
+        }
+
+        generatePackageName();
+    }
 
     async function fetchProductBySKU(sku, callback) {
         if (productCache[sku]) {
@@ -103,13 +139,11 @@
 
         if (sku.length === 0) return;
 
-        // Hiển thị trạng thái loading
         const productNameCell = row.querySelector('.product-name');
         const productImageCell = row.querySelector('.product-image');
         productNameCell.innerText = "Đang kiểm tra dữ liệu sản phẩm ...";
         productImageCell.style.display = "none";
 
-        // Kiểm tra trùng SKU
         const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
         let duplicateCount = 0;
         allSKUInputs.forEach(i => {
@@ -129,7 +163,6 @@
             return;
         }
 
-        // Gọi API để lấy dữ liệu sản phẩm
         fetchProductBySKU(sku, function(product) {
             if (product.error) {
                 productNameCell.innerText = "Không tìm thấy";
@@ -159,7 +192,6 @@
             addNewRow();
         }
     }
-
     function addNewRow() {
         const table = document.getElementById('product_table').getElementsByTagName('tbody')[0];
         const newRow = table.insertRow();
@@ -178,9 +210,12 @@
                 <input type="hidden" name="image[]" value="">
                 <img src="" class="product-image" style="width:50px; height:50px; display:none;">
             </td>
-            <td>
-                <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
-            </td>
+            <td class="col">
+                                <div class="d-flex gap-1">
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
+                                    <button type="button" class="btn btn-success" onclick="addNewRow()">Thêm sản phẩm</button>
+                                </div>
+                            </td>
         `;
     }
 
@@ -189,20 +224,7 @@
         const table = document.getElementById('product_table').getElementsByTagName('tbody')[0];
         if (table.rows.length > 1) {
             table.deleteRow(row.rowIndex - 1);
-            updateProductCount(); // cập nhật lại số lượng khi xóa
-        }
-    }
-
-    function updateProductCount() {
-        const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
-        let count = 0;
-        allSKUInputs.forEach(input => {
-            if (input.value.trim() !== "") count++;
-        });
-
-        const counter = document.getElementById("product-count");
-        if (counter) {
-            counter.innerText = `Đã nhập: ${count} sản phẩm`;
+            updateProductCount();
         }
     }
 
@@ -218,8 +240,9 @@
         return true;
     }
 
-    // Khởi tạo số lượng khi trang load
-    document.addEventListener('DOMContentLoaded', updateProductCount);
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProductCount(); // đếm SKU ban đầu
+        generatePackageName(); // tạo tên gói tự động khi vào trang
+    });
 </script>
-
 @endsection
