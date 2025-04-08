@@ -24,15 +24,20 @@ class SettlementController extends Controller
             ->where('type', '=', 'IN')
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->sum('amount');
+
+        // Tổng tiền đã thanh toán (lọc đơn hàng của user)
         $totalPaid = Transaction::where('account_number', $userCode)
-        ->where('type', '=', 'OUT')
-        ->whereBetween('transaction_date', [$startDate, $endDate])
-        ->sum('amount');
+            ->where('type', '=', 'OUT')
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->sum('amount');
         // Tổng tiền giao dịch DROP (bị huỷ/hoàn), cùng mã giới thiệu
         $totalCanceled = Transaction::where('account_number', $userCode)
             ->where('bank', 'DROP')
             ->where('type', '=', 'IN')
-            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereBetween('transaction_date', [
+                Carbon::parse($startDate)->addDays(19),
+                Carbon::parse($endDate)->addDays(19)
+            ])
             ->sum('amount');
 
         return view('settlement.monthly', compact('month', 'totalTopup', 'totalPaid', 'totalCanceled'));
