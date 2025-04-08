@@ -24,7 +24,12 @@ Route::get('/', function () {
 // Nhóm tất cả các route yêu cầu đăng nhập
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return view('index');
+        $user = auth()->user();
+        $programShops = \App\Services\ProgramService::getUnregisteredProgramsForUser($user);
+        $showWelcomeModal = !empty($programShops);
+        return view('index', [
+            'showWelcomeModal' => $showWelcomeModal,
+        ]);
     })->name('dashboard');
 
 

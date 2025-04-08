@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Shop;
 use App\Models\Program;
 use App\Models\ProgramShop;
@@ -28,6 +31,7 @@ class ProgramController extends Controller
             'name' => 'required|array',
             'image' => 'required|array',
         ]);
+
         $products = [];
         foreach ($validated['sku'] as $index => $sku) {
             if (!empty($sku)) {
@@ -38,6 +42,7 @@ class ProgramController extends Controller
                 ];
             }
         }
+
         $program = new Program();
         $program->name_program = $validated['name_program'];
         $program->products = json_encode($products);
@@ -46,8 +51,36 @@ class ProgramController extends Controller
         $program->created_by = auth()->id();
         $program->updated_by = auth()->id();
         $program->save();
+
+        function generateTransactionCode()
+        {
+            do {
+                $random = 'FT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+            } while (Transaction::where('transaction_id', $random)->exists());
+
+            return $random;
+        }
+        $user = Auth::user();
+
+        // Create a transaction
+        $newTransactionId = DB::table('transactions')->max('id') + 1;
+        $productCount = count(array_filter($request->sku));
+        $amount = $productCount * 5000;
+
+        Transaction::create([
+            'id' => $newTransactionId,
+            'bank' => 'MBB',
+            'account_number' => $user->referral_code,
+            'transaction_date' => now(),
+            'transaction_id' => generateTransactionCode(),
+            'amount' => $amount,
+            'type' => 'IN',
+            'description' => 'TD912 ' . $program->name_program,
+        ]);
+
         return redirect()->back()->with('success', 'Chương trình đã được tạo thành công!');
     }
+
     public function push_product($sku)
     {
         $cacheKey = "product_$sku";

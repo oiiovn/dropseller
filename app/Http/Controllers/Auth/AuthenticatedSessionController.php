@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
+use App\Services\ProgramService;
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -33,7 +35,11 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
-        $request->session()->put('show_welcome_modal', true);
+        $user = Auth::user();
+        $programShops = ProgramService::getUnregisteredProgramsForUser($user);
+        if (!empty($programShops)) {
+            session()->flash('show_welcome_modal', true);
+        }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

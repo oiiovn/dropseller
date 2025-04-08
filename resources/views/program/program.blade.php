@@ -103,6 +103,12 @@
 
         if (sku.length === 0) return;
 
+        // Hiển thị trạng thái loading
+        const productNameCell = row.querySelector('.product-name');
+        const productImageCell = row.querySelector('.product-image');
+        productNameCell.innerText = "Đang kiểm tra dữ liệu sản phẩm ...";
+        productImageCell.style.display = "none";
+
         // Kiểm tra trùng SKU
         const allSKUInputs = document.querySelectorAll('input[name="sku[]"]');
         let duplicateCount = 0;
@@ -114,26 +120,27 @@
         if (duplicateCount > 1) {
             alert("⚠️ SKU này đã được nhập rồi!");
             input.value = '';
-            row.querySelector('.product-name').innerText = "";
-            row.querySelector('.product-image').src = "";
-            row.querySelector('.product-image').style.display = "none";
+            productNameCell.innerText = "";
+            productImageCell.src = "";
+            productImageCell.style.display = "none";
             row.querySelector('input[name="name[]"]').value = "";
             row.querySelector('input[name="image[]"]').value = "";
             updateProductCount();
             return;
         }
 
+        // Gọi API để lấy dữ liệu sản phẩm
         fetchProductBySKU(sku, function(product) {
             if (product.error) {
-                row.querySelector('.product-name').innerText = "Không tìm thấy";
-                row.querySelector('.product-image').src = "";
-                row.querySelector('.product-image').style.display = "none";
+                productNameCell.innerText = "Không tìm thấy";
+                productImageCell.src = "";
+                productImageCell.style.display = "none";
                 row.querySelector('input[name="name[]"]').value = "";
                 row.querySelector('input[name="image[]"]').value = "";
             } else {
-                row.querySelector('.product-name').innerText = product.name;
-                row.querySelector('.product-image').src = product.image;
-                row.querySelector('.product-image').style.display = "block";
+                productNameCell.innerText = product.name;
+                productImageCell.src = product.image;
+                productImageCell.style.display = "block";
                 row.querySelector('input[name="name[]"]').value = product.name;
                 row.querySelector('input[name="image[]"]').value = product.image;
             }
