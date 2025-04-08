@@ -1,9 +1,11 @@
 <?php
+
+
 namespace App\Services;
 
-use App\Models\Shop;
 use App\Models\Program;
 use App\Models\ProgramShop;
+use App\Models\Shop;
 
 class ProgramService
 {
@@ -40,3 +42,4 @@ class ProgramService
         return $programShops;
     }
 }
+

@@ -16,6 +16,7 @@ use App\Http\Controllers\ADSController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\BillwebController;
 use App\Http\Controllers\SettlementController;
+use App\Services\ProgramService; // Import the ProgramService class
 
 Route::get('/', function () {
     return view('auth.login');
@@ -25,8 +26,9 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();
-        $programShops = \App\Services\ProgramService::getUnregisteredProgramsForUser($user);
-        $showWelcomeModal = !empty($programShops);
+        $programShops = ProgramService::getUnregisteredProgramsForUser($user); // gọi service
+        $showWelcomeModal = !empty($programShops); // nếu có chương trình chưa đăng ký => hiện
+
         return view('index', [
             'showWelcomeModal' => $showWelcomeModal,
         ]);
