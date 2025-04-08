@@ -39,7 +39,7 @@ class SettlementController extends Controller
                 Carbon::parse($endDate)->addDays(19)
             ])
             ->sum('amount');
-
-        return view('settlement.monthly', compact('month', 'totalTopup', 'totalPaid', 'totalCanceled'));
+        $Ending_balance = $totalTopup - $totalPaid + $totalCanceled;
+        return view('settlement.monthly', compact('month', 'totalTopup', 'totalPaid', 'totalCanceled', 'Ending_balance'));
     }
 }
