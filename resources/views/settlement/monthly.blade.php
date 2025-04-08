@@ -27,8 +27,12 @@
         </p>
 
         <p class="mb-2 text-dark">
-            <strong class="text-dark">Tổng tiền đã thanh toán đơn hàng( Quảng cáo nếu có ):</strong>
+            <strong class="text-dark">Tổng tiền đã thanh toán đơn hàng:</strong>
             <span class="text-primary fw-bold">{{ number_format($totalPaid, 0, ',', '.') }} VND</span>
+        </p>
+        <p class="mb-2 text-dark">
+            <strong class="text-dark">Tổng tiền đã thanh toán Quảng cáo :</strong>
+            <span class="text-primary fw-bold">{{ number_format($totalPaid_ads, 0, ',', '.') }} VND</span>
         </p>
 
         <p class="mb-2 text-dark">

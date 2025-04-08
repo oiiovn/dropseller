@@ -27,6 +27,15 @@ class SettlementController extends Controller
 
         // Tổng tiền đã thanh toán (lọc đơn hàng của user)
         $totalPaid = Transaction::where('account_number', $userCode)
+            ->where('bank', 'DROP')
+            ->where('type', '=', 'OUT')
+            ->whereBetween('transaction_date',  [
+                Carbon::parse($startDate)->addDays(),
+                Carbon::parse($endDate)->addDays()
+            ])
+            ->sum('amount');
+        $totalPaid_ads = Transaction::where('account_number', $userCode)
+            ->where('bank', 'ADS')
             ->where('type', '=', 'OUT')
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->sum('amount');
@@ -40,6 +49,6 @@ class SettlementController extends Controller
             ])
             ->sum('amount');
         $Ending_balance = $totalTopup - $totalPaid + $totalCanceled;
-        return view('settlement.monthly', compact('month', 'totalTopup', 'totalPaid', 'totalCanceled', 'Ending_balance'));
+        return view('settlement.monthly', compact('month', 'totalTopup', 'totalPaid', 'totalCanceled', 'Ending_balance', 'totalPaid_ads'));
     }
 }
