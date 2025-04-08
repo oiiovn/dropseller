@@ -15,6 +15,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ADSController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\BillwebController;
+use App\Http\Controllers\SettlementController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -67,8 +68,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/programs/{id}/change-status', [ProgramController::class, 'changeStatus_Program'])->name('program.changeStatus');
         Route::get('/phi-web', [BillwebController::class, 'view_total_bill'])->name('view_total_bill');
         Route::post('/export-totalbill', [BillwebController::class, 'exportTotalBill'])->name('export.totalbill');
-
-
     });
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
@@ -83,4 +82,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dang-san-pham', [ProgramController::class, 'list_program'])->name('list_program');
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
+
+    Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
 });

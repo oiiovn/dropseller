@@ -65,7 +65,6 @@ class UpdateReconciledOrders extends Command
                             'title' => 'Đối soát đơn hàng',
                             'message' => 'Đơn hàng ' . $order->order_code . ' đã thanh toán thiếu: ' . number_format($missingAmount) . ' VND. Chúng tôi đã cộng bù phần còn thiếu.',
                         ]);
-    
                         Transaction::create([
                             'bank' => 'DROP',
                             'account_number' => $shopUser->referral_code,
@@ -79,7 +78,6 @@ class UpdateReconciledOrders extends Command
                 } else {
                     // Trường hợp khớp tiền
                     $order->update(['reconciled' => 0]);
-    
                     Notification::create([
                         'user_id' => $shopUser->id,
                         'shop_id' => $order->shop_id,
