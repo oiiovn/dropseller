@@ -43,6 +43,11 @@
             <strong class="text-dark">Tổng tiền đơn đã hoàn:</strong>
             <span class="text-danger fw-bold">Chúng tôi sẽ quyết toán đơn hoàn cho bạn sau</span>
         </p>
+
+        <p class="mb-2 text-dark">
+            <strong class="text-dark">Tổng tiền đã chi tháng {{ \Carbon\Carbon::parse($month)->format('m/Y') }} : </strong>
+            <span class="text-danger fw-bold">{{ number_format($total_chi, 0, ',', '.') }} VND</span>
+        </p>
         <p class="mb-2 text-dark">
             <strong class="text-dark">Số dư cuối tháng:</strong>
             <span class="text-success fw-bold">{{ number_format($Ending_balance, 0, ',', '.') }} VND</span>
