@@ -340,9 +340,6 @@
         </div> <!-- end col -->
     </div>
 </div>
-<pre>
-    showWelcomeModal: {{ var_export($showWelcomeModal, true) }}
-</pre>
 @if($showWelcomeModal)
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
