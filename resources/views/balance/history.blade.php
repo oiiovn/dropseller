@@ -13,7 +13,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body p-0">
-            <table id="giao-dich" class="table table-hover mb-0">
+            <table id="giao_dich1" class="table table-hover mb-0">
 
                 <thead class="table-light">
                     <tr>
@@ -72,10 +72,9 @@
         icon.dataset.throttled = "true";
     });
     $(document).ready(function() {
-        $('#giao-dich').DataTable({
+        $('#giao_dich1').DataTable({
             "searching": true,
             "paging": true,
-           
             "ordering": true,
             "info": true,
             "lengthMenu": [10, 20, 50, 100, 150],
