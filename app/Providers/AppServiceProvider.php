@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Notification;
-
+use App\Observers\TransactionObserver;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Request $request)
     {
+        Transaction::observe(TransactionObserver::class);
         Carbon::setLocale('vi');
         Paginator::useBootstrap();
         // Chia sẻ biến $shop_get cho view `index`
@@ -42,9 +43,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('header', function ($view) {
             $user = Auth::user();
             $balace = $user->balance;
+            $totalAmount = $user->total_amount;
             if ($user) {
                 $userCode = $user->referral_code;
-                $transactions = Transaction::where('description', 'LIKE', "%$userCode%")->get();
                 $Transactions_Drop = Transaction::with('order')
                     ->where('description', 'LIKE', "%$userCode%")
                     ->where('bank', 'DROP')
@@ -54,18 +55,7 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
                 foreach ($Transactions_Drop as $transaction) {
                     $balace += $transaction->amount;
-                }
-
-                $totalAmount = 0;
-
-                foreach ($transactions as $transaction) {
-                    if ($transaction->type == 'IN') {
-                        $totalAmount += $transaction->amount;
-                    } elseif ($transaction->type == 'OUT') {
-                        $totalAmount -= $transaction->amount;
-                    }
-                }
-                $user->total_amount = $totalAmount;
+                }             
                 $user->save();
                 $view->with([
                     'user' => $user,

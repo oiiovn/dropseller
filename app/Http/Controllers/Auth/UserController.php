@@ -24,7 +24,7 @@ class UserController extends Controller
             if (!$user) {
                 return response()->json(['error' => 'User not found'], 404);
             }
-    
+
             // Truyền dữ liệu user sang view 'header'
             return view('header', compact('user'));
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
@@ -39,11 +39,11 @@ class UserController extends Controller
     {
         // Lấy tất cả user
         $users = User::all();
-    
+
         foreach ($users as $user) {
             // Lấy tất cả các shop của user
             $shops = Shop::where('user_id', $user->id)->get();
-    
+
             foreach ($shops as $shop) {
                 // Lấy tất cả đơn hàng bị trễ của shop (chưa thanh toán và quá hạn 1 ngày)
                 $orders_unpaiddd = Order::where('shop_id', $shop->id)
@@ -51,7 +51,6 @@ class UserController extends Controller
                     ->where('created_at', '<', Carbon::now()->subDay()) // Điều kiện quá hạn 1 ngày
                     ->get();
                 $orders_unpaiddd->count();
-          
                 // Gán danh sách đơn hàng bị trễ vào shop
                 $shop->orders_unpaid = $orders_unpaiddd;
             }

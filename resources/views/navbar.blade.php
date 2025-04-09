@@ -82,7 +82,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#donhang" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-apps-2-line"></i>
+                        <i class=" ri-shopping-bag-3-line"></i>
                         <span data-key="t-apps">Quản Lý đơn hàng</span>
                     </a>
                     <div class="collapse menu-dropdown" id="donhang">
@@ -98,7 +98,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#Push_sp" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-apps-2-line"></i>
+                        <i class="ri-archive-fill"></i>
                         <span data-key="t-apps">Dịch Vụ DropShip</span>
                     </a>
                     <div class="collapse menu-dropdown" id="Push_sp">
