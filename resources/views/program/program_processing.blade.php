@@ -11,12 +11,12 @@
     }
 </style>
 <div class="container-fluid bg-white p-4">
-    <h2 class="mb-4">Danh sách chương trình</h2>
+    <h2 class="mb-4">Danh sách gói sản phẩm</h2>
     <!-- Tabs -->
     <ul class="nav nav-tabs mb-3" id="programTabs" role="tablist">
         <li class="nav-item">
             <button class="nav-link active" id="tab-all" data-bs-toggle="tab" data-bs-target="#tabAllPrograms" type="button" role="tab">
-                Tất cả chương trình
+                Tất cả 
             </button>
         </li>
         <li class="nav-item">
@@ -39,7 +39,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>Mã </th>
-                        <th>Tên chương trình</th>
+                        <th>Tên gói</th>
                         <th>Giờ lưu gói</th>
                         <th>Shop </th>
                         <th>Số lượng sản phẩm</th>
@@ -71,7 +71,6 @@
                             <span class="badge bg-secondary">Không xác định</span>
                             @endif
                         </td>
-
                         <td style="text-align: center;">
                             <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$programs->id}}">
                                 <li class="list-inline-item" title="Xem chi tiết">
@@ -152,7 +151,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>Mã </th>
-                        <th>Tên chương trình</th>
+                        <th>Tên gói</th>
                         <th>Giờ lưu gói</th>
                         <th>Shop </th>
                         <th>Số lượng sản phẩm</th>
@@ -274,7 +273,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>Mã </th>
-                        <th>Tên chương trình</th>
+                        <th>Tên gói</th>
                         <th>Giờ lưu gói</th>
                         <th>Shop </th>
                         <th>Số lượng sản phẩm</th>

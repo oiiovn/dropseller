@@ -118,7 +118,7 @@
             </div>
             <div class="d-flex align-items-center">
                 <div>
-                    <a class="align-items-center " href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.'); }} đ</b></span></a>
+                    <a class="align-items-center " href="{{route('balance.history')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.'); }} đ</b></span></a>
                     <i class=" text-body-tertiary ">(Chờ đối soát: {{ number_format($balace, 0, ',', '.'); }} đ )</i>
                 </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
@@ -296,7 +296,7 @@
                             @if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
                                     @else
-                               https://img.icons8.com/ios-filled/100/user-male-circle.png
+                                    https://img.icons8.com/ios-filled/100/user-male-circle.png
                                     @endif
                                     " alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
@@ -316,10 +316,9 @@
                         <!-- item-->
 
                         <a class="dropdown-item" href="{{route('portfolio')}}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ Sơ</span></a>
-                        @if(Auth::check() && Auth::user()->role == '2')
-                        
-                            <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
-                        
+                        <a class="dropdown-item" href="{{route('balance.history')}}"> <span class="align-middle">  💰    Biến động số dư</span></a>
+                        @if(Auth::check() && Auth::user()->role == '2') 
+                        <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
                         @endif
                         <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>

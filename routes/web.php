@@ -12,10 +12,12 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ADSController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\BillwebController;
 use App\Http\Controllers\SettlementController;
+use App\Http\Controllers\BalanceHistoryController;
 use App\Services\ProgramService; // Import the ProgramService class
 
 Route::get('/', function () {
@@ -33,8 +35,9 @@ Route::middleware('auth')->group(function () {
             'showWelcomeModal' => $showWelcomeModal,
         ]);
     })->name('dashboard');
-
-
+    Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
+    Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
+        ->name('balance.history');
     Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 

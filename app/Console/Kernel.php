@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('orders:update-reconciled')->dailyAt('02:00'); // Chạy lúc 2h sáng mỗi ngày
         $schedule->command('ads:auto-payment')->everyFiveMinutes();
         $schedule->command('PRG:auto-payment-progarm')->everyMinute(); 
+        $schedule->command('balance:rebuild-all')->dailyAt('01:00');
     }
     
 

@@ -8,12 +8,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Notification;
-
+use App\Traits\BalanceLoggable;
 class TransactionController extends Controller
 {
     /**
      * Handle the incoming request.
      */
+    use BalanceLoggable;
     public function fetchTransactionHistory()
     {
         $userCode = Auth::user()->referral_code;
@@ -138,10 +139,19 @@ class TransactionController extends Controller
         $transactionId = $this->generateUniqueTransactionId();
         $uniqueId = $this->generateUniqueId();
         $amount = request('Amount');
+        $referralCode = request('referral_code');
+    
+        $user = User::where('referral_code', $referralCode)->first();
+    
+        if (!$user) {
+            return redirect()->back()->with('error', 'Không tìm thấy user với referral code này.');
+        }
+    
         $type = "IN";
         $bank = "MBB";
-        $description = request('referral_code') . ' ADMIN Nạp tiền';
-        $account_number = request('referral_code');
+        $description = $referralCode . ' ADMIN Nạp tiền';
+        $account_number = $referralCode;
+    
         $transaction = Transaction::create([
             'id' => $uniqueId,
             'bank' => $bank,
@@ -152,6 +162,7 @@ class TransactionController extends Controller
             'type' => $type,
             'amount' => $amount,
         ]);
-        return redirect()->back()->with('success', 'Giao dịch đã được thêm!');
+        return redirect()->back()->with('success', 'Giao dịch đã được thêm và số dư đã cập nhật!');
     }
+    
 }
