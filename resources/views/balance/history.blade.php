@@ -14,7 +14,6 @@
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <table id="giao_dich1" class="table table-hover mb-0">
-
                 <thead class="table-light">
                     <tr>
                         <th>Mã GD</th>

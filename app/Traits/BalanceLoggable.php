@@ -45,7 +45,7 @@ trait BalanceLoggable
 
                 $runningBalance += $change;
 
-                BalanceHistory::create([
+                BalanceHistory::insert([
                     'user_id' => $user->id,
                     'amount_change' => $change,
                     'balance_after' => $runningBalance,
