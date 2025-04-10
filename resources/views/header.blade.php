@@ -132,7 +132,7 @@
                         <i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.') }} đ</b></span>
                     </a>
-                    <small class="text-muted fst-italic">Chờ đối soát: {{ number_format($balace, 0, ',', '.') }} đ</small>
+                    <small class="text-muted fst-italic">(Chờ đối soát: {{ number_format($balace, 0, ',', '.') }} đ)</small>
                 </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
