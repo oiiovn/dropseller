@@ -16,10 +16,12 @@ class BillwebController extends Controller
     {
         $startDate = $request->input('start_date')
             ? Carbon::parse($request->input('start_date'))->startOfDay()
-            : Carbon::now()->subMonthNoOverflow()->startOfMonth();
+            : Carbon::now()->startOfMonth();
+
         $endDate = $request->input('end_date')
             ? Carbon::parse($request->input('end_date'))->endOfDay()
-            : Carbon::now()->subMonthNoOverflow()->endOfMonth();
+            : Carbon::now()->endOfDay();
+
         $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_dropship');
         $total_dropship_web = $total_dropship / 5 / 2;
@@ -44,7 +46,8 @@ class BillwebController extends Controller
             ->sum('total_payment');
         $share_total_program = $total_program / 2 / 2;
 
-        return Excel::download(new TotalBillExport( 
+        return Excel::download(
+            new TotalBillExport(
                 $startDate,
                 $endDate,
                 $total_dropship,

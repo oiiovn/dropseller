@@ -66,13 +66,10 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('index', function ($view) {
             $excludedCodes = ['QUA_TRANG', 'QUA001'];
-
-            $startDate = request()->input('start_date', Carbon::now()->subDays(30)->startOfDay());
+            $startDate = request()->input('start_date', Carbon::now()->startOfMonth()->format('Y-m-d H:i:s'));          
             $endDate = request()->input('end_date', Carbon::now()->endOfDay());
-
             $startDate = Carbon::parse($startDate)->startOfDay();
             $endDate = Carbon::parse($endDate)->endOfDay();
-
             $Products = OrderDetail::select(
                 'sku',
                 DB::raw('MAX(product_name) as product_name'),

@@ -129,22 +129,22 @@
                                         <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="fw-semibold text-uppercase fs-12">Xem theo :</span>
                                             <span class="text-muted">
-                                                {{ request('date_range', '30 ngày trước') }} <i class="mdi mdi-chevron-down ms-1"></i>
+                                                {{ request('date_range', 'Tháng này') }} <i class="mdi mdi-chevron-down ms-1"></i>
                                             </span>
 
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item " href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm nay']) }}">Hôm nay</a>
+                                            <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm nay']) }}">Hôm nay</a>
 
-                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDay()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->subDay()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm qua']) }}">Hôm qua</a>
+                                            <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDay()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->subDay()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm qua']) }}">Hôm qua</a>
 
-                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDays(7)->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => '7 ngày trước']) }}">7 ngày trước</a>
+                                            <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDays(7)->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => '7 ngày trước']) }}">7 ngày trước</a>
 
-                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDays(30)->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => '30 ngày trước']) }}">30 ngày trước</a>
+                                            <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subDays(30)->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => '30 ngày trước']) }}">30 ngày trước</a>
 
-                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subMonth()->startOfMonth()->format('Y-m-d H:i:s'), 'end_date' => now()->subMonth()->endOfMonth()->format('Y-m-d H:i:s'), 'date_range' => 'Tháng trước']) }}">Tháng trước</a>
+                                            <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->subMonth()->startOfMonth()->format('Y-m-d H:i:s'), 'end_date' => now()->subMonth()->endOfMonth()->format('Y-m-d H:i:s'), 'date_range' => 'Tháng trước']) }}">Tháng trước</a>
 
-                                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfMonth()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Tháng này']) }}">Tháng này</a>
+                                            <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfMonth()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Tháng này']) }}">Tháng này</a>
                                         </div>
                                     </div>
 
@@ -172,8 +172,8 @@
                                                         </div>
                                                         <div>
                                                             <h5 class="fs-14 my-1">
-                                                                <a class="text-reset">
-                                                                    {{ $product->product_name }}
+                                                                <a class="text-reset" title="{{ $product->product_name }}">
+                                                                    {{ \Illuminate\Support\Str::limit($product->product_name, 50) }}
                                                                 </a>
                                                             </h5>
                                                             <span class="text-muted">{{ $product->sku }}</span>
@@ -345,16 +345,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-lg">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="welcomeModalLabel">🎉 Chào mừng bạn đến với DROPSHIP-SELLER!</h5>
+                <h5 class="modal-title fw-bold" id="welcomeModalLabel">🎉 Gói đăng sản phẩm mới!</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
             <div class="modal-body">
                 <p>👋 Xin chào,</p>
-                <p>Chúng tôi vừa ra mắt <strong>tính năng đăng ký gói sản phẩm</strong> mới! 🎯</p>
-                <p>Bạn hãy thử <strong>đăng kí để được sản phẩm đầu tiên</strong> ngay bây giờ và trải nghiệm nhé.</p>
+                <p>Shop bạn đang có sản phẩm mới cần lên 🎯</p>
+                <p>Bạn nhấn đăng ngay để <strong>Đăng </strong> sản phẩm lên shop nhé.</p>
                 <div class="text-center mt-3">
-                    <a href="{{ route('list_program') }}" class="btn btn-primary">
-                        🚀 Bắt đầu đăng sản phẩm
+                    <a href="{{ route('list_program') }}" class="btn btn-success waves-effect waves-light">
+                        Đăng Ngay
                     </a>
                 </div>
             </div>

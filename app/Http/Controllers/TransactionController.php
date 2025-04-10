@@ -88,6 +88,7 @@ class TransactionController extends Controller
 
         foreach ($users as $user) {
             $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
+            ->where('bank', 'MBB')
                 ->where('type', 'IN')
                 ->get();
             $transactionsByReferral[$user->referral_code] = [
