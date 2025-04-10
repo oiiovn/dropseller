@@ -175,18 +175,16 @@ class TransactionController extends Controller
             'GO-',
             'BAO AN-',
         ];
-
         $dd_si = [];
-
         foreach ($referralCodes as $code) {
-            $transactions = Transaction::where('description', 'LIKE', "%$code%")->get();
-
+            $transactions = Transaction::where('description', 'LIKE', "%$code%")
+                ->orderBy('transaction_date', 'desc')
+                ->get();
             $dd_si[$code] = [
                 'referral_code' => $code,
                 'transactions' => $transactions,
             ];
         }
-
         return view('payment.transaction_si', compact('dd_si'));
     }
 }
