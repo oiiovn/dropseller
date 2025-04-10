@@ -176,7 +176,7 @@
                                 <a href="{{route('Get_orders_all')}}" class="nav-link ajax-link" data-key="t-detached">Tất cả đơn hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('get_all_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached">Lịch sử giao dịch</a>
+                                <a href="{{route('get_all_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached">Lịch sử giao dịch drop</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{route('Overdue_Order')}}" class="nav-link ajax-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
@@ -249,18 +249,21 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a href="{{route('get_SI_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached"> <i class="ri-layout-3-line"></i>Thanh toán hoá đơn Sỉ</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#drop" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="drop">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Doanh thu Web</span>
                     </a>
                     <div class="collapse menu-dropdown" id="drop">
                         <ul class="nav nav-sm flex-column">
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('view_total_bill')}}" class="nav-link ajax-link" >Phí Drop & Gói sản phẩm</a>
-                            </li>
-                           
-                            <!-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('view_total_bill')}}" class="nav-link ajax-link">Phí Drop & Gói sản phẩm</a>
+                </li>
+
+                <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
                                 <div class="collapse menu-dropdown" id="sidebarEmail">
                                     <ul class="nav nav-sm flex-column">
@@ -283,22 +286,22 @@
                                     </ul>
                                 </div>
                             </li> -->
-                        </ul>
-                    </div>
-                </li>
-                @endif
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#congcu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Công cụ tiện ích</span>
+            </ul>
+        </div>
+        </li>
+        @endif
+        <li class="nav-item">
+            <a class="nav-link menu-link" href="#congcu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                <i class="ri-layout-3-line"></i>
+                <span data-key="t-layouts">Công cụ tiện ích</span>
 
-                    </a>
-                    <div class="collapse menu-dropdown" id="congcu">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{route('campaign')}}" class="nav-link ajax-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
-                            </li>
-                            <!-- <li class="nav-item">
+            </a>
+            <div class="collapse menu-dropdown" id="congcu">
+                <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                        <a href="{{route('campaign')}}" class="nav-link ajax-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
+                    </li>
+                    <!-- <li class="nav-item">
                                 <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
                             </li>
                             <li class="nav-item">
@@ -307,13 +310,13 @@
                             <li class="nav-item">
                                 <a href="layouts-vertical-hovered.html" target="_blank" class="nav-link" data-key="t-hovered">Hovered</a>
                             </li> -->
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
+                </ul>
+            </div>
+        </li>
+        </ul>
     </div>
+
+</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

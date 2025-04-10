@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/program/store', [ProgramController::class, 'store'])->name('program.store');   // Xử lý lưu dữ liệu
         Route::get('/programlist', [ProgramController::class, 'Program_processing'])->name('procerssing');
         Route::get('/tat-ca-giao-dịch', [TransactionController::class, 'get_all_transaction'])->name('get_all_transaction.list');
+        Route::get('/thanh-toan-si', [TransactionController::class, 'get_SI_transaction'])->name('get_SI_transaction.list');
 
         Route::get('/quang-cao', [ADSController::class, 'ADS'])->name('quang-cao');
         Route::post('/them-quang-cao', [ADSController::class, 'store'])->name('add.ads');

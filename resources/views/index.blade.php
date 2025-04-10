@@ -288,12 +288,12 @@
 
                             <div class="card-body ">
                                 <div class="table-card">
-                                    <table class="table table-centered table-hover align-middle" style="height: 442px">
+                                    <table class="table table-centered table-hover align-middle" style="height: 440px">
                                         <tbody>
                                             @if($totalOrdersByShop->isEmpty())
                                             <tr>
                                                 <td colspan="5" class="text-center text-muted">
-                                                    <h5 class="fs-14 my-3">Không có nhà bán nào trong khoảng thời gian này.</h5>
+                                                    <h5 class="fs-14 my-2">Không có nhà bán nào trong khoảng thời gian này.</h5>
                                                 </td>
                                             </tr>
                                             @else
@@ -337,7 +337,7 @@
                                                     <p class="mb-0">{{$shop->order_count}}</p>
                                                 </td>
                                                 <td>
-                                                    <span class="text-muted">Doanh thu</span>
+                                                    <span class="text-muted">Giá vốn</span>
                                                     <p class="mb-0">{{ number_format($shop->total_revenue, 0, ',', '.') }} VNĐ</p>
                                                 </td>
                                                 <!-- <td>
