@@ -123,6 +123,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('transaction') }}" class="nav-link ajax-link" data-key="t-chat">Lịch sử giao dịch</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('balance.history') }}" class="nav-link ajax-link" data-key="t-chat">Biến động số dư</a>
+                            </li>
 
                             <!--
                             <li class="nav-item">

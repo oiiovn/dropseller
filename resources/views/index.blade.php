@@ -2,40 +2,106 @@
 @section('title', 'main')
 
 @section('main')
+<style>
+    .product-card {
+        font-size: 14px;
+    }
 
+    .product-name {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* mặc định hiển thị 2 dòng */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-body h4 {
+        font-size: 18px !important;
+    }
+
+    .card-body 
+    p {
+        font-size: 15px !important;
+    }
+
+    @media (max-width: 768px) {
+        .product-card {
+            flex-direction: row;
+            font-size: 12px;
+        }
+
+        .product-card img {
+            width: 70px !important;
+            height: 70px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .product-card .d-flex.justify-content-between {
+            flex-direction: column;
+            gap: 0.5rem;
+
+        }
+
+        .product-card .text-end {
+            text-align: left !important;
+        }
+
+        .product-card {
+            font-size: 10px;
+        }
+
+        .card-title {
+            font-size: 12px;
+        }
+
+        .product-name {
+            -webkit-line-clamp: 1;
+        }
+
+        .card-body h4 {
+            font-size: 14px !important;
+        }
+
+        .card-body p,
+        .card-body span,
+        .card-body .text-muted {
+            font-size: 12px !important;
+        }
+
+        .avatar-title.fs-3 {
+            font-size: 18px !important;
+            width: 36px;
+            height: 36px;
+            margin: 0 auto;
+        }
+
+    }
+</style>
 <div class="container-fluid">
 
     <div class="row">
         <div class="col">
 
             <div class="h-100">
-
-                <!--end row-->
-
-                <div class="row">
-                    <div class="col-xl-3 col-md-6">
-                        <!-- card -->
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#58d19d, #ffffff, #ffffff);">
-                            <div class="card-body">
+                <div class="row gx-3">
+                    <div class="col-6 col-md-6 col-xl-3">
+                        <div class="card  mb-3  card-animate" style="background: linear-gradient(to bottom,#58d19d, #ffffff, #ffffff);">
+                            <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐN</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-center justify-content-between mt-3">
+
                                     <div>
-
-
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>
-                                                @if(isset($totalBillPaid) && $totalBillPaid > 0)
-                                                {{ number_format($totalBillPaid, 0) ?? 0 }}
-                                                @else
-                                                0
-                                                @endif
+                                        <h4 class="fw-semibold ff-secondary mb-1" style="font-size: 14px;">
+                                            <span class="d-inline-block text-nowrap">
+                                                {{ number_format($totalBillPaid ?? 0) }} <span class="text-muted">VNĐ</span>
                                             </span>
-                                            VNĐ
                                         </h4>
-                                        <a href="#" class="text-decoration-underline"></a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -43,24 +109,25 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div><!-- end card body -->
-                        </div><!-- end card -->
-                    </div><!-- end col -->
+                            </div>
+                        </div>
+                    </div>
 
-                    <div class="col-xl-3 col-md-6">
-                        <!-- card -->
+                    <div class="col-6 col-md-6 col-xl-3">
                         <div class="card card-animate" style="background: linear-gradient(to bottom,#fccb38, #ffffff, #ffffff);">
-                            <div class="card-body">
+                            <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">ĐƠN HÀNG</p>
                                     </div>
-
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-center justify-content-between mt-3">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>{{number_format($totalOrders,0 ??0)}}</span> Đơn</h4>
-                                        <a href="#" class="text-decoration-underline"></a>
+                                        <h4 class="fw-semibold ff-secondary mb-1" style="font-size: 14px;">
+                                            <span class="d-inline-block text-nowrap">
+                                                {{ number_format($totalOrders ?? 0) }} <span class="text-muted">Đơn</span>
+                                            </span>
+                                        </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -68,23 +135,26 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div><!-- end card body -->
-                        </div><!-- end card -->
-                    </div><!-- end col -->
+                            </div>
+                        </div>
+                    </div>
 
-                    <div class="col-xl-3 col-md-6">
-                        <!-- card -->
+                    <div class="col-6 col-md-6 col-xl-3">
                         <div class="card card-animate" style="background: linear-gradient(to bottom,#78cbff, #ffffff, #ffffff);">
-                            <div class="card-body">
+                            <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">SẢN PHẨM BÁN RA</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-center justify-content-between mt-3">
+
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span>{{number_format($totalQuantitySold,0 ??0)}}</span> Sản phẩm </h4>
-                                        <a href="#" class="text-decoration-underline"></a>
+                                        <h4 class="fw-semibold ff-secondary mb-1" style="font-size: 14px;">
+                                            <span class="d-inline-block text-nowrap">
+                                                {{ number_format($totalQuantitySold ?? 0) }} <span class="text-muted">Sản phẩm</span>
+                                            </span>
+                                        </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -92,33 +162,37 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div><!-- end card body -->
-                        </div><!-- end card -->
-                    </div><!-- end col -->
-                    <div class="col-xl-3 col-md-6">
-                        <!-- card -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6 col-xl-3">
                         <div class="card card-animate" style="background: linear-gradient(to bottom,#dfb0ff, #ffffff, #ffffff);">
-                            <div class="card-body">
+                            <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> PHÍ DROP</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">PHÍ DROP</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-center justify-content-between mt-3">
+
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"> <span>{{number_format($total_dropship,0 ?? 0)}}</span> VNĐ</h4>
-                                        <a href="#" class="text-decoration-underline"></a>
+                                        <h4 class="fw-semibold ff-secondary mb-1" style="font-size: 14px;">
+                                            <span class="d-inline-block text-nowrap">
+                                                {{ number_format($total_dropship ?? 0) }} <span class="text-muted">VNĐ</span>
+                                            </span>
+                                        </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title rounded fs-3" style="background:#fae0ff">
-                                            <i class="bx bx-wallet text-pastel" style="color: #dfb0ff;"></i>
+                                            <i class="bx bx-wallet" style="color: #dfb0ff;"></i>
                                         </span>
                                     </div>
                                 </div>
-                            </div><!-- end card body -->
-                        </div><!-- end card -->
-                    </div><!-- end col -->
-                </div> <!-- end row-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-xl-7">
                         <div class="card">
@@ -151,77 +225,58 @@
 
                                 </div>
                             </div><!-- end card header -->
-
-                            <div class="card-body">
-                                <div class="table-card" style="height: 430px">
-                                    <table class="table table-hover table-centered align-middle" style="height: 430px">
-                                        <tbody>
-                                            @if($Products->isEmpty())
-                                            <tr>
-                                                <td colspan="5" class="text-center text-muted">
-                                                    <h5 class="fs-14 my-3">Không có đơn hàng nào trong khoảng thời gian này.</h5>
-                                                </td>
-                                            </tr>
-                                            @else
-                                            @foreach($Products as $product)
-                                            <tr>
-                                                <td style="width: 35%;">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <img src="{{ $product->image }}" alt="" class="img-fluid d-block" />
-                                                        </div>
-                                                        <div>
-                                                            <h5 class="fs-14 my-1">
-                                                                <a class="text-reset" title="{{ $product->product_name }}">
-                                                                    {{ \Illuminate\Support\Str::limit($product->product_name, 50) }}
-                                                                </a>
-                                                            </h5>
-                                                            <span class="text-muted">{{ $product->sku }}</span>
-                                                        </div>
+                            <div class="card-body ">
+                                {{-- Danh sách sản phẩm có scroll --}}
+                                <div class="table-card table-responsive-custom mb-3">
+                                    @if($Products->isEmpty())
+                                    <div class="text-center text-muted py-4">
+                                        <h5 class="fs-14 my-3">Không có đơn hàng nào trong khoảng thời gian này.</h5>
+                                    </div>
+                                    @else
+                                    @foreach($Products as $product)
+                                    <div class="product-card p-2 border rounded bg-white d-flex">
+                                        <div class="me-3">
+                                            <img src="{{ $product->image }}" alt="Ảnh sản phẩm" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start flex-nowrap">
+                                                <div class="me-2">
+                                                    <div class="text-muted small">Mã SP: {{ $product->sku }}</div>
+                                                    <div class="fw-semibold mb-1 product-name">
+                                                        {{ $product->product_name }}
                                                     </div>
-                                                </td>
-                                                <td style="width: 15%;">
-                                                    <span class="text-muted">Giá</span>
-                                                    <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->unit_cost, 0) }} VNĐ</h5>
-                                                </td>
-                                                <td style="width: 13%;">
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                    <h5 class="fs-14 my-1 fw-normal">{{ $product->order_count }}</h5>
-                                                </td>
-                                                <td style="width: 15%;">
-                                                    <span class="text-muted">Lượt bán</span>
-                                                    <h5 class="fs-14 my-1 fw-normal">{{ $product->total_quantity }}</h5>
-                                                </td>
-                                                <td style="width: 20%;">
-                                                    <span class="text-muted">Doanh số tổng</span>
-                                                    <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_revenue, 0) }} VNĐ</h5>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                            @endif
-                                        </tbody>
 
-                                    </table>
-                                </div>
-
-                                <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
-                                    <div class="col-sm">
-                                        <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> Sản phẩm
+                                                    <div class="text-muted small">
+                                                        <span class="me-3">Đơn hàng: {{ $product->order_count }}</span>
+                                                        <span>Lượt bán: {{ $product->total_quantity }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="text-end flex-shrink-0" style="min-width: 140px;">
+                                                    <div class="fw-semibold text-primary">Giá vốn: {{ number_format($product->unit_cost) }} VNĐ</div>
+                                                    <div class="small text-muted">Tổng giá vốn: <strong>{{ number_format($product->total_revenue) }} VNĐ</strong></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-auto  mt-3 mt-sm-0">
-                                        <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
-                                            <div>
-                                                {{ $Products->onEachSide(1)->links() }}
-                                            </div>
-
-
-                                        </ul>
-                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
 
+                                {{-- Phân trang cố định bên dưới --}}
+                                <div class="align-items-center pt-2 justify-content-between row text-center text-sm-start">
+                                    <div class="col-sm">
+                                        <div class="text-muted">
+                                            Hiển thị <span class="fw-semibold">{{ $Products->count() }}</span> Sản phẩm
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-auto mt-3 mt-sm-0">
+                                        <div class="d-flex justify-content-center justify-content-sm-end">
+                                            {{ $Products->onEachSide(0)->links() }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -229,22 +284,10 @@
                         <div class="card ">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Top nhà bán</h4>
-                                <!-- <div class="flex-shrink-0">
-                                    <div class="dropdown card-header-dropdown">
-                                        <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="text-muted">Tháng này<i class="mdi mdi-chevron-down ms-1"></i></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="#">Tháng trước</a>
-                                            <a class="dropdown-item" href="#">Tuần này</a>
-                                            <a class="dropdown-item" href="#">Hôm nay</a>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div><!-- end card header -->
 
-                            <div class="card-body">
-                                <div class=" table-card">
+                            <div class="card-body ">
+                                <div class="table-card">
                                     <table class="table table-centered table-hover align-middle" style="height: 442px">
                                         <tbody>
                                             @if($totalOrdersByShop->isEmpty())
