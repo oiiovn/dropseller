@@ -262,7 +262,7 @@
                                                     "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                    "search": "🔍",
+                                                    "search": "",
                                                     "paginate": {
                                                         "first": "Trang đầu",
                                                         "last": "Trang cuối",
@@ -454,7 +454,7 @@
                                                     "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                    "search": "🔍",
+                                                    "search": "",
                                                     "paginate": {
                                                         "first": "Trang đầu",
                                                         "last": "Trang cuối",

@@ -81,7 +81,7 @@
                 null, null, null, null, null, null
             ],
             "language": {
-                "search": "🔍",
+                "search": "",
                 "zeroRecords": "Không tìm thấy dữ liệu",
                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                 "infoEmpty": "Không có dữ liệu để hiển thị",
