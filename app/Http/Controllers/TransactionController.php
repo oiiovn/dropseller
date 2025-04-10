@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Notification;
 use App\Traits\BalanceLoggable;
+
 class TransactionController extends Controller
 {
     /**
@@ -88,7 +89,7 @@ class TransactionController extends Controller
 
         foreach ($users as $user) {
             $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
-            ->where('bank', 'MBB')
+                ->where('bank', 'MBB')
                 ->where('type', 'IN')
                 ->get();
             $transactionsByReferral[$user->referral_code] = [
@@ -141,18 +142,18 @@ class TransactionController extends Controller
         $uniqueId = $this->generateUniqueId();
         $amount = request('Amount');
         $referralCode = request('referral_code');
-    
+
         $user = User::where('referral_code', $referralCode)->first();
-    
+
         if (!$user) {
             return redirect()->back()->with('error', 'Không tìm thấy user với referral code này.');
         }
-    
+
         $type = "IN";
         $bank = "MBB";
         $description = $referralCode . ' ADMIN Nạp tiền';
         $account_number = $referralCode;
-    
+
         $transaction = Transaction::create([
             'id' => $uniqueId,
             'bank' => $bank,
@@ -165,5 +166,27 @@ class TransactionController extends Controller
         ]);
         return redirect()->back()->with('success', 'Giao dịch đã được thêm và số dư đã cập nhật!');
     }
-    
+    public function get_SI_transaction()
+    {
+        $referralCodes = [
+            'UT-',
+            'PUCA-',
+            'KHANH XUAN-',
+            'GO-',
+            'BAO AN-',
+        ];
+
+        $dd_si = [];
+
+        foreach ($referralCodes as $code) {
+            $transactions = Transaction::where('description', 'LIKE', "%$code%")->get();
+
+            $dd_si[$code] = [
+                'referral_code' => $code,
+                'transactions' => $transactions,
+            ];
+        }
+
+        return view('payment.transaction_si', compact('dd_si'));
+    }
 }
