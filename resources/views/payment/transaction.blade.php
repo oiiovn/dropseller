@@ -93,7 +93,7 @@
 
                             // Chỉnh Tiếng Việt
                             "language": {
-                                "lengthMenu": "Hiển thị _MENU_giao dịch",
+                                "lengthMenu": "Hiển thị _MENU_ giao dịch",
                                 "zeroRecords": "Không tìm thấy dữ liệu",
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
@@ -181,7 +181,7 @@
 
                             // Chỉnh Tiếng Việt
                             "language": {
-                                "lengthMenu": "Hiển thị _MENU_giao dịch",
+                                "lengthMenu": "Hiển thị _MENU_ giao dịch",
                                 "zeroRecords": "Không tìm thấy dữ liệu",
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
@@ -270,7 +270,7 @@
 
                             // Chỉnh Tiếng Việt
                             "language": {
-                                "lengthMenu": "Hiển thị _MENU_giao dịch",
+                                "lengthMenu": "Hiển thị _MENU_ giao dịch",
                                 "zeroRecords": "Không tìm thấy dữ liệu",
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
@@ -359,7 +359,7 @@
 
                             // Chỉnh Tiếng Việt
                             "language": {
-                                "lengthMenu": "Hiển thị _MENU_giao dịch",
+                                "lengthMenu": "Hiển thị _MENU_ giao dịch",
                                 "zeroRecords": "Không tìm thấy dữ liệu",
                                 "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                                 "infoEmpty": "Không có dữ liệu để hiển thị",
