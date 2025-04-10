@@ -23,18 +23,21 @@ use App\Services\ProgramService; // Import the ProgramService class
 Route::get('/', function () {
     return view('auth.login');
 });
-
-// Nhóm tất cả các route yêu cầu đăng nhập
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();
-        $programShops = ProgramService::getUnregisteredProgramsForUser($user); // gọi service
-        $showWelcomeModal = !empty($programShops); // nếu có chương trình chưa đăng ký => hiện
-
+        if (request()->query()) {
+            $showWelcomeModal = false;
+        } else {
+            $programShops = ProgramService::getUnregisteredProgramsForUser($user);
+            $showWelcomeModal = !empty($programShops);
+        }
         return view('index', [
             'showWelcomeModal' => $showWelcomeModal,
         ]);
     })->name('dashboard');
+    
+
     Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
     Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
         ->name('balance.history');

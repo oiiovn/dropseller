@@ -11,15 +11,12 @@ class GenerateAllBalanceHistories extends Command
 {
     protected $signature = 'balance:rebuild-all';
     protected $description = 'Chỉ thêm mới các lịch sử số dư chưa có, không xoá dữ liệu cũ.';
-
     public function handle()
     {
         $this->info('🚀 Đang tạo lịch sử số dư mới (không xoá dữ liệu cũ)...');
-
         $users = User::all();
         $userCount = 0;
         $newLogs = 0;
-
         foreach ($users as $user) {
             $userCode = $user->referral_code;
 
