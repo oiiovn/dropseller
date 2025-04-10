@@ -124,9 +124,9 @@
 
                                                 // Chỉnh Tiếng Việt
                                                 "language": {
-                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "lengthMenu": "Hiển thị _MENU_ hoá đơn",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
-                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ hoá đơn",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
                                                     "search": "🔍",
@@ -205,9 +205,9 @@
 
                                                 // Chỉnh Tiếng Việt
                                                 "language": {
-                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "lengthMenu": "Hiển thị _MENU_ hoá đơn",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
-                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ hoá đơn",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
                                                     "search": "🔍",

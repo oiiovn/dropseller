@@ -91,9 +91,9 @@
 
                                                 // Chỉnh Tiếng Việt
                                                 "language": {
-                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "lengthMenu": "Hiển thị _MENU_ quảng cáo",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
-                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ quảng cáo",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
                                                     "search": "🔍",
@@ -148,8 +148,6 @@
                                     <script>
                                         $(document).ready(function() {
                                             $('#ads_shop_{{ Str::slug($shopName) }}_haha').DataTable().destroy();
-                                          
-
                                             $('#ads_shop_{{ Str::slug($shopName) }}_haha').DataTable({
                                                 "paging": true, // Bật phân trang
                                                 "searching": true, // Bật tìm kiếm
@@ -162,9 +160,9 @@
 
                                                 // Chỉnh Tiếng Việt
                                                 "language": {
-                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                    "lengthMenu": "Hiển thị _MENU_ quảng cáo",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
-                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ quảng cáo",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
                                                     "search": "🔍",

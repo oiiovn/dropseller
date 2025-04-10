@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($histories as $item)
+                    @foreach ($histories as $item)
                     <tr>
                         <td>
                             <h5><code>{{ $item->transaction_code ?? '---' }}</code></h5>
@@ -50,11 +50,8 @@
                         <td>{{ number_format($item->balance_after) }} VND</td>
                         <td style="width:40%">{{ $item->note ?? '-' }}</td>
                     </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="text-center text-muted py-4">Không có lịch sử nào.</td>
-                    </tr>
-                    @endforelse
+
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -80,13 +77,16 @@
             "order": [
                 [1, "desc"]
             ],
+            "columns": [
+                null, null, null, null, null, null
+            ],
             "language": {
-                "search": "🔍",          
+                "search": "🔍",
                 "zeroRecords": "Không tìm thấy dữ liệu",
-                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ giao dịch",
                 "infoEmpty": "Không có dữ liệu để hiển thị",
                 "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                "lengthMenu": "Hiển thị _MENU_ giao dịch",
                 "paginate": {
                     "first": "Trang đầu",
                     "last": "Trang cuối",
