@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ads:auto-payment')->everyFiveMinutes();
         $schedule->command('PRG:auto-payment-progarm')->everyMinute(); 
         $schedule->command('balance:rebuild-all')->dailyAt('01:00');
+        // $schedule->command('check:balance-ai')->dailyAt('01:00');
     }
     
 

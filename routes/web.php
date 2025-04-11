@@ -18,7 +18,8 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\BillwebController;
 use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\BalanceHistoryController;
-use App\Services\ProgramService; // Import the ProgramService class
+use App\Services\ProgramService; 
+use App\Http\Controllers\Admin\BalanceIssueController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -82,6 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/programs/{id}/change-status', [ProgramController::class, 'changeStatus_Program'])->name('program.changeStatus');
         Route::get('/phi-web', [BillwebController::class, 'view_total_bill'])->name('view_total_bill');
         Route::post('/export-totalbill', [BillwebController::class, 'exportTotalBill'])->name('export.totalbill');
+        Route::get('/balance-issues', [BalanceIssueController::class, 'index'])->name('admin.balance_issues.index');
     });
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
