@@ -22,6 +22,7 @@
                         <th>Số tiền thay đổi</th>
                         <th>Số dư sau</th>
                         <th>Ghi chú</th>
+                        <th class="d-none">ID tham chiếu</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +50,7 @@
                         </td>
                         <td>{{ number_format($item->balance_after) }} VND</td>
                         <td style="width:40%">{{ $item->note ?? '-' }}</td>
+                        <td class="d-none">{{ $item->reference_id }}</td>
                     </tr>
 
                     @endforeach
@@ -75,10 +77,11 @@
             "info": true,
             "lengthMenu": [10, 20, 50, 100, 150],
             "order": [
-                [1, "desc"]
+                [1, "desc"],
+                [6, "desc"]
             ],
             "columns": [
-                null, null, null, null, null, null
+                null, null, null, null, null, null,null
             ],
             "language": {
                 "search": "",
