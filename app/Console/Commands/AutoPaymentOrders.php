@@ -41,9 +41,9 @@ class AutoPaymentOrders extends Command
             $orders = Order::where('shop_id', $shop->shop_id)
                 ->where('payment_status', 'Chưa thanh toán')
                 ->orderBy('created_at', 'asc')
+                ->orderBy('id', 'asc')
                 ->get();
-
-            $allOrders = array_merge($allOrders, $orders->toArray());
+                $allOrders = [...$allOrders, ...$orders->all()];
         }
 
         foreach ($allOrders as $orderData) {
