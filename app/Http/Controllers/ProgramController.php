@@ -75,7 +75,7 @@ class ProgramController extends Controller
             'transaction_id' => generateTransactionCode(),
             'amount' => $amount,
             'type' => 'IN',
-            'description' => 'O02JP' . $program->name_program,
+            'description' => 'O02JP ' . $program->name_program,
         ]);
 
         return redirect()->back()->with('success', 'Chương trình đã được tạo thành công!');

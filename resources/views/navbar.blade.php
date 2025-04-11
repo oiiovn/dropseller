@@ -252,6 +252,11 @@
                     <a href="{{route('get_SI_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached"> <i class="ri-layout-3-line"></i>Thanh toán hoá đơn Sỉ</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.balance_issues.index') }}">
+                        📉 Lỗi số dư AI
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#drop" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="drop">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Doanh thu Web</span>
