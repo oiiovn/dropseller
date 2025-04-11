@@ -31,7 +31,7 @@
                             <h5><code>{{ $item->transaction_code ?? '---' }}</code></h5>
                         </td>
                         <td data-order="{{ $item->created_at->timestamp }}">
-                            {{ $item->created_at->format('d/m/Y H:i') }}
+                            {{ $item->created_at->format('d/m/Y H:i:s') }}
                         </td>
                         <td>
                             @switch($item->type)
