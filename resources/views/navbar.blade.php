@@ -249,11 +249,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('get_SI_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached"> <i class="ri-layout-3-line"></i>Thanh toán hoá đơn Sỉ</a>
+                    <a href="{{ route('get_SI_transaction.list') }}" class="nav-link ajax-link menu-link" data-key="t-detached">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-detached">Thanh toán hoá đơn Sỉ</span>
+                    </a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.balance_issues.index') }}">
-                        📉 Lỗi số dư AI
+                    <a class="nav-link menu-link" href="{{ route('admin.balance_issues.index') }}">
+                        <i class="ri-error-warning-line"></i>
+                        <span data-key="t-error">Lỗi số dư AI</span>
                     </a>
                 </li>
                 <li class="nav-item">
