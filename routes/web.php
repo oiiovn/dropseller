@@ -22,7 +22,7 @@ use App\Services\ProgramService;
 use App\Http\Controllers\Admin\BalanceIssueController;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect('/login');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
