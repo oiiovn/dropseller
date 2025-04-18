@@ -1,7 +1,6 @@
 @extends('layout')
 @section('title', 'main')
 @section('main')
-
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -110,3 +109,4 @@
 </script>
 
 @endsection
+
