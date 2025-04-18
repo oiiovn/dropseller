@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
+use App\Models\Product;
 
 class OrderController extends Controller
 {
@@ -188,21 +189,14 @@ class OrderController extends Controller
     {
         $rows = Excel::toArray([], $request->file('file'))[0];
         $data = collect($rows)->skip(1);
-
         $ketQua = [];
-
         foreach ($data as $row) {
             [$ngays, $sku, $so_luong, $shopId] = $row;
-
-            // Chuẩn hoá ngày
             $ngay = Date::excelToDateTimeObject($ngays)->format('Y-m-d');
-
-            // Tìm đơn hàng
             $donHangs = DB::table('orders')
                 ->where('shop_id', $shopId)
                 ->whereRaw("? BETWEEN SUBSTRING_INDEX(filter_date, ' - ', 1) AND SUBSTRING_INDEX(filter_date, ' - ', -1)", [$ngay])
                 ->get();
-
             if ($donHangs->isEmpty()) {
                 $ketQua[] = [
                     'ngay' => $ngay,
@@ -214,14 +208,21 @@ class OrderController extends Controller
                 ];
             } else {
                 foreach ($donHangs as $don) {
+                    $product = Product::where('sku', $sku)
+                        ->with(['order_detail' => function ($q) use ($don) {
+                            $q->where('order_id', $don->id);
+                        }])
+                        ->first();
                     $ketQua[] = [
                         'ngay' => $ngay,
                         'shop_id' => $shopId,
                         'sku' => $sku,
-                        'so_luong' => $so_luong,
+                        'so_luong' => (int) $so_luong,
                         'order_code' => $don->order_code,
                         'filter_date' => $don->filter_date,
-                        'ket_qua' => '✅ Tìm được'
+                        'gia_san_pham' => $product->price ?? 0,
+                        'ket_qua' => '✅ Tìm được',
+                        'product' => $product, // ⭐ thêm toàn bộ thông tin sản phẩm tại đây
                     ];
                 }
             }
@@ -234,7 +235,6 @@ class OrderController extends Controller
             ->map(function ($group) {
                 $first = $group->first();
 
-                // Gom theo SKU, cộng dồn số lượng
                 $skuGrouped = $group->groupBy('sku')
                     ->map(function ($items) {
                         $tong = $items->sum('so_luong');
@@ -247,12 +247,30 @@ class OrderController extends Controller
                     'order_code' => $first['order_code'],
                     'filter_date' => $first['filter_date'],
                     'sku' => $skuGrouped,
+                    'tong_tien' => $group->sum(function ($item) {
+                        return $item['so_luong'] * $item['gia_san_pham'];
+                    }),
                     'ket_qua' => $first['ket_qua'],
                 ];
             })
             ->values();
-
-
+            $sanPhamGop = collect($ketQua)
+            ->filter(fn($item) => !empty($item['order_code'])) // ✅ chỉ lấy dòng có đơn hàng
+            ->groupBy('sku')
+            ->map(function ($items) {
+                $first = $items->first();
+                return [
+                    'sku' => $first['sku'],
+                    'product_name' => $first['product']->order_detail[0]->product_name ?? '',
+                    'image' => $first['product']->order_detail[0]->image ?? '',
+                    'so_luong' => $items->sum('so_luong'),
+                ];
+            })
+            ->values()
+            ->sortBy('sku')
+            ->values();
+            $tongSanPham = $sanPhamGop->sum('so_luong');
+        return response()->json($sanPhamGop);
         return view('order.import_don_hoan', ['ketQua' => $ketQuaGop]);
     }
 }

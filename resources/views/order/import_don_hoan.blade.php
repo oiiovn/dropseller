@@ -19,6 +19,8 @@
                 <th>Ngày lọc</th>
                 <th>SKU</th>
                 <th>Ghi chú</th>
+                <th>Tổng tiền</th>
+
             </tr>
         </thead>
         <tbody>
@@ -30,6 +32,7 @@
                     <td>{{ $item['filter_date'] }}</td>
                     <td>{{ $item['sku'] }}</td>
                     <td>{{ $item['ket_qua'] }}</td>
+                    <td>{{ number_format($item['tong_tien']) }} đ</td>
                 </tr>
             @endforeach
         </tbody>
