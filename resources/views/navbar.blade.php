@@ -126,7 +126,11 @@
                             <li class="nav-item">
                                 <a href="{{ route('balance.history') }}" class="nav-link ajax-link" data-key="t-chat">Biến động số dư</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="{{ route('settlement.settlement-report') }}">
+                                    <span data-key="t-settlement-report">Báo cáo quyết toán</span>
+                                </a>
+                            </li>
                             <!--
                             <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
@@ -272,6 +276,7 @@
                 <li class="nav-item">
                     <a href="{{route('view_total_bill')}}" class="nav-link ajax-link">Phí Drop & Gói sản phẩm</a>
                 </li>
+
 
                 <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>

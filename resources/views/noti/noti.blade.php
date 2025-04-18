@@ -1,5 +1,5 @@
 
-@if (isset($orders_unpaid) && !$orders_unpaid->isEmpty())
+<!-- @if (isset($orders_unpaid) && !$orders_unpaid->isEmpty())
 <a href="{{route('order_si')}}" class="alert-link"> 
 <div class="alert alert-danger alert-dismissible alert-label-icon label-arrow fade show material-shadow" role="alert">
     <i class="ri-error-warning-line label-icon"></i><strong style="margin-left:45px;">Số dư thấp</strong> - 
@@ -13,7 +13,7 @@
     
 </div>
 </a>
-@endif
+@endif -->
 <!-- @unless (Request::is('chien-dich'))
     <div class="alert alert-success alert-dismissible alert-additional fade show mb-0 material-shadow" role="alert">
         <div class="alert-body">

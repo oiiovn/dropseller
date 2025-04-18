@@ -46,4 +46,8 @@ class SettlementController extends Controller
         $total_chi = $totalPaid + $totalPaid_ads - $totalCanceled;
         return view('settlement.monthly', compact('month', 'totalTopup', 'totalPaid', 'totalCanceled', 'Ending_balance', 'totalPaid_ads', 'total_chi'));
     }
+    public function settlementReport()
+    {
+        return view('settlement.settlement-report');
+    }
 }
