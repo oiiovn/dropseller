@@ -1,112 +1,100 @@
 @extends('layout')
 @section('title', 'main')
 @section('main')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title mb-0">Dropzone</h4>
-            </div>
-            <div class="card-body">
-                <!-- Mô tả -->
-                <p class="text-muted" id="dropzone-description">
-                    DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews.
-                </p>
+<form action="{{ url('/import-don-hoan') }}" method="POST" enctype="multipart/form-data" class="upload-form shadow p-4 rounded bg-white border">
+    @csrf
 
-                <!-- Khu vực kéo thả file -->
-                <div class="dropzone" id="dropzone-area">
-                    <div class="fallback">
-                        <input name="file" type="file" multiple="multiple">
-                    </div>
-                    <div class="dz-message needsclick">
-                        <div class="mb-3">
-                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                        </div>
-                        <h4>Drop files here or click to upload.</h4>
-                    </div>
-                </div>
+    <div class="mb-3">
+        <label for="file" class="form-label fw-bold">📁 Chọn file Excel:</label>
+        <input type="file" class="form-control" name="file" id="file" required>
+    </div>
 
-                <!-- Template preview (ẩn đi, Dropzone sẽ clone từ đây) -->
-                <div id="dropzone-preview-list" style="display: none;">
-                    <div class="border rounded mt-2">
-                        <div class="d-flex p-2">
-                            <div class="flex-shrink-0 me-3">
-                                <div class="avatar-sm bg-light rounded">
-                                    <img data-dz-thumbnail class="img-fluid rounded d-block"
-                                        src="assets/images/new-document.png" alt="Dropzone-Image" />
+    <button type="submit" class="btn btn-primary w-100">
+        🚀 Tải lên và xử lý
+    </button>
+</form>
+
+
+@if (isset($ketQua))
+<div class="container-fluid bg-white">
+
+    <div class="d-flex justify-content-between align-items-center p-2 mt-4 mb-3">
+        <h4 class="fw-bold mb-0">📊 Kết quả sản phẩm hoàn:</h4>
+
+        {{-- Nút bên phải --}}
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTaoDonHoan">
+            📥 Tạo đơn hoàn
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalTaoDonHoan" tabindex="-1" aria-labelledby="modalTaoDonHoanLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-centered p-5">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTaoDonHoanLabel">📥 Tạo đơn hoàn</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid py-2">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold">Tổng số sản phẩm ({{$tongSanPham}})</h5>
+                                <div>
+                                    <a href="#" class="btn btn-primary">📥 Tạo đơn hoàn</a>
                                 </div>
                             </div>
-                            <div class="flex-grow-1">
-                                <div class="pt-1">
-                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                    <strong class="error text-danger" data-dz-errormessage></strong>
+
+                            <div class="row g-3">
+                                @foreach($sanPhamGop as $item)
+                                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <img src="{{ $item['image'] }}" class="card-img-top object-fit-cover " style="width:50px; height:50px;" alt="{{ $item['sku'] }}">
+                                        <div class="card-body p-2">
+                                            <h6 class="fw-bold text-primary mb-1">{{ $item['sku'] }}</h6>
+                                            <p class="small text-muted mb-2 text-truncate" title="{{ $item['product_name'] }}">
+                                                {{ $item['product_name'] }}
+                                            </p>
+                                            <p class="mb-0"><strong>Số lượng:</strong> {{ $item['so_luong'] }}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex-shrink-0 ms-4">
-                                <button data-dz-remove class="btn btn-sm btn-info">Tải lên xử lý</button>
-                                <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                @endforeach
                             </div>
                         </div>
+
                     </div>
                 </div>
-
-                <!-- Danh sách file đã thêm -->
-                <ul class="list-unstyled mb-0" id="dropzone-preview"></ul>
             </div>
         </div>
+
     </div>
-</div>
 
-<!-- Nút back to top -->
-<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
-    <i class="ri-arrow-up-line"></i>
-</button>
-
-<!-- Preloader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner-border text-primary avatar-sm" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered table-striped align-middle text-center mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Ngày</th>
+                    <th>Shop ID</th>
+                    <th>Mã đơn</th>
+                    <th>Ngày lọc</th>
+                    <th>SKU</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($ketQua as $item)
+                <tr>
+                    <td>{{ $item['ngay'] }}</td>
+                    <td>{{ $item['shop_id'] }}</td>
+                    <td>{{ $item['order_code'] }}</td>
+                    <td>{{ $item['filter_date'] }}</td>
+                    <td>{{ $item['sku'] }}</td>
+                    <td>{!! $item['ket_qua'] !!}</td> {{-- Cho phép emoji hoặc icon HTML --}}
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+
 </div>
-
-<!-- Cài đặt giao diện -->
-<div class="customizer-setting d-none d-md-block">
-    <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
-        data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-    </div>
-</div>
-
-<!-- JS -->
-<script src="assets/libs/dropzone/dropzone-min.js"></script>
-<script>
-    Dropzone.autoDiscover = false;
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const myDropzone = new Dropzone("#dropzone-area", {
-            url: "/upload", // Cập nhật endpoint xử lý
-            previewTemplate: document.querySelector("#dropzone-preview-list").innerHTML,
-            previewsContainer: "#dropzone-preview",
-            clickable: "#dropzone-area",
-            init: function () {
-                this.on("addedfile", function () {
-                    document.getElementById("dropzone-area").style.display = "none";
-                    document.getElementById("dropzone-description").style.display = "none";
-                });
-
-                this.on("removedfile", function () {
-                    if (this.files.length === 0) {
-                        document.getElementById("dropzone-area").style.display = "block";
-                        document.getElementById("dropzone-description").style.display = "block";
-                    }
-                });
-            }
-        });
-    });
-</script>
-
+@endif
 @endsection
-

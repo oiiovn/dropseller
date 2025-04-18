@@ -270,7 +270,7 @@ class OrderController extends Controller
             ->sortBy('sku')
             ->values();
             $tongSanPham = $sanPhamGop->sum('so_luong');
-        return response()->json($sanPhamGop);
-        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop]);
+        // return response()->json($sanPhamGop);
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop ,'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham]);
     }
 }
