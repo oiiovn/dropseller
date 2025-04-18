@@ -1,31 +1,26 @@
 @extends('layout')
 @section('title', 'main')
-@section('main')
-<form action="{{ url('/import-don-hoan') }}" method="POST" enctype="multipart/form-data" class="upload-form shadow p-4 rounded bg-white border">
+<div style="height: 100vh; overflow: hidden;">
+    @section('main')
+</div>
+<form action="{{ url('/import-don-hoan') }}" method="POST" enctype="multipart/form-data" class="upload-form shadow p-2 ps-4 pe-4 rounded bg-white border">
     @csrf
 
-    <div class="mb-3">
-        <label for="file" class="form-label fw-bold">📁 Chọn file Excel:</label>
-        <input type="file" class="form-control" name="file" id="file" required>
+    <div class="mb-2 w-50">
+        <label for="file" class="form-label fw-bold"><img src="https://salework.net/assets/images/apps/stock.png" alt="File Icon" style="width:4%;"> Chọn file Excel đơn hoàn Salework:</label>
+        <div class="d-flex align-items-center" style="gap: 20px;">
+            <input type="file" class="form-control" name="file" id="file" required style="max-width: 300px;">
+            <button type="submit" class="btn btn-success">
+                Tải lên và xử lý
+            </button>
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary w-100">
-        🚀 Tải lên và xử lý
-    </button>
 </form>
 
-
 @if (isset($ketQua))
-<div class="container-fluid bg-white">
+<div class="container-fluid bg-white mt-3 rounded-3 shadow" style="max-height: calc(100vh - 50px); ">
 
-    <div class="d-flex justify-content-between align-items-center p-2 mt-4 mb-3">
-        <h4 class="fw-bold mb-0">📊 Kết quả sản phẩm hoàn:</h4>
-
-        {{-- Nút bên phải --}}
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTaoDonHoan">
-            📥 Tạo đơn hoàn
-        </button>
-
+    <div class="d-flex justify-content-between align-items-center   rounded-3">
         <!-- Modal -->
         <div class="modal fade" id="modalTaoDonHoan" tabindex="-1" aria-labelledby="modalTaoDonHoanLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-centered p-5">
@@ -68,9 +63,18 @@
 
     </div>
 
-    <div class="table-responsive shadow-sm rounded">
+    <div class="table-responsive shadow-sm rounded-3">
         <table class="table table-bordered table-striped align-middle text-center mb-0">
-            <thead class="table-dark">
+            <div class="col-12 d-flex justify-content-between align-items-center  p-2 rounded-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0 text-muted">Danh sách sản phẩm hoàn :</h4>
+                </div>
+                {{-- Nút bên phải ngoài cùng --}}
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTaoDonHoan">
+                        Tạo đơn hoàn
+                    </button>
+            </div>
+            <thead class="bg-primary-subtle">
                 <tr>
                     <th>Ngày</th>
                     <th>Shop ID</th>
@@ -83,12 +87,12 @@
             <tbody>
                 @foreach($ketQua as $item)
                 <tr>
-                    <td>{{ $item['ngay'] }}</td>
+                    <td class="col-1">{{ $item['ngay'] }}</td>
                     <td>{{ $item['shop_id'] }}</td>
                     <td>{{ $item['order_code'] }}</td>
-                    <td>{{ $item['filter_date'] }}</td>
+                    <td class="col-2">{{ $item['filter_date'] }}</td>
                     <td>{{ $item['sku'] }}</td>
-                    <td>{!! $item['ket_qua'] !!}</td> {{-- Cho phép emoji hoặc icon HTML --}}
+                    <td class="col-1">{!! $item['ket_qua'] !!}</td> {{-- Cho phép emoji hoặc icon HTML --}}
                 </tr>
                 @endforeach
             </tbody>
@@ -98,3 +102,28 @@
 </div>
 @endif
 @endsection
+
+<style>
+    .table-responsive {
+        position: relative;
+        max-height: 78vh;
+        /* Chiều cao tối đa của bảng */
+        overflow-y: auto;
+        /* Kích hoạt thanh cuộn dọc */
+    }
+
+    .table-bordered thead th {
+        position: sticky;
+        top: -1;
+        /* Giữ cố định ở trên cùng */
+        z-index: 1;
+        /* Đảm bảo header nằm trên nội dung */
+        background-color: #f8f9fa;
+        /* Màu nền cho header */
+    }
+
+    .bg-primary-subtle {
+        background-color: #e9ecef;
+        /* Màu nền header */
+    }
+</style>
