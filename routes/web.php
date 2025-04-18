@@ -100,4 +100,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
 
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
+    Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
 });
