@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
-
+use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
 
 class OrderController extends Controller
 {
@@ -22,42 +23,42 @@ class OrderController extends Controller
         return view('payment.transaction_all');
     }
     public function Get_orders_all()
-    {   
+    {
         $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
         $orders_all = [];
-    
+
         foreach ($shops as $shop) {
             $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
-    
+
             if (!isset($orders_all[$userName])) {
                 $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
             }
-    
+
             $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
         }
 
         return view('order.orders_all', compact('orders_all'));
     }
-    
+
 
 
     public function order_si(Request $request)
     {
         $user = Auth::user();
         $shops = Shop::where('user_id', $user->id)->get();
-    
+
         $ordersQuery = Order::whereIn('shop_id', $shops->pluck('shop_id'))
             ->with(['shop', 'orderDetails'])
             ->orderBy('created_at', 'desc');
-    
+
         if ($request->has('order_code') && !empty($request->order_code)) {
             $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
         }
-    
-        $orders = $ordersQuery->get(); 
+
+        $orders = $ordersQuery->get();
         return view('order.order_si', compact('orders', 'shops'));
     }
-    
+
 
 
     public function exportOrders()
@@ -175,5 +176,83 @@ class OrderController extends Controller
 
             return redirect()->route('productsss')->with('success', 'Đơn hàng này đã được tạo mới!');
         }
+    }
+    // đơn hoàn
+    public function showImportForm()
+    {
+        return view('order.import_don_hoan');
+    }
+
+
+    public function import(Request $request)
+    {
+        $rows = Excel::toArray([], $request->file('file'))[0];
+        $data = collect($rows)->skip(1);
+
+        $ketQua = [];
+
+        foreach ($data as $row) {
+            [$ngays, $sku, $so_luong, $shopId] = $row;
+
+            // Chuẩn hoá ngày
+            $ngay = Date::excelToDateTimeObject($ngays)->format('Y-m-d');
+
+            // Tìm đơn hàng
+            $donHangs = DB::table('orders')
+                ->where('shop_id', $shopId)
+                ->whereRaw("? BETWEEN SUBSTRING_INDEX(filter_date, ' - ', 1) AND SUBSTRING_INDEX(filter_date, ' - ', -1)", [$ngay])
+                ->get();
+
+            if ($donHangs->isEmpty()) {
+                $ketQua[] = [
+                    'ngay' => $ngay,
+                    'shop_id' => $shopId,
+                    'sku' => $sku,
+                    'order_code' => null,
+                    'filter_date' => null,
+                    'ket_qua' => '❌ Không tìm thấy đơn nào'
+                ];
+            } else {
+                foreach ($donHangs as $don) {
+                    $ketQua[] = [
+                        'ngay' => $ngay,
+                        'shop_id' => $shopId,
+                        'sku' => $sku,
+                        'so_luong' => $so_luong,
+                        'order_code' => $don->order_code,
+                        'filter_date' => $don->filter_date,
+                        'ket_qua' => '✅ Tìm được'
+                    ];
+                }
+            }
+        }
+
+        $ketQuaGop = collect($ketQua)
+            ->groupBy(function ($item) {
+                return $item['ngay'] . '|' . $item['shop_id'] . '|' . $item['order_code'];
+            })
+            ->map(function ($group) {
+                $first = $group->first();
+
+                // Gom theo SKU, cộng dồn số lượng
+                $skuGrouped = $group->groupBy('sku')
+                    ->map(function ($items) {
+                        $tong = $items->sum('so_luong');
+                        return $items->first()['sku'] . ' (' . $tong . ')';
+                    })->values()->implode(', ');
+
+                return [
+                    'ngay' => $first['ngay'],
+                    'shop_id' => $first['shop_id'],
+                    'order_code' => $first['order_code'],
+                    'filter_date' => $first['filter_date'],
+                    'sku' => $skuGrouped,
+                    'ket_qua' => $first['ket_qua'],
+                ];
+            })
+            ->values();
+
+
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop]);
     }
 }
