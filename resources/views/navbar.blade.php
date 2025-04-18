@@ -226,6 +226,9 @@
                             <li class="nav-item">
                                 <a href="{{route('quang_cao_all')}}" class="nav-link ajax-link" data-key="t-chat"> Tất Cả Quảng cáo</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{route('order.import_don_hoan')}}" class="nav-link ajax-link" data-key="t-chat"> Thêm GĐ đơn hoàn</a>
+                            </li>
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
                                 <div class="collapse menu-dropdown" id="sidebarEmail">
