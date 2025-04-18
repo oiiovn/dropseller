@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
         }
         return view('index', [
             'showWelcomeModal' => $showWelcomeModal,
-        ]);
+        ]);   
     })->name('dashboard');
     
 
@@ -100,4 +100,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
 
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
+
+
+    // hoàn dơn
+    Route::get('/import-don-hoan', [OrderController::class, 'showImportForm']);
+    Route::post('/import-don-hoan', [OrderController::class, 'import']);
+
 });
