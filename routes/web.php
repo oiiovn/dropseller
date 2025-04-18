@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
 
     // hoàn dơn
-    Route::get('/import-don-hoan', [OrderController::class, 'showImportForm']);
+    Route::get('/import-don-hoan', [OrderController::class, 'showImportForm'])->name('order.import_don_hoan');
     Route::post('/import-don-hoan', [OrderController::class, 'import']);
 
     Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
