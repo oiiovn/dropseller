@@ -2,7 +2,7 @@
 @section('title', 'main')
 <div style="height: 100vh; overflow: hidden;">
     @section('main')
-</div>
+
 <form action="{{ url('/import-don-hoan') }}" method="POST" enctype="multipart/form-data" class="upload-form shadow p-2 ps-4 pe-4 rounded bg-white border">
     @csrf
     <div class="mb-2 w-50">
@@ -126,7 +126,9 @@
     </div>
 </div>
 @endif
+</div>
 @endsection
+
 <style>
     .table-responsive {
         position: relative;
@@ -151,3 +153,5 @@
         /* Màu nền header */
     }
 </style>
+@endsection
+
