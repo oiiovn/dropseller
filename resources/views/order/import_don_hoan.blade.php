@@ -127,7 +127,6 @@
 </div>
 @endif
 </div>
-@endsection
 
 <style>
     .table-responsive {
