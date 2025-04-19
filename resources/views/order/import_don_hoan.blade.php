@@ -65,7 +65,7 @@
             <div class="modal-content rounded-3">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalXacNhanLabel">Xác nhận</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    <svg type="button" data-bs-dismiss="modal" aria-label="Đóng" class="arco-icon arco-icon-close " width="1em" height="1em" viewBox="0 0 17 17" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#svg_716f6b3059__clip0_361_32912)"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.725 4.964l.353-.353-.707-.707-.353.353-3.535 3.534L4.95 4.257l-.353-.353-.707.707.353.353 3.534 3.534-3.534 3.535-.353.353.707.707.353-.353 3.534-3.534 3.535 3.534.353.353.707-.707-.353-.353L9.19 8.498l3.534-3.534z" fill-opacity="1"></path></g><defs><clipPath id="svg_716f6b3059__clip0_361_32912"><path transform="translate(.483 .499)" d="M0 0h16v16H0z"></path></clipPath></defs></svg>
                 </div>
                 <div class="modal-body">
                     <div class="form-check mb-2">
@@ -97,7 +97,7 @@
                 </div>
                 {{-- Nút bên phải ngoài cùng --}}
                 <button class="btn btn-success me-md-4 " data-bs-toggle="modal" data-bs-target="#modalTaoDonHoan">
-                    + Tạo đơn hoàn
+                <svg class="theme-arco-icon theme-arco-icon-add " width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8.6661 2.33403C8.6661 2.14995 8.51688 2.00073 8.3328 2.00073H7.66622C7.48215 2.00073 7.33293 2.14995 7.33293 2.33403V7.33341H2.33354C2.14946 7.33341 2.00024 7.48263 2.00024 7.66671V8.33329C2.00024 8.51736 2.14946 8.66658 2.33354 8.66658H7.33293V13.666C7.33293 13.85 7.48215 13.9993 7.66622 13.9993H8.3328C8.51688 13.9993 8.6661 13.85 8.6661 13.666V8.66658H13.6655C13.8496 8.66658 13.9988 8.51736 13.9988 8.33329V7.66671C13.9988 7.48263 13.8496 7.33341 13.6655 7.33341H8.6661V2.33403Z" fill-opacity="1"></path></svg> Tạo đơn hoàn
                 </button>
             </div>
             <thead class="bg-success">
