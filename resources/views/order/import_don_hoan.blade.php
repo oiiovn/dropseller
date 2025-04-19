@@ -18,42 +18,43 @@
 </form>
 
 @if (isset($ketQua))
-<div class="container-fluid bg-white mt-3 rounded-3 shadow" style="max-height: calc(100vh - 50px); ">
+<div class="container-fluid bg-white p-2 mt-3 rounded-3 shadow" style="max-height: calc(100vh - 50px); ">
 
     <div class="d-flex justify-content-between align-items-center   rounded-3">
         <!-- Modal -->
-        <div class="modal fade" id="modalTaoDonHoan" tabindex="-1" aria-labelledby="modalTaoDonHoanLabel" aria-hidden="true">
+        <div class="modal fade " id="modalTaoDonHoan" tabindex="-1" aria-labelledby="modalTaoDonHoanLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-centered p-5">
-                <div class="modal-content">
+                <div class="modal-content rounded-3">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTaoDonHoanLabel">📥 Tạo đơn hoàn</h5>
+                        <h5 class="modal-title" id="modalTaoDonHoanLabel">Tổng số sản phẩm ({{$tongSanPham}})</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body pt-0">
                         <div class="container-fluid py-2">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="fw-bold">Tổng số sản phẩm ({{$tongSanPham}})</h5>
-                                <div>
-                                    <a href="#" class="btn btn-primary">📥 Tạo đơn hoàn</a>
+                            <div class="col-12 d-flex justify-content-between align-items-center mb-1">
+                                <div class="ms-auto">
+                                    <a href="#" class="btn btn-success">Tiếp tục tạo đơn</a>
                                 </div>
                             </div>
-
                             <div class="row g-3">
                                 @foreach($sanPhamGop as $item)
-                                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
-                                    <div class="card h-100 shadow-sm">
-                                        <img src="{{ $item['image'] }}" class="card-img-top object-fit-cover " style="width:50px; height:50px;" alt="{{ $item['sku'] }}">
-                                        <div class="card-body p-2">
-                                            <h6 class="fw-bold text-primary mb-1">{{ $item['sku'] }}</h6>
-                                            <p class="small text-muted mb-2 text-truncate" title="{{ $item['product_name'] }}">
-                                                {{ $item['product_name'] }}
-                                            </p>
-                                            <p class="mb-0"><strong>Số lượng:</strong> {{ $item['so_luong'] }}</p>
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                    <div class="card shadow-sm p-2">
+                                        <div class="d-flex align-items-center gap-1">
+                                            <img src="{{ $item['image'] }}" class="object-fit-cover rounded" style="width:100px; height:100px;" alt="{{ $item['sku'] }}">
+                                            <div style="min-width: 0;">
+                                                <h6 class="fw-bold text-primary mb-1">{{ $item['sku'] }}</h6>
+                                                <p class="small text-muted mb-1 text-truncate" title="{{ $item['product_name'] }}" style="max-width: 100%;">
+                                                    {{ $item['product_name'] }}
+                                                </p>
+                                                <p class="mb-0"><strong>Số lượng:</strong> {{ $item['so_luong'] }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
+
                         </div>
 
                     </div>
@@ -70,11 +71,11 @@
                     <h4 class="fw-bold mb-0 text-muted">Danh sách sản phẩm hoàn :</h4>
                 </div>
                 {{-- Nút bên phải ngoài cùng --}}
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTaoDonHoan">
-                        Tạo đơn hoàn
-                    </button>
+                <button class="btn btn-success me-md-4 " data-bs-toggle="modal" data-bs-target="#modalTaoDonHoan">
+                    + Tạo đơn hoàn
+                </button>
             </div>
-            <thead class="bg-primary-subtle">
+            <thead class="bg-success">
                 <tr>
                     <th>Ngày</th>
                     <th>Shop ID</th>
@@ -88,11 +89,11 @@
                 @foreach($ketQua as $item)
                 <tr>
                     <td class="col-1">{{ $item['ngay'] }}</td>
-                    <td>{{ $item['shop_id'] }}</td>
-                    <td>{{ $item['order_code'] }}</td>
+                    <td class="col-1">{{ $item['shop_id'] }}</td>
+                    <td class="col-1">{{ $item['order_code'] }}</td>
                     <td class="col-2">{{ $item['filter_date'] }}</td>
-                    <td>{{ $item['sku'] }}</td>
-                    <td class="col-1">{!! $item['ket_qua'] !!}</td> {{-- Cho phép emoji hoặc icon HTML --}}
+                    <td class="text-start col-5">{{ $item['sku'] }}</td>
+                    <td class="col-2">{!! $item['ket_qua'] !!}</td> {{-- Cho phép emoji hoặc icon HTML --}}
                 </tr>
                 @endforeach
             </tbody>
@@ -118,12 +119,12 @@
         /* Giữ cố định ở trên cùng */
         z-index: 1;
         /* Đảm bảo header nằm trên nội dung */
-        background-color: #f8f9fa;
+        background-color:rgb(124, 179, 234);
         /* Màu nền cho header */
     }
 
-    .bg-primary-subtle {
-        background-color: #e9ecef;
+    .bg-success {
+        background-color:rgb(107, 172, 237);
         /* Màu nền header */
     }
 </style>
