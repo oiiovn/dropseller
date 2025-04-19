@@ -16,6 +16,7 @@ use App\Models\Shop;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
 use App\Models\Product;
+use App\Models\Transaction; // Import the Transaction model
 
 class OrderController extends Controller
 {
@@ -221,20 +222,20 @@ class OrderController extends Controller
                         'order_code' => $don->order_code,
                         'filter_date' => $don->filter_date,
                         'gia_san_pham' => $product->price ?? 0,
-                        'ket_qua' => '✅ Tìm được',
+                        'ket_qua' => '✅',
                         'product' => $product, // ⭐ thêm toàn bộ thông tin sản phẩm tại đây
                     ];
                 }
             }
         }
 
-        $ketQuaGop = collect($ketQua)
-            ->groupBy(function ($item) {
-                return $item['ngay'] . '|' . $item['shop_id'] . '|' . $item['order_code'];
-            })
+        $timThay = collect($ketQua)->where('order_code', '!=', null);
+        $khongTimThay = collect($ketQua)->where('order_code', null);
+
+        $gopTimThay = $timThay
+            ->groupBy(fn($item) => $item['ngay'] . '|' . $item['shop_id'] . '|' . $item['order_code'])
             ->map(function ($group) {
                 $first = $group->first();
-
                 $skuGrouped = $group->groupBy('sku')
                     ->map(function ($items) {
                         $tong = $items->sum('so_luong');
@@ -247,14 +248,34 @@ class OrderController extends Controller
                     'order_code' => $first['order_code'],
                     'filter_date' => $first['filter_date'],
                     'sku' => $skuGrouped,
-                    'tong_tien' => $group->sum(function ($item) {
-                        return $item['so_luong'] * $item['gia_san_pham'];
-                    }),
-                    'ket_qua' => $first['ket_qua'],
+                    'tong_tien' => $group->sum(fn($item) => $item['so_luong'] * $item['gia_san_pham']),
+                    'ket_qua' => '✅ ',
                 ];
-            })
+            });
+
+        $gopKhongTimThay = $khongTimThay
+            ->groupBy(fn($item) => $item['ngay'] . '|' . $item['shop_id'])
+            ->map(function ($group) {
+                $first = $group->first();
+                $skuList = $group->pluck('sku')->implode(', ');
+
+                return [
+                    'ngay' => $first['ngay'],
+                    'shop_id' => $first['shop_id'],
+                    'order_code' => null,
+                    'filter_date' => null,
+                    'sku' => $skuList,
+                    'tong_tien' => 0,
+                    'ket_qua' => '❌',
+                ];
+            });
+
+        $ketQuaGop = $gopTimThay
+            ->merge($gopKhongTimThay)
+            ->sortByDesc(fn($item) => $item['ket_qua'] === '❌')
             ->values();
-            $sanPhamGop = collect($ketQua)
+
+        $sanPhamGop = collect($ketQua)
             ->filter(fn($item) => !empty($item['order_code'])) // ✅ chỉ lấy dòng có đơn hàng
             ->groupBy('sku')
             ->map(function ($items) {
@@ -269,8 +290,44 @@ class OrderController extends Controller
             ->values()
             ->sortBy('sku')
             ->values();
-            $tongSanPham = $sanPhamGop->sum('so_luong');
-        // return response()->json($sanPhamGop);
-        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop ,'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham]);
+        $tongSanPham = $sanPhamGop->sum('so_luong');
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham]);
     }
+    public function taoThanhToan(Request $request)
+{
+    $ketQuaGop = collect(unserialize(base64_decode($request->input('data'))));
+
+    $donCanThanhToan = $ketQuaGop->filter(function ($item) {
+        return $item['order_code'] !== null && $item['tong_tien'] > 0;
+    })->values();
+
+    if ($donCanThanhToan->isNotEmpty()) {
+        foreach ($donCanThanhToan as $don) {
+            $transactionId = $this->generateUniqueTransactionId();
+            Transaction::create([
+                'bank' => 'DROP',
+                'account_number' => Shop::find($don['shop_id'])->user->referral_code ?? null,
+                'transaction_date' => now(),
+                'transaction_id' => $transactionId . '-' . $don['order_code'],
+                'description' => Shop::find($don['shop_id'])->user->referral_code ?? null . ' - Đơn: ' . $don['order_code'] . ' sản phẩm: ' . $don['sku'],
+                'type' => 'IN',
+                'amount' => $don['tong_tien'],
+            ]);
+        }
+
+        return redirect()->back()->with('message', '✅ Đã tạo thanh toán thành công!');
+    } else {
+        return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
+    }
+}
+
+    private function generateUniqueTransactionId()
+    {
+        do {
+            $transactionId = 'DH' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+        } while (Transaction::where('transaction_id', $transactionId)->exists());
+
+        return $transactionId;
+    }
+
 }
