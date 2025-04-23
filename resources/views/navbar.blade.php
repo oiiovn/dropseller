@@ -196,6 +196,20 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Quyết toán</span>
+
+                    </a>
+                    <div class="collapse menu-dropdown" id="1">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('user-monthly-reports.index')}}" class="nav-link ajax-link" data-key="t-horizontal">Danh sách quyết toán</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Quản lý dịch vụ Drops</span>
