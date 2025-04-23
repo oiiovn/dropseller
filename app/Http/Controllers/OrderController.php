@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
 use App\Models\Product;
 use App\Models\Transaction; // Import the Transaction model
+use App\Models\ReturnOrder; // Import the ReturnOrder model
 
 class OrderController extends Controller
 {
@@ -228,7 +229,7 @@ class OrderController extends Controller
                 }
             }
         }
-
+        $shops = Shop::all();
         $timThay = collect($ketQua)->where('order_code', '!=', null);
         $khongTimThay = collect($ketQua)->where('order_code', null);
 
@@ -291,43 +292,34 @@ class OrderController extends Controller
             ->sortBy('sku')
             ->values();
         $tongSanPham = $sanPhamGop->sum('so_luong');
-        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham]);
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham , 'shops' => $shops]);
     }
     public function taoThanhToan(Request $request)
-{
-    $ketQuaGop = collect(unserialize(base64_decode($request->input('data'))));
-
-    $donCanThanhToan = $ketQuaGop->filter(function ($item) {
-        return $item['order_code'] !== null && $item['tong_tien'] > 0;
-    })->values();
-
-    if ($donCanThanhToan->isNotEmpty()) {
-        foreach ($donCanThanhToan as $don) {
-            $transactionId = $this->generateUniqueTransactionId();
-            Transaction::create([
-                'bank' => 'DROP',
-                'account_number' => Shop::find($don['shop_id'])->user->referral_code ?? null,
-                'transaction_date' => now(),
-                'transaction_id' => $transactionId . '-' . $don['order_code'],
-                'description' => Shop::find($don['shop_id'])->user->referral_code ?? null . ' - Đơn: ' . $don['order_code'] . ' sản phẩm: ' . $don['sku'],
-                'type' => 'IN',
-                'amount' => $don['tong_tien'],
-            ]);
-        }
-
-        return redirect()->back()->with('message', '✅ Đã tạo thanh toán thành công!');
-    } else {
-        return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
-    }
-}
-
-    private function generateUniqueTransactionId()
     {
-        do {
-            $transactionId = 'DH' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
-        } while (Transaction::where('transaction_id', $transactionId)->exists());
+        $ketQuaGop = collect(unserialize(base64_decode($request->input('data'))));
 
-        return $transactionId;
+        $donCanThanhToan = $ketQuaGop->filter(function ($item) {
+            return $item['order_code'] !== null && $item['tong_tien'] > 0;
+        })->values();
+// dd($donCanThanhToan);
+        if ($donCanThanhToan->isNotEmpty()) {
+            foreach ($donCanThanhToan as $don) {
+                ReturnOrder::create([
+                    'order_code' => $don['order_code'],
+                    'shop_id' => $don['shop_id'],
+                    'ngay' => $don['ngay'],
+                    'sku' => json_encode($don['sku']), // có thể là chuỗi hoặc mảng → encode lại nếu là text
+                    'tong_tien' => $don['tong_tien'],
+                    'payment_status' => 'Chưa thanh toán',
+                    'transaction_id' => null,
+                ]);
+            }
+
+            return redirect()->back()->with('message', '✅ Đã tạo thanh toán thành công!');
+        } else {
+            return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
+        }
     }
 
+    
 }

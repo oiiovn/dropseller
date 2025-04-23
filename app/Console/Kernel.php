@@ -17,25 +17,25 @@ class Kernel extends ConsoleKernel
         $schedule->command('orders:auto-payment')->everyFiveMinutes(); //5 phút 1 lần
         $schedule->command('orders:update-reconciled')->dailyAt('02:00'); // Chạy lúc 2h sáng mỗi ngày
         $schedule->command('ads:auto-payment')->everyFiveMinutes();
-        $schedule->command('PRG:auto-payment-progarm')->everyMinute(); 
+        $schedule->command('PRG:auto-payment-progarm')->everyMinute();
         $schedule->command('balance:rebuild-all')->dailyAt('01:00');
+        $schedule->command('auto:settle-monthly')
+            ->monthlyOn(24, '00:05') // chạy vào 00:05 ngày 24 hàng tháng
+            ->withoutOverlapping();
         // $schedule->command('check:balance-ai')->dailyAt('01:00');
     }
-    
+
 
     /**
      * Register the commands for the application.
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
     protected $commands = [
         \App\Console\Commands\AutoPaymentAds::class,
     ];
-    
-    
-    
 }
