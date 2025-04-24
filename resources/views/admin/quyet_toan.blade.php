@@ -14,6 +14,7 @@
                     <th>Đã chi(Web)</th>
                     <th>Đơn huỷ(Web)</th>
                     <th>Đơn hoàn</th>
+                    <th>Thực tế(Web)</th>
                     <th>Quà hoàn(salework)</th>
                     <th>Thực tế(salework)</th>
                     <th>Chênh lệch</th>
@@ -38,6 +39,9 @@
                         </td>
                     <td>{{ $item->user->name }}</td>
                     <td>{{ $item->month }}</td>
+                    <td>{{ number_format($item->total_paid) }}đ</td>
+                    <td>{{ number_format($item->total_canceled) }}đ</td>
+                    <td>{{ number_format($item->total_return) }}đ</td>
                     <td>{{ number_format($item->total_chi) }}đ</td>
                     <td>{{ number_format($item->khau_trang) }}đ</td>
                     <td>{{ number_format($item->tien_thuc_te) }}đ</td>
