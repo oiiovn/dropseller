@@ -145,7 +145,7 @@
                                                 <p><strong>Thanh toán quảng cáo:</strong> <span class="text-primary fw-bold">{{ number_format($item->total_paid_ads) }} VND</span></p>
                                                 <p><strong>Đơn đã huỷ:</strong> <span class="text-danger fw-bold">{{ number_format($item->total_canceled) }} VND</span></p>
                                                 <p><strong>Đơn hoàn:</strong> <span class="text-danger fw-bold">{{ number_format($item->total_return) }} VND</span></p>
-
+                                                <p><strong>Tiền Dropships:</strong> <span class="text-danger fw-bold">{{ number_format($item->Drop_ships) }} VND</span></p>
                                                 @if (!empty($item->shop_details))
                                                 <div class="mt-3">
                                                     <strong>Chi tiết hoàn theo shop:</strong>

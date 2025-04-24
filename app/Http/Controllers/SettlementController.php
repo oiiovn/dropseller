@@ -19,7 +19,27 @@ class SettlementController extends Controller
         $startDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->startOfMonth();
         $endDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->endOfMonth();
         // Tính đơn hoàn cho tất cả user có đơn trong tháng
-        $donHoan = ReturnOrder::with('shop.user')
+       
+            
+        $donDropship = Order::whereRaw("
+            STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') 
+            BETWEEN ? AND ?", [
+            $startDate->toDateString(),
+            $endDate->toDateString()
+        ])
+            ->where('payment_status', 'Đã thanh toán') // nếu cần lọc giống ReturnOrder
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->shop->user->id . '_' . $item->shop_id;
+            })
+            ->map(function ($group) {
+                return [
+                    'user_id' => $group->first()->shop->user->id,
+                    'shop_id' => $group->first()->shop_id,
+                    'tong_tien_dropship' => $group->sum('total_dropship'),
+                ];
+            });
+            $donHoan = ReturnOrder::with('shop.user')
             ->where('payment_status', 'Đã thanh toán')
             ->whereBetween('ngay', [$startDate, $endDate])
             ->get()
@@ -34,9 +54,14 @@ class SettlementController extends Controller
                 ];
             })
             ->values();
-
-        // Gộp theo user
-        $gopTheoUser = collect($donHoan)
+            $donHoan = $donHoan->map(function ($item) use ($donDropship) {
+                $key = $item['user_id'] . '_' . $item['shop_id'];
+                $dropshipData = $donDropship->get($key);
+                return array_merge($item, [
+                    'tong_tien_dropship' => $dropshipData['tong_tien_dropship'] ?? 0,
+                ]);
+            });
+            $gopTheoUser = collect($donHoan)
             ->groupBy('user_id')
             ->map(function ($items, $userId) {
                 return [
@@ -45,12 +70,15 @@ class SettlementController extends Controller
                         return [
                             'shop_id' => $item['shop_id'],
                             'tong_tien_hoan' => $item['tong_tien_hoan'],
+                            'tong_tien_dropship' => $item['tong_tien_dropship'],
                         ];
                     })->values(),
                     'tong_tien_user' => $items->sum('tong_tien_hoan'),
+                    'tong_tien_user_dropship' => $items->sum('tong_tien_dropship'),
                 ];
             })
             ->values();
+        
         // Lưu từng bản ghi theo user vào bảng báo cáo
         foreach ($gopTheoUser as $report) {
             $IDQT = $this->generateUniqueTransactionId();
@@ -64,7 +92,6 @@ class SettlementController extends Controller
                 ->sum('amount');
             // dd($report);
             $shopIds = collect($report['shops'])->pluck('shop_id')->toArray();
-
             $code_transction = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()
@@ -96,7 +123,9 @@ class SettlementController extends Controller
                         ? $transaction->amount
                         : -$transaction->amount;
                 });
-            return response()->json($totalCanceled);
+
+
+
             $ending_balance = $totalTopup - $totalPaid - $totalPaid_ads + $totalCanceled;
             $total_chi = $totalPaid  - $totalCanceled - $report['tong_tien_user'];
             UserMonthlyReport::updateOrCreate(
@@ -114,6 +143,7 @@ class SettlementController extends Controller
                     'total_chi' => $total_chi,
                     'ending_balance' => $ending_balance,
                     'shop_details' => $report['shops'],
+                    'Drop_ships' => $report['tong_tien_user_dropship'],
                 ]
             );
             // Nếu là user hiện tại thì dùng cho view
@@ -124,7 +154,7 @@ class SettlementController extends Controller
                     'totalPaid_ads',
                     'totalCanceled',
                     'ending_balance',
-                    'total_chi'
+                    'total_chi',
                 );
             }
         }
@@ -137,6 +167,7 @@ class SettlementController extends Controller
             'totalCanceled' => 0,
             'ending_balance' => 0,
             'total_chi' => 0,
+            'Drop_ships' => 0,
         ], $currentUserData ?? []);
 
         return view('settlement.settlement-detail', $data);

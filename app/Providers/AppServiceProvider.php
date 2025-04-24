@@ -108,21 +108,33 @@ class AppServiceProvider extends ServiceProvider
 
                 $totalQuantitySold = OrderDetail::whereHas('order', function ($query) use ($userShopIds, $startDate, $endDate) {
                     $query->whereIn('shop_id', $userShopIds)
-                        ->whereBetween('created_at', [$startDate, $endDate]);
+                        ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                            $startDate->toDateString(),
+                            $endDate->toDateString()
+                        ]);
                 })
                     ->whereNotIn('sku', $excludedCodes)
                     ->sum('quantity');
-
+// dd($totalQuantitySold);
                 $totalBillPaid = Order::whereIn('shop_id', $userShopIds)
-                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                        $startDate->toDateString(),
+                        $endDate->toDateString()
+                    ])
                     ->sum('total_bill');
 
                 $totalOrders = Order::whereIn('shop_id', $userShopIds)
-                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                        $startDate->toDateString(),
+                        $endDate->toDateString()
+                    ])
                     ->count();
 
                 $total_dropship = Order::whereIn('shop_id', $userShopIds)
-                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                        $startDate->toDateString(),
+                        $endDate->toDateString()
+                    ])
                     ->sum('total_dropship');
             }
 
