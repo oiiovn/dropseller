@@ -51,10 +51,9 @@ class GenerateMonthlyReport extends Command
             ->values();
 
         foreach ($gopTheoUser as $report) {
+            $id_QT = $this->generateUniqueTransactionId();
             $user = User::find($report['user_id']);
             $userCode = $user->referral_code;
-            $IDQT = 'QT-' . uniqid();
-
             $totalTopup = Transaction::where('description', 'LIKE', "%$userCode%")
                 ->where('bank', 'MBB')
                 ->where('type', 'IN')
@@ -91,7 +90,7 @@ class GenerateMonthlyReport extends Command
                     'month' => $month,
                 ],
                 [
-                    'id_QT' => $IDQT,
+                    'id_QT' => $id_QT,
                     'total_topup' => $totalTopup,
                     'total_paid' => $totalPaid,
                     'total_paid_ads' => $totalPaid_ads,
@@ -105,5 +104,12 @@ class GenerateMonthlyReport extends Command
         }
 
         $this->info("✅ Đã tạo quyết toán cho tháng $month");
+    }
+    private function generateUniqueTransactionId()
+    {
+        do {
+            $id_QT = 'QT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+        } while (UserMonthlyReport::where('id_QT', $id_QT)->exists()); 
+        return $id_QT;
     }
 }
