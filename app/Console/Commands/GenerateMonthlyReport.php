@@ -18,6 +18,24 @@ class GenerateMonthlyReport extends Command
         $startDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->startOfMonth();
         $endDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->endOfMonth();
 
+        $donDropship = Order::whereRaw("
+            STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') 
+            BETWEEN ? AND ?", [
+            $startDate->toDateString(),
+            $endDate->toDateString()
+        ])
+            ->where('payment_status', 'Đã thanh toán') // nếu cần lọc giống ReturnOrder
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->shop->user->id . '_' . $item->shop_id;
+            })
+            ->map(function ($group) {
+                return [
+                    'user_id' => $group->first()->shop->user->id,
+                    'shop_id' => $group->first()->shop_id,
+                    'tong_tien_dropship' => $group->sum('total_dropship'),
+                ];
+            });
         $donHoan = ReturnOrder::with('shop.user')
             ->where('payment_status', 'Đã thanh toán')
             ->whereBetween('ngay', [$startDate, $endDate])
@@ -33,7 +51,13 @@ class GenerateMonthlyReport extends Command
                 ];
             })
             ->values();
-
+        $donHoan = $donHoan->map(function ($item) use ($donDropship) {
+            $key = $item['user_id'] . '_' . $item['shop_id'];
+            $dropshipData = $donDropship->get($key);
+            return array_merge($item, [
+                'tong_tien_dropship' => $dropshipData['tong_tien_dropship'] ?? 0,
+            ]);
+        });
         $gopTheoUser = collect($donHoan)
             ->groupBy('user_id')
             ->map(function ($items, $userId) {
@@ -43,13 +67,14 @@ class GenerateMonthlyReport extends Command
                         return [
                             'shop_id' => $item['shop_id'],
                             'tong_tien_hoan' => $item['tong_tien_hoan'],
+                            'tong_tien_dropship' => $item['tong_tien_dropship'],
                         ];
                     })->values(),
                     'tong_tien_user' => $items->sum('tong_tien_hoan'),
+                    'tong_tien_user_dropship' => $items->sum('tong_tien_dropship'),
                 ];
             })
             ->values();
-
         foreach ($gopTheoUser as $report) {
             $id_QT = $this->generateUniqueTransactionId();
             $user = User::find($report['user_id']);
@@ -80,20 +105,20 @@ class GenerateMonthlyReport extends Command
             ])
                 ->whereIn('shop_id', $shopIds)
                 ->pluck('order_code');
-                $totalCanceled = Transaction::where(function ($query) use ($code_order) {
-                    foreach ($code_order as $code) {
-                        $query->orWhere('description', 'LIKE', "%huỷ đơn $code%");
-                    }
-                })
+            $totalCanceled = Transaction::where(function ($query) use ($code_order) {
+                foreach ($code_order as $code) {
+                    $query->orWhere('description', 'LIKE', "%huỷ đơn $code%");
+                }
+            })
                 ->get()
                 ->sum(function ($transaction) {
                     return $transaction->type === 'IN'
                         ? $transaction->amount
                         : -$transaction->amount;
                 });
-// dd($totalCanceled);            
+            // dd($totalCanceled);            
             $ending_balance = $totalTopup - $totalPaid - $totalPaid_ads + $totalCanceled;
-            $total_chi = $totalPaid - $totalCanceled - $report['tong_tien_user'];
+            $total_chi = $totalPaid - $totalCanceled - $report['tong_tien_user']-$report['tong_tien_user_dropship'];
 
             UserMonthlyReport::updateOrCreate(
                 [
@@ -110,6 +135,7 @@ class GenerateMonthlyReport extends Command
                     'total_chi' => $total_chi,
                     'ending_balance' => $ending_balance,
                     'shop_details' => $report['shops'],
+                    'Drop_ships' => $report['tong_tien_user_dropship'],
                 ]
             );
         }

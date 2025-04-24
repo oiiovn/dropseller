@@ -21,6 +21,7 @@ class UserMonthlyReport extends Model
         'tien_thuc_te',
         'khau_trang',
         'tien_phai_thanh_toan',
+        'Drop_ships',
     ];
 
     protected $casts = [
