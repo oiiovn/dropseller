@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <h4 class="fw-bold text-body">
-                        {{ number_format($quyet_toan_thang_truoc->total_chi - $quyet_toan_thang_truoc->tien_thuc_te) }}đ
+                        {{ number_format($quyet_toan_thang_truoc->tien_phai_thanh_toan) }}đ
                     </h4>
                 </div>
             </div>
@@ -122,7 +122,7 @@
                         <td>{{ $item->month }}</td>
                         <td>{{ number_format($item->total_paid) }}đ</td>
                         <td>{{ number_format($item->total_chi) }}đ</td>
-                        <td>    {{ number_format($item->tien_thuc_te + $item->khau_trang) }}đ</td>
+                        <td> {{ number_format($item->tien_thuc_te + $item->khau_trang) }}đ</td>
                         <td>{{ number_format($item->tien_phai_thanh_toan) }}đ</td>
                         <td>
                             <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id }}">
@@ -131,11 +131,11 @@
 
                             {{-- MODAL --}}
                             <div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $item->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-right col-12 col-md-12 m-0">
+                                <div class="modal-dialog modal-dialog-right col-12 col-md-12 m-0" style="width: 40%; max-width: none;">
                                     <div class="modal-content h-100">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="modalLabel{{ $item->id }}">Chi tiết quyết toán tháng {{ $item->month }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                                            <h5 class="modal-title" id="modalLabel{{ $item->id }}">Phân tích quyết toán tháng {{ $item->month }}</h5>
+                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1">ID quyết toán: {{ $item->id_QT }}</h5>
                                         </div>
                                         <div class="modal-body overflow-auto">
                                             <div class="p-3 bg-white">
