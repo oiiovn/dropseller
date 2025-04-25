@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ReturnOrder;
 use App\Models\UserMonthlyReport;
 use App\Models\User;
+use App\Models\Shop;
 
 class SettlementController extends Controller
 {
@@ -91,7 +92,12 @@ class SettlementController extends Controller
                 ->whereBetween('transaction_date', [$startDate, $endDate])
                 ->sum('amount');
             // dd($report);
-            $shopIds = collect($report['shops'])->pluck('shop_id')->toArray();
+            $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id')->toArray();
+            // dd(                $shopIds,
+            //     $userCode,
+            //     $startDate,
+            //     $endDate
+            // );
             $code_transction = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()

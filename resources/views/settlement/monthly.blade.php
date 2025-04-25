@@ -133,13 +133,21 @@
                             <div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $item->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-right col-12 col-md-12 m-0" style="width: 40%; max-width: none;">
                                     <div class="modal-content h-100">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modalLabel{{ $item->id }}">Phân tích quyết toán tháng {{ $item->month }}</h5>
-                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1">ID quyết toán: {{ $item->id_QT }}</h5>
+                                        <div class="modal-header flex-column align-items-start">
+                                            <h5 class="modal-title" id="modalLabel{{ $item->id }}">
+                                                Phân tích quyết toán tháng {{ $item->month }}
+                                            </h5>
+                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1 p-2">
+                                                ID quyết toán: {{ $item->id_QT }}
+                                            </h5>
+                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1 p-2">
+                                                Ngày lọc <br>
+                                                <span class="fw-normal m-2" style="font-size-adjust: 10px;">1-3-2025 ~ 31-3-2025</span>
+                                            </h5>
                                         </div>
+
                                         <div class="modal-body overflow-auto">
                                             <div class="p-3 bg-white">
-                                                <h5 class="fw-semibold mb-3">Thống kê tháng {{ \Carbon\Carbon::parse($item->month)->format('m/Y') }}</h5>
                                                 <p><strong>Tổng tiền đã nạp:</strong> <span class="text-success fw-bold">{{ number_format($item->total_topup) }} VND</span></p>
                                                 <p><strong>Thanh toán đơn hàng:</strong> <span class="text-primary fw-bold">{{ number_format($item->total_paid) }} VND</span></p>
                                                 <p><strong>Thanh toán quảng cáo:</strong> <span class="text-primary fw-bold">{{ number_format($item->total_paid_ads) }} VND</span></p>
