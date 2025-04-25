@@ -176,14 +176,14 @@ class SettlementController extends Controller
 
     public function settlementReport()
     {
-
+        $shops = Shop::all();
         $quyet_toan = UserMonthlyReport::where('user_id', Auth::id())
             ->where('tien_thuc_te', '!=', 0)
             ->orderBy('month', 'desc')
             ->get();
         $quyet_toan_thang_truoc = $quyet_toan->first(); // Lấy tháng gần nhất có tiền thực tế
 
-        return view('settlement.monthly', compact('quyet_toan', 'quyet_toan_thang_truoc'));
+        return view('settlement.monthly', compact('quyet_toan', 'quyet_toan_thang_truoc', 'shops'));
     }
     private function generateUniqueTransactionId()
     {
