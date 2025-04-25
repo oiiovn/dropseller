@@ -17,29 +17,22 @@ class AutoSettleMonthlyPayment extends Command
         $targetMonth = Carbon::now()->subMonth()->format('Y-m');
 
         $reports = UserMonthlyReport::where('month', $targetMonth)
+        ->where('status_payment', 'Chưa thanh toán')
             ->where('tien_phai_thanh_toan', '!=', 0)
             ->get();
-
         foreach ($reports as $report) {
-            $transactionId = $this->generateUniqueTransactionId();
             Transaction::create([
                 'bank' => 'QTD',
                 'account_number' => $report->user->referral_code,
                 'transaction_date' => now(),
-                'transaction_id' => $transactionId,
+                'transaction_id' =>  $report->id_QT,
                 'description' => $report->user->referral_code . " Quyết toán đơn hàng tháng " . $targetMonth,
                 'type' => $report->tien_phai_thanh_toan > 0 ? 'IN' : 'OUT',
                 'amount' => abs($report->tien_phai_thanh_toan),
             ]);
+            $report->update(['status_payment' => 'Đã thanh toán']);
         }
 
         $this->info("Đã tạo {$reports->count()} giao dịch thanh toán tháng $targetMonth.");
-    }
-    private function generateUniqueTransactionId()
-    {
-        do {
-            $transactionId = 'QT' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
-        } while (Transaction::where('transaction_id', $transactionId)->exists());
-        return $transactionId;
     }
 }
