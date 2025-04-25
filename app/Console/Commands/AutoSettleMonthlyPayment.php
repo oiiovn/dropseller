@@ -32,7 +32,6 @@ class AutoSettleMonthlyPayment extends Command
             ]);
             $report->update(['status_payment' => 'Đã thanh toán']);
         }
-
         $this->info("Đã tạo {$reports->count()} giao dịch thanh toán tháng $targetMonth.");
     }
 }
