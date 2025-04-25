@@ -93,11 +93,6 @@ class SettlementController extends Controller
                 ->sum('amount');
             // dd($report);
             $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id')->toArray();
-            // dd(                $shopIds,
-            //     $userCode,
-            //     $startDate,
-            //     $endDate
-            // );
             $code_transction = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()
