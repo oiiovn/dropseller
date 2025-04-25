@@ -38,6 +38,9 @@ trait BalanceLoggable
                     case 'PSP':
                         $balanceType = 'product_fee';
                         break;
+                    case 'QTD':
+                        $balanceType = 'Monthly';
+                        break;
                     default:
                         $balanceType = $tran->type === 'IN' ? 'deposit' : 'withdraw';
                         break;

@@ -9,9 +9,13 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Mã quyết toán</th>
-                    <th>Ngày tạo</th>
+                    <th>Người dùng</th>
                     <th>Tháng quyết toán</th>
-                    <th>Tổng chi(Web)</th>
+                    <th>Đã chi(Web)</th>
+                    <th>Đơn huỷ(Web)</th>
+                    <th>Đơn hoàn</th>
+                    <th>DropShips</th>
+                    <th>Thực tế(Web)</th>
                     <th>Quà hoàn(salework)</th>
                     <th>Thực tế(salework)</th>
                     <th>Chênh lệch</th>
@@ -21,9 +25,25 @@
             <tbody>
                 @foreach($userMonthlyReports as $item)
                 <tr>
-                    <td>{{ $item->id_QT }}</td>
-                    <td>{{ $item->created_at }}</td>
+                <td class="id text-black-50" style="max-width: 5px;">
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <li class="hienthicopy">
+                                    <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->id_QT}}">
+                                    {{ $item->id_QT }}
+                                        <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="text-body-secondary" style="font-size: 11px;">{{ $item->created_at }}</a>
+                                </li>
+                            </ul>
+                        </td>
+                    <td>{{ $item->user->name }}</td>
                     <td>{{ $item->month }}</td>
+                    <td>{{ number_format($item->total_paid) }}đ</td>
+                    <td>{{ number_format($item->total_canceled) }}đ</td>
+                    <td>{{ number_format($item->total_return) }}đ</td>
+                    <td>{{ number_format($item->Drop_ships) }}đ</td>
                     <td>{{ number_format($item->total_chi) }}đ</td>
                     <td>{{ number_format($item->khau_trang) }}đ</td>
                     <td>{{ number_format($item->tien_thuc_te) }}đ</td>

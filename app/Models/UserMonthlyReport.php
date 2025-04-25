@@ -21,6 +21,8 @@ class UserMonthlyReport extends Model
         'tien_thuc_te',
         'khau_trang',
         'tien_phai_thanh_toan',
+        'Drop_ships',
+        'status_payment',
     ];
 
     protected $casts = [
@@ -30,5 +32,9 @@ class UserMonthlyReport extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function shops()
+    {
+        return $this->belongsTo(Shop::class);
     }
 }

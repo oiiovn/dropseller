@@ -33,7 +33,7 @@
                             <img class="pe-1" src="assets/images/svg/crypto-icons/amp.svg" alt="File Icon" style="width:10%;">
                             Chênh lệch
                             <i class="bi bi-exclamation-circle-fill text-body-secondary" role="button" data-bs-toggle="tooltip"
-                                title="Nếu số tiền là (- âm) thì bạn sẽ có giao dịch nhận lại phần âm đó , Nếu là (+ dương) bạn sẽ có giao dịch trả thêm phần đó"></i>
+                                title="Nếu số tiền là (- âm) thì bạn sẽ có giao dịch trừ phần âm đó , Nếu là (+ dương) bạn sẽ có giao dịch được trả thêm phần đó"></i>
                         </h6>
                         <div class="small text-success mb-1" style="font-size: 10px;">
                             Tháng trước
@@ -133,26 +133,40 @@
                             <div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $item->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-right col-12 col-md-12 m-0" style="width: 40%; max-width: none;">
                                     <div class="modal-content h-100">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modalLabel{{ $item->id }}">Phân tích quyết toán tháng {{ $item->month }}</h5>
-                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1">ID quyết toán: {{ $item->id_QT }}</h5>
+                                        <div class="modal-header flex-column align-items-start">
+                                            <h5 class="modal-title" id="modalLabel{{ $item->id }}">
+                                                Phân tích quyết toán tháng {{ $item->month }}
+                                            </h5>
+                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1 p-2">
+                                                ID quyết toán: {{ $item->id_QT }}
+                                            </h5>
+                                            <h5 class="fw-bolder text-start text-body-emphasis mb-1 p-2">
+                                                Ngày lọc <br>
+                                                <span class="fw-normal m-2" style="font-size-adjust: 10px;">1-3-2025 ~ 31-3-2025</span>
+                                            </h5>
                                         </div>
+
                                         <div class="modal-body overflow-auto">
                                             <div class="p-3 bg-white">
-                                                <h5 class="fw-semibold mb-3">Thống kê tháng {{ \Carbon\Carbon::parse($item->month)->format('m/Y') }}</h5>
                                                 <p><strong>Tổng tiền đã nạp:</strong> <span class="text-success fw-bold">{{ number_format($item->total_topup) }} VND</span></p>
                                                 <p><strong>Thanh toán đơn hàng:</strong> <span class="text-primary fw-bold">{{ number_format($item->total_paid) }} VND</span></p>
                                                 <p><strong>Thanh toán quảng cáo:</strong> <span class="text-primary fw-bold">{{ number_format($item->total_paid_ads) }} VND</span></p>
                                                 <p><strong>Đơn đã huỷ:</strong> <span class="text-danger fw-bold">{{ number_format($item->total_canceled) }} VND</span></p>
                                                 <p><strong>Đơn hoàn:</strong> <span class="text-danger fw-bold">{{ number_format($item->total_return) }} VND</span></p>
-
+                                                <p><strong>Tiền Dropships:</strong> <span class="text-danger fw-bold">{{ number_format($item->Drop_ships) }} VND</span></p>
                                                 @if (!empty($item->shop_details))
                                                 <div class="mt-3">
                                                     <strong>Chi tiết hoàn theo shop:</strong>
                                                     <ul class="ps-3">
                                                         @foreach($item->shop_details as $shop)
                                                         <li>
-                                                            Shop ID: <strong>{{ $shop['shop_id'] }}</strong> — Hoàn: <span class="fw-bold text-danger">{{ number_format($shop['tong_tien_hoan']) }} VND</span>
+                                                            Shop: <strong>
+                                                            @foreach($shops as $shop1)
+                                                            @if($shop['shop_id'] == $shop1->shop_id)
+                                                            {{ $shop1->shop_name }}
+                                                            @endif
+                                                            @endforeach
+                                                            </strong> — Hoàn: <span class="fw-bold text-danger">{{ number_format($shop['tong_tien_hoan']) }} VND</span>
                                                         </li>
                                                         @endforeach
                                                     </ul>
