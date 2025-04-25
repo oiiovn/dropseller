@@ -160,7 +160,13 @@
                                                     <ul class="ps-3">
                                                         @foreach($item->shop_details as $shop)
                                                         <li>
-                                                            Shop ID: <strong>{{ $shop['shop_id'] }}</strong> — Hoàn: <span class="fw-bold text-danger">{{ number_format($shop['tong_tien_hoan']) }} VND</span>
+                                                            Shop: <strong>
+                                                            @foreach($shops as $shop1)
+                                                            @if($shop['shop_id'] == $shop1->shop_id)
+                                                            {{ $shop1->shop_name }}
+                                                            @endif
+                                                            @endforeach
+                                                            </strong> — Hoàn: <span class="fw-bold text-danger">{{ number_format($shop['tong_tien_hoan']) }} VND</span>
                                                         </li>
                                                         @endforeach
                                                     </ul>

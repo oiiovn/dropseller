@@ -33,4 +33,8 @@ class UserMonthlyReport extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function shops()
+    {
+        return $this->belongsTo(Shop::class);
+    }
 }
