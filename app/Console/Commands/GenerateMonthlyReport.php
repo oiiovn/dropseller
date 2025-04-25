@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Models\{User, Transaction, ReturnOrder, UserMonthlyReport, Order};
+use App\Models\{User, Transaction, ReturnOrder, UserMonthlyReport, Order, Shop};
 
 class GenerateMonthlyReport extends Command
 {
@@ -84,8 +84,7 @@ class GenerateMonthlyReport extends Command
                 ->where('type', 'IN')
                 ->whereBetween('transaction_date', [$startDate, $endDate])
                 ->sum('amount');
-            $shopIds = collect($report['shops'])->pluck('shop_id')->toArray();
-
+                $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id')->toArray();
             $code_transction = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()
