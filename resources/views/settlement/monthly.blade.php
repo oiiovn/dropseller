@@ -33,7 +33,7 @@
                             <img class="pe-1" src="assets/images/svg/crypto-icons/amp.svg" alt="File Icon" style="width:10%;">
                             Chênh lệch
                             <i class="bi bi-exclamation-circle-fill text-body-secondary" role="button" data-bs-toggle="tooltip"
-                                title="Nếu số tiền là (- âm) thì bạn sẽ có giao dịch nhận lại phần âm đó , Nếu là (+ dương) bạn sẽ có giao dịch trả thêm phần đó"></i>
+                                title="Nếu số tiền là (- âm) thì bạn sẽ có giao dịch trừ phần âm đó , Nếu là (+ dương) bạn sẽ có giao dịch được trả thêm phần đó"></i>
                         </h6>
                         <div class="small text-success mb-1" style="font-size: 10px;">
                             Tháng trước
