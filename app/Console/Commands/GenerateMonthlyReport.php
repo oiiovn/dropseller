@@ -84,7 +84,7 @@ class GenerateMonthlyReport extends Command
                 ->where('type', 'IN')
                 ->whereBetween('transaction_date', [$startDate, $endDate])
                 ->sum('amount');
-                $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id')->toArray();
+            $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id')->toArray();
             $code_transction = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()
@@ -117,7 +117,7 @@ class GenerateMonthlyReport extends Command
                 });
             // dd($totalCanceled);            
             $ending_balance = $totalTopup - $totalPaid - $totalPaid_ads + $totalCanceled;
-            $total_chi = $totalPaid - $totalCanceled - $report['tong_tien_user']-$report['tong_tien_user_dropship'];
+            $total_chi = $totalPaid - $totalCanceled - $report['tong_tien_user'] - $report['tong_tien_user_dropship'];
 
             UserMonthlyReport::updateOrCreate(
                 [
@@ -135,6 +135,7 @@ class GenerateMonthlyReport extends Command
                     'ending_balance' => $ending_balance,
                     'shop_details' => $report['shops'],
                     'Drop_ships' => $report['tong_tien_user_dropship'],
+                    'status_payment' =>  'Chưa thanh toán',
                 ]
             );
         }
