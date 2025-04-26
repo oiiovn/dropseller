@@ -71,9 +71,10 @@
         <div class="container-fluid">
             <div id="two-column-menu"></div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="menu-title">
-                    <span data-key="t-menu">Menu</span>
-                </li>
+                <div class="form-check form-switch form-switch-secondary m-3 d-flex align-items-center justify-content-between">
+                    <label class="text-body-secondary form-check-label mb-0" for="SwitchCheck10">Mở tất cả menu</label>
+                    <input class="form-check-input ms-auto" type="checkbox" role="switch" id="SwitchCheck10" checked>
+                </div>
                 <li class="nav-item">
                     <a class="nav-link ajax-link" href="{{route('dashboard')}}">
                         <i class="ri-dashboard-2-line"></i>
@@ -364,6 +365,42 @@
                 const napTienModal = new bootstrap.Modal(document.getElementById('napTienModal'));
                 napTienModal.show();
             });
+        });
+
+        const switchId = '#SwitchCheck10';
+        const menuClass = '.menu-dropdown';
+        const linkClass = '.menu-link';
+
+        // Lấy ID người dùng từ backend (Laravel)
+        const userId = '{{ Auth::id() }}'; // Lấy ID người dùng hiện tại
+        const storageKey = `expandAll_${userId}`; // Tạo khóa duy nhất cho từng người dùng
+
+        // Khôi phục trạng thái từ localStorage
+        const expandAll = localStorage.getItem(storageKey) === 'true';
+        $(switchId).prop('checked', expandAll);
+        if (expandAll) {
+            $(menuClass).addClass('show');
+            $(linkClass).attr('aria-expanded', 'true');
+        } else {
+            $(menuClass).removeClass('show');
+            $(linkClass).attr('aria-expanded', 'false');
+        }
+
+        // Lắng nghe sự kiện thay đổi trạng thái của switch
+        $(switchId).change(function() {
+            const isChecked = $(this).is(':checked');
+
+            // Mở hoặc đóng tất cả menu
+            if (isChecked) {
+                $(menuClass).addClass('show');
+                $(linkClass).attr('aria-expanded', 'true');
+            } else {
+                $(menuClass).removeClass('show');
+                $(linkClass).attr('aria-expanded', 'false');
+            }
+
+            // Lưu trạng thái vào localStorage với khóa dựa trên user ID
+            localStorage.setItem(storageKey, isChecked);
         });
     });
 </script>
