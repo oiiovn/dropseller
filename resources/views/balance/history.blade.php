@@ -42,7 +42,7 @@
                             @case('refund') <span class="badge bg-info text-dark">Hoàn đơn</span> @break
                             @case('ads') <span class="badge bg-dark">Quảng cáo</span> @break
                             @case('Monthly') <span class="badge bg-dark">Quyết toán</span> @break
-                            @case('product_fee') <span class="badge bg-secondary">Phí đăng sản phẩm</span> @breakMonthly
+                            @case('product_fee') <span class="badge bg-secondary">Phí đăng sản phẩm</span> @break
                             @default <span class="badge bg-secondary">{{ ucfirst($item->type) }}</span>
                             @endswitch
                         </td>
