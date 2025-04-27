@@ -71,10 +71,14 @@
         <div class="container-fluid">
             <div id="two-column-menu"></div>
             <ul class="navbar-nav" id="navbar-nav">
-                <div class="form-check form-switch form-switch-secondary m-3 d-flex align-items-center justify-content-between">
-                    <label class="text-body-secondary form-check-label mb-0" for="SwitchCheck10">Mở tất cả menu</label>
-                    <input class="form-check-input ms-auto" type="checkbox" role="switch" id="SwitchCheck10" checked>
-                </div>
+                <li class="menu-title">
+                    <span data-key="t-menu">
+                        <div class="form-check form-switch form-switch-secondary m-3 d-flex justify-content-between align-items-center">
+                            <label class="text-body-secondary form-check-label mb-0" for="SwitchCheck10">menu</label>
+                            <input class="form-check-input ms-2" type="checkbox" role="switch" id="SwitchCheck10" checked>
+                        </div>
+                    </span>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link ajax-link" href="{{route('dashboard')}}">
                         <i class="ri-dashboard-2-line"></i>
@@ -352,6 +356,7 @@
 </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#openNapTienModal').click(function() {
@@ -401,6 +406,22 @@
 
             // Lưu trạng thái vào localStorage với khóa dựa trên user ID
             localStorage.setItem(storageKey, isChecked);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#openNapTienModal').click(function() {
+            $.get('{{ route("naptien") }}', function(data) {
+                // Thêm modal vào body nếu chưa tồn tại
+                if ($('#napTienModal').length === 0) {
+                    $('body').append(data);
+                }
+
+                // Hiển thị modal
+                const napTienModal = new bootstrap.Modal(document.getElementById('napTienModal'));
+                napTienModal.show();
+            });
         });
     });
 </script>
