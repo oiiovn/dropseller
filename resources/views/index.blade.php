@@ -20,8 +20,7 @@
         font-size: 18px !important;
     }
 
-    .card-body 
-    p {
+    .card-body p {
         font-size: 15px !important;
     }
 
@@ -279,7 +278,7 @@
 
                         </div>
                     </div>
-
+                    @if(false)
                     <div class="col-xl-5">
                         <div class="card ">
                             <div class="card-header align-items-center d-flex">
@@ -375,9 +374,10 @@
                                         </ul>
                                     </div> -->
                                 </div>
-                            </div> <!-- .card-body-->
-                        </div> <!-- .card-->
-                    </div> <!-- .col-->
+                            </div>
+                        </div>
+                    </div>
+                    @endif<!-- .col-->
                 </div> <!-- end row-->
             </div> <!-- end .h-100-->
         </div> <!-- end col -->
