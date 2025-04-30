@@ -69,7 +69,7 @@
                 <!-- Tên và lượt thích -->
                 <div>
                     <h4 class="mb-1 fw-bold d-flex align-items-center">
-                        <h5 class="fs-16 mb-1">
+                        <h5 class="fs-16 mb-1 fw-bold">
                             {{ Auth::user()->name }}
                             @if(in_array(Auth::user()->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
                             <i class="ri-verified-badge-fill text-secondary ms-2" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
@@ -170,32 +170,45 @@
             </div>
         </div>
     </div>
-    <!-- <div class="body-wrapper mt-4 d-flex justify-content-start col-10 mx-auto gap-3">
+    <div class="body-wrapper mt-3 d-flex justify-content-start col-10 mx-auto gap-3">
         <div class=" col-3 body-info bg-white shadow-sm rounded-3 p-3">
             <div class="body-content col-12">
                 <div class="info-title">
                     <h4 class="mb-1 fw-bold">Giới thiệu</h4>
                 </div>
-                <p class="text-muted text-center col-full">
-                    <strong>CỬA HÀNG QUẦN ÁO</strong><br>
-                    🎸HCM : Số 44 Đường C1, Phường 13, Quận Tân Bình<br>
-                    🎸Đà Nẵng : 317 Nguyễn Tri Phương, Quận Hải Châu<br>
-                    ☎ Hotline : (08) 1800 5678
-                </p>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3 mt-3 col-8 mx-auto ps-5 pb-5">
+                <div class="bg-white p-3">
+                    <div class="mb-2 d-flex align-items-start">
+                        <i class="ri-information-line me-2 fs-5 text-muted"></i>
+                        <div>
+                            <strong>Store</strong> · Cửa hàng quần áo nữ
+                        </div>
+                    </div>
+
+                    <div class="mb-2 d-flex align-items-start">
+                        <i class="ri-map-pin-line me-2 fs-5 text-muted"></i>
+                        <div>
+                            123 Tân Sơn, Phường 12, Quận Gò Vấp, Hồ Chí Minh, Ho Chi Minh City, Vietnam
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start">
+                        <i class="ri-phone-line me-2 fs-5 text-muted"></i>
+                        <div>
+                            093 4584 939
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class=" col-9 body-info bg-white shadow-sm rounded-3 p-3 gap-3">
+        <!-- <div class=" col-9 body-info bg-white shadow-sm rounded-3 p-3 gap-3">
             <div class="body-content col-8 mx-auto ">
-                <h4 class="mb-1 fw-bold">Có thể là một vài danh sách sản phẩm </h4>
+                <h4 class="mb-1 fw-bold">Đang phát triển</h4>
 
             </div>
             <div class="d-flex align-items-center gap-3 mt-3 col-8 mx-auto ps-5 pb-5">
             </div>
-        </div>
-    </div> -->
+        </div> -->
+    </div>
     <!-- Đang xây dựng -->
 </div>
 
