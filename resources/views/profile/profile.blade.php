@@ -54,7 +54,7 @@
                 </div>
 
             </div>
-            <div class="d-flex align-items-start gap-3 mt-3 col-8 mx-auto ps-2">
+            <div class="d-flex align-items-start gap-3 mt-3 col-8 mx-auto ps-4">
                 <!-- Avatar -->
                 <div class="position-relative " style="width: 150px; height: 150px;margin-top: -50px;">
                     <img src="@if (Auth::check() && Auth::user()->image)
