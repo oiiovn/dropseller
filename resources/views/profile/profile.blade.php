@@ -4,7 +4,6 @@
 <style>
     .tooltip-inner {
         background-color: #ffffff !important;
-        /* trắng đậm */
         color: #000 !important;
         padding: 10px 12px !important;
         border-radius: 8px;
@@ -14,18 +13,17 @@
         max-width: 260px;
         font-size: 13px;
         opacity: 1 !important;
-        /* ép hiện rõ */
     }
 
     .tooltip.show {
         opacity: 1 !important;
-        /* tránh bị trong suốt */
     }
 
     .tooltip.bs-tooltip-top .tooltip-arrow::before {
         border-top-color: #ffffff !important;
     }
 </style>
+
 
 
 <div class="container-fluid d-flex flex-column justify-content-start">
@@ -59,8 +57,8 @@
                 <div class="position-relative " style="width: 150px; height: 150px;margin-top: -50px;">
                     <img src="@if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
-                                    @else
-                             https://img.icons8.com/ios-filled/100/user-male-circle.png
+                                    @else 
+                                    https://img.icons8.com/ios-filled/100/user-male-circle.png
                                     @endif" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #fff;">
                     <!-- Chấm xanh trạng thái -->
                     <span class="position-absolute bottom-0 end-0 translate-middle p-2 bg-success border border-light rounded-circle" style="width: 16px; height: 16px;"></span>
@@ -199,18 +197,55 @@
                     </div>
                 </div>
             </div>
+            <hr>
         </div>
-        <!-- <div class=" col-9 body-info bg-white shadow-sm rounded-3 p-3 gap-3">
-            <div class="body-content col-8 mx-auto ">
-                <h4 class="mb-1 fw-bold">Đang phát triển</h4>
+        
 
-            </div>
-            <div class="d-flex align-items-center gap-3 mt-3 col-8 mx-auto ps-5 pb-5">
+
+
+
+
+
+
+
+
+<!-- 
+        <div class="col-9 body-info bg-white shadow-sm rounded-3 p-3">
+            <div class="table-card table-responsive-custom m-3">
+                <div class="row g-3">
+                    @for($i = 1; $i <= 12; $i++)
+                        <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="https://cf.shopee.vn/file/vn-11134207-7ras8-m0vom5vyuu3x31" class="card-img-top" alt="Ảnh sản phẩm {{ $i }}">
+                            <div class="card-body">
+                                <p class="card-text mb-1"><strong>Mã SP:</strong> SP00{{ $i }}</p>
+                                <h5 class="card-title mb-1">Tên sản phẩm {{ $i }}</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="me-3">Đơn hàng: {{ rand(1, 100) }}</span>
+                                    <small class="text-muted">Lượt bán: {{ rand(5, 500) }}</small>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                @endfor
             </div>
         </div> -->
     </div>
-    <!-- Đang xây dựng -->
 </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
