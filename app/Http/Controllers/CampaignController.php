@@ -14,4 +14,11 @@ class CampaignController extends Controller
         $price_after_discount = $original_price / 100 * $shop_discount ; 
         return view('tools.campaign');
     }
+
+    public function checksdt()
+    {
+    
+        return view('tools.check-sdt');
+    }
 }
+

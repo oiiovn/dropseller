@@ -338,6 +338,9 @@
                     <li class="nav-item">
                         <a href="{{route('campaign')}}" class="nav-link ajax-link" data-key="t-horizontal">Tính phần trăm chiến dịch</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('check-sdt')}}" class="nav-link ajax-link" data-key="t-horizontal">Kiểm tra SDT</a>
+                    </li>
                     <!-- <li class="nav-item">
                                 <a href="layouts-detached.html" target="_blank" class="nav-link" data-key="t-detached">Detached</a>
                             </li>

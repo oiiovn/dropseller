@@ -18,9 +18,10 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\BillwebController;
 use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\BalanceHistoryController;
-use App\Services\ProgramService; 
+use App\Services\ProgramService;
 use App\Http\Controllers\Admin\BalanceIssueController;
 use App\Http\Controllers\UserMonthlyReportController;
+use App\Http\Controllers\OrderCheckController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -36,9 +37,9 @@ Route::middleware('auth')->group(function () {
         }
         return view('index', [
             'showWelcomeModal' => $showWelcomeModal,
-        ]);   
+        ]);
     })->name('dashboard');
-    
+
 
     Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
     Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
@@ -86,14 +87,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/export-totalbill', [BillwebController::class, 'exportTotalBill'])->name('export.totalbill');
         Route::get('/balance-issues', [BalanceIssueController::class, 'index'])->name('admin.balance_issues.index');
         Route::post('/tao-thanh-toan', [OrderController::class, 'taoThanhToan'])->name('order.taoThanhToan');
-         // hoàn dơn
-    Route::get('/import-don-hoan', [OrderController::class, 'showImportForm'])->name('order.import_don_hoan');
-    Route::post('/import-don-hoan', [OrderController::class, 'import']);
-    Route::get('/quyet-toan-drop', [UserMonthlyReportController::class, 'index'])->name('user-monthly-reports.index');
-    Route::put('/user-monthly-reports/{userMonthlyReport}', [UserMonthlyReportController::class, 'update'])->name('user-monthly-reports.update');
-
-
-
+        // hoàn dơn
+        Route::get('/import-don-hoan', [OrderController::class, 'showImportForm'])->name('order.import_don_hoan');
+        Route::post('/import-don-hoan', [OrderController::class, 'import']);
+        Route::get('/quyet-toan-drop', [UserMonthlyReportController::class, 'index'])->name('user-monthly-reports.index');
+        Route::put('/user-monthly-reports/{userMonthlyReport}', [UserMonthlyReportController::class, 'update'])->name('user-monthly-reports.update');
     });
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');
     Route::get('/lish', [ProductController::class, 'lish'])->name('productsss');
@@ -102,6 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/update-reconciled', [TransactionController::class, 'updateOrderReconciled'])->name('update.reconciled');
     Route::get('/top-products', [ProductController::class, 'Get_product_top'])->name('products.top');
     Route::get('/chien-dich', [CampaignController::class, 'campaign'])->name('campaign');
+    Route::get('/check-sdt', [CampaignController::class, 'checksdt'])->name('check-sdt');
     Route::get('/payment', [PaymentController::class, 'thanhtoan'])->name('payment');
     Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
     Route::post('/notifications/mark-read', [NotificationController::class, 'markRead'])->name('notifications.markRead');
@@ -113,5 +112,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
     Route::get('/settlementt', [SettlementController::class, 'showDetail'])->name('settlement.settlement-detail');
-
 });
