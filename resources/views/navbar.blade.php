@@ -1,3 +1,12 @@
+<style>
+    .app-menu {
+        visibility: hidden;
+    }
+    .app-menu.ready {
+        visibility: visible;
+    }
+</style>
+
 <div class="app-menu navbar-menu ">
     <!-- LOGO -->
     <div class="navbar-brand-box">
@@ -424,4 +433,13 @@
             });
         });
     });
+
+</script>
+<script>
+    $(document).ready(function() {
+    // ... các xử lý switch và menu như cũ
+
+    // Khi xử lý xong menu, hiện menu ra
+    $('.app-menu').addClass('ready');
+});
 </script>
