@@ -45,6 +45,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/libs/dropzone/dropzone.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-papmM0swSgqMCZ3K6mQUC9ErcRgx+JKTxBb8A5kPufHrX7IrCKl+FddnhgN8N6Wa+IV+aUe1dYtTDv9pLMtzNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 
 

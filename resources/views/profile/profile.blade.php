@@ -2,26 +2,29 @@
 @section('title', 'main')
 @section('main')
 <style>
-.tooltip-inner {
-    background-color: #ffffff !important; /* trắng đậm */
-    color: #000 !important;
-    padding: 10px 12px !important;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    text-align: left;
-    max-width: 260px;
-    font-size: 13px;
-    opacity: 1 !important;         /* ép hiện rõ */
-}
+    .tooltip-inner {
+        background-color: #ffffff !important;
+        /* trắng đậm */
+        color: #000 !important;
+        padding: 10px 12px !important;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        max-width: 260px;
+        font-size: 13px;
+        opacity: 1 !important;
+        /* ép hiện rõ */
+    }
 
-.tooltip.show {
-    opacity: 1 !important;         /* tránh bị trong suốt */
-}
+    .tooltip.show {
+        opacity: 1 !important;
+        /* tránh bị trong suốt */
+    }
 
-.tooltip.bs-tooltip-top .tooltip-arrow::before {
-    border-top-color: #ffffff !important;
-}
+    .tooltip.bs-tooltip-top .tooltip-arrow::before {
+        border-top-color: #ffffff !important;
+    }
 </style>
 
 
@@ -35,7 +38,7 @@
                         style="width: 100%; object-fit: cover;">
                     <div class="position-absolute top-0 end-0 m-2">
                         <label for="cover-img-upload" class="btn btn-light btn-sm rounded-circle shadow">
-                            <i class="fas fa-camera"></i>
+                            <i class="ri-camera-fill"></i>
                         </label>
                         <input type="file" id="cover-img-upload" class="d-none" />
                     </div>
@@ -77,9 +80,10 @@
                     </h4>
                     <div class="text-muted small">
                         <p class="text-muted mb-0"> Mã Code: {{ Auth::user()->referral_code }}</p>
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                            Chỉnh sửa hồ sơ
-                        </button>
+                        <span class="badge bg-success-subtle text-success" role="button"
+                            data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="ri-edit-2-line me-1"></i> Chỉnh sửa
+                        </span>
                         <!-- Modal cập nhật hồ sơ -->
                         <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -91,33 +95,46 @@
                                     <div class="modal-body">
                                         <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
+                                            <div class="row">
+                                                <!-- Cột 7: Thông tin -->
+                                                <div class="col-7">
+                                                    <div class="mb-3">
+                                                        <label for="name" class="form-label">Tên:</label>
+                                                        <input type="text" class="form-control" id="name" name="name" value="{{ auth()->user()->name }}" required>
+                                                    </div>
 
-                                            <!-- Tên -->
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Tên:</label>
-                                                <input type="text" class="form-control" id="name" name="name" value="{{ auth()->user()->name }}" required>
-                                            </div>
+                                                    <div class="mb-3">
+                                                        <label for="email" class="form-label">Email:</label>
+                                                        <input type="email" class="form-control" id="email" name="email" value="{{ auth()->user()->email }}" required>
+                                                    </div>
 
-                                            <!-- Email -->
-                                            <div class="mb-3">
-                                                <label for="email" class="form-label">Email:</label>
-                                                <input type="email" class="form-control" id="email" name="email" value="{{ auth()->user()->email }}" required>
-                                            </div>
-
-                                            <!-- Ảnh đại diện -->
-                                            <div class="mb-3">
-                                                <label for="image" class="form-label">Ảnh đại diện:</label>
-                                                <input type="file" class="form-control" id="image" name="image">
-                                                @if(auth()->user()->image)
-                                                <div class="mt-2">
-                                                    <img src="{{ auth()->user()->image }}" alt="Avatar" width="100">
+                                                    <div class="mb-3">
+                                                        <label for="image" class="form-label">Chọn ảnh đại diện mới:</label>
+                                                        <input type="file" class="form-control" id="image" name="image">
+                                                    </div>
                                                 </div>
-                                                @endif
-                                            </div>
 
-                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                <!-- Cột 5: Ảnh hiện tại + nút thay -->
+                                                <div class="col-5 text-center d-flex flex-column align-items-center justify-content-between">
+                                                    @if(auth()->user()->image)
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Ảnh đại diện hiện tại:</label>
+                                                        <div class="border p-2 rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                                            <img src="{{ auth()->user()->image }}" alt="Avatar" width="100" class="img-fluid rounded-circle">
+                                                        </div>
+                                                    </div>
+                                                    @endif
+
+                                                    <!-- Nút Thay ảnh -->
+                                                    <button type="submit" class="btn btn-outline-primary mt-auto">
+                                                        <i class="ri-camera-fill me-1"></i> Cập nhật
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
