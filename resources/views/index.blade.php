@@ -20,7 +20,8 @@
         font-size: 18px !important;
     }
 
-    .card-body p {
+    .card-body 
+    p {
         font-size: 15px !important;
     }
 
@@ -376,7 +377,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                     @endif<!-- .col-->
                 </div> <!-- end row-->
             </div> <!-- end .h-100-->
