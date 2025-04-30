@@ -199,7 +199,6 @@
             </div>
             <hr>
         </div>
-        
 
 
 
@@ -209,27 +208,35 @@
 
 
 
-<!-- 
-        <div class="col-9 body-info bg-white shadow-sm rounded-3 p-3">
-            <div class="table-card table-responsive-custom m-3">
+
+
+        <div class=" col-9 body-info bg-white shadow-sm rounded-3 p-3 gap-3">
+            <div class="body-content col-12 mx-auto ">
                 <div class="row g-3">
-                    @for($i = 1; $i <= 12; $i++)
-                        <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="https://cf.shopee.vn/file/vn-11134207-7ras8-m0vom5vyuu3x31" class="card-img-top" alt="Ảnh sản phẩm {{ $i }}">
-                            <div class="card-body">
-                                <p class="card-text mb-1"><strong>Mã SP:</strong> SP00{{ $i }}</p>
-                                <h5 class="card-title mb-1">Tên sản phẩm {{ $i }}</h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="me-3">Đơn hàng: {{ rand(1, 100) }}</span>
-                                    <small class="text-muted">Lượt bán: {{ rand(5, 500) }}</small>
+                    @foreach($topProducts as $product)
+                    <div class="col-md-3">
+                        <div class="card h-100 d-flex flex-column" style="height: 330px;">
+                            <div style="width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem;">
+                                <img src="{{ $product->image }}" class="card-img-top" alt="Ảnh sản phẩm {{ $product->sku }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-between" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                <p class="card-text mb-1" style="font-size: 13px;"><strong>Mã SP:</strong> {{ $product->sku }}</p>
+                                <h5 class="card-title mb-2" style="font-size:14px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; line-height:1.2rem; min-height:2.4rem; margin-bottom:0.5rem;">
+                                    {{ $product->product_name }}
+                                </h5>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <span class="me-3">Đơn hàng</span>
+                                    <small class="text-muted">Lượt bán: {{ $product->total_quantity }}</small>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    @endforeach
                 </div>
-                @endfor
             </div>
-        </div> -->
+            <div class="d-flex align-items-center gap-3 mt-3 col-8 mx-auto ps-5 pb-5">
+            </div>
+        </div>
     </div>
 </div>
 
