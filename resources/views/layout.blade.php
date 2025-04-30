@@ -325,7 +325,7 @@
                 let url = $(this).attr('href');
                 loadPage(url);
             });
-            
+
             // Xử lý khi nhấn Back trên trình duyệt
             window.onpopstate = function(event) {
                 location.reload();
@@ -403,6 +403,7 @@
             });
         }
     </script>
+
 
 </body>
 
