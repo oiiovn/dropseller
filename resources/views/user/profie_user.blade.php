@@ -3,37 +3,17 @@
 
 @section('main')
 
-
 <style>
-    .hienthicopy .icon {
-        display: none;
-        cursor: pointer;
-    }
-
-    .hienthicopy:hover .icon {
-        display: inline;
-    }
-
-    .table thead th {
-        position: sticky;
-        top: 0;
-        background: #f8f9fa;
-        z-index: 2;
-    }
-
-    .search-box .clear-icon {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        display: none;
-    }
-
-    .search-box input:valid~.clear-icon {
-        display: inline;
-    }
+.hienthicopy .icon { display: none; cursor: pointer; }
+.hienthicopy:hover .icon { display: inline; }
+.table thead th { position: sticky; top: 0; background: #f8f9fa; z-index: 2; }
+.search-box .clear-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; }
+.search-box input:valid~.clear-icon { display: inline; }
+.tooltip-inner { background-color: #ffffff !important; color: #000 !important; padding: 10px 12px !important; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: left; max-width: 260px; font-size: 13px; opacity: 1 !important; }
+.tooltip.show { opacity: 1 !important; }
+.tooltip.bs-tooltip-top .tooltip-arrow::before { border-top-color: #ffffff !important; }
 </style>
+
 
 
 <div class="container-fluid" style=" width: 100%; background: white; ">
@@ -84,9 +64,15 @@
                                                         </div>
 
                                                         <div>
-                                                            <h5 class="fs-14 my-1 fw-medium">
-                                                                <b> <a class="text-reset">{{$user->name ?? 'Vô Danh'}}</a></b>
+                                                            <h5 class="fs-16 mb-1 fw-medium">
+                                                                {{ $user->name }}
+                                                                @if(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
+                                                                <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
+                                                                @else
+                                                                <i class="ri-verified-badge-fill text-muted" data-bs-toggle="tooltip" title="Nhà bán dropship"></i>
+                                                                @endif
                                                             </h5>
+
                                                             <span>Code: <b style="color:#2e397f;">{{ $user->referral_code ?? 'CODE' }}</b></span>
                                                         </div>
                                                         @foreach ($user->shops as $shop)
@@ -233,33 +219,42 @@
         }
     });
     $(document).ready(function() {
-                $('#user_list').DataTable({
-                    "paging": true, // Bật phân trang
-                    "searching": true, // Bật tìm kiếm
-                    "ordering": true, // Bật sắp xếp
-                    "info": true, // Hiển thị thông tin
-                    "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                    "order": [
-                        [0, "desc"]
-                    ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
+        $('#user_list').DataTable({
+            "paging": true, // Bật phân trang
+            "searching": true, // Bật tìm kiếm
+            "ordering": true, // Bật sắp xếp
+            "info": true, // Hiển thị thông tin
+            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+            "order": [
+                [0, "desc"]
+            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
-                    // Chỉnh Tiếng Việt
-                    "language": {
-                        "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                        "zeroRecords": "Không tìm thấy dữ liệu",
-                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                        "infoEmpty": "Không có dữ liệu để hiển thị",
-                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                        "search": "🔍",
-                        "paginate": {
-                            "first": "Trang đầu",
-                            "last": "Trang cuối",
-                            "next": "Tiếp theo",
-                            "previous": "Quay lại"
-                        }
-                    }
-                });
+            // Chỉnh Tiếng Việt
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                "infoEmpty": "Không có dữ liệu để hiển thị",
+                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                "search": "🔍",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp theo",
+                    "previous": "Quay lại"
+                }
+            }
+        });
 
-            });
+    });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+
 @endsection
