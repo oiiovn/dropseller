@@ -26,13 +26,19 @@ class ProfileController extends Controller
             $shop->revenue = Order::where('shop_id', $shop->shop_id)->sum('total_bill');
             $orders = Order::where('shop_id', $shop->shop_id)->get();
         }
-            // Lấy top 20 SKU có tổng quantity lớn nhất
-            $topProducts = DB::table('order_details')
-            ->select('sku', DB::raw('MAX(product_name) as product_name'), DB::raw('MAX(image) as image'), DB::raw('SUM(quantity) as total_quantity'))
-            ->groupBy('sku')
-            ->orderByDesc('total_quantity')
-            ->limit(20)
-            ->get();
+        $topProducts = DB::table('order_details')
+        ->select(
+            'sku',
+            DB::raw('MAX(product_name) as product_name'),
+            DB::raw('MAX(image) as image'),
+            DB::raw('SUM(quantity) as total_quantity')
+        )
+        ->whereNotIn('sku', ['QUA001', 'QUA_TRANG']) // ✅ Loại trừ các SKU không mong muốn
+        ->groupBy('sku')
+        ->orderByDesc('total_quantity')
+        ->limit(20)
+        ->get();
+    
 
         return view('profile.profile', compact('user', 'shops', 'topProducts'));
     }
