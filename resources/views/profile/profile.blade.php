@@ -59,7 +59,7 @@
                                     {{ Auth::user()->image }}
                                     @else 
                                     https://img.icons8.com/ios-filled/100/user-male-circle.png
-                                    @endif" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #fff;">
+                                    @endif" alt="Avatar" style=" height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #fff;">
                     <!-- Chấm xanh trạng thái -->
                     <span class="position-absolute bottom-0 end-0 translate-middle p-2 bg-success border border-light rounded-circle" style="width: 16px; height: 16px;"></span>
                 </div>
