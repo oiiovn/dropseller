@@ -4,15 +4,57 @@
 @section('main')
 
 <style>
-.hienthicopy .icon { display: none; cursor: pointer; }
-.hienthicopy:hover .icon { display: inline; }
-.table thead th { position: sticky; top: 0; background: #f8f9fa; z-index: 2; }
-.search-box .clear-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; }
-.search-box input:valid~.clear-icon { display: inline; }
-.tooltip-inner { background-color: #ffffff !important; color: #000 !important; padding: 10px 12px !important; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: left; max-width: 260px; font-size: 13px; opacity: 1 !important; }
-.tooltip.show { opacity: 1 !important; }
-.tooltip.bs-tooltip-top .tooltip-arrow::before { border-top-color: #ffffff !important; }
+    .hienthicopy .icon {
+        display: none;
+        cursor: pointer;
+    }
+
+    .hienthicopy:hover .icon {
+        display: inline;
+    }
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background: #f8f9fa;
+        z-index: 2;
+    }
+
+    .search-box .clear-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        display: none;
+    }
+
+    .search-box input:valid~.clear-icon {
+        display: inline;
+    }
+
+    .tooltip-inner {
+        background-color: #ffffff !important;
+        color: #000 !important;
+        padding: 10px 12px !important;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        max-width: 260px;
+        font-size: 13px;
+        opacity: 1 !important;
+    }
+
+    .tooltip.show {
+        opacity: 1 !important;
+    }
+
+    .tooltip.bs-tooltip-top .tooltip-arrow::before {
+        border-top-color: #ffffff !important;
+    }
 </style>
+
 
 
 
@@ -211,50 +253,61 @@
     </div>
 </div>
 <script>
+$(document).ready(function() {
+
+    // Khởi tạo DataTable
+    var table = $('#user_list').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "lengthMenu": [10, 20, 50, 100, 150],
+        "order": [
+            [0, "desc"]
+        ],
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+            "zeroRecords": "Không tìm thấy dữ liệu",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+            "infoEmpty": "Không có dữ liệu để hiển thị",
+            "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+            "search": "🔍",
+            "paginate": {
+                "first": "Trang đầu",
+                "last": "Trang cuối",
+                "next": "Tiếp theo",
+                "previous": "Quay lại"
+            }
+        }
+    });
+
+    // Khởi tạo Tooltip lần đầu (sau khi DOM sẵn sàng)
+    initTooltips();
+
+    // Khởi tạo lại Tooltip mỗi lần DataTable render lại (sau khi tìm kiếm, phân trang...)
+    table.on('draw', function() {
+        initTooltips();
+    });
+
+    // Tô màu theo shop ID
     document.querySelectorAll('.customer_cost').forEach(td => {
-        const shopId = td.dataset.shopId; // Gắn shopId vào dataset
+        const shopId = td.dataset.shopId;
         if (shopId) {
             const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
             td.style.color = color;
         }
     });
-    $(document).ready(function() {
-        $('#user_list').DataTable({
-            "paging": true, // Bật phân trang
-            "searching": true, // Bật tìm kiếm
-            "ordering": true, // Bật sắp xếp
-            "info": true, // Hiển thị thông tin
-            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-            "order": [
-                [0, "desc"]
-            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
-            // Chỉnh Tiếng Việt
-            "language": {
-                "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                "zeroRecords": "Không tìm thấy dữ liệu",
-                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                "infoEmpty": "Không có dữ liệu để hiển thị",
-                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                "search": "🔍",
-                "paginate": {
-                    "first": "Trang đầu",
-                    "last": "Trang cuối",
-                    "next": "Tiếp theo",
-                    "previous": "Quay lại"
-                }
-            }
-        });
-
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+    // Hàm khởi tạo tooltip (viết riêng cho gọn)
+    function initTooltips() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.forEach(function(tooltipTriggerEl) {
             new bootstrap.Tooltip(tooltipTriggerEl);
         });
-    });
+    }
+
+});
 </script>
+
 
 @endsection
