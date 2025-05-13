@@ -27,6 +27,7 @@ class TransactionObserver
                 'DROP' => $tran->type === 'IN' ? 'refund' : 'order',
                 'ADS' => 'ads',
                 'PSP' => 'product_fee',
+                'QTD' => 'Monthly',
                 default => $tran->type === 'IN' ? 'deposit' : 'withdraw',
             },
             $tran->description,
