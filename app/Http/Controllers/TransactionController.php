@@ -170,10 +170,10 @@ class TransactionController extends Controller
     {
         $referralCodes = [
             'UT-',
-            'PUCA-',
-            'KHANH XUAN-',
+            'PUCA',
+            'KHANH XUAN',
             'GO-',
-            'BAO AN-',
+            'BAO AN ',
         ];
         $dd_si = [];
         foreach ($referralCodes as $code) {
