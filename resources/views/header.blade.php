@@ -194,7 +194,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <a href="#!" class="stretched-link">
+                                                            <a  class="stretched-link">
                                                                 <h6 class="mt-0 mb-2 lh-base"> {{$notification->shop->shop_name ?? ''}} <b></b><span class="text-secondary">{{$notification->message}}</span></h6>
                                                             </a>
                                                             <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -253,7 +253,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <a href="#!" class="stretched-link">
+                                                            <a  class="stretched-link">
                                                                 <h6 class="mt-0 mb-2 lh-base"> {{$notification->shop->shop_name ?? ''}} <b>
 
 
