@@ -52,17 +52,52 @@
         </div>
         <!-- Nút xuất hóa đơn bên phải -->
         <div class="col-3" style="display: flex; justify-content: flex-end;">
-        @if (!empty($filteredProducts) && count($filteredProducts) > 0 && !empty($filterDate) && !empty($shopId))
-    <form action="{{ route('order.im') }}" method="POST">
-        @csrf
-        <input type="hidden" name="data" value="{{ json_encode($filteredProducts) }}">
-        <input type="hidden" name="filterDate" value="{{ $filterDate }}">
-        <input type="hidden" name="shop_id" value="{{ $shopId }}">
-        <button type="submit" class="btn btn-primary" style="padding: 5px; border-radius: 5px; border: 1px solid #BEBEBE;">Xuất hóa đơn</button>
-    </form>
-@endif
+            @if (!empty($filteredProducts) && count($filteredProducts) > 0 && !empty($filterDate) && !empty($shopId))
+            <form action="{{ route('order.im') }}" method="POST">
+                @csrf
+                <input type="hidden" name="data" value="{{ json_encode($filteredProducts) }}">
+                <input type="hidden" name="filterDate" value="{{ $filterDate }}">
+                <input type="hidden" name="shop_id" value="{{ $shopId }}">
+                <button type="submit" class="btn btn-primary" style="padding: 5px; border-radius: 5px; border: 1px solid #BEBEBE;">Xuất hóa đơn</button>
+            </form>
+            @endif
 
-        </div>  
+        </div>
+    </div>
+    <div class="row " style="display: flex; align-items: center; justify-content: space-between; height:70px">
+        <!-- Form bên trái -->
+        <div class="col-9" style="flex: 1;">
+            <form action="{{ route('get_shop') }}" method="post" style="display: flex; align-items: center; gap: 10px;">
+                @csrf
+                <select name="platform" class="border-light text-body-emphasis" style="padding: 5px; border-radius: 5px; border: 1px solid #BEBEBE;">
+                    <option value="Tiktok">Tiktok</option>
+                    <option value="Shopee">Shopee</option>
+                    <option value="Lazada">Lazada</option>
+                </select>
+
+                <input
+                    type="date"
+                    name="start_date"
+                    class="border-light text-body-emphasis"
+                    style="padding: 5px; border-radius: 5px; border: 1px solid #BEBEBE;"
+                    value="{{ $startDate ?? '' }}"
+                    placeholder="Từ ngày"
+                    required>
+
+                <input
+                    type="date"
+                    name="end_date"
+                    class="border-light text-body-emphasis"
+                    style="padding: 5px; border-radius: 5px; border: 1px solid #BEBEBE;"
+                    value="{{ $endDate ?? '' }}"
+                    placeholder="Đến ngày"
+                    required>
+
+
+                <button type="submit" class="btn btn-secondary waves-effect waves-light" style="padding: 5px; border-radius: 5px; border: 1px solid #BEBEBE;">Lọc Shop ID</button>
+            </form>
+        </div>
+
     </div>
 
     @if (!empty($filteredProducts))
@@ -98,8 +133,50 @@
             </tbody>
         </table>
     </div>
+
+    @elseif(!empty($Shop_id))
+    <div style=" overflow-x: auto; max-height: 750px; overflow-y: auto; position: relative;">
+        <table class="table table-hover table-nowrap mb-0 bg-white">
+            <thead style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">
+                <tr class="bg-light">
+                    <th scope="col">ID SHOP</th>
+                    <th scope="col">Tên Shop</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($Shop_id as $shop_id)
+                <tr style="vertical-align: middle;">
+                    <td>
+                        <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
+                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$shop_id}}">
+                            {{ $shop_id }}
+                                <span class="ri-checkbox-multiple-blank-line icon"></span>
+                            </a>
+                        </li>
+                    </td>
+                    <td>
+                        @php
+                        $shopName = 'Shop Mới';
+                        if (!empty($shop_get) && count($shop_get) > 0) {
+                        foreach ($shop_get as $shop) {
+                        if ($shop['shop_id'] == $shop_id) {
+                        $shopName = $shop['shop_name'];
+                        break;
+                        }
+                        }
+                        }
+                        @endphp
+                        {{ $shopName }}
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     @else
-    <p>Không tìm thấy sản phẩm nào phù hợp với bộ lọc.</p>
+    <p>Không tìm thấy nội dung nào phù hợp với bộ lọc.</p>
     @endif
+
 </div>
 @endsection

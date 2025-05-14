@@ -1,3 +1,13 @@
+<style>
+    .balance-info a:hover {
+    text-decoration: underline;
+}
+
+.balance-info small {
+    font-size: 13px;
+    margin-top: 2px;
+}
+</style>
 <header id="page-topbar">
     <div class="layout-width">
         <div class="navbar-header">
@@ -117,9 +127,12 @@
                 </form>
             </div>
             <div class="d-flex align-items-center">
-                <div>
-                    <a class="align-items-center " href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.'); }} đ</b></span></a>
-                    <i class=" text-body-tertiary ">(Chờ đối soát: {{ number_format($balace, 0, ',', '.'); }} đ )</i>
+                <div class="balance-info d-flex flex-column align-items-start">
+                    <a class="text-dark fw-medium text-decoration-none" href="{{ route('balance.history') }}">
+                        <i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>
+                        <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.') }} đ</b></span>
+                    </a>
+                    <small class="text-muted fst-italic">(Chờ đối soát: {{ number_format($balace, 0, ',', '.') }} đ)</small>
                 </div>
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -296,7 +309,7 @@
                             @if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
                                     @else
-                                assets/images/users/avatar-1.jpg
+                                    https://img.icons8.com/ios-filled/100/user-male-circle.png
                                     @endif
                                     " alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
@@ -316,10 +329,9 @@
                         <!-- item-->
 
                         <a class="dropdown-item" href="{{route('portfolio')}}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ Sơ</span></a>
+                        <a class="dropdown-item" href="{{route('balance.history')}}"> <span class="align-middle"> 💰 Biến động số dư</span></a>
                         @if(Auth::check() && Auth::user()->role == '2')
-                        
-                            <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
-                        
+                        <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
                         @endif
                         <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
@@ -333,7 +345,7 @@
 
                         <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle" data-key="t-logout">Logout</span>
+                            <span class="align-middle" data-key="t-logout">Đăng xuất</span>
                         </a>
 
                     </div>

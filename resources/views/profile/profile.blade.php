@@ -1,52 +1,85 @@
 @extends('layout')
 @section('title', 'main')
 @section('main')
+<style>
+.tooltip-inner {
+    background-color: #ffffff !important; /* trắng đậm */
+    color: #000 !important;
+    padding: 10px 12px !important;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: left;
+    max-width: 260px;
+    font-size: 13px;
+    opacity: 1 !important;         /* ép hiện rõ */
+}
 
-<div class="container-fluid">
+.tooltip.show {
+    opacity: 1 !important;         /* tránh bị trong suốt */
+}
 
-    <div class="position-relative mx-n4 ">
-        <div class="profile-wid-bg profile-setting-img">
-            <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
-            <!-- <div class="overlay-content">
-                <div class="text-end p-3">
-                    <div class="p-0 ms-auto rounded-circle profile-photo-edit">
-                        <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
-                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
-                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #ffffff !important;
+}
+</style>
+
+
+<div class="container-fluid d-flex flex-column justify-content-start">
+    <div class="cover-wrapper ">
+        <div class="cover-wrapper bg-white shadow-sm rounded-3 w-100">
+            <div class="cover-banner col-8 mx-auto">
+                <div class="cover-photo-container" style="position: relative; width: 100%; max-height: 400px; overflow: hidden; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                    <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/493307844_1092532609562192_2973321067507226144_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=cRBUHQtTWgsQ7kNvwHzdpp0&_nc_oc=AdmjlnAtzjOOxTa8leHcTvb3X0mQNwk0simHvMuIX6CVYL900OBzpnVBcOKKKRtIumYZ2Nzz95shP5xAQXfCV3pC&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=Dn5z7kD9jV90hnjaQyMaQg&oh=00_AfGtYFpTCEhqpZ5I2VPIZdvUMDf1jbglT7WV3HoGfrqehw&oe=6817AE3F"
+                        alt="Ảnh bìa"
+                        style="width: 100%; object-fit: cover;">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <label for="cover-img-upload" class="btn btn-light btn-sm rounded-circle shadow">
+                            <i class="fas fa-camera"></i>
                         </label>
+                        <input type="file" id="cover-img-upload" class="d-none" />
+                    </div>
+                    <div class="position-absolute bottom-0 end-0 m-2 text-end">
+                        <div class="bg-white bg-info px-2 py-1 rounded mb-1">
+                            <a href="https://guitardongtam.com/" target="_blank">
+                                Đến shop </a>
+                        </div>
+                        <div class="bg-white bg-opacity-75 px-2 py-1 rounded text-muted small">
+                            Được tài trợ
+                        </div>
                     </div>
                 </div>
-            </div> -->
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xxl-3">
-            <div class="card mt-n5">
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                            <img src=" 
-                             @if (Auth::check() && Auth::user()->image)
+            </div>
+            <div class="d-flex align-items-start gap-3 mt-3 col-8 mx-auto ps-2">
+                <!-- Avatar -->
+                <div class="position-relative " style="width: 150px; height: 150px;margin-top: -50px;">
+                    <img src="@if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
                                     @else
-                                assets/images/users/avatar-1.jpg
-                                    @endif
-                                    " class="rounded-circle avatar-xl img-thumbnail user-profile-image material-shadow" alt="user-profile-image">
-                            <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                               
-                                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                    
-                                </label>
-                            </div>
-                        </div>
-                        <h5 class="fs-16 mb-1">{{ Auth::user()->name }}</h5>
+                             https://img.icons8.com/ios-filled/100/user-male-circle.png
+                                    @endif" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #fff;">
+                    <!-- Chấm xanh trạng thái -->
+                    <span class="position-absolute bottom-0 end-0 translate-middle p-2 bg-success border border-light rounded-circle" style="width: 16px; height: 16px;"></span>
+                </div>
+
+                <!-- Tên và lượt thích -->
+                <div>
+                    <h4 class="mb-1 fw-bold d-flex align-items-center">
+                        <h5 class="fs-16 mb-1">
+                            {{ Auth::user()->name }}
+                            @if(in_array(Auth::user()->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
+                            <i class="ri-verified-badge-fill text-secondary ms-2" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
+                            @else
+                            <i class="ri-verified-badge-fill text-muted ms-2" data-bs-toggle="tooltip" title="Nhà bán dropship"></i>
+                            @endif
+                        </h5>
+                    </h4>
+                    <div class="text-muted small">
                         <p class="text-muted mb-0"> Mã Code: {{ Auth::user()->referral_code }}</p>
-                        <!-- Nút mở modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                             Chỉnh sửa hồ sơ
                         </button>
-
                         <!-- Modal cập nhật hồ sơ -->
                         <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -90,293 +123,76 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--end card-->
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-5">
-                        <div class="flex-grow-1">
-                            <h5 class="card-title mb-0">Nhà bán mới</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <!-- <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-edit-box-line align-bottom me-1"></i> Edit</a> -->
-                        </div>
-                    </div>
-                    <div class="progress animated-progress custom-progress progress-label">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                            <div class="label">30%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--end card-->
-        </div>
-        <!--end col-->
-        <div class="col-xxl-9">
-            <div class="card mt-xxl-n5">
-                <div class="card-header">
-                    <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#shoplist" role="tab">
-                                <i class="far fa-envelope"></i> Danh sách shop
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body p-4">
-                    <div class="tab-content">
-                        <!--end tab-pane-->
-                        <div class="tab-pane" id="changePassword" role="tabpanel">
-                            <form action="javascript:void(0);">
-                                <div class="row g-2">
-                                    <div class="col-lg-4">
-                                        <div>
-                                            <label for="oldpasswordInput" class="form-label">Old Password*</label>
-                                            <input type="password" class="form-control" id="oldpasswordInput" placeholder="Enter current password">
+                <div class="col-8  p-2">
+                    <div class="row g-2">
+                        @foreach($shops as $shop)
+                        <div class="col-xl-6 col-md-6 ">
+                            <div class="card card-height-100  bg-light">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="avatar-sm flex-shrink-0">
+                                            @if($shop->platform == 'Tiktok')
+                                            <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 30px; height: 30px;">
+                                            @elseif($shop->platform == 'Shoppe')
+                                            <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 30px; height: 30px;">
+                                            @else
+                                            <i class="fas fa-store me-1"></i>
+                                            @endif
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h4 class="fs-4 mb-1">{{ $shop->shop_name }}</h4>
+                                            <p class="text-muted mb-0">{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</p>
                                         </div>
                                     </div>
-                                    <!--end col-->
-                                    <div class="col-lg-4">
-                                        <div>
-                                            <label for="newpasswordInput" class="form-label">New Password*</label>
-                                            <input type="password" class="form-control" id="newpasswordInput" placeholder="Enter new password">
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-4">
-                                        <div>
-                                            <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
-                                            <input type="password" class="form-control" id="confirmpasswordInput" placeholder="Confirm password">
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <a href="javascript:void(0);" class="link-primary text-decoration-underline">Forgot Password ?</a>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-success">Change Password</button>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                </div>
-                                <!--end row-->
-                            </form>
-                            <div class="mt-4 mb-3 border-bottom pb-2">
-                                <div class="float-end">
-                                    <a href="javascript:void(0);" class="link-primary">All Logout</a>
-                                </div>
-                                <h5 class="card-title">Login History</h5>
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="flex-shrink-0 avatar-sm">
-                                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 material-shadow">
-                                        <i class="ri-smartphone-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6>iPhone 12 Pro</h6>
-                                    <p class="text-muted mb-0">Los Angeles, United States - March 16 at 2:47PM</p>
-                                </div>
-                                <div>
-                                    <a href="javascript:void(0);">Logout</a>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="flex-shrink-0 avatar-sm">
-                                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 material-shadow">
-                                        <i class="ri-tablet-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6>Apple iPad Pro</h6>
-                                    <p class="text-muted mb-0">Washington, United States - November 06 at 10:43AM</p>
-                                </div>
-                                <div>
-                                    <a href="javascript:void(0);">Logout</a>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="flex-shrink-0 avatar-sm">
-                                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 material-shadow">
-                                        <i class="ri-smartphone-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6>Galaxy S21 Ultra 5G</h6>
-                                    <p class="text-muted mb-0">Conneticut, United States - June 12 at 3:24PM</p>
-                                </div>
-                                <div>
-                                    <a href="javascript:void(0);">Logout</a>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0 avatar-sm">
-                                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 material-shadow">
-                                        <i class="ri-macbook-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6>Dell Inspiron 14</h6>
-                                    <p class="text-muted mb-0">Phoenix, United States - July 26 at 8:10AM</p>
-                                </div>
-                                <div>
-                                    <a href="javascript:void(0);">Logout</a>
                                 </div>
                             </div>
                         </div>
-                        <!--end tab-pane-->
-                        <div class="tab-pane" id="experience" role="tabpanel">
-                            <form>
-                                <div id="newlink">
-                                    <div id="1">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="jobTitle" class="form-label">Job Title</label>
-                                                    <input type="text" class="form-control" id="jobTitle" placeholder="Job title" value="Lead Designer / Developer">
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="companyName" class="form-label">Company Name</label>
-                                                    <input type="text" class="form-control" id="companyName" placeholder="Company name" value="Themesbrand">
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="experienceYear" class="form-label">Experience Years</label>
-                                                    <div class="row">
-                                                        <div class="col-lg-5">
-                                                            <select class="form-control" data-choices data-choices-search-false name="experienceYear" id="experienceYear">
-                                                                <option value="">Select years</option>
-                                                                <option value="Choice 1">2001</option>
-                                                                <option value="Choice 2">2002</option>
-                                                                <option value="Choice 3">2003</option>
-                                                                <option value="Choice 4">2004</option>
-                                                                <option value="Choice 5">2005</option>
-                                                                <option value="Choice 6">2006</option>
-                                                                <option value="Choice 7">2007</option>
-                                                                <option value="Choice 8">2008</option>
-                                                                <option value="Choice 9">2009</option>
-                                                                <option value="Choice 10">2010</option>
-                                                                <option value="Choice 11">2011</option>
-                                                                <option value="Choice 12">2012</option>
-                                                                <option value="Choice 13">2013</option>
-                                                                <option value="Choice 14">2014</option>
-                                                                <option value="Choice 15">2015</option>
-                                                                <option value="Choice 16">2016</option>
-                                                                <option value="Choice 17" selected>2017</option>
-                                                                <option value="Choice 18">2018</option>
-                                                                <option value="Choice 19">2019</option>
-                                                                <option value="Choice 20">2020</option>
-                                                                <option value="Choice 21">2021</option>
-                                                                <option value="Choice 22">2022</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end col-->
-                                                        <div class="col-auto align-self-center">
-                                                            to
-                                                        </div>
-                                                        <!--end col-->
-                                                        <div class="col-lg-5">
-                                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default2">
-                                                                <option value="">Select years</option>
-                                                                <option value="Choice 1">2001</option>
-                                                                <option value="Choice 2">2002</option>
-                                                                <option value="Choice 3">2003</option>
-                                                                <option value="Choice 4">2004</option>
-                                                                <option value="Choice 5">2005</option>
-                                                                <option value="Choice 6">2006</option>
-                                                                <option value="Choice 7">2007</option>
-                                                                <option value="Choice 8">2008</option>
-                                                                <option value="Choice 9">2009</option>
-                                                                <option value="Choice 10">2010</option>
-                                                                <option value="Choice 11">2011</option>
-                                                                <option value="Choice 12">2012</option>
-                                                                <option value="Choice 13">2013</option>
-                                                                <option value="Choice 14">2014</option>
-                                                                <option value="Choice 15">2015</option>
-                                                                <option value="Choice 16">2016</option>
-                                                                <option value="Choice 17">2017</option>
-                                                                <option value="Choice 18">2018</option>
-                                                                <option value="Choice 19">2019</option>
-                                                                <option value="Choice 20" selected>2020</option>
-                                                                <option value="Choice 21">2021</option>
-                                                                <option value="Choice 22">2022</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--end col-->
-                                                    </div>
-                                                    <!--end row-->
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="jobDescription" class="form-label">Job Description</label>
-                                                    <textarea class="form-control" id="jobDescription" rows="3" placeholder="Enter description">You always want to make sure that your fonts work well together and try to limit the number of fonts you use to three or less. Experiment and play around with the fonts that you already have in the software you're working with reputable font websites. </textarea>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="hstack gap-2 justify-content-end">
-                                                <a class="btn btn-success" href="javascript:deleteEl(1)">Delete</a>
-                                            </div>
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                </div>
-                                <div id="newForm" style="display: none;">
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="hstack gap-2">
-                                        <button type="submit" class="btn btn-success">Update</button>
-                                        <a href="javascript:new_link()" class="btn btn-primary">Add New</a>
-                                    </div>
-                                </div>
-                                <!--end col-->
-                            </form>
-                        </div>
-                        <!--end tab-pane-->
-                        <div class="row">
-                            @foreach($shops as $shop)
-                            <div class="col-xl-4 col-md-6">
-                                <div class="card card-height-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-warning-subtle text-warning rounded-2 fs-2 material-shadow">
-                                                    <i class="bx bxs-user-account"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h4 class="fs-4 mb-3">{{$shop->shop_name}}</h4>
-                                                <p class="text-muted mb-0">Doanh thu: <td>{{ number_format($shop->revenue, 0, ',', '.') }} VNĐ</td>
-                                                </p>
-                                            </div>
-                                            <!-- <div class="flex-shrink-0 align-self-center">
-                                                <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>10.35 %</span>
-                                            </div> -->
-                                        </div>
-                                    </div><!-- end card body -->
-                                </div>
-                            </div> <!-- end col-->
-                            @endforeach
-                        </div> <!-- end row-->
-                        <!--end tab-pane-->
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
-    <!--end row-->
+    <!-- <div class="body-wrapper mt-4 d-flex justify-content-start col-10 mx-auto gap-3">
+        <div class=" col-3 body-info bg-white shadow-sm rounded-3 p-3">
+            <div class="body-content col-12">
+                <div class="info-title">
+                    <h4 class="mb-1 fw-bold">Giới thiệu</h4>
+                </div>
+                <p class="text-muted text-center col-full">
+                    <strong>CỬA HÀNG QUẦN ÁO</strong><br>
+                    🎸HCM : Số 44 Đường C1, Phường 13, Quận Tân Bình<br>
+                    🎸Đà Nẵng : 317 Nguyễn Tri Phương, Quận Hải Châu<br>
+                    ☎ Hotline : (08) 1800 5678
+                </p>
+            </div>
+            <hr>
+            <div class="d-flex align-items-center gap-3 mt-3 col-8 mx-auto ps-5 pb-5">
+            </div>
+        </div>
+        <div class=" col-9 body-info bg-white shadow-sm rounded-3 p-3 gap-3">
+            <div class="body-content col-8 mx-auto ">
+                <h4 class="mb-1 fw-bold">Có thể là một vài danh sách sản phẩm </h4>
 
+            </div>
+            <div class="d-flex align-items-center gap-3 mt-3 col-8 mx-auto ps-5 pb-5">
+            </div>
+        </div>
+    </div> -->
+    <!-- Đang xây dựng -->
 </div>
+
+
+
+
+<!-- Hiển thị tooltip -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+
 @endsection

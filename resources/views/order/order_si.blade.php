@@ -34,7 +34,9 @@
         display: inline;
     }
 </style>
-<div class="container-fluid" style="position: absolute;  width: 86%; background: white; ">
+
+
+<div class="container-fluid" style=" width: 100%; background: white; ">
     <!-- end page title -->
     <div class="row">
         <div class="col-lg-12">
@@ -49,14 +51,20 @@
                                 </a>
                             </li>
                             @foreach($shops as $shop)
+
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shop->id}}" href="#shop-{{$shop->id}}-content" role="tab" aria-selected="false">
-                                    <i class="me-1 align-bottom"></i> {{$shop->shop_name}}
+                                    @if($shop->platform == 'Tiktok')
+                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                    @elseif($shop->platform == 'Shoppe')
+                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                    @else
+                                    <i class="fas fa-store me-1"></i>
+                                    @endif
+                                    {{$shop->shop_name}}
                                 </a>
                             </li>
                             @endforeach
-                            <a href="{{route('payment')}}" class="btn btn-info">payment</a>
-                            <a href="{{route('update.reconciled')}}" class="btn btn-info"> đối soát</a>
                         </ul>
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
@@ -66,7 +74,7 @@
 
                                         <thead class="text-muted table-light ">
                                             <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="id" >Mã đơn nhập hàng</th>
+                                                <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
                                                 <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
@@ -98,15 +106,27 @@
 
 
                                                 <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
+                                                    @if($item->shop->platform == 'Tiktok')
+                                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                                    @elseif($item->shop->platform == 'Shoppe')
+                                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                                    @endif
                                                     {{ $item->shop->shop_name ?? 'N/A' }}
                                                 </td>
                                                 <td class="export_date">{{$item->created_at}}</td>
                                                 <td class="total_products">{{$item->total_products}}</td>
                                                 <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="payment_status">{{$item->payment_status}}</td>
+                                                @if($item->payment_status == 'Chưa thanh toán')
+                                                <td class="payment_status" style="color:red;">
+                                                    {{ $item->payment_status }}
+                                                </td>
+                                                @else
+                                                <td class="payment_status" style="color:green;">
+                                                    {{ $item->payment_status }}
+                                                </td>
+                                                @endif
                                                 <td class="transaction_id">
-
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
                                                         <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->transaction_id}}">
                                                             {{$item->transaction_id}}
@@ -116,12 +136,11 @@
                                                 </td>
                                                 <td class="reconciled">
                                                     @if($item->reconciled == 1)
-                                                    Chưa đối soát
+                                                    <span style="color:red;">Chưa đối soát</span>
                                                     @elseif($item->reconciled == 0)
-                                                    Đã đối soát
+                                                    <span style="color:green;">Đã đối soát</span>
                                                     @endif
                                                 </td>
-
                                                 <td>
                                                     <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
@@ -132,26 +151,26 @@
                                                     </ul>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="staticBackdrop-{{$item->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 70%; width: 100%;">
+                                                        <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h6 class="modal-title" id="staticBackdropLabel"></h6>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <!-- Phần chi tiết sản phẩm -->
-                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 800px;">
+                                                                <div class="modal-body" style="display: flex; gap: 20px; overflow-x: auto; max-height: 1200px;">
                                                                     <div class="col-xl-9" style="flex: 0 0 70%;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <div class="table-responsive table-card">
-                                                                                    <div class="table-responsive" style="max-height: 800px; overflow-y: auto;">
+                                                                                    <div class="table-responsive" style="max-height: 1000px; overflow-y: auto;">
                                                                                         <table class="table table-nowrap align-middle table-borderless mb-0 table-hover ">
                                                                                             <thead class="table-light text-muted">
                                                                                                 <tr>
-                                                                                                    <th scope="col">Sản Phẩm</th>
-                                                                                                    <th scope="col">Số Lượng</th>
-                                                                                                    <th scope="col">Giá Nhập</th>
-                                                                                                    <th scope="col" class="text-end">Tổng Giá Nhập</th>
+                                                                                                    <th scope="col" style="width: 40%;">Sản Phẩm</th>
+                                                                                                    <th scope="col" style="width: 12%;">Số Lượng</th>
+                                                                                                    <th scope="col" style="width: 15%;">Giá Nhập</th>
+                                                                                                    <th scope="col" style="width: 20%;">Tổng Giá Nhập</th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
@@ -164,15 +183,15 @@
                                                                                                             </div>
                                                                                                             <div class="flex-grow-1 ms-3">
                                                                                                                 <h5 class="fs-13">
-                                                                                                                    <a>{{$detail->product_name}}</a>
+                                                                                                                    <a style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
                                                                                                                 </h5>
                                                                                                                 <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </td>
-                                                                                                    <td>{{$detail->quantity}}</td>
-                                                                                                    <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
-                                                                                                    <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{$detail->quantity}}</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
                                                                                                 </tr>
                                                                                                 @endforeach
                                                                                             </tbody>
@@ -183,7 +202,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!-- Phần thanh toán tổng -->
-                                                                    <div class="col-xl-4" style="flex: 0 0 25%; position: sticky; top: 0;">
+                                                                    <div class="col-xl-4" style="flex: 0 0 27%; position: sticky; top: 0;">
                                                                         <div class="card">
                                                                             <div class="card-body">
                                                                                 <table class="table table-borderless mb-0">
@@ -192,7 +211,7 @@
                                                                                             <h6 class="fw-medium order-link text-dark" data-order-code="{{$item->order_code}}">
                                                                                                 {{$item->order_code}}
                                                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
-                                                                                                <i class="d-flex text-dark ">{{$item->export_date}}</i>
+                                                                                                <i class="d-flex text-dark ">{{$item->filter_date}}</i>
                                                                                                 <span class="badge badge-gradient-danger">{{ $item->shop->shop_name ?? 'N/A' }}</span>
                                                                                             </h6>
                                                                                             <td>Tổng số sản phẩm :</td>
@@ -224,7 +243,36 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#orderTable').DataTable({
+                                                "paging": true, // Bật phân trang
+                                                "searching": true, // Bật tìm kiếm
+                                                "ordering": true, // Bật sắp xếp
+                                                "info": true, // Hiển thị thông tin
+                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "order": [
+                                                    [2, "desc"]
+                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
+                                                // Chỉnh Tiếng Việt
+                                                "language": {
+                                                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
+                                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                    "search": "",
+                                                    "paginate": {
+                                                        "first": "Trang đầu",
+                                                        "last": "Trang cuối",
+                                                        "next": "Tiếp theo",
+                                                        "previous": "Quay lại"
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    </script>
 
                                 </div>
 
@@ -237,13 +285,13 @@
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
                                                 <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
-                                                <th class="sort" data-sort="shop_name">Shop</th>
                                                 <th class="sort" data-sort="date">Ngày tạo đơn</th>
                                                 <th class="sort" data-sort="soluong">Số lượng</th>
                                                 <th class="sort" data-sort="phidrop">Phí drop</th>
                                                 <th class="sort" data-sort="product_cost">Tổng Bill</th>
                                                 <th class="sort" data-sort="shop_name">Thanh toán</th>
                                                 <th class="sort" data-sort="shop_name">Mã thanh toán</th>
+                                                <th class="sort" data-sort="shop_name">Đối soát</th>
                                                 <th class="sort" data-sort="hanhdong">Hành động</th>
                                             </tr>
                                         </thead>
@@ -253,7 +301,7 @@
                                                 <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->order_code}}">
                                                                 {{$order->order_code}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
@@ -263,14 +311,11 @@
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
-                                                    {{ $order->shop->shop_name ?? 'N/A' }}
-                                                </td>
-                                                <td class="date">{{$order->export_date}}</td>
+                                                <td class="date">{{$order->created_at}}</td>
                                                 <td class="customer_cost">{{$order->total_products}}</td>
                                                 <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
                                                 <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="date">{{$order->payment_status}}</td>                                             
+                                                <td class="date">{{$order->payment_status}}</td>
                                                 <td class="transaction_id">
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
                                                         <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id}}">
@@ -278,6 +323,13 @@
                                                             <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                         </a>
                                                     </li>
+                                                </td>
+                                                <td class="reconciled">
+                                                    @if($order->reconciled == 1)
+                                                    <span style="color:red;">Chưa đối soát</span>
+                                                    @elseif($order->reconciled == 0)
+                                                    <span style="color:green;">Đã đối soát</span>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <!-- Button trigger modal -->
@@ -288,7 +340,7 @@
                                                     </a>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="exampleModal{{$order->order_code}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 70%; width: 100%;">
+                                                        <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -377,25 +429,32 @@
                                         </tbody>
                                     </table>
                                     <script>
+                                        document.addEventListener('click', function(e) {
+                                            const icon = e.target.closest('.order-link .icon');
+                                            if (!icon) return;
+                                            const orderLink = icon.closest('.order-link');
+                                            const orderCode = orderLink.getAttribute('data-order-code');
+                                            if (!orderCode) return;
+                                            if (icon.dataset.throttled === "true") return;
+                                            icon.dataset.throttled = "true";
+                                        });
                                         $(document).ready(function() {
                                             $('#orderTableSHOP{{$shop->id}}').DataTable({
-                                                "paging": true, // Bật phân trang
-                                                "searching": true, // Bật tìm kiếm
-                                                "ordering": true, // Bật sắp xếp
-                                                "info": true, // Hiển thị thông tin
-                                                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
+                                                "paging": true,
+                                                "searching": true,
+                                                "ordering": true,
+                                                "info": true,
+                                                "lengthMenu": [10, 20, 50, 100, 150],
                                                 "order": [
-                                                    [2, "desc"]
-                                                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                                                // Chỉnh Tiếng Việt
+                                                    [1, "desc"]
+                                                ],
                                                 "language": {
                                                     "lengthMenu": "Hiển thị _MENU_ đơn hàng",
                                                     "zeroRecords": "Không tìm thấy dữ liệu",
                                                     "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
                                                     "infoEmpty": "Không có dữ liệu để hiển thị",
                                                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                    "search": "🔍",
+                                                    "search": "",
                                                     "paginate": {
                                                         "first": "Trang đầu",
                                                         "last": "Trang cuối",
@@ -428,68 +487,6 @@
         }
     });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const orderLinks = document.querySelectorAll('.order-link');
-        orderLinks.forEach(link => {
-            const icon = link.querySelector('.icon');
-            const orderCode = link.getAttribute('data-order-code');
-            let isThrottled = false;
-            icon.addEventListener('click', function() {
-                if (isThrottled) return;
-                isThrottled = true;
-                // Copy the order code to clipboard
-                navigator.clipboard.writeText(orderCode)
-                    .then(() => {
-                        // Show notification
-                        showToast(`Đã copy mã :  ${orderCode} !`);
-                    })
-                    .catch(err => {
-                        console.error('Không có dữ liệu copy: ', err);
-                    })
-                    .finally(() => {
-                        setTimeout(() => {
-                            isThrottled = false;
-                        }, 2200);
-                    });
-            });
-        });
 
-        $(document).ready(function() {
-            $('#orderTable').DataTable({
-                "paging": true, // Bật phân trang
-                "searching": true, // Bật tìm kiếm
-                "ordering": true, // Bật sắp xếp
-                "info": true, // Hiển thị thông tin
-                "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                "order": [
-                    [2, "desc"]
-                ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
 
-                // Chỉnh Tiếng Việt
-                "language": {
-                    "lengthMenu": "Hiển thị _MENU_đơn hàng",
-                    "zeroRecords": "Không tìm thấy dữ liệu",
-                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                    "infoEmpty": "Không có dữ liệu để hiển thị",
-                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                    "search": "🔍",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Tiếp theo",
-                        "previous": "Quay lại"
-                    }
-                }
-            });
-
-        });
-
-    });
-
-    function clearSearchInput() {
-        document.querySelector('.search-box input').value = '';
-        document.querySelector('.search-box input').dispatchEvent(new Event('input'));
-    }
-</script>
 @endsection

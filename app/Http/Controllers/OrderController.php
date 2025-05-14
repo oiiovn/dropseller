@@ -7,37 +7,61 @@ use Illuminate\Http\Request;
 use App\Exports\OrderTiktokExport;
 use App\Imports\OrderTiktokimport;
 use App\Models\OrderDetail;
+use App\Models\User;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
-
+use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
+use App\Models\Product;
+use App\Models\Transaction; // Import the Transaction model
+use App\Models\ReturnOrder; // Import the ReturnOrder model
 
 class OrderController extends Controller
 {
     function Getorder()
     {
-        return view('order.order');
+        return view('payment.transaction_all');
     }
+    public function Get_orders_all()
+    {
+        $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
+        $orders_all = [];
+
+        foreach ($shops as $shop) {
+            $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
+
+            if (!isset($orders_all[$userName])) {
+                $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
+            }
+
+            $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
+        }
+
+        return view('order.orders_all', compact('orders_all'));
+    }
+
+
 
     public function order_si(Request $request)
     {
         $user = Auth::user();
         $shops = Shop::where('user_id', $user->id)->get();
-    
+
         $ordersQuery = Order::whereIn('shop_id', $shops->pluck('shop_id'))
             ->with(['shop', 'orderDetails'])
             ->orderBy('created_at', 'desc');
-    
+
         if ($request->has('order_code') && !empty($request->order_code)) {
             $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
         }
-    
-        $orders = $ordersQuery->get(); 
+
+        $orders = $ordersQuery->get();
         return view('order.order_si', compact('orders', 'shops'));
     }
-    
+
 
 
     public function exportOrders()
@@ -156,4 +180,146 @@ class OrderController extends Controller
             return redirect()->route('productsss')->with('success', 'Đơn hàng này đã được tạo mới!');
         }
     }
+    // đơn hoàn
+    public function showImportForm()
+    {
+        return view('order.import_don_hoan');
+    }
+
+
+    public function import(Request $request)
+    {
+        $rows = Excel::toArray([], $request->file('file'))[0];
+        $data = collect($rows)->skip(1);
+        $ketQua = [];
+        foreach ($data as $row) {
+            [$ngays, $sku, $so_luong, $shopId] = $row;
+            $ngay = Date::excelToDateTimeObject($ngays)->format('Y-m-d');
+            $donHangs = DB::table('orders')
+                ->where('shop_id', $shopId)
+                ->whereRaw("? BETWEEN SUBSTRING_INDEX(filter_date, ' - ', 1) AND SUBSTRING_INDEX(filter_date, ' - ', -1)", [$ngay])
+                ->get();
+            if ($donHangs->isEmpty()) {
+                $ketQua[] = [
+                    'ngay' => $ngay,
+                    'shop_id' => $shopId,
+                    'sku' => $sku,
+                    'order_code' => null,
+                    'filter_date' => null,
+                    'ket_qua' => '❌ Không tìm thấy đơn nào'
+                ];
+            } else {
+                foreach ($donHangs as $don) {
+                    $product = Product::where('sku', $sku)
+                        ->with(['order_detail' => function ($q) use ($don) {
+                            $q->where('order_id', $don->id);
+                        }])
+                        ->first();
+                    $ketQua[] = [
+                        'ngay' => $ngay,
+                        'shop_id' => $shopId,
+                        'sku' => $sku,
+                        'so_luong' => (int) $so_luong,
+                        'order_code' => $don->order_code,
+                        'filter_date' => $don->filter_date,
+                        'gia_san_pham' => $product->price ?? 0,
+                        'ket_qua' => '✅',
+                        'product' => $product, // ⭐ thêm toàn bộ thông tin sản phẩm tại đây
+                    ];
+                }
+            }
+        }
+        $shops = Shop::all();
+        $timThay = collect($ketQua)->where('order_code', '!=', null);
+        $khongTimThay = collect($ketQua)->where('order_code', null);
+
+        $gopTimThay = $timThay
+            ->groupBy(fn($item) => $item['ngay'] . '|' . $item['shop_id'] . '|' . $item['order_code'])
+            ->map(function ($group) {
+                $first = $group->first();
+                $skuGrouped = $group->groupBy('sku')
+                    ->map(function ($items) {
+                        $tong = $items->sum('so_luong');
+                        return $items->first()['sku'] . ' (' . $tong . ')';
+                    })->values()->implode(', ');
+
+                return [
+                    'ngay' => $first['ngay'],
+                    'shop_id' => $first['shop_id'],
+                    'order_code' => $first['order_code'],
+                    'filter_date' => $first['filter_date'],
+                    'sku' => $skuGrouped,
+                    'tong_tien' => $group->sum(fn($item) => $item['so_luong'] * $item['gia_san_pham']),
+                    'ket_qua' => '✅ ',
+                ];
+            });
+
+        $gopKhongTimThay = $khongTimThay
+            ->groupBy(fn($item) => $item['ngay'] . '|' . $item['shop_id'])
+            ->map(function ($group) {
+                $first = $group->first();
+                $skuList = $group->pluck('sku')->implode(', ');
+
+                return [
+                    'ngay' => $first['ngay'],
+                    'shop_id' => $first['shop_id'],
+                    'order_code' => null,
+                    'filter_date' => null,
+                    'sku' => $skuList,
+                    'tong_tien' => 0,
+                    'ket_qua' => '❌',
+                ];
+            });
+
+        $ketQuaGop = $gopTimThay
+            ->merge($gopKhongTimThay)
+            ->sortByDesc(fn($item) => $item['ket_qua'] === '❌')
+            ->values();
+
+        $sanPhamGop = collect($ketQua)
+            ->filter(fn($item) => !empty($item['order_code'])) // ✅ chỉ lấy dòng có đơn hàng
+            ->groupBy('sku')
+            ->map(function ($items) {
+                $first = $items->first();
+                return [
+                    'sku' => $first['sku'],
+                    'product_name' => $first['product']->order_detail[0]->product_name ?? '',
+                    'image' => $first['product']->order_detail[0]->image ?? '',
+                    'so_luong' => $items->sum('so_luong'),
+                ];
+            })
+            ->values()
+            ->sortBy('sku')
+            ->values();
+        $tongSanPham = $sanPhamGop->sum('so_luong');
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham , 'shops' => $shops]);
+    }
+    public function taoThanhToan(Request $request)
+    {
+        $ketQuaGop = collect(unserialize(base64_decode($request->input('data'))));
+
+        $donCanThanhToan = $ketQuaGop->filter(function ($item) {
+            return $item['order_code'] !== null && $item['tong_tien'] > 0;
+        })->values();
+// dd($donCanThanhToan);
+        if ($donCanThanhToan->isNotEmpty()) {
+            foreach ($donCanThanhToan as $don) {
+                ReturnOrder::create([
+                    'order_code' => $don['order_code'],
+                    'shop_id' => $don['shop_id'],
+                    'ngay' => $don['ngay'],
+                    'sku' => json_encode($don['sku']), // có thể là chuỗi hoặc mảng → encode lại nếu là text
+                    'tong_tien' => $don['tong_tien'],
+                    'payment_status' => 'Chưa thanh toán',
+                    'transaction_id' => null,
+                ]);
+            }
+
+            return redirect()->back()->with('message', '✅ Đã tạo thanh toán thành công!');
+        } else {
+            return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
+        }
+    }
+
+    
 }

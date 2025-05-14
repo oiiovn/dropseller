@@ -41,9 +41,9 @@ class AutoPaymentOrders extends Command
             $orders = Order::where('shop_id', $shop->shop_id)
                 ->where('payment_status', 'Chưa thanh toán')
                 ->orderBy('created_at', 'asc')
+                ->orderBy('id', 'asc')
                 ->get();
-
-            $allOrders = array_merge($allOrders, $orders->toArray());
+                $allOrders = [...$allOrders, ...$orders->all()];
         }
 
         foreach ($allOrders as $orderData) {
@@ -59,10 +59,9 @@ class AutoPaymentOrders extends Command
                 $order->transaction_id = $transactionId;
                 $order->save();
                 $total_amount -= $order->total_bill;
-                $user->total_amount = $total_amount;
+                $user->total_amount = $total_amount;-
                 $user->save();
                 Transaction::create([
-                    'id' => $uniqueId,
                     'bank' => 'DROP',
                     'account_number' => $user->referral_code,
                     'transaction_date' => now(),
@@ -79,10 +78,6 @@ class AutoPaymentOrders extends Command
                     'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
                 ]);
             }
-            $email = $user->email;
-            if (!empty($email)) {
-                Mail::to($email)->send(new PaymentMail($order));
-            }  
         }
     }
 

@@ -27,8 +27,8 @@ class FetchTransactions extends Command
         $token = base64_encode($secretKey);
 
         $requestBody = [
-            "bankAccounts" => "62886838888", // Số tài khoản chính xác
-            "begin" => "10/02/2025",        // Ngày bắt đầu 
+            "bankAccounts" => "008338298888", // Số tài khoản chính xác
+            "begin" => "01/03/2025",        // Ngày bắt đầu 
             "end" => "20/11/2029"          // Ngày kết thúc
         ];
 
@@ -49,7 +49,6 @@ class FetchTransactions extends Command
                 continue; 
             }
             Transaction::create([
-                'id' => $transaction['id'],
                 'bank' => $transaction['bank'],
                 'account_number' => $transaction['account_number'],
                 'transaction_date' => $transaction['transaction_date'],
@@ -61,7 +60,7 @@ class FetchTransactions extends Command
         
         
             
-            $user = User::where('referral_code', $transaction['description'])->first();
+            $user = User::whereRaw("? LIKE CONCAT('%', referral_code, '%')", [$transaction['description']])->first();
             if ($user) {
                 Notification::create([
                     'user_id' => $user->id, 
@@ -76,5 +75,35 @@ class FetchTransactions extends Command
         }
 
         $this->info('Transactions fetched and stored successfully.');
+
+        $users = User::all();
+            
+            foreach ($users as $user) {
+                $balace = $user->balance;
+                $totalAmount = 0;
+                $userCode = $user->referral_code;
+                
+                $transactions = Transaction::where('description', 'LIKE', "%$userCode%")
+                    ->get();
+                
+                $Transactions_Drop = Transaction::with('order')
+                    ->where('description', 'LIKE', "%$userCode%")
+                    ->where('bank', 'DROP')
+                    ->whereHas('order', function ($query) {
+                        $query->where('reconciled', 1);
+                    })
+                    ->get();
+                foreach ($transactions as $transaction) {
+                    if ($transaction->type == 'IN') {
+                        $totalAmount += $transaction->amount;
+                    } elseif ($transaction->type == 'OUT') {
+                        $totalAmount -= $transaction->amount;
+                    }
+                }
+                
+                $user->total_amount = $totalAmount;
+                $user->save();
+            }
+            $this->info(' cộng tiền cho user');
     }
 }

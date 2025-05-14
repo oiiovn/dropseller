@@ -23,7 +23,7 @@ class Shop extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'shop_id', 'id'); // Một shop có nhiều order
+        return $this->hasMany(Order::class, 'shop_id', 'shop_id'); // Một shop có nhiều order
     }
     public function revenue()
     {
@@ -32,5 +32,9 @@ class Shop extends Model
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'shop_id', 'shop_id');
+    }
+    public function ads()
+    {
+        return $this->hasMany(ADS::class, 'shop_id', 'shop_id');  // Chỉnh sửa `shop_id` -> `id`
     }
 }

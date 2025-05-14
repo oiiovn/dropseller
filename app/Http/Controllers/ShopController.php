@@ -8,6 +8,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 class ShopController extends Controller
 {
     /**
@@ -88,8 +91,11 @@ public function destroy(Shop $shop)
         return redirect()->back()->with('error', 'Xóa shop thất bại! Vui lòng thử lại.');
     }
 }
+public function Overdue_Order(){
+    $orders_unpaiddd = Order::where('payment_status', 'Chưa thanh toán')
+    ->where('created_at', '<', Carbon::now()->subDay())
+    ->get();
 
-    
-
-    
+    return view('order.order', compact('orders_unpaiddd'));
+}
 }
