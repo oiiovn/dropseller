@@ -39,7 +39,7 @@
                             @case('deposit') <span class="badge bg-success">Nạp tiền</span> @break
                             @case('withdraw') <span class="badge bg-danger">Quyết toán </span> @break
                             @case('order') <span class="badge bg-warning text-dark">Đơn hàng</span> @break
-                            @case('refund') <span class="badge bg-info text-dark">Hoàn đơn</span> @break
+                            @case('refund') <span class="badge bg-info text-dark">Hoàn huỷ</span> @break
                             @case('ads') <span class="badge bg-dark">Quảng cáo</span> @break
                             @case('Monthly') <span class="badge bg-dark">Quyết toán</span> @break
                             @case('product_fee') <span class="badge bg-secondary">Phí đăng sản phẩm</span> @break

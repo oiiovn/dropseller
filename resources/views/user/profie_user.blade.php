@@ -106,7 +106,7 @@
                                                         </div>
 
                                                         <div>
-                                                            <h5 class="col-2 fs-16 mb-1 fw-medium">
+                                                            <h5 class="col-2 fs-16 mb-1 fw-medium" style="white-space: nowrap;">
                                                                 {{ $user->name }}
                                                                 @if(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
                                                                 <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
