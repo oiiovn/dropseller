@@ -200,13 +200,12 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm toàn sàn</h4>
                                 <div class="flex-shrink-0">
                                     <div class="dropdown card-header-dropdown">
-                                        <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <!-- <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="fw-semibold text-uppercase fs-12">Xem theo :</span>
                                             <span class="text-muted">
                                                 {{ request('date_range', 'Tháng này') }} <i class="mdi mdi-chevron-down ms-1"></i>
                                             </span>
-
-                                        </a>
+                                        </a> -->
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm nay']) }}">Hôm nay</a>
 
@@ -234,7 +233,7 @@
                                     </div>
                                     @else
                                     @foreach($Products as $product)
-                                    <div class="product-card p-2 border rounded bg-white d-flex">
+                                    <div class="product-card p-2 border bg-white d-flex">
                                         <div class="me-3">
                                             <img src="{{ $product->image }}" alt="Ảnh sản phẩm" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
                                         </div>
