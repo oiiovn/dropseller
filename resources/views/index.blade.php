@@ -87,7 +87,7 @@
             <div class="h-100">
                 <div class="row gx-3">
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card  mb-3  card-animate" style="background: linear-gradient(to bottom,#58d19d, #ffffff, #ffffff);">
+                        <div class="card  mb-3  card-animate" >
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#fccb38, #ffffff, #ffffff);">
+                        <div class="card card-animate" >
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -140,7 +140,7 @@
                     </div>
 
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#78cbff, #ffffff, #ffffff);">
+                        <div class="card card-animate" >
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -167,7 +167,7 @@
                     </div>
 
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#dfb0ff, #ffffff, #ffffff);">
+                        <div class="card card-animate" >
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -355,7 +355,7 @@
                                             Hiển thị <span class="fw-semibold">5</span> nhà bán
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-auto  mt-3 mt-sm-0">
+                                    <div class="col-sm-auto  mt-3 mt-sm-0">
                                         <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
                                             <li class="page-item disabled">
                                                 <a href="#" class="page-link">←</a>
@@ -373,7 +373,7 @@
                                                 <a href="#" class="page-link">→</a>
                                             </li>
                                         </ul>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

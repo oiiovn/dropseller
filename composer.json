@@ -9,6 +9,7 @@
         "cloudinary-labs/cloudinary-laravel": "^2.2",
         "cloudinary/cloudinary_php": "^2.14",
         "guzzlehttp/guzzle": "^7.2",
+        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",

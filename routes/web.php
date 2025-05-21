@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
     Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
     Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shops.destroy');
+    
 
     Route::middleware('checkrole')->group(function () {
         Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
@@ -119,6 +120,10 @@ Route::middleware('auth')->group(function () {
     //thu chi
     Route::get('/finance-tracker', [FinanceTrackerController::class, 'create'])->name('finance_tracker.create');
     Route::post('/finance-tracker/ai-suggest', [\App\Http\Controllers\FinanceTrackerController::class, 'aiSuggest'])->name('finance.ai.suggest');
+
+    //Affiliate mời nhà bán hàng
+    Route::get('affiliate', [ProgramController::class, 'affiliatePage'])->name('affiliate.affiliate');
+
 
 
 });

@@ -16,6 +16,7 @@ use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Notification;
 use App\Observers\TransactionObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -55,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
                 foreach ($Transactions_Drop as $transaction) {
                     $balace += $transaction->amount;
-                }             
+                }
                 $user->save();
                 $view->with([
                     'user' => $user,
@@ -66,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('index', function ($view) {
             $excludedCodes = ['QUA_TRANG', 'QUA001'];
-            $startDate = request()->input('start_date', Carbon::now()->startOfMonth()->format('Y-m-d H:i:s'));          
+            $startDate = request()->input('start_date', Carbon::now()->startOfMonth()->format('Y-m-d H:i:s'));
             $endDate = request()->input('end_date', Carbon::now()->endOfDay());
             $startDate = Carbon::parse($startDate)->startOfDay();
             $endDate = Carbon::parse($endDate)->endOfDay();
@@ -115,7 +116,7 @@ class AppServiceProvider extends ServiceProvider
                 })
                     ->whereNotIn('sku', $excludedCodes)
                     ->sum('quantity');
-// dd($totalQuantitySold);
+                // dd($totalQuantitySold);
                 $totalBillPaid = Order::whereIn('shop_id', $userShopIds)
                     ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                         $startDate->toDateString(),
@@ -161,30 +162,31 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('*', function ($view) {
-            $Notifications = Notification::where('user_id', Auth::id())
-                ->with('user', 'shop')
-                ->orderBy('created_at', 'desc')
-                ->get();
-            $unreadNotificationsCount = $Notifications->where('is_read', 0)->count();
-            $unreadNotifications = $Notifications->where('is_read', 0)->values(); // Dùng `values()` để giữ lại collection hợp lệ
-            $NotificationsCount = $Notifications->count();
+            if (Auth::check()) {
+                $Notifications = Notification::where('user_id', Auth::id())
+                    ->with('user', 'shop')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
 
-            $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
-                ->whereHas('shop', function ($query) {
-                    $query->where('user_id', Auth::id());
-                })
-                ->where('created_at', '<', Carbon::now()->subDay())
-                ->get();
+                $unreadNotificationsCount = $Notifications->where('is_read', 0)->count();
+                $unreadNotifications = $Notifications->where('is_read', 0)->values();
+                $NotificationsCount = $Notifications->count();
 
-            $view->with(
-                [
+                $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
+                    ->whereHas('shop', function ($query) {
+                        $query->where('user_id', Auth::id());
+                    })
+                    ->where('created_at', '<', Carbon::now()->subDay())
+                    ->get();
+
+                $view->with([
                     'orders_unpaid' => $orders_unpaid,
                     'Notifications' => $Notifications,
                     'NotificationsCount' => $NotificationsCount,
                     'unreadNotificationsCount' => $unreadNotificationsCount,
                     'unreadNotifications' => $unreadNotifications
-                ]
-            );
+                ]);
+            }
         });
     }
 }
