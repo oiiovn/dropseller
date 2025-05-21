@@ -31,7 +31,9 @@
         <div class="cover-wrapper bg-white shadow-sm rounded-3 w-100">
             <div class="cover-banner col-8 mx-auto">
                 <div class="cover-photo-container" style="position: relative; width: 100%; max-height: 400px; overflow: hidden; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+
                     <img src="/assets/images/Dropships.vn.gif"
+
                         alt="Ảnh bìa"
                         style="width: 100%; object-fit: cover;">
                     <div class="position-absolute top-0 end-0 m-2">

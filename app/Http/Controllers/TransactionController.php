@@ -20,19 +20,19 @@ class TransactionController extends Controller
     {
         $userCode = Auth::user()->referral_code;
         $Transactions = Transaction::with('order')
-            ->where('description', 'LIKE', "%$userCode%")
+        ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->get();
         $Transaction_nap = Transaction::with('order')
-            ->where('description', 'LIKE', "%$userCode%")
+        ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->where('bank', 'MBB')
             ->where('type', '=', 'IN')
             ->get();
         $Transactions_Drop = Transaction::with('order')
-            ->where('description', 'LIKE', "%$userCode%")
+             ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->where('bank', 'DROP')
             ->get();
         $Transactions_ads = Transaction::with('ads')
-            ->where('description', 'LIKE', "%$userCode%")
+             ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->where('bank', 'ADS')
             ->get();
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads'));
@@ -88,7 +88,7 @@ class TransactionController extends Controller
         $transactionsByReferral = [];
 
         foreach ($users as $user) {
-            $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
+            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
                 ->where('bank', 'MBB')
                 ->where('type', 'IN')
                 ->get();
@@ -105,7 +105,7 @@ class TransactionController extends Controller
         $users = User::all();
         $transactionsByReferral = [];
         foreach ($users as $user) {
-            $transactions = Transaction::where('description', 'LIKE', "%$user->referral_code%")
+            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
                 ->get();
             $transactionsByReferral[$user->referral_code] = [
                 'user' => $user,
@@ -177,7 +177,7 @@ class TransactionController extends Controller
         ];
         $dd_si = [];
         foreach ($referralCodes as $code) {
-            $transactions = Transaction::where('description', 'LIKE', "%$code%")
+            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$code}[[:>:]]'")
                 ->orderBy('transaction_date', 'desc')
                 ->get();
             $dd_si[$code] = [

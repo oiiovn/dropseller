@@ -33,7 +33,8 @@ class GenerateAllBalanceHistories extends Command
             $userCode = $user->referral_code;
             $runningBalance = 0;
 
-            $transactions = Transaction::where('description', 'LIKE', "%$userCode%")
+
+            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
                 ->orderBy('transaction_date', 'asc')
                 ->get();
 

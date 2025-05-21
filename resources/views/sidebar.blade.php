@@ -39,7 +39,9 @@
                         </li>
                     </ul>
                 </div>
+
             </li> end Dashboard Menu 
+
             <!-- <li class="nav-item"> -->
                 <a class="nav-link menu-link" href="{{route('list_products')}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                     <i class="ri-apps-2-line"></i> <span data-key="t-apps">Danh sách sản phẩm</span>

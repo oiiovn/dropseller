@@ -88,7 +88,7 @@
                 <div class="row gx-3">
                     <div class="col-6 col-md-6 col-xl-3">
                         <div class="card  mb-3  card-animate" >
-                            <div class="card-body ">
+             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐN</p>
@@ -141,6 +141,7 @@
 
                     <div class="col-6 col-md-6 col-xl-3">
                         <div class="card card-animate" >
+
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
