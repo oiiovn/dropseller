@@ -184,7 +184,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-2 d-flex align-items-start">
+                    <!-- <div class="mb-2 d-flex align-items-start">
                         <i class="ri-map-pin-line me-2 fs-5 text-muted"></i>
                         <div>
                             123 Tân Sơn, Phường 12, Quận Gò Vấp, Hồ Chí Minh, Ho Chi Minh City, Vietnam
@@ -196,7 +196,7 @@
                         <div>
                             093 4584 939
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <hr>
