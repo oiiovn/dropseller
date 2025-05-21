@@ -279,7 +279,6 @@
 
                         </div>
                     </div>
-                    @if(false)
                     <div class="col-xl-5">
                         <div class="card ">
                             <div class="card-header align-items-center d-flex">
@@ -315,7 +314,9 @@
                                                             <h5 class="fs-14 my-1 fw-medium">
                                                                 <a class="text-reset">{{$shop->shop->user->name ?? 'Vô Danh'}}</a>
                                                             </h5>
-                                                            <span>
+
+                                                        </div>
+                                                        <!-- <span>
                                                                 @if($shop->shop->platform == 'Tiktok')
                                                                 <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
                                                                 @elseif($shop->shop->platform == 'Shoppe')
@@ -327,62 +328,62 @@
 
                                                                 {{ $shop->shop->shop_name ?? 'Vô Danh' }}
 
-                                                            </span>
-                                                        </div>
+                                                            </span> -->
                                                     </div>
-                                                </td>
-                                                <td>
+                                </div>
+                                </td>
+                                <td>
 
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                    <p class="mb-0">{{$shop->order_count}}</p>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">Giá vốn</span>
-                                                    <p class="mb-0">{{ number_format($shop->total_revenue, 0, ',', '.') }} VNĐ</p>
-                                                </td>
-                                                <!-- <td>
+                                    <span class="text-muted">Đơn hàng</span>
+                                    <p class="mb-0">{{$shop->order_count}}</p>
+                                </td>
+                                <td>
+                                    <span class="text-muted">Giá vốn</span>
+                                    <p class="mb-0">{{ number_format($shop->total_revenue, 0, ',', '.') }} VNĐ</p>
+                                </td>
+                                <!-- <td>
                                                     <h5 class="fs-14 mb-0">32%<i class="ri-bar-chart-fill text-success fs-16 align-middle ms-2"></i></h5>
                                                 </td> -->
-                                            </tr><!-- end -->
-                                            @endforeach
-                                            @endif
-                                        </tbody>
-                                    </table><!-- end table -->
-                                </div>
-                                <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
-                                    <div class="col-sm">
-                                        <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> nhà bán
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-auto  mt-3 mt-sm-0">
-                                        <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a href="#" class="page-link">←</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">→</a>
-                                            </li>
-                                        </ul>
+                                </tr><!-- end -->
+                                @endforeach
+                                @endif
+                                </tbody>
+                                </table><!-- end table -->
+                            </div>
+                            <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
+                                <div class="col-sm">
+                                    <div class="text-muted">
+                                        Hiển thị <span class="fw-semibold">5/15</span> nhà bán
                                     </div>
                                 </div>
+                                <!-- <div class="col-sm-auto  mt-3 mt-sm-0">
+                                    <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a href="#" class="page-link">←</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">1</a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a href="#" class="page-link">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">3</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">→</a>
+                                        </li>
+                                    </ul>
+                                </div> -->
                             </div>
                         </div>
                     </div>
-                    @endif<!-- .col-->
-                </div> <!-- end row-->
-            </div> <!-- end .h-100-->
-        </div> <!-- end col -->
-    </div>
+                </div>
+
+            </div> <!-- end row-->
+        </div> <!-- end .h-100-->
+    </div> <!-- end col -->
+</div>
 </div>
 @if($showWelcomeModal)
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
