@@ -350,6 +350,13 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('affiliate.affiliate') }}" target="_blank">
+                <i class="ri-group-line"></i>
+                <span data-key="t-affiliate">Chương trình Affiliate</span>
+            </a>
+        </li>
+
         </ul>
     </div>
 

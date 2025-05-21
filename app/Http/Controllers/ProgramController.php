@@ -232,4 +232,10 @@ class ProgramController extends Controller
         curl_close($ch);
         return $response;
     }
+
+    public function affiliatePage()
+    {
+        return view('affiliate.affiliate');
+    }
+
 }

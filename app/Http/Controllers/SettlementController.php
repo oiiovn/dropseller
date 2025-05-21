@@ -85,7 +85,6 @@ class SettlementController extends Controller
             $IDQT = $this->generateUniqueTransactionId();
             $user = User::find($report['user_id']);
             $userCode = $user->referral_code;
-
             $totalTopup = Transaction::whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
                 ->where('bank', 'MBB')
                 ->where('type', 'IN')

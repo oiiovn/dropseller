@@ -120,5 +120,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/finance-tracker', [FinanceTrackerController::class, 'create'])->name('finance_tracker.create');
     Route::post('/finance-tracker/ai-suggest', [\App\Http\Controllers\FinanceTrackerController::class, 'aiSuggest'])->name('finance.ai.suggest');
 
+    //Affiliate mời nhà bán hàng
+    Route::get('affiliate', [ProgramController::class, 'affiliatePage'])->name('affiliate.affiliate');
+
+
+
 
 });

@@ -31,7 +31,9 @@
         <div class="cover-wrapper bg-white shadow-sm rounded-3 w-100">
             <div class="cover-banner col-8 mx-auto">
                 <div class="cover-photo-container" style="position: relative; width: 100%; max-height: 400px; overflow: hidden; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                    <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/493307844_1092532609562192_2973321067507226144_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=cRBUHQtTWgsQ7kNvwHzdpp0&_nc_oc=AdmjlnAtzjOOxTa8leHcTvb3X0mQNwk0simHvMuIX6CVYL900OBzpnVBcOKKKRtIumYZ2Nzz95shP5xAQXfCV3pC&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=Dn5z7kD9jV90hnjaQyMaQg&oh=00_AfGtYFpTCEhqpZ5I2VPIZdvUMDf1jbglT7WV3HoGfrqehw&oe=6817AE3F"
+
+                    <img src="/assets/images/Dropships.vn.gif"
+
                         alt="Ảnh bìa"
                         style="width: 100%; object-fit: cover;">
                     <div class="position-absolute top-0 end-0 m-2">
