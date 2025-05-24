@@ -12,7 +12,7 @@ class UserMonthlyReportController extends Controller
      */
     public function index()
     {
-       $userMonthlyReports = UserMonthlyReport::orderBy('created_at', 'desc')->get();
+       $latestReport = UserMonthlyReport::orderBy('created_at', 'desc')->first();
 
         return view('admin.quyet_toan', compact('userMonthlyReports'));
     }
