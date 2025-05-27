@@ -428,8 +428,7 @@
             <div class="modal-body text-center">
                 Bạn vừa được quyết toán đơn tháng vừa rồi<br>
                 Vui lòng kiểm tra lại số dư của bạn.<br>
-                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<br>
-                Nếu đã nạp tiền vui lòng đợi 3-5 phút để hệ thống cập nhật bạn sẽ được sử dụng các tính năng của hệ thống.<br>
+                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.
                 <br>
                 <span class="text-danger fw-bold">
                     Số dư hiện tại: {{ number_format(Auth::user()->total_amount, 0, ',', '.') }} VNĐ
@@ -446,6 +445,30 @@
     </div>
 </div>
 
+
+@if($hasNegativeBalance)
+<div class="modal fade" id="negativeBalanceModal" tabindex="-1" aria-labelledby="negativeBalanceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="negativeBalanceLabel">⚠ Cảnh báo số dư âm</h5>
+                @if(Auth::user()->total_amount >= 0)
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                @endif
+            </div>
+            <div class="modal-body text-center">
+                Bạn vừa được quyết toán đơn tháng vừa rồi<br>
+                Vui lòng kiểm tra lại số dư của bạn.<br>
+                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<br>
+                <span class="text-danger fw-bold">Số dư hiện tại: {{ number_format(Auth::user()->total_amount, 0, ',', '.') }} VNĐ</span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger" href="javascript:void(0);" id="openNapTienModal" data-amount="{{ Auth::user()->total_amount }}">Nạp</a>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -475,22 +498,10 @@
         $(document).on('hidden.bs.modal', '.modal', function () {
             modalZIndex -= 20;
             
-            // Nếu modal đóng là modal nạp tiền, khôi phục modal cảnh báo số dư âm
-            if ($(this).attr('id') === 'napTienModal') {
-                $('#negativeBalanceModal').removeClass('behind');
-                const hasNegativeBalance = {{ Auth::user()->total_amount < 0 ? 'true' : 'false' }};
-                
-                if (hasNegativeBalance) {
-                    setTimeout(() => {
-                        const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
-                        negativeModal.show();
-                    }, 300);
-                }
-            }
             // Nếu modal đóng KHÔNG phải là modal cảnh báo số dư âm
             // và modal cảnh báo số dư âm đã từng hiển thị trước đó
             // và số dư vẫn âm thì hiển thị lại modal cảnh báo
-            else if ($(this).attr('id') !== 'negativeBalanceModal' && negativeBalanceModalShown) {
+            if ($(this).attr('id') !== 'negativeBalanceModal' && negativeBalanceModalShown) {
                 const hasNegativeBalance = {{ Auth::user()->total_amount < 0 ? 'true' : 'false' }};
                 
                 if (hasNegativeBalance) {

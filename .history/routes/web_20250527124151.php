@@ -47,8 +47,8 @@ Route::middleware('auth')->group(function () {
             'hasNegativeBalance' => $hasNegativeBalance,
         ]);
     })->name('dashboard');
-      Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
-    Route::middleware('check_balance')->group(function () {
+    Route::middleware('check_balance')->group(function () {});
+
 
     Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
     Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 
-  
+    Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
     Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
 
     Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
@@ -123,9 +123,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
     Route::get('/settlementt', [SettlementController::class, 'showDetail'])->name('settlement.settlement-detail');
-
-    });
-
 
     //thu chi
     Route::get('/finance-tracker', [FinanceTrackerController::class, 'create'])->name('finance_tracker.create');

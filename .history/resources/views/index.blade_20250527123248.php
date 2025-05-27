@@ -428,8 +428,7 @@
             <div class="modal-body text-center">
                 Bạn vừa được quyết toán đơn tháng vừa rồi<br>
                 Vui lòng kiểm tra lại số dư của bạn.<br>
-                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<br>
-                Nếu đã nạp tiền vui lòng đợi 3-5 phút để hệ thống cập nhật bạn sẽ được sử dụng các tính năng của hệ thống.<br>
+                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<
                 <br>
                 <span class="text-danger fw-bold">
                     Số dư hiện tại: {{ number_format(Auth::user()->total_amount, 0, ',', '.') }} VNĐ

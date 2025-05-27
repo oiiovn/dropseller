@@ -28,27 +28,27 @@ use App\Models\User;
 Route::get('/', function () {
     return redirect('/login');
 });
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        $user = auth()->user();
+Route::middleware('auth','check_balance')->group(function () {
+  Route::get('/dashboard', function () {
+    $user = auth()->user();
 
-        // Điều kiện để show modal chào mừng (chỉ khi không có query)
-        $showWelcomeModal = false;
-        if (!request()->query()) {
-            $programShops = ProgramService::getUnregisteredProgramsForUser($user);
-            $showWelcomeModal = !empty($programShops);
-        }
+    // Điều kiện để show modal chào mừng (chỉ khi không có query)
+    $showWelcomeModal = false;
+    if (!request()->query()) {
+        $programShops = ProgramService::getUnregisteredProgramsForUser($user);
+        $showWelcomeModal = !empty($programShops);
+    }
 
-        // Điều kiện để show modal cảnh báo số dư âm — luôn kiểm tra
-        $hasNegativeBalance = $user->total_amount < 0;
+    // Điều kiện để show modal cảnh báo số dư âm — luôn kiểm tra
+    $hasNegativeBalance = $user->total_amount < 0;
 
-        return view('index', [
-            'showWelcomeModal' => $showWelcomeModal,
-            'hasNegativeBalance' => $hasNegativeBalance,
-        ]);
-    })->name('dashboard');
-      Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
-    Route::middleware('check_balance')->group(function () {
+    return view('index', [
+        'showWelcomeModal' => $showWelcomeModal,
+        'hasNegativeBalance' => $hasNegativeBalance,
+    ]);
+})->name('dashboard');
+
+
 
     Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
     Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
 
-  
+    Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
     Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
 
     Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
@@ -124,10 +124,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
     Route::get('/settlementt', [SettlementController::class, 'showDetail'])->name('settlement.settlement-detail');
 
-    });
-
-
     //thu chi
     Route::get('/finance-tracker', [FinanceTrackerController::class, 'create'])->name('finance_tracker.create');
     Route::post('/finance-tracker/ai-suggest', [\App\Http\Controllers\FinanceTrackerController::class, 'aiSuggest'])->name('finance.ai.suggest');
+
+
 });

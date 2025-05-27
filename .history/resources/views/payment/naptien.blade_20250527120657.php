@@ -53,14 +53,11 @@
                             @if (isset($orders_unpaid) && $orders_unpaid->isNotEmpty())
                             @php
                             $total_bill = $orders_unpaid->sum('total_bill');
-
+                            
                             @endphp
                             <input type="text" class="form-control" id="soTien" placeholder="Số tiền ít nhất phải nạp {{ number_format($total_bill, 0, ',', '.') }} VNĐ" />
                             @else
-                            <input type="text" class="form-control" id="soTien"
-                                value="{{ request('amount') ? number_format(request('amount'), 0, ',', '.') : '' }}"
-                                placeholder="Nhập số tiền" />
-
+                            <input type="text" class="form-control" id="soTien" placeholder="Nhập số tiền" />
                             @endif
 
                         </div>

@@ -428,8 +428,7 @@
             <div class="modal-body text-center">
                 Bạn vừa được quyết toán đơn tháng vừa rồi<br>
                 Vui lòng kiểm tra lại số dư của bạn.<br>
-                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<br>
-                Nếu đã nạp tiền vui lòng đợi 3-5 phút để hệ thống cập nhật bạn sẽ được sử dụng các tính năng của hệ thống.<br>
+                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.
                 <br>
                 <span class="text-danger fw-bold">
                     Số dư hiện tại: {{ number_format(Auth::user()->total_amount, 0, ',', '.') }} VNĐ
@@ -446,11 +445,34 @@
     </div>
 </div>
 
+
+@if($hasNegativeBalance)
+<div class="modal fade" id="negativeBalanceModal" tabindex="-1" aria-labelledby="negativeBalanceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="negativeBalanceLabel">⚠ Cảnh báo số dư âm</h5>
+                @if(Auth::user()->total_amount >= 0)
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                @endif
+            </div>
+            <div class="modal-body text-center">
+                Bạn vừa được quyết toán đơn tháng vừa rồi<br>
+                Vui lòng kiểm tra lại số dư của bạn.<br>
+                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<br>
+                <span class="text-danger fw-bold">Số dư hiện tại: {{ number_format(Auth::user()->total_amount, 0, ',', '.') }} VNĐ</span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger" href="javascript:void(0);" id="openNapTienModal" data-amount="{{ Auth::user()->total_amount }}">Nạp</a>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         let modalZIndex = 1050;
-        let negativeBalanceModalShown = false;
 
         // Mỗi lần mở modal → tăng z-index
         $(document).on('show.bs.modal', '.modal', function () {
@@ -464,52 +486,16 @@
             if ($backdrop.length) {
                 $backdrop.addClass('stacked').css('z-index', modalZIndex - 10);
             }
-
-            // Nếu là modal cảnh báo số dư âm, đánh dấu là đã hiện
-            if ($modal.attr('id') === 'negativeBalanceModal') {
-                negativeBalanceModalShown = true;
-            }
         });
 
-        // Khi đóng modal → hạ z-index và kiểm tra nếu cần hiển thị lại modal số dư âm
+        // Khi đóng modal → hạ z-index
         $(document).on('hidden.bs.modal', '.modal', function () {
             modalZIndex -= 20;
-            
-            // Nếu modal đóng là modal nạp tiền, khôi phục modal cảnh báo số dư âm
-            if ($(this).attr('id') === 'napTienModal') {
-                $('#negativeBalanceModal').removeClass('behind');
-                const hasNegativeBalance = {{ Auth::user()->total_amount < 0 ? 'true' : 'false' }};
-                
-                if (hasNegativeBalance) {
-                    setTimeout(() => {
-                        const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
-                        negativeModal.show();
-                    }, 300);
-                }
-            }
-            // Nếu modal đóng KHÔNG phải là modal cảnh báo số dư âm
-            // và modal cảnh báo số dư âm đã từng hiển thị trước đó
-            // và số dư vẫn âm thì hiển thị lại modal cảnh báo
-            else if ($(this).attr('id') !== 'negativeBalanceModal' && negativeBalanceModalShown) {
-                const hasNegativeBalance = {{ Auth::user()->total_amount < 0 ? 'true' : 'false' }};
-                
-                if (hasNegativeBalance) {
-                    setTimeout(() => {
-                        const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
-                        negativeModal.show();
-                    }, 500); // Đợi modal hiện tại đóng hoàn toàn
-                }
-            }
         });
 
-        // Sự kiện mở modal nạp tiền - giữ negativeBalanceModal hiển thị ở phía sau
+        // Sự kiện mở modal nạp tiền
         $(document).on('click', '#openNapTienModal', function () {
             const amount = $(this).data('amount') || 0;
-            
-            // Đánh dấu modal hiện tại để giữ nó lại khi modal khác đóng
-            if ($('#negativeBalanceModal').hasClass('show')) {
-                $('#negativeBalanceModal').addClass('behind');
-            }
 
             $.get('{{ route("naptien") }}?amount=' + amount, function (data) {
                 if ($('#napTienModal').length === 0) {
@@ -525,21 +511,10 @@
     });
 </script>
 
-<style>
-    .modal.behind {
-        z-index: 1040 !important;
-        opacity: 0.5 !important;
-        pointer-events: none; /* để modal dưới không chặn modal trên */
-    }
 
-    .modal-backdrop.show {
-        z-index: 1039 !important;
-    }
-    
-    .modal-backdrop.stacked {
-        position: fixed !important;
-    }
-</style>
+.modal-backdrop.stacked {
+    position: fixed !important;
+}
 
 
 @endif
