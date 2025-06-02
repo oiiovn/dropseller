@@ -91,7 +91,7 @@
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐN</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐNN</p>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mt-3">
