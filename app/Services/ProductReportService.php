@@ -1,4 +1,8 @@
 ﻿<?php
+<<<<<<< HEAD
+=======
+
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
 namespace App\Services;
 
 use GuzzleHttp\Client;

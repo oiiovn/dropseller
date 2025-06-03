@@ -19,6 +19,7 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
+<<<<<<< HEAD
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
@@ -29,11 +30,27 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         '746bb4ebbdf3585f3e2e85fffd4a5f43' => __DIR__ . '/..' . '/cloudinary-labs/cloudinary-laravel/src/Support/helpers.php',
+=======
+        '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
+        '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '47e1160838b5e5a10346ac4084b58c23' => __DIR__ . '/..' . '/laravel/prompts/src/helpers.php',
+        'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
         'f57d353b41eb2e234b26064d63d8c5dd' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Filesystem/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
+<<<<<<< HEAD
+=======
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
+        '746bb4ebbdf3585f3e2e85fffd4a5f43' => __DIR__ . '/..' . '/cloudinary-labs/cloudinary-laravel/src/Support/helpers.php',
+        '98caa11a197f6516a8e48aa4abb5ccc6' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/helpers.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'c72349b1fe8d0deeedd3a52e8aa814d8' => __DIR__ . '/..' . '/mockery/mockery/library/helpers.php',
         'ce9671a430e4846b44e1c68c7611f9f5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'a1cfe24d14977df6878b9bf804af2d1c' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Phpunit/Autoload.php',
@@ -151,6 +168,10 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         ),
         'I' => 
         array (
+<<<<<<< HEAD
+=======
+            'Inertia\\' => 8,
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
             'Illuminate\\Support\\' => 19,
             'Illuminate\\' => 11,
         ),
@@ -350,6 +371,7 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         ),
         'Spatie\\LaravelIgnition\\' => 
         array (
+<<<<<<< HEAD
             0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
             1 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
         ),
@@ -357,6 +379,15 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         array (
             0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
             1 => __DIR__ . '/..' . '/spatie/ignition/src',
+=======
+            0 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
+            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
+        ),
+        'Spatie\\Ignition\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/ignition/src',
+            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         ),
         'Spatie\\FlareClient\\' => 
         array (
@@ -499,6 +530,13 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         array (
             0 => __DIR__ . '/..' . '/laravel/breeze/src',
         ),
+<<<<<<< HEAD
+=======
+        'Inertia\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src',
+        ),
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -631,15 +669,34 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
     public static $classMap = array (
         'App\\Console\\Commands\\AutoPaymentAds' => __DIR__ . '/../..' . '/app/Console/Commands/AutoPaymentAds.php',
         'App\\Console\\Commands\\AutoPaymentOrders' => __DIR__ . '/../..' . '/app/Console/Commands/AutoPaymentOrders.php',
+<<<<<<< HEAD
         'App\\Console\\Commands\\AutoTask' => __DIR__ . '/../..' . '/app/Console/Commands/AutoTask.php',
         'App\\Console\\Commands\\AutopaymentProgarm' => __DIR__ . '/../..' . '/app/Console/Commands/AutopaymentProgarm.php',
         'App\\Console\\Commands\\FetchTransactions' => __DIR__ . '/../..' . '/app/Console/Commands/FetchTransactions.php',
         'App\\Console\\Commands\\ProcessOrderCommand' => __DIR__ . '/../..' . '/app/Console/Commands/ProcessOrderCommand.php',
+=======
+        'App\\Console\\Commands\\AutoSettleMonthlyPayment' => __DIR__ . '/../..' . '/app/Console/Commands/AutoSettleMonthlyPayment.php',
+        'App\\Console\\Commands\\AutoTask' => __DIR__ . '/../..' . '/app/Console/Commands/AutoTask.php',
+        'App\\Console\\Commands\\AutopaymentProgarm' => __DIR__ . '/../..' . '/app/Console/Commands/AutopaymentProgarm.php',
+        'App\\Console\\Commands\\CheckBalanceWithAI' => __DIR__ . '/../..' . '/app/Console/Commands/CheckBalanceWithAI.php',
+        'App\\Console\\Commands\\FetchTransactions' => __DIR__ . '/../..' . '/app/Console/Commands/FetchTransactions.php',
+        'App\\Console\\Commands\\GenerateAllBalanceHistories' => __DIR__ . '/../..' . '/app/Console/Commands/GenerateAllBalanceHistories.php',
+        'App\\Console\\Commands\\GenerateMonthlyReport' => __DIR__ . '/../..' . '/app/Console/Commands/GenerateMonthlyReport.php',
+        'App\\Console\\Commands\\ProcessOrderCommand' => __DIR__ . '/../..' . '/app/Console/Commands/ProcessOrderCommand.php',
+        'App\\Console\\Commands\\ThanhToanDonHoan' => __DIR__ . '/../..' . '/app/Console/Commands/ThanhToanDonHoan.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\Console\\Commands\\UpdateReconciledOrders' => __DIR__ . '/../..' . '/app/Console/Commands/UpdateReconciledOrders.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Exports\\OrderTiktokExport' => __DIR__ . '/../..' . '/app/Exports/OrderTiktokExport.php',
+<<<<<<< HEAD
         'App\\Http\\Controllers\\ADSController' => __DIR__ . '/../..' . '/app/Http/Controllers/ADSController.php',
+=======
+        'App\\Exports\\TotalBillExport' => __DIR__ . '/../..' . '/app/Exports/TotalBillExport.php',
+        'App\\Http\\Controllers\\ADSController' => __DIR__ . '/../..' . '/app/Http/Controllers/ADSController.php',
+        'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\Admin\\BalanceIssueController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BalanceIssueController.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\Http\\Controllers\\Auth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -651,6 +708,10 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Http\\Controllers\\Auth\\RegisteredUserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisteredUserController.php',
         'App\\Http\\Controllers\\Auth\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/UserController.php',
         'App\\Http\\Controllers\\Auth\\VerifyEmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerifyEmailController.php',
+<<<<<<< HEAD
+=======
+        'App\\Http\\Controllers\\BalanceHistoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/BalanceHistoryController.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\Http\\Controllers\\BillwebController' => __DIR__ . '/../..' . '/app/Http/Controllers/BillwebController.php',
         'App\\Http\\Controllers\\CampaignController' => __DIR__ . '/../..' . '/app/Http/Controllers/CampaignController.php',
         'App\\Http\\Controllers\\CloudinaryController' => __DIR__ . '/../..' . '/app/Http/Controllers/CloudinaryController.php',
@@ -661,9 +722,17 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductController.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
         'App\\Http\\Controllers\\ProgramController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProgramController.php',
+<<<<<<< HEAD
         'App\\Http\\Controllers\\ShopController' => __DIR__ . '/../..' . '/app/Http/Controllers/ShopController.php',
         'App\\Http\\Controllers\\TikTokController' => __DIR__ . '/../..' . '/app/Http/Controllers/TikTokController.php',
         'App\\Http\\Controllers\\TransactionController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransactionController.php',
+=======
+        'App\\Http\\Controllers\\SettlementController' => __DIR__ . '/../..' . '/app/Http/Controllers/SettlementController.php',
+        'App\\Http\\Controllers\\ShopController' => __DIR__ . '/../..' . '/app/Http/Controllers/ShopController.php',
+        'App\\Http\\Controllers\\TikTokController' => __DIR__ . '/../..' . '/app/Http/Controllers/TikTokController.php',
+        'App\\Http\\Controllers\\TransactionController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransactionController.php',
+        'App\\Http\\Controllers\\UserMonthlyReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserMonthlyReportController.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -687,15 +756,29 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Mail\\TestMail' => __DIR__ . '/../..' . '/app/Mail/TestMail.php',
         'App\\Mail\\UserNotification' => __DIR__ . '/../..' . '/app/Mail/UserNotification.php',
         'App\\Models\\ADS' => __DIR__ . '/../..' . '/app/Models/ADS.php',
+<<<<<<< HEAD
+=======
+        'App\\Models\\BalanceHistory' => __DIR__ . '/../..' . '/app/Models/BalanceHistory.php',
+        'App\\Models\\BalanceIssue' => __DIR__ . '/../..' . '/app/Models/BalanceIssue.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\Models\\Notification' => __DIR__ . '/../..' . '/app/Models/Notification.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
         'App\\Models\\OrderDetail' => __DIR__ . '/../..' . '/app/Models/OrderDetail.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\Program' => __DIR__ . '/../..' . '/app/Models/Program.php',
         'App\\Models\\ProgramShop' => __DIR__ . '/../..' . '/app/Models/ProgramShop.php',
+<<<<<<< HEAD
         'App\\Models\\Shop' => __DIR__ . '/../..' . '/app/Models/Shop.php',
         'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+=======
+        'App\\Models\\ReturnOrder' => __DIR__ . '/../..' . '/app/Models/ReturnOrder.php',
+        'App\\Models\\Shop' => __DIR__ . '/../..' . '/app/Models/Shop.php',
+        'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
+        'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserMonthlyReport' => __DIR__ . '/../..' . '/app/Models/UserMonthlyReport.php',
+        'App\\Observers\\TransactionObserver' => __DIR__ . '/../..' . '/app/Observers/TransactionObserver.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -703,6 +786,11 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Services\\Pay2sService' => __DIR__ . '/../..' . '/app/Services/Pay2sService.php',
         'App\\Services\\ProductReportService' => __DIR__ . '/../..' . '/app/Services/ProductReportService.php',
+<<<<<<< HEAD
+=======
+        'App\\Services\\ProgramService' => __DIR__ . '/../..' . '/app/Services/ProgramService.php',
+        'App\\Traits\\BalanceLoggable' => __DIR__ . '/../..' . '/app/Traits/BalanceLoggable.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
@@ -3922,6 +4010,41 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+<<<<<<< HEAD
+=======
+        'Inertia\\AlwaysProp' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/AlwaysProp.php',
+        'Inertia\\Commands\\CreateMiddleware' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Commands/CreateMiddleware.php',
+        'Inertia\\Commands\\StartSsr' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Commands/StartSsr.php',
+        'Inertia\\Commands\\StopSsr' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Commands/StopSsr.php',
+        'Inertia\\Controller' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Controller.php',
+        'Inertia\\DeferProp' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/DeferProp.php',
+        'Inertia\\Directive' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Directive.php',
+        'Inertia\\EncryptHistoryMiddleware' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/EncryptHistoryMiddleware.php',
+        'Inertia\\IgnoreFirstLoad' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/IgnoreFirstLoad.php',
+        'Inertia\\Inertia' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Inertia.php',
+        'Inertia\\LazyProp' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/LazyProp.php',
+        'Inertia\\MergeProp' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/MergeProp.php',
+        'Inertia\\Mergeable' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Mergeable.php',
+        'Inertia\\MergesProps' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/MergesProps.php',
+        'Inertia\\Middleware' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Middleware.php',
+        'Inertia\\OptionalProp' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/OptionalProp.php',
+        'Inertia\\Response' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Response.php',
+        'Inertia\\ResponseFactory' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/ResponseFactory.php',
+        'Inertia\\ServiceProvider' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/ServiceProvider.php',
+        'Inertia\\Ssr\\BundleDetector' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Ssr/BundleDetector.php',
+        'Inertia\\Ssr\\Gateway' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Ssr/Gateway.php',
+        'Inertia\\Ssr\\HttpGateway' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Ssr/HttpGateway.php',
+        'Inertia\\Ssr\\Response' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Ssr/Response.php',
+        'Inertia\\Ssr\\SsrException' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Ssr/SsrException.php',
+        'Inertia\\Support\\Header' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Support/Header.php',
+        'Inertia\\Testing\\AssertableInertia' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/AssertableInertia.php',
+        'Inertia\\Testing\\Concerns\\Debugging' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/Concerns/Debugging.php',
+        'Inertia\\Testing\\Concerns\\Has' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/Concerns/Has.php',
+        'Inertia\\Testing\\Concerns\\Interaction' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/Concerns/Interaction.php',
+        'Inertia\\Testing\\Concerns\\Matching' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/Concerns/Matching.php',
+        'Inertia\\Testing\\Concerns\\PageObject' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/Concerns/PageObject.php',
+        'Inertia\\Testing\\TestResponseMacros' => __DIR__ . '/..' . '/inertiajs/inertia-laravel/src/Testing/TestResponseMacros.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         'Laravel\\Breeze\\BreezeServiceProvider' => __DIR__ . '/..' . '/laravel/breeze/src/BreezeServiceProvider.php',
         'Laravel\\Breeze\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallCommand.php',
         'Laravel\\Breeze\\Console\\InstallsApiStack' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsApiStack.php',

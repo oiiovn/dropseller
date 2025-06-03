@@ -41,7 +41,11 @@ class ProcessOrderCommand extends Command
         $token = "+AXBRK19RPa6MG5wxYOhD7BPUGgibb76FnxirVzkW/9FMf9nSmJIg9OINUDk8X5L";
 
         $today = Carbon::today();
+<<<<<<< HEAD
         $startDate = $today->subDays(20);
+=======
+        $startDate = $today->subDays(3);
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         $endDate = Carbon::yesterday();
 
         while ($startDate <= $endDate) {

@@ -106,7 +106,12 @@
                                                         </div>
 
                                                         <div>
+<<<<<<< HEAD
                                                             <h5 class="col-2 fs-16 mb-1 fw-medium" style="white-space: nowrap;">
+=======
+                                                            <h5 class="col-2 fs-16 mb-1 fw-medium" style="white-space: nowrap;"
+                                                            >
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
                                                                 {{ $user->name }}
                                                                 @if(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
                                                                 <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
@@ -117,6 +122,10 @@
 
                                                             <span>Code: <b style="color:#2e397f;">{{ $user->referral_code ?? 'CODE' }}</b></span>
                                                         </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
                                                         @foreach ($user->shops as $shop)
                                                         @if($shop->orders_unpaid_count > 0)
                                                         <div class="h-100 d-flex align-items-center">
@@ -128,6 +137,10 @@
                                                         @endforeach
                                                     </div>
                                                 </td>
+<<<<<<< HEAD
+=======
+
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
                                                 <td class="total_products" style=" vertical-align: middle;">
                                                     {{ number_format($user->total_amount, 0, ',', '.') }} VNĐ
                                                 </td>
@@ -154,8 +167,11 @@
                                                             </a>
                                                         </li>
                                                     </ul>
+<<<<<<< HEAD
 
                                                     <!-- Modal -->
+=======
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
                                                     <div class="modal fade" id="user-{{$user->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalTitle-{{$user->id}}" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">

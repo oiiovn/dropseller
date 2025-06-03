@@ -18,7 +18,11 @@ class UpdateReconciledOrders extends Command
 
     public function handle()
     {
+<<<<<<< HEAD
         $dateThreshold = Carbon::now()->subDays(19);
+=======
+        $dateThreshold = Carbon::now()->subDays(3);
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         $transactions = Transaction::with('order')
             ->where('transaction_date', '<', $dateThreshold)
             ->whereHas('order', function ($query) {

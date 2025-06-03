@@ -12,7 +12,12 @@ class UserMonthlyReportController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $userMonthlyReports = UserMonthlyReport::all();
+=======
+       $userMonthlyReports = UserMonthlyReport::orderBy('created_at', 'desc')->get();
+
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
         return view('admin.quyet_toan', compact('userMonthlyReports'));
     }
 

@@ -19,7 +19,11 @@ trait BalanceLoggable
             // Xóa lịch sử cũ nếu có
             BalanceHistory::where('user_id', $user->id)->delete();
 
+<<<<<<< HEAD
             $transactions = Transaction::where('description', 'LIKE', "%$userCode%")
+=======
+            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
                 ->orderBy('transaction_date', 'asc')
                 ->get();
 

@@ -86,7 +86,11 @@ class SettlementController extends Controller
             $user = User::find($report['user_id']);
             $userCode = $user->referral_code;
 
+<<<<<<< HEAD
             $totalTopup = Transaction::where('description', 'LIKE', "%$userCode%")
+=======
+            $totalTopup = Transaction::whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
                 ->where('bank', 'MBB')
                 ->where('type', 'IN')
                 ->whereBetween('transaction_date', [$startDate, $endDate])

@@ -8,15 +8,34 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Commands\\AutoPaymentAds' => $baseDir . '/app/Console/Commands/AutoPaymentAds.php',
     'App\\Console\\Commands\\AutoPaymentOrders' => $baseDir . '/app/Console/Commands/AutoPaymentOrders.php',
+<<<<<<< HEAD
     'App\\Console\\Commands\\AutoTask' => $baseDir . '/app/Console/Commands/AutoTask.php',
     'App\\Console\\Commands\\AutopaymentProgarm' => $baseDir . '/app/Console/Commands/AutopaymentProgarm.php',
     'App\\Console\\Commands\\FetchTransactions' => $baseDir . '/app/Console/Commands/FetchTransactions.php',
     'App\\Console\\Commands\\ProcessOrderCommand' => $baseDir . '/app/Console/Commands/ProcessOrderCommand.php',
+=======
+    'App\\Console\\Commands\\AutoSettleMonthlyPayment' => $baseDir . '/app/Console/Commands/AutoSettleMonthlyPayment.php',
+    'App\\Console\\Commands\\AutoTask' => $baseDir . '/app/Console/Commands/AutoTask.php',
+    'App\\Console\\Commands\\AutopaymentProgarm' => $baseDir . '/app/Console/Commands/AutopaymentProgarm.php',
+    'App\\Console\\Commands\\CheckBalanceWithAI' => $baseDir . '/app/Console/Commands/CheckBalanceWithAI.php',
+    'App\\Console\\Commands\\FetchTransactions' => $baseDir . '/app/Console/Commands/FetchTransactions.php',
+    'App\\Console\\Commands\\GenerateAllBalanceHistories' => $baseDir . '/app/Console/Commands/GenerateAllBalanceHistories.php',
+    'App\\Console\\Commands\\GenerateMonthlyReport' => $baseDir . '/app/Console/Commands/GenerateMonthlyReport.php',
+    'App\\Console\\Commands\\ProcessOrderCommand' => $baseDir . '/app/Console/Commands/ProcessOrderCommand.php',
+    'App\\Console\\Commands\\ThanhToanDonHoan' => $baseDir . '/app/Console/Commands/ThanhToanDonHoan.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\Console\\Commands\\UpdateReconciledOrders' => $baseDir . '/app/Console/Commands/UpdateReconciledOrders.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Exports\\OrderTiktokExport' => $baseDir . '/app/Exports/OrderTiktokExport.php',
+<<<<<<< HEAD
     'App\\Http\\Controllers\\ADSController' => $baseDir . '/app/Http/Controllers/ADSController.php',
+=======
+    'App\\Exports\\TotalBillExport' => $baseDir . '/app/Exports/TotalBillExport.php',
+    'App\\Http\\Controllers\\ADSController' => $baseDir . '/app/Http/Controllers/ADSController.php',
+    'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
+    'App\\Http\\Controllers\\Admin\\BalanceIssueController' => $baseDir . '/app/Http/Controllers/Admin/BalanceIssueController.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\Http\\Controllers\\Auth\\AuthController' => $baseDir . '/app/Http/Controllers/Auth/AuthController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -28,6 +47,10 @@ return array(
     'App\\Http\\Controllers\\Auth\\RegisteredUserController' => $baseDir . '/app/Http/Controllers/Auth/RegisteredUserController.php',
     'App\\Http\\Controllers\\Auth\\UserController' => $baseDir . '/app/Http/Controllers/Auth/UserController.php',
     'App\\Http\\Controllers\\Auth\\VerifyEmailController' => $baseDir . '/app/Http/Controllers/Auth/VerifyEmailController.php',
+<<<<<<< HEAD
+=======
+    'App\\Http\\Controllers\\BalanceHistoryController' => $baseDir . '/app/Http/Controllers/BalanceHistoryController.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\Http\\Controllers\\BillwebController' => $baseDir . '/app/Http/Controllers/BillwebController.php',
     'App\\Http\\Controllers\\CampaignController' => $baseDir . '/app/Http/Controllers/CampaignController.php',
     'App\\Http\\Controllers\\CloudinaryController' => $baseDir . '/app/Http/Controllers/CloudinaryController.php',
@@ -38,9 +61,17 @@ return array(
     'App\\Http\\Controllers\\ProductController' => $baseDir . '/app/Http/Controllers/ProductController.php',
     'App\\Http\\Controllers\\ProfileController' => $baseDir . '/app/Http/Controllers/ProfileController.php',
     'App\\Http\\Controllers\\ProgramController' => $baseDir . '/app/Http/Controllers/ProgramController.php',
+<<<<<<< HEAD
     'App\\Http\\Controllers\\ShopController' => $baseDir . '/app/Http/Controllers/ShopController.php',
     'App\\Http\\Controllers\\TikTokController' => $baseDir . '/app/Http/Controllers/TikTokController.php',
     'App\\Http\\Controllers\\TransactionController' => $baseDir . '/app/Http/Controllers/TransactionController.php',
+=======
+    'App\\Http\\Controllers\\SettlementController' => $baseDir . '/app/Http/Controllers/SettlementController.php',
+    'App\\Http\\Controllers\\ShopController' => $baseDir . '/app/Http/Controllers/ShopController.php',
+    'App\\Http\\Controllers\\TikTokController' => $baseDir . '/app/Http/Controllers/TikTokController.php',
+    'App\\Http\\Controllers\\TransactionController' => $baseDir . '/app/Http/Controllers/TransactionController.php',
+    'App\\Http\\Controllers\\UserMonthlyReportController' => $baseDir . '/app/Http/Controllers/UserMonthlyReportController.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\EncryptCookies' => $baseDir . '/app/Http/Middleware/EncryptCookies.php',
@@ -64,15 +95,29 @@ return array(
     'App\\Mail\\TestMail' => $baseDir . '/app/Mail/TestMail.php',
     'App\\Mail\\UserNotification' => $baseDir . '/app/Mail/UserNotification.php',
     'App\\Models\\ADS' => $baseDir . '/app/Models/ADS.php',
+<<<<<<< HEAD
+=======
+    'App\\Models\\BalanceHistory' => $baseDir . '/app/Models/BalanceHistory.php',
+    'App\\Models\\BalanceIssue' => $baseDir . '/app/Models/BalanceIssue.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\Models\\Notification' => $baseDir . '/app/Models/Notification.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
     'App\\Models\\OrderDetail' => $baseDir . '/app/Models/OrderDetail.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
     'App\\Models\\Program' => $baseDir . '/app/Models/Program.php',
     'App\\Models\\ProgramShop' => $baseDir . '/app/Models/ProgramShop.php',
+<<<<<<< HEAD
     'App\\Models\\Shop' => $baseDir . '/app/Models/Shop.php',
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+=======
+    'App\\Models\\ReturnOrder' => $baseDir . '/app/Models/ReturnOrder.php',
+    'App\\Models\\Shop' => $baseDir . '/app/Models/Shop.php',
+    'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
+    'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+    'App\\Models\\UserMonthlyReport' => $baseDir . '/app/Models/UserMonthlyReport.php',
+    'App\\Observers\\TransactionObserver' => $baseDir . '/app/Observers/TransactionObserver.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
@@ -80,6 +125,11 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Services\\Pay2sService' => $baseDir . '/app/Services/Pay2sService.php',
     'App\\Services\\ProductReportService' => $baseDir . '/app/Services/ProductReportService.php',
+<<<<<<< HEAD
+=======
+    'App\\Services\\ProgramService' => $baseDir . '/app/Services/ProgramService.php',
+    'App\\Traits\\BalanceLoggable' => $baseDir . '/app/Traits/BalanceLoggable.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'App\\View\\Components\\AppLayout' => $baseDir . '/app/View/Components/AppLayout.php',
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
@@ -3299,6 +3349,41 @@ return array(
     'Illuminate\\View\\ViewFinderInterface' => $vendorDir . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
     'Illuminate\\View\\ViewName' => $vendorDir . '/laravel/framework/src/Illuminate/View/ViewName.php',
     'Illuminate\\View\\ViewServiceProvider' => $vendorDir . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+<<<<<<< HEAD
+=======
+    'Inertia\\AlwaysProp' => $vendorDir . '/inertiajs/inertia-laravel/src/AlwaysProp.php',
+    'Inertia\\Commands\\CreateMiddleware' => $vendorDir . '/inertiajs/inertia-laravel/src/Commands/CreateMiddleware.php',
+    'Inertia\\Commands\\StartSsr' => $vendorDir . '/inertiajs/inertia-laravel/src/Commands/StartSsr.php',
+    'Inertia\\Commands\\StopSsr' => $vendorDir . '/inertiajs/inertia-laravel/src/Commands/StopSsr.php',
+    'Inertia\\Controller' => $vendorDir . '/inertiajs/inertia-laravel/src/Controller.php',
+    'Inertia\\DeferProp' => $vendorDir . '/inertiajs/inertia-laravel/src/DeferProp.php',
+    'Inertia\\Directive' => $vendorDir . '/inertiajs/inertia-laravel/src/Directive.php',
+    'Inertia\\EncryptHistoryMiddleware' => $vendorDir . '/inertiajs/inertia-laravel/src/EncryptHistoryMiddleware.php',
+    'Inertia\\IgnoreFirstLoad' => $vendorDir . '/inertiajs/inertia-laravel/src/IgnoreFirstLoad.php',
+    'Inertia\\Inertia' => $vendorDir . '/inertiajs/inertia-laravel/src/Inertia.php',
+    'Inertia\\LazyProp' => $vendorDir . '/inertiajs/inertia-laravel/src/LazyProp.php',
+    'Inertia\\MergeProp' => $vendorDir . '/inertiajs/inertia-laravel/src/MergeProp.php',
+    'Inertia\\Mergeable' => $vendorDir . '/inertiajs/inertia-laravel/src/Mergeable.php',
+    'Inertia\\MergesProps' => $vendorDir . '/inertiajs/inertia-laravel/src/MergesProps.php',
+    'Inertia\\Middleware' => $vendorDir . '/inertiajs/inertia-laravel/src/Middleware.php',
+    'Inertia\\OptionalProp' => $vendorDir . '/inertiajs/inertia-laravel/src/OptionalProp.php',
+    'Inertia\\Response' => $vendorDir . '/inertiajs/inertia-laravel/src/Response.php',
+    'Inertia\\ResponseFactory' => $vendorDir . '/inertiajs/inertia-laravel/src/ResponseFactory.php',
+    'Inertia\\ServiceProvider' => $vendorDir . '/inertiajs/inertia-laravel/src/ServiceProvider.php',
+    'Inertia\\Ssr\\BundleDetector' => $vendorDir . '/inertiajs/inertia-laravel/src/Ssr/BundleDetector.php',
+    'Inertia\\Ssr\\Gateway' => $vendorDir . '/inertiajs/inertia-laravel/src/Ssr/Gateway.php',
+    'Inertia\\Ssr\\HttpGateway' => $vendorDir . '/inertiajs/inertia-laravel/src/Ssr/HttpGateway.php',
+    'Inertia\\Ssr\\Response' => $vendorDir . '/inertiajs/inertia-laravel/src/Ssr/Response.php',
+    'Inertia\\Ssr\\SsrException' => $vendorDir . '/inertiajs/inertia-laravel/src/Ssr/SsrException.php',
+    'Inertia\\Support\\Header' => $vendorDir . '/inertiajs/inertia-laravel/src/Support/Header.php',
+    'Inertia\\Testing\\AssertableInertia' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/AssertableInertia.php',
+    'Inertia\\Testing\\Concerns\\Debugging' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/Concerns/Debugging.php',
+    'Inertia\\Testing\\Concerns\\Has' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/Concerns/Has.php',
+    'Inertia\\Testing\\Concerns\\Interaction' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/Concerns/Interaction.php',
+    'Inertia\\Testing\\Concerns\\Matching' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/Concerns/Matching.php',
+    'Inertia\\Testing\\Concerns\\PageObject' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/Concerns/PageObject.php',
+    'Inertia\\Testing\\TestResponseMacros' => $vendorDir . '/inertiajs/inertia-laravel/src/Testing/TestResponseMacros.php',
+>>>>>>> c10092977d5f599cce749af994c469c1a3a65ad6
     'Laravel\\Breeze\\BreezeServiceProvider' => $vendorDir . '/laravel/breeze/src/BreezeServiceProvider.php',
     'Laravel\\Breeze\\Console\\InstallCommand' => $vendorDir . '/laravel/breeze/src/Console/InstallCommand.php',
     'Laravel\\Breeze\\Console\\InstallsApiStack' => $vendorDir . '/laravel/breeze/src/Console/InstallsApiStack.php',
