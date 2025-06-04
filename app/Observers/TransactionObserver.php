@@ -16,7 +16,9 @@ class TransactionObserver
         // Ép lấy lại bản ghi đầy đủ từ DB
         $tran = $tran->fresh();
         $user = User::where('referral_code', $tran->account_number)->first();
-        if (!$user) return;
+        if (!$user && preg_match('/\d{4,}/', $tran->description, $matches)) {
+            $user = User::where('referral_code', $matches[0])->first();
+        }
     
         $change = $tran->type === 'IN' ? $tran->amount : -$tran->amount;
     

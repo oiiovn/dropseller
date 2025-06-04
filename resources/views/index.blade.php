@@ -90,7 +90,7 @@
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐN</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> TỔNG GIÁ VỐNN</p>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mt-3">
@@ -377,13 +377,60 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                    @endif<!-- .col-->
+                </div> <!-- end row-->
+            </div> <!-- end .h-100-->
+        </div> <!-- end col -->
+    </div>
+</div>
+<div class="modal fade" id="autoModal" tabindex="-1" aria-labelledby="autoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="autoModalLabel">Thông báo hệ thống</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    🔴 <strong>Đơn huỷ sẽ được đối soát sau 3 ngày</strong> (trước đây là 19 ngày),
+                    đảm bảo cho nhà bán được hoàn tiền đơn huỷ <strong>sớm nhất</strong>!
+                </p>
 
-            </div> <!-- end row-->
-        </div> <!-- end .h-100-->
-    </div> <!-- end col -->
+                <hr>
+
+                <p>
+                    🔄 Giá của sản phẩm sẽ được cập nhật từ <strong>websi.vn</strong>,
+                    do đó có thể có sự <strong>chênh lệch nhỏ</strong> giữa các thời điểm.
+                </p>
+                <p class="text-danger fw-bold">📅 Chính sách này được áp dụng từ ngày 01/06.</p>
+
+                <hr>
+
+                <h6>📞 Thông tin hỗ trợ</h6>
+                <p>Nếu bạn cần hỗ trợ thêm, vui lòng liên hệ với quản trị viên hoặc đội ngũ kỹ thuật.</p>
+                <div class="text-center mt-3">
+                    <img style="width:250px; height:300px;"
+                        src="{{ asset('assets/images/IMG_1043.JPG') }}"
+                        alt="Hỗ trợ kỹ thuật"
+                        class="img-fluid rounded border shadow-sm">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tôi đã hiểu</button>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const modal = new bootstrap.Modal(document.getElementById('autoModal'));
+        modal.show();
+    });
+</script>
+
 @if($showWelcomeModal)
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -405,12 +452,182 @@
         </div>
     </div>
 </div>
+@endif
 
+@if($hasNegativeBalance)
+
+<!-- Modal cảnh báo số dư âm -->
+<div class="modal fade" id="negativeBalanceModal"
+    tabindex="-1"
+    aria-labelledby="negativeBalanceLabel"
+    aria-hidden="true"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"> {{-- ✅ Không cho phép bấm ra ngoài và nhấn ESC để đóng --}}
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="negativeBalanceLabel">⚠ Cảnh báo số dư âm</h5>
+                {{-- ✅ Nút đóng bị ẩn khi số dư < 0 --}}
+                @if(Auth::user()->total_amount >= 0)
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                @endif
+            </div>
+            <div class="modal-body text-center">
+                Bạn vừa được quyết toán đơn tháng vừa rồi<br>
+                Vui lòng kiểm tra lại số dư của bạn.<br>
+                Nạp thêm tiền để được sử dụng các tính năng của hệ thống.<br>
+                Nếu đã nạp tiền vui lòng đợi 3-5 phút để hệ thống cập nhật bạn sẽ được sử dụng các tính năng của hệ thống.<br>
+                <br>
+                <span class="text-danger fw-bold">
+                    Số dư hiện tại: {{ number_format(Auth::user()->total_amount, 0, ',', '.') }} VNĐ
+                </span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger" href="javascript:void(0);"
+                    id="openNapTienModal"
+                    data-amount="{{ Auth::user()->total_amount }}">
+                    Nạp
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
-        welcomeModal.show();
+    $(document).ready(function() {
+        let modalZIndex = 1050;
+        let negativeBalanceModalShown = false;
+
+        // Mỗi lần mở modal → tăng z-index
+        $(document).on('show.bs.modal', '.modal', function() {
+            const $modal = $(this);
+            const $backdrop = $('.modal-backdrop').not('.stacked');
+
+            modalZIndex += 20;
+            $modal.css('z-index', modalZIndex);
+
+            // Nếu có backdrop → cũng tăng z-index theo modal
+            if ($backdrop.length) {
+                $backdrop.addClass('stacked').css('z-index', modalZIndex - 10);
+            }
+
+            // Nếu là modal cảnh báo số dư âm, đánh dấu là đã hiện
+            if ($modal.attr('id') === 'negativeBalanceModal') {
+                negativeBalanceModalShown = true;
+            }
+        });
+
+        // Khi đóng modal → hạ z-index và kiểm tra nếu cần hiển thị lại modal số dư âm
+        $(document).on('hidden.bs.modal', '.modal', function() {
+            modalZIndex -= 20;
+
+            // Nếu modal đóng là modal nạp tiền, khôi phục modal cảnh báo số dư âm
+            if ($(this).attr('id') === 'napTienModal') {
+                $('#negativeBalanceModal').removeClass('behind');
+                const hasNegativeBalance = {
+                    {
+                        Auth::user() - > total_amount < 0 ? 'true' : 'false'
+                    }
+                };
+
+                if (hasNegativeBalance) {
+                    setTimeout(() => {
+                        const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
+                        negativeModal.show();
+                    }, 300);
+                }
+            }
+            // Nếu modal đóng KHÔNG phải là modal cảnh báo số dư âm
+            // và modal cảnh báo số dư âm đã từng hiển thị trước đó
+            // và số dư vẫn âm thì hiển thị lại modal cảnh báo
+            else if ($(this).attr('id') !== 'negativeBalanceModal' && negativeBalanceModalShown) {
+                const hasNegativeBalance = {
+                    {
+                        Auth::user() - > total_amount < 0 ? 'true' : 'false'
+                    }
+                };
+
+                if (hasNegativeBalance) {
+                    setTimeout(() => {
+                        const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
+                        negativeModal.show();
+                    }, 500); // Đợi modal hiện tại đóng hoàn toàn
+                }
+            }
+        });
+
+        // Sự kiện mở modal nạp tiền - giữ negativeBalanceModal hiển thị ở phía sau
+        $(document).on('click', '#openNapTienModal', function() {
+            const amount = $(this).data('amount') || 0;
+
+            // Đánh dấu modal hiện tại để giữ nó lại khi modal khác đóng
+            if ($('#negativeBalanceModal').hasClass('show')) {
+                $('#negativeBalanceModal').addClass('behind');
+            }
+
+            $.get('{{ route("naptien") }}?amount=' + amount, function(data) {
+                if ($('#napTienModal').length === 0) {
+                    $('body').append(data);
+                }
+
+                setTimeout(() => {
+                    const modal = new bootstrap.Modal(document.getElementById('napTienModal'));
+                    modal.show();
+                }, 50);
+            });
+        });
     });
 </script>
+
+<style>
+    .modal.behind {
+        z-index: 1040 !important;
+        opacity: 0.5 !important;
+        pointer-events: none;
+        /* để modal dưới không chặn modal trên */
+    }
+
+    .modal-backdrop.show {
+        z-index: 1039 !important;
+    }
+
+    .modal-backdrop.stacked {
+        position: fixed !important;
+    }
+</style>
+
+
 @endif
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showWelcome = {
+            {
+                $showWelcomeModal ? 'true' : 'false'
+            }
+        };
+        const showNegative = {
+            {
+                $hasNegativeBalance ? 'true' : 'false'
+            }
+        };
+
+        if (showWelcome) {
+            const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+            welcomeModal.show();
+
+            document.getElementById('welcomeModal').addEventListener('hidden.bs.modal', function() {
+                if (showNegative) {
+                    const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
+                    negativeModal.show();
+                }
+            });
+        } else if (showNegative) {
+            const negativeModal = new bootstrap.Modal(document.getElementById('negativeBalanceModal'));
+            negativeModal.show();
+        }
+    });
+</script>
+
+
 @endsection

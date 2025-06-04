@@ -49,7 +49,10 @@
                     <td>{{ number_format($item->tien_thuc_te) }}đ</td>
                     <td>{{ number_format($item->tien_phai_thanh_toan) }}đ</td>
                     <td>
-                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Cập nhật</button>
+                        @if($item->status_payment == 'Chưa thanh toán')
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Cập nhật</button>
+                        @endif
+                      
 
                         <!-- Modal -->
                         <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
