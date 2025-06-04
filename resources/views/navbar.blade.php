@@ -356,6 +356,12 @@
                 <span data-key="t-affiliate">Chương trình Affiliate</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('affiliate.list') }}">
+                <i class="ri-team-line"></i>
+                <span>Danh sách giới thiệu</span>
+            </a>
+        </li>
 
         </ul>
         <div class="card-body d-flex flex-column align-items-center">
