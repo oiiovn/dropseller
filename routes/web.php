@@ -132,4 +132,5 @@ Route::middleware('auth')->group(function () {
 
     //Affiliate mời nhà bán hàng
     Route::get('affiliate', [ProgramController::class, 'affiliatePage'])->name('affiliate.affiliate');
+    Route::get('my-affiliates', [\App\Http\Controllers\ReferralController::class, 'index'])->name('affiliate.list');
 });

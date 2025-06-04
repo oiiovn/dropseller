@@ -40,6 +40,16 @@ class AuthController extends Controller
             'referral_code' => $request->referral_code,
         ]);
 
+        if ($request->filled('referral_code')) {
+            $referrer = User::where('referral_code', $request->referral_code)->first();
+            if ($referrer) {
+                \App\Models\Referral::create([
+                    'referrer_id' => $referrer->id,
+                    'referred_id' => $user->id,
+                ]);
+            }
+        }
+
         // Tạo token sau khi đăng ký
         $token = $user->createToken('auth_token')->plainTextToken;
 

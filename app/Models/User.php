@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Referral;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -61,5 +62,15 @@ class User extends Authenticatable implements JWTSubject
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
+    }
+
+    public function referredUsers()
+    {
+        return $this->belongsToMany(User::class, 'referrals', 'referrer_id', 'referred_id');
     }
 }

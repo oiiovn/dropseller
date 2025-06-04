@@ -45,6 +45,16 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'referral_code' => $referralCode,
         ]);
+
+        if ($request->filled('referral_code')) {
+            $referrer = User::where('referral_code', $request->referral_code)->first();
+            if ($referrer) {
+                \App\Models\Referral::create([
+                    'referrer_id' => $referrer->id,
+                    'referred_id' => $user->id,
+                ]);
+            }
+        }
     
         // Gửi sự kiện đã đăng ký (nếu có xử lý sự kiện như gửi email xác thực)
         event(new Registered($user));
