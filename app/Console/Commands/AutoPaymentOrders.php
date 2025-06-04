@@ -11,6 +11,9 @@ use App\Models\Transaction;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentMail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 class AutoPaymentOrders extends Command
 {
     protected $signature = 'orders:auto-payment';
@@ -27,7 +30,7 @@ class AutoPaymentOrders extends Command
 
         foreach ($users as $user) {
             $this->thanhtoan($user);
-        }            
+        }
         $this->info("✅ Đã thanh toán tự động cho tất cả users có số dư!");
     }
 
@@ -43,40 +46,55 @@ class AutoPaymentOrders extends Command
                 ->orderBy('created_at', 'asc')
                 ->orderBy('id', 'asc')
                 ->get();
-                $allOrders = [...$allOrders, ...$orders->all()];
+            $allOrders = [...$allOrders, ...$orders->all()];
         }
 
         foreach ($allOrders as $orderData) {
-            $transactionId = $this->generateUniqueTransactionId();
-            $uniqueId = $this->generateUniqueId();
-            $order = Order::find($orderData['id']);
+            DB::beginTransaction();
+            try {
+                // Khoá dòng này lại để không tiến trình nào khác xử lý đồng thời
+                $order = Order::where('id', $orderData['id'])->lockForUpdate()->first();
 
-            if (!$order) {
-                continue;
-            }
-            if ($total_amount >= $order->total_bill) {
-                $order->payment_status = 'Đã thanh toán';
-                $order->transaction_id = $transactionId;
-                $order->save();
-                $total_amount -= $order->total_bill;
-                $user->total_amount = $total_amount;-
-                $user->save();
-                Transaction::create([
-                    'bank' => 'DROP',
-                    'account_number' => $user->referral_code,
-                    'transaction_date' => now(),
-                    'transaction_id' => $transactionId,
-                    'description' => $user->referral_code . ' ' . $order->order_code,
-                    'type' => 'OUT',
-                    'amount' => $order->total_bill,
-                ]);
-                Notification::create([
-                    'user_id' => $order->shop->user->id, 
-                    'shop_id' => $order->shop_id,
-                    'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
-                    'title' => 'Đơn hàng của bạn đã được thanh toán',
-                    'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
-                ]);
+                // Có thể đơn đã được thanh toán ở transaction khác
+                if (!$order || $order->payment_status !== 'Chưa thanh toán') {
+                    DB::rollBack();
+                    continue;
+                }
+
+                if ($total_amount >= $order->total_bill) {
+                    $transactionId = $this->generateUniqueTransactionId();
+
+                    $order->payment_status = 'Đã thanh toán';
+                    $order->transaction_id = $transactionId;
+                    $order->save();
+
+                    $total_amount -= $order->total_bill;
+                    $user->total_amount = $total_amount;
+                    $user->save();
+
+                    Transaction::create([
+                        'bank' => 'DROP',
+                        'account_number' => $user->referral_code,
+                        'transaction_date' => now(),
+                        'transaction_id' => $transactionId,
+                        'description' => $user->referral_code . ' ' . $order->order_code,
+                        'type' => 'OUT',
+                        'amount' => $order->total_bill,
+                    ]);
+
+                    Notification::create([
+                        'user_id' => $order->shop->user->id,
+                        'shop_id' => $order->shop_id,
+                        'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
+                        'title' => 'Đơn hàng của bạn đã được thanh toán',
+                        'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
+                    ]);
+                }
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('❌ Lỗi thanh toán đơn hàng ID ' . $orderData['id'] . ': ' . $e->getMessage());
             }
         }
     }
@@ -95,7 +113,6 @@ class AutoPaymentOrders extends Command
         do {
             $id = random_int(pow(10, $length - 1), pow(10, $length) - 1);
         } while (Transaction::where('id', $id)->exists());
-
         return $id;
     }
 }
