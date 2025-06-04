@@ -86,7 +86,7 @@
             <div class="h-100">
                 <div class="row gx-3">
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card  mb-3  card-animate" style="background: linear-gradient(to bottom,#58d19d, #ffffff, #ffffff);">
+                        <div class="card  mb-3  card-animate">
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -113,7 +113,7 @@
                     </div>
 
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#fccb38, #ffffff, #ffffff);">
+                        <div class="card card-animate">
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -139,7 +139,8 @@
                     </div>
 
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#78cbff, #ffffff, #ffffff);">
+                        <div class="card card-animate">
+
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -166,7 +167,7 @@
                     </div>
 
                     <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card card-animate" style="background: linear-gradient(to bottom,#dfb0ff, #ffffff, #ffffff);">
+                        <div class="card card-animate">
                             <div class="card-body ">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
@@ -199,13 +200,12 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Top sản phẩm toàn sàn</h4>
                                 <div class="flex-shrink-0">
                                     <div class="dropdown card-header-dropdown">
-                                        <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <!-- <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="fw-semibold text-uppercase fs-12">Xem theo :</span>
                                             <span class="text-muted">
                                                 {{ request('date_range', 'Tháng này') }} <i class="mdi mdi-chevron-down ms-1"></i>
                                             </span>
-
-                                        </a>
+                                        </a> -->
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <a class="dropdown-item ajax-link" href="{{ request()->fullUrlWithQuery(['start_date' => now()->startOfDay()->format('Y-m-d H:i:s'), 'end_date' => now()->endOfDay()->format('Y-m-d H:i:s'), 'date_range' => 'Hôm nay']) }}">Hôm nay</a>
 
@@ -233,7 +233,7 @@
                                     </div>
                                     @else
                                     @foreach($Products as $product)
-                                    <div class="product-card p-2 border rounded bg-white d-flex">
+                                    <div class="product-card p-2 border bg-white d-flex">
                                         <div class="me-3">
                                             <img src="{{ $product->image }}" alt="Ảnh sản phẩm" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
                                         </div>
@@ -278,7 +278,6 @@
 
                         </div>
                     </div>
-                    @if(false)
                     <div class="col-xl-5">
                         <div class="card ">
                             <div class="card-header align-items-center d-flex">
@@ -314,7 +313,9 @@
                                                             <h5 class="fs-14 my-1 fw-medium">
                                                                 <a class="text-reset">{{$shop->shop->user->name ?? 'Vô Danh'}}</a>
                                                             </h5>
-                                                            <span>
+
+                                                        </div>
+                                                        <!-- <span>
                                                                 @if($shop->shop->platform == 'Tiktok')
                                                                 <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
                                                                 @elseif($shop->shop->platform == 'Shoppe')
@@ -326,54 +327,53 @@
 
                                                                 {{ $shop->shop->shop_name ?? 'Vô Danh' }}
 
-                                                            </span>
-                                                        </div>
+                                                            </span> -->
                                                     </div>
-                                                </td>
-                                                <td>
+                                </div>
+                                </td>
+                                <td>
 
-                                                    <span class="text-muted">Đơn hàng</span>
-                                                    <p class="mb-0">{{$shop->order_count}}</p>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">Giá vốn</span>
-                                                    <p class="mb-0">{{ number_format($shop->total_revenue, 0, ',', '.') }} VNĐ</p>
-                                                </td>
-                                                <!-- <td>
+                                    <span class="text-muted">Đơn hàng</span>
+                                    <p class="mb-0">{{$shop->order_count}}</p>
+                                </td>
+                                <td>
+                                    <span class="text-muted">Giá vốn</span>
+                                    <p class="mb-0">{{ number_format($shop->total_revenue, 0, ',', '.') }} VNĐ</p>
+                                </td>
+                                <!-- <td>
                                                     <h5 class="fs-14 mb-0">32%<i class="ri-bar-chart-fill text-success fs-16 align-middle ms-2"></i></h5>
                                                 </td> -->
-                                            </tr><!-- end -->
-                                            @endforeach
-                                            @endif
-                                        </tbody>
-                                    </table><!-- end table -->
-                                </div>
-                                <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
-                                    <div class="col-sm">
-                                        <div class="text-muted">
-                                            Hiển thị <span class="fw-semibold">5</span> nhà bán
-                                        </div>
+                                </tr><!-- end -->
+                                @endforeach
+                                @endif
+                                </tbody>
+                                </table><!-- end table -->
+                            </div>
+                            <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
+                                <div class="col-sm">
+                                    <div class="text-muted">
+                                        Hiển thị <span class="fw-semibold">5/15</span> nhà bán
                                     </div>
-                                    <!-- <div class="col-sm-auto  mt-3 mt-sm-0">
-                                        <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a href="#" class="page-link">←</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">→</a>
-                                            </li>
-                                        </ul>
-                                    </div> -->
                                 </div>
+                                <!-- <div class="col-sm-auto  mt-3 mt-sm-0">
+                                    <ul class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a href="#" class="page-link">←</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">1</a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a href="#" class="page-link">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">3</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">→</a>
+                                        </li>
+                                    </ul>
+                                </div> -->
                             </div>
                         </div>
                     </div>

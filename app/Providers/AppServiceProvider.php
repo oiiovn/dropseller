@@ -115,7 +115,6 @@ class AppServiceProvider extends ServiceProvider
                 })
                     ->whereNotIn('sku', $excludedCodes)
                     ->sum('quantity');
-// dd($totalQuantitySold);
                 $totalBillPaid = Order::whereIn('shop_id', $userShopIds)
                     ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                         $startDate->toDateString(),
@@ -183,8 +182,10 @@ class AppServiceProvider extends ServiceProvider
                     'NotificationsCount' => $NotificationsCount,
                     'unreadNotificationsCount' => $unreadNotificationsCount,
                     'unreadNotifications' => $unreadNotifications
+
                 ]
             );
+
         });
     }
 }
