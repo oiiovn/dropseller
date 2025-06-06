@@ -8,58 +8,54 @@ use App\Models\User;
 
 trait BalanceLoggable
 {
-    public function generateAllBalanceHistories()
-    {
-        $users = User::all();
-        $count = 0;
+    // public function generateAllBalanceHistories()
+    // {
+    //     // $users = User::all();
+    //     // $count = 0;
 
-        foreach ($users as $user) {
-            $userCode = preg_quote($user->referral_code, '/');
+    //     // foreach ($users as $user) {
+    //     //     $userCode = preg_quote($user->referral_code, '/');
+    //     //     BalanceHistory::where('user_id', $user->id)->delete();
+    //     //     $transactions = Transaction::whereRaw("description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$userCode}([[:space:]:#|\\-(),\\.]|$)'")
+    //     //         ->orderBy('transaction_date', 'asc')
+    //     //         ->get();
 
-            // Xoá lịch sử cũ
-            BalanceHistory::where('user_id', $user->id)->delete();
+    //     //     $runningBalance = 0;
 
-            // Tìm transaction có chứa đúng referral_code với phân cách rõ ràng
-            $transactions = Transaction::whereRaw("description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$userCode}([[:space:]:#|\\-(),\\.]|$)'")
-                ->orderBy('transaction_date', 'asc')
-                ->get();
+    //     //     foreach ($transactions as $tran) {
+    //     //         $change = $tran->type === 'IN' ? $tran->amount : -$tran->amount;
 
-            $runningBalance = 0;
+    //     //         $balanceType = match ($tran->bank) {
+    //     //             'DROP' => $tran->type === 'IN' ? 'refund' : 'order',
+    //     //             'ADS' => 'ads',
+    //     //             'PSP' => 'product_fee',
+    //     //             'QTD' => 'Monthly',
+    //     //             default => $tran->type === 'IN' ? 'deposit' : 'withdraw',
+    //     //         };
 
-            foreach ($transactions as $tran) {
-                $change = $tran->type === 'IN' ? $tran->amount : -$tran->amount;
+    //     //         $runningBalance += $change;
 
-                $balanceType = match ($tran->bank) {
-                    'DROP' => $tran->type === 'IN' ? 'refund' : 'order',
-                    'ADS' => 'ads',
-                    'PSP' => 'product_fee',
-                    'QTD' => 'Monthly',
-                    default => $tran->type === 'IN' ? 'deposit' : 'withdraw',
-                };
+    //     //         BalanceHistory::insert([
+    //     //             'user_id' => $user->id,
+    //     //             'amount_change' => $change,
+    //     //             'balance_after' => $runningBalance,
+    //     //             'type' => $balanceType,
+    //     //             'reference_id' => $tran->id,
+    //     //             'reference_type' => 'transaction',
+    //     //             'transaction_code' => $tran->transaction_id,
+    //     //             'note' => $tran->description,
+    //     //             'created_at' => $tran->transaction_date,
+    //     //             'updated_at' => $tran->transaction_date,
+    //     //         ]);
+    //     //     }
 
-                $runningBalance += $change;
+    //         // Cập nhật số dư mới
+    //         // $user->total_amount = $runningBalance;
+    //         // $user->save();
 
-                BalanceHistory::insert([
-                    'user_id' => $user->id,
-                    'amount_change' => $change,
-                    'balance_after' => $runningBalance,
-                    'type' => $balanceType,
-                    'reference_id' => $tran->id,
-                    'reference_type' => 'transaction',
-                    'transaction_code' => $tran->transaction_id,
-                    'note' => $tran->description,
-                    'created_at' => $tran->transaction_date,
-                    'updated_at' => $tran->transaction_date,
-                ]);
-            }
+    // //         $count++;
+    // //     }
 
-            // Cập nhật số dư mới
-            $user->total_amount = $runningBalance;
-            // $user->save();
-
-            $count++;
-        }
-
-        return back()->with('success', "✅ Đã cập nhật lại số dư cho $count người dùng!");
-    }
+    // //     return back()->with('success', "✅ Đã cập nhật lại số dư cho $count người dùng!");
+    // }
 }
