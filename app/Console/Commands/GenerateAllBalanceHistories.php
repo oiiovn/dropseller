@@ -36,10 +36,10 @@ class GenerateAllBalanceHistories extends Command
             $escapedCode = preg_quote($userCode, '/');
             $runningBalance = 0;
 
-            // ❗ Dùng regex mới để lọc giao dịch match chính xác hơn
+            // Dùng regex chuẩn để lọc đúng giao dịch
             $transactions = $allTransactions->filter(function ($tran) use ($escapedCode) {
                 return preg_match('/(^|[\s:#|\-(),.])' . $escapedCode . '([\s:#|\-(),.]|$)/', $tran->description);
-            });
+            })->unique('id'); // tránh trùng transaction
 
             foreach ($transactions as $tran) {
                 $type = strtoupper(trim($tran->type));
@@ -48,11 +48,11 @@ class GenerateAllBalanceHistories extends Command
                 $runningBalance += $change;
 
                 $balanceType = match ($tran->bank) {
-                    'DROP' => $tran->type === 'IN' ? 'refund' : 'order',
+                    'DROP' => $type === 'IN' ? 'refund' : 'order',
                     'ADS' => 'ads',
                     'PSP' => 'product_fee',
                     'QTD' => 'Monthly',
-                    default => $tran->type === 'IN' ? 'deposit' : 'withdraw',
+                    default => $type === 'IN' ? 'deposit' : 'withdraw',
                 };
 
                 BalanceHistory::insert([
