@@ -21,6 +21,7 @@ class CheckBalanceWithAI extends Command
             $this->info("🧑 Kiểm tra user ID: {$user->id} ({$user->name})");
 
             $histories = BalanceHistory::where('user_id', $user->id)
+                ->orderBy('id', 'asc')
                 ->orderBy('created_at', 'asc')
                 ->get();
 
