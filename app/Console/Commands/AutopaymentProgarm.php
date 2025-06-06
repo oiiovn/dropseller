@@ -58,12 +58,6 @@ class AutopaymentProgarm extends Command
                 continue;
             }
             if ($total_amount >= $ad->total_amount) {
-                if (is_numeric($ad->total) && $ad->total > 0) {
-                    $user->total_amount = max(0, $user->total_amount - $ad->total_amount);
-                    $user->save();
-                } else {
-                    Log::warning("❌ Giá trị `total` không hợp lệ cho chương trình");
-                }
 
                 $ad->update([
                     'status_payment' => 'Đã thanh toán',

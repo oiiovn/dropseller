@@ -102,8 +102,6 @@ class FetchTransactions extends Command
                     }
                 }
                 
-                $user->total_amount = $totalAmount;
-                $user->save();
             }
             $this->info(' cộng tiền cho user');
 

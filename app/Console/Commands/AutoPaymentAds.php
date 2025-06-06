@@ -56,13 +56,6 @@ class AutoPaymentAds extends Command
                 continue;
             }
             if ($total_amount >= $ad->total_amount) {
-                if (is_numeric($ad->total) && $ad->total > 0) {
-                    $user->total_amount = max(0, $user->total_amount - $ad->total_amount); // Đảm bảo không âm
-                    $user->save();
-                } else {
-                    Log::warning("❌ Giá trị `total` không hợp lệ cho quảng cáo: " . $ad->invoice_id);
-                }
-                
                 $ad->update([
                     'payment_status' => 'Đã thanh toán',
                     'payment_code' => $transactionId,

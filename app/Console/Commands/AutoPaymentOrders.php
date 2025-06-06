@@ -67,11 +67,6 @@ class AutoPaymentOrders extends Command
                     $order->payment_status = 'Đã thanh toán';
                     $order->transaction_id = $transactionId;
                     $order->save();
-
-                    $total_amount -= $order->total_bill;
-                    $user->total_amount = $total_amount;
-                    $user->save();
-
                     Transaction::create([
                         'bank' => 'DROP',
                         'account_number' => $user->referral_code,
