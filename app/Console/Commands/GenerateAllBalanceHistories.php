@@ -18,7 +18,6 @@ class GenerateAllBalanceHistories extends Command
     {
         $this->warn('⚠️ Đang xoá toàn bộ dữ liệu cũ trong bảng balance_histories...');
 
-        // Xóa toàn bộ dữ liệu cũ
         Schema::disableForeignKeyConstraints();
         DB::table('balance_histories')->truncate();
         Schema::enableForeignKeyConstraints();
@@ -36,15 +35,30 @@ class GenerateAllBalanceHistories extends Command
             $escapedCode = preg_quote($userCode, '/');
             $runningBalance = 0;
 
-            // Dùng regex chuẩn để lọc đúng giao dịch
-            $transactions = $allTransactions->filter(function ($tran) use ($escapedCode) {
-                return preg_match('/(^|[\s:#|\-(),.])' . $escapedCode . '([\s:#|\-(),.]|$)/', $tran->description);
-            })->unique('id'); // tránh trùng transaction
+            // 🔐 Chỉ lấy các giao dịch chứa đúng mã user và không chứa mã của người khác
+            $transactions = $allTransactions->filter(function ($tran) use ($escapedCode, $user, $users) {
+                $matched = preg_match('/(^|[\s:#|\-(),.])' . $escapedCode . '([\s:#|\-(),.]|$)/', $tran->description);
+
+                if (!$matched) return false;
+
+                foreach ($users as $otherUser) {
+                    if ($otherUser->id === $user->id) continue;
+                    $otherCode = preg_quote($otherUser->referral_code, '/');
+
+                    if (
+                        strpos($tran->description, $otherUser->referral_code) !== false &&
+                        preg_match('/(^|[\s:#|\-(),.])' . $otherCode . '([\s:#|\-(),.]|$)/', $tran->description)
+                    ) {
+                        return false; // Có mã người khác → loại bỏ
+                    }
+                }
+
+                return true;
+            })->unique('id');
 
             foreach ($transactions as $tran) {
                 $type = strtoupper(trim($tran->type));
                 $change = $type === 'IN' ? (float)$tran->amount : -(float)$tran->amount;
-
                 $runningBalance += $change;
 
                 $balanceType = match ($tran->bank) {
