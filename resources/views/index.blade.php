@@ -283,7 +283,7 @@
             </div> <!-- end col -->
         </div>
     </div>
-    <div class="modal fade" id="autoModal" tabindex="-1" aria-labelledby="autoModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="autoModal" tabindex="-1" aria-labelledby="autoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -321,7 +321,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <script>
@@ -354,7 +354,6 @@
     </div>
     @endif
 
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const showWelcome = {

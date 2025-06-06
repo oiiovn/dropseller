@@ -40,11 +40,11 @@ Route::middleware('auth')->group(function () {
         }
 
         // Điều kiện để show modal cảnh báo số dư âm — luôn kiểm tra
-        // $hasNegativeBalance = $user->total_amount < 0;
+      
 
         return view('index', [
             'showWelcomeModal' => $showWelcomeModal,
-            // 'hasNegativeBalance' => $hasNegativeBalance,
+           
         ]);
     })->name('dashboard');
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
