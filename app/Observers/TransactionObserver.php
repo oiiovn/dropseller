@@ -13,7 +13,6 @@ class TransactionObserver
 
     public function created(Transaction $tran)
     {
-        // Ép lấy lại bản ghi đầy đủ từ DB
         $tran = $tran->fresh();
         $user = User::where('referral_code', $tran->account_number)->first();
         if (!$user && preg_match('/\d{4,}/', $tran->description, $matches)) {
@@ -35,7 +34,7 @@ class TransactionObserver
             $tran->description,
             $tran->id,
             'transaction',
-            $tran->transaction_id // ✅ sẽ có giá trị sau khi fresh
+            $tran->transaction_id 
         );
     }
     

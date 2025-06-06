@@ -15,10 +15,7 @@ trait BalanceLoggable
 
         foreach ($users as $user) {
             $userCode = $user->referral_code;
-
-            // Xóa lịch sử cũ nếu có
             BalanceHistory::where('user_id', $user->id)->delete();
-
             $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
                 ->orderBy('transaction_date', 'asc')
                 ->get();
@@ -61,14 +58,11 @@ trait BalanceLoggable
                     'updated_at' => $tran->transaction_date,
                 ]);
             }
-
-            // Cập nhật tổng số dư mới
             $user->total_amount = $runningBalance;
             $user->save();
 
             $count++;
         }
-
         return back()->with('success', "✅ Đã cập nhật lại số dư cho $count người dùng!");
     }
 }
