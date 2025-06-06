@@ -42,7 +42,9 @@ class GenerateAllBalanceHistories extends Command
             });
 
             foreach ($transactions as $tran) {
-                $change = $tran->type === 'IN' ? (float)$tran->amount : -(float)$tran->amount;
+                $type = strtoupper(trim($tran->type));
+                $change = $type === 'IN' ? (float)$tran->amount : -(float)$tran->amount;
+
                 $runningBalance += $change;
 
                 $balanceType = match ($tran->bank) {
