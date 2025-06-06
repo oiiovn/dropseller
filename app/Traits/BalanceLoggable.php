@@ -20,11 +20,9 @@ trait BalanceLoggable
             BalanceHistory::where('user_id', $user->id)->delete();
 
             // Tìm transaction có chứa đúng referral_code với phân cách rõ ràng
-            $transactions = Transaction::whereRaw("
-                description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$userCode}([[:space:]:#|\\-(),\\.]|$)'
-            ")
-            ->orderBy('transaction_date', 'asc')
-            ->get();
+            $transactions = Transaction::whereRaw("description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$userCode}([[:space:]:#|\\-(),\\.]|$)'")
+                ->orderBy('transaction_date', 'asc')
+                ->get();
 
             $runningBalance = 0;
 

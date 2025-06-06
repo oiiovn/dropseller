@@ -35,9 +35,7 @@ class GenerateAllBalanceHistories extends Command
 
             $escapedCode = preg_quote($userCode, '/');
 
-            $transactions = Transaction::whereRaw("
-    description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$escapedCode}([[:space:]:#|\\-(),\\.]|$)'
-")
+            $transactions = Transaction::whereRaw("description REGEXP '(^|[-[:space:]:#|(),\\.]){$escapedCode}([-[:space:]:#|(),\\.]|$)'")
                 ->orderBy('transaction_date', 'asc')
                 ->get();
 

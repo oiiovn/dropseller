@@ -21,7 +21,9 @@ class TransactionObserver
         }
 
         // Nếu không, dò các đoạn số được phân cách rõ ràng trong description
-        if (!$user && preg_match_all('/(?<=[\s:#|\\-(),.])(\d{4,})(?=[\s:#|\\-(),.])/', $tran->description, $matches)) {
+        if (
+            !$user && preg_match_all('/(?<=[\s:#|\\-(),.])(\d{4,})(?=[\s:#|\\-(),.])/', $tran->description, $matches)
+        ) {
             foreach ($matches[1] as $candidate) {
                 $user = User::where('referral_code', $candidate)->first();
                 if ($user) break;
