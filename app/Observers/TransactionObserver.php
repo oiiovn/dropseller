@@ -11,32 +11,18 @@ class TransactionObserver
 {
     use BalanceLoggable;
 
-    public function created(Transaction $tran)
-    {
-        // Ép lấy lại bản ghi đầy đủ từ DB
-        $tran = $tran->fresh();
-        $user = User::where('referral_code', $tran->account_number)->first();
-        if (!$user && preg_match('/\d{4,}/', $tran->description, $matches)) {
-            $user = User::where('referral_code', $matches[0])->first();
-        }
-    
-        $change = $tran->type === 'IN' ? $tran->amount : -$tran->amount;
-    
-        $this->generateAllBalanceHistories(
-            $user,
-            $change,
-            match ($tran->bank) {
-                'DROP' => $tran->type === 'IN' ? 'refund' : 'order',
-                'ADS' => 'ads',
-                'PSP' => 'product_fee',
-                'QTD' => 'Monthly',
-                default => $tran->type === 'IN' ? 'deposit' : 'withdraw',
-            },
-            $tran->description,
-            $tran->id,
-            'transaction',
-            $tran->transaction_id // ✅ sẽ có giá trị sau khi fresh
-        );
+   public function created(Transaction $tran)
+{
+    $tran = $tran->fresh();
+    $user = User::where('referral_code', $tran->account_number)->first();
+    if (!$user && preg_match('/\d{4,}/', $tran->description, $matches)) {
+        $user = User::where('referral_code', $matches[0])->first();
     }
+
+    if ($user) {
+        $this->generateBalanceHistoryForUser($user); // chỉ rebuild cho 1 user
+    }
+}
+
     
 }
