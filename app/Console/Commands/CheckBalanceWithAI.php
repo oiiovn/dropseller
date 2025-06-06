@@ -29,9 +29,9 @@ class CheckBalanceWithAI extends Command
                 continue;
             }
 
-            // 🟡 Kiểm tra riêng giao dịch đầu tiên
+            // ✅ Kiểm tra giao dịch đầu tiên
             $first = $histories->first();
-            if (round($first->balance_after, 2) !== round($first->amount_change, 2)) {
+            if (abs($first->balance_after - $first->amount_change) > 0.01) {
                 $prompt = "Giao dịch đầu tiên: amount_change = {$first->amount_change}, balance_after = {$first->balance_after}
                 → Lẽ ra số dư sau phải bằng số tiền thay đổi. Có sai không?";
 
@@ -67,7 +67,7 @@ class CheckBalanceWithAI extends Command
                 $expected = $prev->balance_after + $curr->amount_change;
                 $actual = $curr->balance_after;
 
-                if (round($expected, 2) !== round($actual, 2)) {
+                if (abs($expected - $actual) > 0.01) {
                     $prompt = "Giao dịch trước: balance_after = {$prev->balance_after}
                     Giao dịch hiện tại: amount_change = {$curr->amount_change}, balance_after = {$actual}
                     Tính đúng: {$prev->balance_after} + ({$curr->amount_change}) = {$expected}
