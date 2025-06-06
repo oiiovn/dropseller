@@ -55,7 +55,7 @@ trait BalanceLoggable
 
             // Cập nhật số dư mới
             $user->total_amount = $runningBalance;
-            $user->save();
+            // $user->save();
 
             $count++;
         }
