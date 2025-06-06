@@ -17,14 +17,14 @@ class GenerateAllBalanceHistories extends Command
     public function handle()
     {
         $this->warn('⚠️ Đang xoá toàn bộ dữ liệu cũ trong bảng balance_histories...');
-        
+
         // Xóa toàn bộ dữ liệu cũ
         Schema::disableForeignKeyConstraints();
         DB::table('balance_histories')->truncate();
         Schema::enableForeignKeyConstraints();
 
         $this->info('🧹 Đã xoá xong. Bắt đầu tạo lịch sử số dư mới...');
-        
+
         $users = User::all();
         $userCount = 0;
         $newLogs = 0;
@@ -33,8 +33,11 @@ class GenerateAllBalanceHistories extends Command
             $userCode = $user->referral_code;
             $runningBalance = 0;
 
+            $escapedCode = preg_quote($userCode, '/');
 
-            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            $transactions = Transaction::whereRaw("
+    description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$escapedCode}([[:space:]:#|\\-(),\\.]|$)'
+")
                 ->orderBy('transaction_date', 'asc')
                 ->get();
 
