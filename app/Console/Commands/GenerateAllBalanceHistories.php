@@ -26,18 +26,20 @@ class GenerateAllBalanceHistories extends Command
         $this->info('🧹 Đã xoá xong. Bắt đầu tạo lịch sử số dư mới...');
 
         $users = User::all();
+        $allTransactions = Transaction::orderBy('transaction_date', 'asc')->get();
+
         $userCount = 0;
         $newLogs = 0;
 
         foreach ($users as $user) {
             $userCode = $user->referral_code;
+            $escapedCode = preg_quote($userCode, '/');
             $runningBalance = 0;
 
-            $escapedCode = preg_quote($userCode, '/');
-
-            $transactions = Transaction::whereRaw("description REGEXP '(^|[-[:space:]:#|(),\\.]){$escapedCode}([-[:space:]:#|(),\\.]|$)'")
-                ->orderBy('transaction_date', 'asc')
-                ->get();
+            // ❗ Dùng regex mới để lọc giao dịch match chính xác hơn
+            $transactions = $allTransactions->filter(function ($tran) use ($escapedCode) {
+                return preg_match('/(^|[\s:#|\-(),.])' . $escapedCode . '([\s:#|\-(),.]|$)/', $tran->description);
+            });
 
             foreach ($transactions as $tran) {
                 $change = $tran->type === 'IN' ? (float)$tran->amount : -(float)$tran->amount;
