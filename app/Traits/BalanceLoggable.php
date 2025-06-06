@@ -8,54 +8,67 @@ use App\Models\User;
 
 trait BalanceLoggable
 {
-    // public function generateAllBalanceHistories()
-    // {
-    //     // $users = User::all();
-    //     // $count = 0;
+    public function generateAllBalanceHistories()
+    {
+        $users = User::all();
+        $count = 0;
 
-    //     // foreach ($users as $user) {
-    //     //     $userCode = preg_quote($user->referral_code, '/');
-    //     //     BalanceHistory::where('user_id', $user->id)->delete();
-    //     //     $transactions = Transaction::whereRaw("description REGEXP '(^|[[:space:]:#|\\-(),\\.]){$userCode}([[:space:]:#|\\-(),\\.]|$)'")
-    //     //         ->orderBy('transaction_date', 'asc')
-    //     //         ->get();
+        foreach ($users as $user) {
+            $userCode = $user->referral_code;
 
-    //     //     $runningBalance = 0;
+            // Xóa lịch sử cũ nếu có
+            BalanceHistory::where('user_id', $user->id)->delete();
 
-    //     //     foreach ($transactions as $tran) {
-    //     //         $change = $tran->type === 'IN' ? $tran->amount : -$tran->amount;
+            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                ->orderBy('transaction_date', 'asc')
+                ->get();
 
-    //     //         $balanceType = match ($tran->bank) {
-    //     //             'DROP' => $tran->type === 'IN' ? 'refund' : 'order',
-    //     //             'ADS' => 'ads',
-    //     //             'PSP' => 'product_fee',
-    //     //             'QTD' => 'Monthly',
-    //     //             default => $tran->type === 'IN' ? 'deposit' : 'withdraw',
-    //     //         };
+            $runningBalance = 0;
 
-    //     //         $runningBalance += $change;
+            foreach ($transactions as $tran) {
+                $change = $tran->type === 'IN' ? $tran->amount : -$tran->amount;
 
-    //     //         BalanceHistory::insert([
-    //     //             'user_id' => $user->id,
-    //     //             'amount_change' => $change,
-    //     //             'balance_after' => $runningBalance,
-    //     //             'type' => $balanceType,
-    //     //             'reference_id' => $tran->id,
-    //     //             'reference_type' => 'transaction',
-    //     //             'transaction_code' => $tran->transaction_id,
-    //     //             'note' => $tran->description,
-    //     //             'created_at' => $tran->transaction_date,
-    //     //             'updated_at' => $tran->transaction_date,
-    //     //         ]);
-    //     //     }
+                switch ($tran->bank) {
+                    case 'DROP':
+                        $balanceType = $tran->type === 'IN' ? 'refund' : 'order';
+                        break;
+                    case 'ADS':
+                        $balanceType = 'ads';
+                        break;
+                    case 'PSP':
+                        $balanceType = 'product_fee';
+                        break;
+                    case 'QTD':
+                        $balanceType = 'Monthly';
+                        break;
+                    default:
+                        $balanceType = $tran->type === 'IN' ? 'deposit' : 'withdraw';
+                        break;
+                }
 
-    //         // Cập nhật số dư mới
-    //         // $user->total_amount = $runningBalance;
-    //         // $user->save();
+                $runningBalance += $change;
 
-    // //         $count++;
-    // //     }
+                BalanceHistory::insert([
+                    'user_id' => $user->id,
+                    'amount_change' => $change,
+                    'balance_after' => $runningBalance,
+                    'type' => $balanceType,
+                    'reference_id' => $tran->id,
+                    'reference_type' => 'transaction',
+                    'transaction_code' => $tran->transaction_id,
+                    'note' => $tran->description,
+                    'created_at' => $tran->transaction_date,
+                    'updated_at' => $tran->transaction_date,
+                ]);
+            }
 
-    // //     return back()->with('success', "✅ Đã cập nhật lại số dư cho $count người dùng!");
-    // }
+            // Cập nhật tổng số dư mới
+            $user->total_amount = $runningBalance;
+            $user->save();
+
+            $count++;
+        }
+
+        return back()->with('success', "✅ Đã cập nhật lại số dư cho $count người dùng!");
+    }
 }
