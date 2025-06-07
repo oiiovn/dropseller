@@ -113,10 +113,10 @@
             }
             input.value = new Intl.NumberFormat("vi-VN").format(soTien) + " VND";
             console.log("Referral Code:", referralCode);
-            const bankAccount = "008338298888";
+            const bankAccount = "666666863";
             const accountName = "BUI QUOC VU";
             const addInfo = encodeURIComponent(`${referralCode}`);
-            const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}&accountName=${encodeURIComponent(accountName)}`;
+            const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}`;
             console.log("Generated QR URL:", qrUrl);
             const qrImage = document.getElementById("qrCode");
             const spinner = document.getElementById("spinner");
