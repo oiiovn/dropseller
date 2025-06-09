@@ -350,19 +350,19 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" href="{{ route('affiliate.affiliate') }}" target="_blank">
                 <i class="ri-group-line"></i>
                 <span data-key="t-affiliate">Chương trình Affiliate</span>
             </a>
-        </li>
+        </li> -->
 
         </ul>
-        <div class="card-body d-flex flex-column align-items-center">
+        <!-- <div class="card-body d-flex flex-column align-items-center">
             <a href="https://www.facebook.com/groups/1374113646667338" target="_blank" class="btn btn-primary d-inline-flex align-items-center gap-2 mt-2 pt-2">
                 <i class="bi bi-facebook fs-5"></i> Tham gia nhóm Facebook
             </a>
-        </div>
+        </div> -->
 
     </div>
 
