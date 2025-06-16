@@ -40,6 +40,13 @@
                                     <input type="text" name="shop_name" id="shop_name" class="form-control" placeholder="Tên Shop" required>
                                 </div>
                                 <div class="mb-3">
+                                    <select name="platform" id="platform" class="form-control" required>
+                                        <option value="" disabled selected>Chọn Platform</option>
+                                        <option value="Shopee">Shopee</option>
+                                        <option value="Tiktok">Tiktok</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <select name="user_id" id="user_id" class="form-control" placeholder="Người dùng" required>
                                         <option value="" disabled selected>Chọn chủ shop</option>
                                         @foreach($users as $user)
@@ -92,6 +99,17 @@
                                             <label for="shop_name" class="form-label">Tên Shop</label>
                                             <input type="text" name="shop_name" id="shop_name" class="form-control" value="{{ old('shop_name', $shop->shop_name) }}" required>
                                             @error('shop_name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="platform" class="form-label">Platform</label>
+                                            <select name="platform" id="platform" class="form-control" required>
+                                                <option value="" disabled {{ old('platform', $shop->platform) ? '' : 'selected' }}>Chọn Platform</option>
+                                                <option value="Shopee" {{ old('platform', $shop->platform) == 'Shopee' ? 'selected' : '' }}>Shopee</option>
+                                                <option value="Tiktok" {{ old('platform', $shop->platform) == 'Tiktok' ? 'selected' : '' }}>Tiktok</option>
+                                            </select>
+                                            @error('platform')
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>

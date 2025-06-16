@@ -13,7 +13,8 @@ class Shop extends Model
     protected $fillable = [
         'shop_id',
         'shop_name',
-        'user_id'
+        'user_id',
+        'platform'
     ];
 
     public function user()

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 class ShopController extends Controller
 {
     /**
@@ -19,7 +20,7 @@ class ShopController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv|max:2048', 
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
         try {
             Excel::import(new ShopsImport, $request->file('file'));
@@ -36,66 +37,68 @@ class ShopController extends Controller
     {
         $shops = Shop::all();
         $users = User::all();
-        return view('shops.shops_info',compact('shops','users'));
+        return view('shops.shops_info', compact('shops', 'users'));
     }
     public function create()
-{
-    return view('shops.create');
-}
-
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'shop_id' => 'required|max:255',
-        'shop_name' => 'required|string|max:255',
-        'user_id' => 'required|exists:users,id',
-    ]);
-
-    // Debug dữ liệu được gửi
-    // Kiểm tra shop_id đã tồn tại
-    $exists = Shop::where('shop_id', $validated['shop_id'])->exists();
-    if ($exists) {
-        return redirect()->back()->with('error', 'Shop ID đã tồn tại. Vui lòng nhập ID khác.');
+    {
+        return view('shops.create');
     }
-    // dd($exists);
 
-    Shop::create($validated);
-    return redirect()->back()->with('success', 'Thêm shop thành công!');
-}
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'shop_id' => 'required|max:255',
+            'shop_name' => 'required|string|max:255',
+            'user_id' => 'required|exists:users,id',
+            'platform' => 'required|in:Shopee,Tiktok', // Thêm trường platform
+        ]);
+        // Debug dữ liệu được gửi
+        // Kiểm tra shop_id đã tồn tại
+        $exists = Shop::where('shop_id', $validated['shop_id'])->exists();
+        if ($exists) {
+            return redirect()->back()->with('error', 'Shop ID đã tồn tại. Vui lòng nhập ID khác.');
+        }
+        // dd($exists);
 
-
-
-public function update(Request $request, Shop $shop)
-{
-    $validator = Validator::make($request->all(), [
-        'shop_id' => 'required|max:255|unique:shops_name,shop_id,' . $shop->id,
-        'shop_name' => 'required|string|max:255',
-        'user_id' => 'required|exists:users,id',
-    ]);
-    if ($validator->fails()) {
-        return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
+        Shop::create($validated);
+        return redirect()->back()->with('success', 'Thêm shop thành công!');
     }
-    $shop->update($request->only(['shop_id', 'shop_name', 'user_id']));
 
-    return redirect()->back()->with('success', 'Cập nhật shop thành công!');
-}
 
-public function destroy(Shop $shop)
-{
-    try {
-        $shop->delete();
-        return redirect()->back()->with('success', 'Xóa shop thành công!');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Xóa shop thất bại! Vui lòng thử lại.');
+
+    public function update(Request $request, Shop $shop)
+    {
+        $validator = Validator::make($request->all(), [
+            'shop_id' => 'required|max:255|unique:shops_name,shop_id,' . $shop->id,
+            'shop_name' => 'required|string|max:255',
+            'user_id' => 'required|exists:users,id',
+            'platform' => 'required|in:Shopee,Tiktok',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $shop->update($request->only(['shop_id', 'shop_name', 'user_id', 'platform']));
+
+        return redirect()->back()->with('success', 'Cập nhật shop thành công!');
     }
-}
-public function Overdue_Order(){
-    $orders_unpaiddd = Order::where('payment_status', 'Chưa thanh toán')
-    ->where('created_at', '<', Carbon::now()->subDay())
-    ->get();
 
-    return view('order.order', compact('orders_unpaiddd'));
-}
+    public function destroy(Shop $shop)
+    {
+        try {
+            $shop->delete();
+            return redirect()->back()->with('success', 'Xóa shop thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Xóa shop thất bại! Vui lòng thử lại.');
+        }
+    }
+    public function Overdue_Order()
+    {
+        $orders_unpaiddd = Order::where('payment_status', 'Chưa thanh toán')
+            ->where('created_at', '<', Carbon::now()->subDay())
+            ->get();
+
+        return view('order.order', compact('orders_unpaiddd'));
+    }
 }
