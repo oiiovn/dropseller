@@ -102,6 +102,20 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Loading indicator style */
+        #loading-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
     </style>
 
 </head>
@@ -306,136 +320,172 @@
 
     <script>
         $(document).ready(function() {
-            // Cache các phần tử DOM thường xuyên sử dụng
             const $mainContent = $('#main-content');
-            
-            // Debounce function để tránh gọi hàm quá nhiều lần
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
+            const pageCache = new Map();
+            let isLoading = false;
+
+            // Hàm xử lý loading
+            function showLoading() {
+                if (!$('#loading-indicator').length) {
+                    $('body').append(`
+                        <div id="loading-indicator" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    `);
+                }
             }
 
-            // Hàm xử lý DataTables
+            function hideLoading() {
+                $('#loading-indicator').remove();
+            }
+
+            // Sửa lại hàm loadPage
+            async function loadPage(url, pushState = true) {
+                if (isLoading) return;
+                
+                try {
+                    isLoading = true;
+                    showLoading();
+
+                    // Kiểm tra cache
+                    if (pageCache.has(url)) {
+                        const cachedData = pageCache.get(url);
+                        if (cachedData) {
+                            $mainContent.html(cachedData);
+                            if (pushState) {
+                                window.history.pushState({url: url}, '', url);
+                            }
+                            initFeatures();
+                            hideLoading();
+                            return;
+                        }
+                    }
+
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html, application/xhtml+xml',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                        },
+                        credentials: 'same-origin'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const html = await response.text();
+                    
+                    // Kiểm tra xem response có phải là JSON error không
+                    try {
+                        const jsonResponse = JSON.parse(html);
+                        if (jsonResponse.error) {
+                            throw new Error(jsonResponse.error);
+                        }
+                    } catch (e) {
+                        // Không phải JSON, tiếp tục xử lý như HTML
+                    }
+
+                    const $temp = $('<div>').html(html);
+                    const newContent = $temp.find('#main-content').html();
+
+                    if (!newContent) {
+                        throw new Error('Không tìm thấy nội dung trong response');
+                    }
+
+                    // Cập nhật nội dung
+                    $mainContent.html(newContent);
+
+                    // Lưu cache với thời gian sống 5 phút
+                    pageCache.set(url, newContent);
+                    setTimeout(() => pageCache.delete(url), 5 * 60 * 1000);
+
+                    // Cập nhật URL nếu cần
+                    if (pushState) {
+                        window.history.pushState({url: url}, '', url);
+                    }
+
+                    // Khởi tạo lại các tính năng
+                    initFeatures();
+
+                } catch (error) {
+                    console.error('Load page error:', error);
+                    showToast(error.message || 'Có lỗi xảy ra, vui lòng thử lại sau');
+                    
+                    // Nếu lỗi 401 (Unauthorized) hoặc 419 (CSRF token mismatch)
+                    if (error.status === 401 || error.status === 419) {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                } finally {
+                    isLoading = false;
+                    hideLoading();
+                }
+            }
+
+            // Sửa lại xử lý sự kiện click
+            $(document).on('click', '.ajax-link', function(e) {
+                e.preventDefault();
+                const url = this.href;
+                loadPage(url);
+            });
+
+            // Xử lý nút back/forward
+            window.onpopstate = function(event) {
+                if (event.state && event.state.url) {
+                    loadPage(event.state.url, false);
+                }
+            };
+
+            // Khởi tạo DataTable với các tùy chọn tối ưu
             function initDataTable($table) {
                 if ($.fn.DataTable.isDataTable($table)) {
                     $table.DataTable().destroy();
                 }
 
                 return $table.DataTable({
+                    serverSide: false,
+                    processing: true,
                     pageLength: 10,
-                    lengthMenu: [10, 20, 50, 100, 150],
+                    deferRender: true,
+                    lengthMenu: [10, 20, 50],
                     order: [[2, "desc"]],
                     language: {
-                        lengthMenu: "Hiển thị _MENU_ đơn hàng",
-                        zeroRecords: "Không tìm thấy dữ liệu",
-                        info: "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                        infoEmpty: "Không có dữ liệu để hiển thị", 
-                        infoFiltered: "(lọc từ tổng số _MAX_ mục)",
+                        processing: "Đang xử lý...",
                         search: "🔍",
+                        lengthMenu: "Hiển thị _MENU_ dòng",
+                        info: "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+                        infoEmpty: "Không có dữ liệu",
+                        infoFiltered: "(lọc từ _MAX_ dòng)",
                         paginate: {
-                            first: "Trang đầu",
-                            last: "Trang cuối", 
-                            next: "Tiếp theo",
-                            previous: "Quay lại"
+                            first: "Đầu",
+                            last: "Cuối",
+                            next: "Sau",
+                            previous: "Trước"
                         }
                     }
                 });
             }
 
-            // Khởi tạo DataTables cho tất cả bảng
-            function initAllDataTables() {
+            function initFeatures() {
+                // Khởi tạo DataTables
                 $('.datatable').each(function() {
                     initDataTable($(this));
                 });
-            }
 
-            // Xử lý copy order code với throttle
-            function initOrderCopy() {
-                const orderLinks = document.querySelectorAll('.order-link');
-                orderLinks.forEach(link => {
-                    const icon = link.querySelector('.icon');
-                    const orderCode = link.getAttribute('data-order-code');
-                    
-                    // Xóa handler cũ nếu có
-                    icon?.removeEventListener('click', icon._copyHandler);
-                    
-                    // Throttle handler mới
-                    let isThrottled = false;
-                    icon._copyHandler = () => {
-                        if (isThrottled) return;
-                        isThrottled = true;
-                        
-                        navigator.clipboard.writeText(orderCode)
-                            .then(() => showToast(`Đã copy mã: ${orderCode} !`))
-                            .catch(err => console.error('Lỗi copy:', err))
-                            .finally(() => {
-                                setTimeout(() => isThrottled = false, 2000);
-                            });
-                    };
-
-                    icon?.addEventListener('click', icon._copyHandler);
-                });
-            }
-
-            // Hàm load trang với cache
-            const pageCache = new Map();
-            async function loadPage(url) {
-                try {
-                    // Kiểm tra cache trước
-                    if (pageCache.has(url)) {
-                        const cachedData = pageCache.get(url);
-                        $mainContent.html(cachedData);
-                        initFeatures();
-                        return;
-                    }
-
-                    const response = await fetch(url);
-                    const html = await response.text();
-                    const $temp = $('<div>').html(html);
-                    const newContent = $temp.find('#main-content').html();
-
-                    // Lưu vào cache
-                    pageCache.set(url, newContent);
-                    
-                    // Cập nhật DOM và URL
-                    $mainContent.html(newContent);
-                    window.history.pushState(null, "", url);
-                    
-                    // Khởi tạo lại các tính năng
-                    initFeatures();
-                } catch (error) {
-                    console.error('Lỗi tải trang:', error);
-                }
-            }
-
-            // Gom các hàm khởi tạo
-            function initFeatures() {
-                initAllDataTables();
+                // Khởi tạo copy functionality
                 initOrderCopy();
             }
-
-            // Đăng ký sự kiện click với debounce
-            $(document).on('click', '.ajax-link', debounce(function(e) {
-                e.preventDefault();
-                loadPage(this.href);
-            }, 300));
-
-            // Xử lý nút back
-            window.onpopstate = () => location.reload();
 
             // Khởi tạo ban đầu
             initFeatures();
         });
     </script>
     <script>
-        function initOrderLinkCopy() {
+        function initOrderCopy() {
             const orderLinks = document.querySelectorAll('.order-link');
             orderLinks.forEach(link => {
                 const icon = link.querySelector('.icon');
@@ -450,7 +500,7 @@
                     isThrottled = true;
                     navigator.clipboard.writeText(orderCode)
                         .then(() => {
-                            showToast(`Đã copy mã :  ${orderCode} !`);
+                            showToast(`Đã copy mã: ${orderCode} !`);
                         })
                         .catch(err => {
                             console.error('Không có dữ liệu copy: ', err);
