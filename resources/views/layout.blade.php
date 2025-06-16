@@ -306,73 +306,132 @@
 
     <script>
         $(document).ready(function() {
-            function loadPage(url) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(data) {
-                        $('#main-content').html($(data).find('#main-content').html()); // Load nội dung mới
-                        window.history.pushState(null, "", url); // Cập nhật URL
-
-                        // **Gọi lại DataTables sau khi load nội dung mới**
-                        initOrderLinkCopy();
-                        initDataTables();
-                    },
-                    error: function(xhr) {
-                        console.error('Lỗi tải trang:', xhr);
-                    }
-                });
+            // Cache các phần tử DOM thường xuyên sử dụng
+            const $mainContent = $('#main-content');
+            
+            // Debounce function để tránh gọi hàm quá nhiều lần
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
             }
 
-            $('.ajax-link').on('click', function(e) {
-                e.preventDefault();
-                let url = $(this).attr('href');
-                loadPage(url);
-            });
+            // Hàm xử lý DataTables
+            function initDataTable($table) {
+                if ($.fn.DataTable.isDataTable($table)) {
+                    $table.DataTable().destroy();
+                }
 
-            // Xử lý khi nhấn Back trên trình duyệt
-            window.onpopstate = function(event) {
-                location.reload();
-            };
-
-            // **Hàm khởi tạo lại tất cả DataTables trên trang**
-            function initDataTables() {
-                $('.datatable').each(function() {
-                    let tableID = $(this).attr('id');
-
-                    if ($.fn.DataTable.isDataTable('#' + tableID)) {
-                        $('#' + tableID).DataTable().destroy();
-                    }
-
-                    $('#' + tableID).DataTable({
-                        "paging": true,
-                        "searching": true,
-                        "ordering": true,
-                        "info": true,
-                        "lengthMenu": [10, 20, 50, 100, 150],
-                        "order": [
-                            [2, "desc"]
-                        ],
-                        "language": {
-                            "lengthMenu": "Hiển thị _MENU_ đơn hàng",
-                            "zeroRecords": "Không tìm thấy dữ liệu",
-                            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                            "infoEmpty": "Không có dữ liệu để hiển thị",
-                            "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                            "search": "🔍",
-                            "paginate": {
-                                "first": "Trang đầu",
-                                "last": "Trang cuối",
-                                "next": "Tiếp theo",
-                                "previous": "Quay lại"
-                            }
+                return $table.DataTable({
+                    pageLength: 10,
+                    lengthMenu: [10, 20, 50, 100, 150],
+                    order: [[2, "desc"]],
+                    language: {
+                        lengthMenu: "Hiển thị _MENU_ đơn hàng",
+                        zeroRecords: "Không tìm thấy dữ liệu",
+                        info: "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                        infoEmpty: "Không có dữ liệu để hiển thị", 
+                        infoFiltered: "(lọc từ tổng số _MAX_ mục)",
+                        search: "🔍",
+                        paginate: {
+                            first: "Trang đầu",
+                            last: "Trang cuối", 
+                            next: "Tiếp theo",
+                            previous: "Quay lại"
                         }
-                    });
+                    }
                 });
             }
 
-            // **Gọi lại DataTables ngay khi trang load lần đầu**
-            initDataTables();
+            // Khởi tạo DataTables cho tất cả bảng
+            function initAllDataTables() {
+                $('.datatable').each(function() {
+                    initDataTable($(this));
+                });
+            }
+
+            // Xử lý copy order code với throttle
+            function initOrderCopy() {
+                const orderLinks = document.querySelectorAll('.order-link');
+                orderLinks.forEach(link => {
+                    const icon = link.querySelector('.icon');
+                    const orderCode = link.getAttribute('data-order-code');
+                    
+                    // Xóa handler cũ nếu có
+                    icon?.removeEventListener('click', icon._copyHandler);
+                    
+                    // Throttle handler mới
+                    let isThrottled = false;
+                    icon._copyHandler = () => {
+                        if (isThrottled) return;
+                        isThrottled = true;
+                        
+                        navigator.clipboard.writeText(orderCode)
+                            .then(() => showToast(`Đã copy mã: ${orderCode} !`))
+                            .catch(err => console.error('Lỗi copy:', err))
+                            .finally(() => {
+                                setTimeout(() => isThrottled = false, 2000);
+                            });
+                    };
+
+                    icon?.addEventListener('click', icon._copyHandler);
+                });
+            }
+
+            // Hàm load trang với cache
+            const pageCache = new Map();
+            async function loadPage(url) {
+                try {
+                    // Kiểm tra cache trước
+                    if (pageCache.has(url)) {
+                        const cachedData = pageCache.get(url);
+                        $mainContent.html(cachedData);
+                        initFeatures();
+                        return;
+                    }
+
+                    const response = await fetch(url);
+                    const html = await response.text();
+                    const $temp = $('<div>').html(html);
+                    const newContent = $temp.find('#main-content').html();
+
+                    // Lưu vào cache
+                    pageCache.set(url, newContent);
+                    
+                    // Cập nhật DOM và URL
+                    $mainContent.html(newContent);
+                    window.history.pushState(null, "", url);
+                    
+                    // Khởi tạo lại các tính năng
+                    initFeatures();
+                } catch (error) {
+                    console.error('Lỗi tải trang:', error);
+                }
+            }
+
+            // Gom các hàm khởi tạo
+            function initFeatures() {
+                initAllDataTables();
+                initOrderCopy();
+            }
+
+            // Đăng ký sự kiện click với debounce
+            $(document).on('click', '.ajax-link', debounce(function(e) {
+                e.preventDefault();
+                loadPage(this.href);
+            }, 300));
+
+            // Xử lý nút back
+            window.onpopstate = () => location.reload();
+
+            // Khởi tạo ban đầu
+            initFeatures();
         });
     </script>
     <script>
