@@ -443,7 +443,7 @@
             // Khởi tạo DataTable với các tùy chọn tối ưu
             function initDataTable($table) {
                 if ($.fn.DataTable.isDataTable($table)) {
-                    $table.DataTable().destroy();
+                    $table.DataTable().clear().destroy(); // Ensure proper cleanup
                 }
 
                 return $table.DataTable({
@@ -451,6 +451,8 @@
                     processing: true,
                     pageLength: 10,
                     deferRender: true,
+                    stateSave: true, // Save table state to avoid reloading
+                    deferLoading: 0, // Prevent initial loading delay
                     lengthMenu: [10, 20, 50],
                     order: [[2, "desc"]],
                     language: {
@@ -466,14 +468,32 @@
                             next: "Sau",
                             previous: "Trước"
                         }
+                    },
+                    initComplete: function() {
+                        console.log('DataTable initialized successfully'); // Debugging log
                     }
                 });
             }
 
+            function debounce(func, delay) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), delay);
+                };
+            }
+
             function initFeatures() {
-                // Khởi tạo DataTables
+                // Cleanup and reinitialize DataTables
+                const debouncedInitDataTable = debounce(function($table) {
+                    if ($.fn.DataTable.isDataTable($table)) {
+                        $table.DataTable().clear().destroy(); // Ensure proper cleanup
+                    }
+                    initDataTable($table); // Smooth reinitialization
+                }, 300); // Debounce delay to prevent rapid reinitializations
+
                 $('.datatable').each(function() {
-                    initDataTable($(this));
+                    debouncedInitDataTable($(this));
                 });
 
                 // Khởi tạo copy functionality
