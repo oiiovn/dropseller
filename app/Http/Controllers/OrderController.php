@@ -42,7 +42,7 @@ class OrderController extends Controller
 
         return view('order.orders_all', compact('orders_all'));
     }
-z
+
 
 
     public function order_si(Request $request)
