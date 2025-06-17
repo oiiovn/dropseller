@@ -21,80 +21,29 @@ use App\Models\ReturnOrder; // Import the ReturnOrder model
 
 class OrderController extends Controller
 {
-    protected $defaultPerPage = 10;
-    protected $perPageOptions = [10, 25, 50, 100];
-
     function Getorder()
     {
         return view('payment.transaction_all');
     }
-    public function Get_orders_all(Request $request)
+    public function Get_orders_all()
     {
-        $itemsPerPage = (int) $request->get('limit', $this->defaultPerPage);
-        if (!in_array($itemsPerPage, $this->perPageOptions)) {
-            $itemsPerPage = $this->defaultPerPage;
-        }
-        
-        $shops = Shop::with(['orders' => function($query) {
-            $query->orderBy('created_at', 'desc');
-        }])->get();
-
+        $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
         $orders_all = [];
-        $allOrders = collect([]);
-        
+
         foreach ($shops as $shop) {
-            $userName = $shop->user->name ?? 'Unknown User';
+            $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
+
             if (!isset($orders_all[$userName])) {
-                $orders_all[$userName] = [];
+                $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
             }
-            $shopOrders = $shop->orders->sortByDesc('created_at');
-            $orders_all[$userName][$shop->shop_name] = $shopOrders;
-            $allOrders = $allOrders->concat($shopOrders);
+
+            $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
         }
 
-        $allOrders = $allOrders->sortByDesc('created_at');
-        
-        $pagedOrders = new \Illuminate\Pagination\LengthAwarePaginator(
-            $allOrders->forPage($request->get('page', 1), $itemsPerPage),
-            $allOrders->count(),
-            $itemsPerPage,
-            $request->get('page', 1),
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
-
-        return view('order.orders_all', [
-            'orders_all' => $orders_all,
-            'pagedOrders' => $pagedOrders,
-            'currentLimit' => $itemsPerPage,
-            'perPageOptions' => $this->perPageOptions
-        ]);
+        return view('order.orders_all', compact('orders_all'));
     }
+z
 
-    public function apiGetOrdersAll(Request $request)
-    {
-        $tab = $request->input('tab', 'all-orders'); // Tab hiện tại, mặc định là "all-orders"
-
-        $query = Shop::with(['orders' => function ($q) use ($request) {
-            if ($request->has('search') && !empty($request->search)) {
-                $q->where('order_code', 'like', '%' . $request->search . '%');
-            }
-            if ($request->has('sort') && $request->has('direction')) {
-                $q->orderBy($request->sort, $request->direction);
-            } else {
-                $q->orderBy('created_at', 'desc');
-            }
-        }]);
-
-        if ($tab !== 'all-orders') {
-            $query->whereHas('user', function ($q) use ($tab) {
-                $q->where('name', $tab); // Lọc theo tên user (tab)
-            });
-        }
-
-        $shops = $query->paginate(10); // Phân trang với 10 dòng mỗi trang
-
-        return response()->json($shops); // Trả về dữ liệu JSON
-    }
 
     public function order_si(Request $request)
     {
