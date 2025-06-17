@@ -25,22 +25,42 @@ class OrderController extends Controller
     {
         return view('payment.transaction_all');
     }
-    public function Get_orders_all()
+    public function Get_orders_all(Request $request)
     {
-        $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
+        $itemsPerPage = (int) $request->get('limit', 10);
+        
+        // Eager load relationships để tránh N+1 query
+        $shops = Shop::with([
+            'user',
+            'orders' => function($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'orders.orderDetails',
+        ])->get();
+
         $orders_all = [];
-
+        $allOrders = collect([]);
+        
         foreach ($shops as $shop) {
-            $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
-
+            $userName = $shop->user->name ?? 'Unknown User';
             if (!isset($orders_all[$userName])) {
-                $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
+                $orders_all[$userName] = [];
             }
-
-            $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
+            $orders_all[$userName][$shop->shop_name] = $shop->orders;
+            $allOrders = $allOrders->concat($shop->orders);
         }
 
-        return view('order.orders_all', compact('orders_all'));
+        // Phân trang và cache kết quả
+        $pagedOrders = $allOrders
+            ->sortByDesc('created_at')
+            ->slice(($request->get('page', 1) - 1) * $itemsPerPage, $itemsPerPage)
+            ->values();
+
+        return view('order.orders_all', [
+            'orders_all' => $orders_all,
+            'pagedOrders' => $pagedOrders,
+            'currentLimit' => $itemsPerPage
+        ])->render();
     }
 
 
