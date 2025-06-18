@@ -51,17 +51,19 @@
                                 </a>
                             </li>
                             @foreach($shops as $shop)
-
                             <li class="nav-item">
-                                <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shop->id}}" href="#shop-{{$shop->id}}-content" role="tab" aria-selected="false">
-                                    @if($shop->platform == 'Tiktok')
+                                @php
+                                    $shopId = $shop->id ?? 'unknown-'.uniqid();
+                                @endphp
+                                <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shopId}}" href="#shop-{{$shopId}}-content" role="tab" aria-selected="false">
+                                    @if(isset($shop->platform) && $shop->platform == 'Tiktok')
                                     <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                    @elseif($shop->platform == 'Shoppe')
+                                    @elseif(isset($shop->platform) && $shop->platform == 'Shoppe')
                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                     @else
                                     <i class="fas fa-store me-1"></i>
                                     @endif
-                                    {{$shop->shop_name}}
+                                    {{$shop->shop_name ?? 'Shop không xác định'}}
                                 </a>
                             </li>
                             @endforeach
@@ -92,65 +94,65 @@
                                                 <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code}}">
-                                                                {{$item->order_code}}
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->order_code ?? ''}}">
+                                                                {{$item->order_code ?? 'N/A'}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$item->filter_date}}</a>
+                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$item->filter_date ?? ''}}</a>
                                                         </li>
                                                     </ul>
                                                 </td>
 
-
-
-                                                <td class="customer_cost" data-shop-id="{{ $order->shop->id ?? 0 }}">
-                                                    @if($item->shop->platform == 'Tiktok')
+                                                <td class="customer_cost" data-shop-id="{{ $item->shop->id ?? 0 }}">
+                                                    @if(isset($item->shop) && isset($item->shop->platform) && $item->shop->platform == 'Tiktok')
                                                     <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                    @elseif($item->shop->platform == 'Shoppe')
+                                                    @elseif(isset($item->shop) && isset($item->shop->platform) && $item->shop->platform == 'Shoppe')
                                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                     @endif
                                                     {{ $item->shop->shop_name ?? 'N/A' }}
                                                 </td>
-                                                <td class="export_date">{{$item->created_at}}</td>
-                                                <td class="total_products">{{$item->total_products}}</td>
-                                                <td class="total_dropship">{{ number_format($item->total_dropship, 0, ',', '.') }} đ</td>
-                                                <td class="total_bill">{{ number_format($item->total_bill, 0, ',', '.') }} đ</td>
-                                                @if($item->payment_status == 'Chưa thanh toán')
+                                                <td class="export_date">{{$item->created_at ?? 'N/A'}}</td>
+                                                <td class="total_products">{{$item->total_products ?? 0}}</td>
+                                                <td class="total_dropship">{{ number_format($item->total_dropship ?? 0, 0, ',', '.') }} đ</td>
+                                                <td class="total_bill">{{ number_format($item->total_bill ?? 0, 0, ',', '.') }} đ</td>
+                                                @if(isset($item->payment_status) && $item->payment_status == 'Chưa thanh toán')
                                                 <td class="payment_status" style="color:red;">
                                                     {{ $item->payment_status }}
                                                 </td>
                                                 @else
                                                 <td class="payment_status" style="color:green;">
-                                                    {{ $item->payment_status }}
+                                                    {{ $item->payment_status ?? 'Unknown' }}
                                                 </td>
                                                 @endif
                                                 <td class="transaction_id">
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
-                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->transaction_id}}">
-                                                            {{$item->transaction_id}}
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->transaction_id ?? ''}}">
+                                                            {{$item->transaction_id ?? 'N/A'}}
                                                             <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                         </a>
                                                     </li>
                                                 </td>
                                                 <td class="reconciled">
-                                                    @if($item->reconciled == 1)
+                                                    @if(isset($item->reconciled) && $item->reconciled == 1)
                                                     <span style="color:red;">Chưa đối soát</span>
-                                                    @elseif($item->reconciled == 0)
+                                                    @elseif(isset($item->reconciled) && $item->reconciled == 0)
                                                     <span style="color:green;">Đã đối soát</span>
+                                                    @else
+                                                    <span>Không xác định</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <ul class="list-inline hstack gap-2 mb-0 d-flex justify-content-center">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
-                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$item->id}}">
+                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$item->id ?? 'unknown'}}">
                                                                 <i class="ri-eye-fill fs-16"></i>
                                                             </a>
                                                         </li>
                                                     </ul>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="staticBackdrop-{{$item->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="staticBackdrop-{{$item->id ?? 'unknown'}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -174,26 +176,32 @@
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
+                                                                                                @if(isset($item->orderDetails) && is_iterable($item->orderDetails))
                                                                                                 @foreach($item->orderDetails as $detail)
                                                                                                 <tr>
                                                                                                     <td>
                                                                                                         <div class="d-flex">
                                                                                                             <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
-                                                                                                                <img src="{{$detail->image}}" alt="" class="img-fluid d-block">
+                                                                                                                <img src="{{$detail->image ?? ''}}" alt="" class="img-fluid d-block">
                                                                                                             </div>
                                                                                                             <div class="flex-grow-1 ms-3">
                                                                                                                 <h5 class="fs-13">
-                                                                                                                    <a style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name}}</a>
+                                                                                                                    <a style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$detail->product_name ?? 'Không có tên'}}</a>
                                                                                                                 </h5>
-                                                                                                                <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
+                                                                                                                <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku ?? 'N/A'}}</span></p>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </td>
-                                                                                                    <td class="text-center">{{$detail->quantity}}</td>
-                                                                                                    <td class="text-center">{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
-                                                                                                    <td class="text-center">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{$detail->quantity ?? 0}}</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->unit_cost ?? 0, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-center">{{ number_format($detail->total_cost ?? 0, 0, ',', '.') }} đ</td>
                                                                                                 </tr>
                                                                                                 @endforeach
+                                                                                                @else
+                                                                                                <tr>
+                                                                                                    <td colspan="4" class="text-center">Không có chi tiết đơn hàng</td>
+                                                                                                </tr>
+                                                                                                @endif
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -277,11 +285,16 @@
                                 </div>
 
                             </div>
+                            
                             <!-- Đơn hàng theo từng shop -->
                             @foreach($shops as $shop)
-                            <div class="tab-pane fade" id="shop-{{$shop->id}}-content" role="tabpanel">
+                            @php
+                                $shopId = $shop->id ?? 'unknown-'.uniqid();
+                                $shopActualId = $shop->id ?? $shop->shop_id ?? 0;
+                            @endphp
+                            <div class="tab-pane fade" id="shop-{{$shopId}}-content" role="tabpanel">
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table table-nowrap align-middle table-hover" id="orderTableSHOP{{$shop->id}}">
+                                    <table class="table table-nowrap align-middle table-hover" id="orderTableSHOP{{$shopId}}">
                                         <thead class="text-muted table-light">
                                             <tr class="text-uppercase">
                                                 <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
@@ -296,50 +309,61 @@
                                             </tr>
                                         </thead>
                                         <tbody class="text-black-50">
-                                            @foreach($orders->where('shop_id', $shop->shop_id) as $order)
+                                            @php
+                                                $shopOrders = [];
+                                                try {
+                                                    $shopOrders = $orders->where('shop_id', $shopActualId);
+                                                } catch (\Exception $e) {
+                                                    // Handle silently in case of error
+                                                }
+                                            @endphp
+                                            
+                                            @foreach($shopOrders as $order)
                                             <tr>
                                                 <td class="id text-black-50" style="max-width: 5px;">
                                                     <ul style="list-style: none; padding: 0; margin: 0;">
                                                         <li class="hienthicopy">
-                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->order_code}}">
-                                                                {{$order->order_code}}
+                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->order_code ?? ''}}">
+                                                                {{$order->order_code ?? 'N/A'}}
                                                                 <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$order->filter_date}}</a>
+                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$order->filter_date ?? ''}}</a>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td class="date">{{$order->created_at}}</td>
-                                                <td class="customer_cost">{{$order->total_products}}</td>
-                                                <td class="product_name">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
-                                                <td class="product_code">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
-                                                <td class="date">{{$order->payment_status}}</td>
+                                                <td class="date">{{$order->created_at ?? 'N/A'}}</td>
+                                                <td class="customer_cost">{{$order->total_products ?? 0}}</td>
+                                                <td class="product_name">{{ number_format($order->total_dropship ?? 0, 0, ',', '.') }} đ</td>
+                                                <td class="product_code">{{ number_format($order->total_bill ?? 0, 0, ',', '.') }} đ</td>
+                                                <td class="date">{{$order->payment_status ?? 'Unknown'}}</td>
                                                 <td class="transaction_id">
                                                     <li style="list-style: none; padding: 0; margin: 0;" class="hienthicopy">
-                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id}}">
-                                                            {{$order->transaction_id}}
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$order->transaction_id ?? ''}}">
+                                                            {{$order->transaction_id ?? 'N/A'}}
                                                             <span class="ri-checkbox-multiple-blank-line icon"></span>
                                                         </a>
                                                     </li>
                                                 </td>
                                                 <td class="reconciled">
-                                                    @if($order->reconciled == 1)
+                                                    @if(isset($order->reconciled) && $order->reconciled == 1)
                                                     <span style="color:red;">Chưa đối soát</span>
-                                                    @elseif($order->reconciled == 0)
+                                                    @elseif(isset($order->reconciled) && $order->reconciled == 0)
                                                     <span style="color:green;">Đã đối soát</span>
+                                                    @else
+                                                    <span>Không xác định</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <!-- Button trigger modal -->
-                                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$order->order_code}}">
+                                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$order->order_code ?? 'unknown'}}">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
                                                             <i class="ri-eye-fill fs-16 text-primary"></i>
                                                         </li>
                                                     </a>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal{{$order->order_code}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="exampleModal{{$order->order_code ?? 'unknown'}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 90%; width: 100%;">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -362,26 +386,32 @@
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
+                                                                                                @if(isset($order->orderDetails) && is_iterable($order->orderDetails))
                                                                                                 @foreach($order->orderDetails as $detail)
                                                                                                 <tr>
                                                                                                     <td>
                                                                                                         <div class="d-flex">
                                                                                                             <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
-                                                                                                                <img src="{{$detail->image}}" alt="" class="img-fluid d-block">
+                                                                                                                <img src="{{$detail->image ?? ''}}" alt="" class="img-fluid d-block">
                                                                                                             </div>
                                                                                                             <div class="flex-grow-1 ms-3">
                                                                                                                 <h5 class="fs-13">
-                                                                                                                    <a>{{$detail->product_name}}</a>
+                                                                                                                    <a>{{$detail->product_name ?? 'Không có tên'}}</a>
                                                                                                                 </h5>
-                                                                                                                <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku}}</span></p>
+                                                                                                                <p class="text-muted mb-0 fs-11">SKU: <span class="fw-medium">{{$detail->sku ?? 'N/A'}}</span></p>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </td>
-                                                                                                    <td>{{$detail->quantity}}</td>
-                                                                                                    <td>{{ number_format($detail->unit_cost, 0, ',', '.') }} đ</td>
-                                                                                                    <td class="text-end">{{ number_format($detail->total_cost, 0, ',', '.') }} đ</td>
+                                                                                                    <td>{{$detail->quantity ?? 0}}</td>
+                                                                                                    <td>{{ number_format($detail->unit_cost ?? 0, 0, ',', '.') }} đ</td>
+                                                                                                    <td class="text-end">{{ number_format($detail->total_cost ?? 0, 0, ',', '.') }} đ</td>
                                                                                                 </tr>
                                                                                                 @endforeach
+                                                                                                @else
+                                                                                                <tr>
+                                                                                                    <td colspan="4" class="text-center">Không có chi tiết đơn hàng</td>
+                                                                                                </tr>
+                                                                                                @endif
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -429,40 +459,35 @@
                                         </tbody>
                                     </table>
                                     <script>
-                                        document.addEventListener('click', function(e) {
-                                            const icon = e.target.closest('.order-link .icon');
-                                            if (!icon) return;
-                                            const orderLink = icon.closest('.order-link');
-                                            const orderCode = orderLink.getAttribute('data-order-code');
-                                            if (!orderCode) return;
-                                            if (icon.dataset.throttled === "true") return;
-                                            icon.dataset.throttled = "true";
-                                        });
-                                        $(document).ready(function() {
-                                            $('#orderTableSHOP{{$shop->id}}').DataTable({
-                                                "paging": true,
-                                                "searching": true,
-                                                "ordering": true,
-                                                "info": true,
-                                                "lengthMenu": [10, 20, 50, 100, 150],
-                                                "order": [
-                                                    [1, "desc"]
-                                                ],
-                                                "language": {
-                                                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
-                                                    "zeroRecords": "Không tìm thấy dữ liệu",
-                                                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-                                                    "infoEmpty": "Không có dữ liệu để hiển thị",
-                                                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                    "search": "",
-                                                    "paginate": {
-                                                        "first": "Trang đầu",
-                                                        "last": "Trang cuối",
-                                                        "next": "Tiếp theo",
-                                                        "previous": "Quay lại"
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            try {
+                                                $('#orderTableSHOP{{$shopId}}').DataTable({
+                                                    "paging": true,
+                                                    "searching": true,
+                                                    "ordering": true,
+                                                    "info": true,
+                                                    "lengthMenu": [10, 20, 50, 100, 150],
+                                                    "order": [
+                                                        [1, "desc"]
+                                                    ],
+                                                    "language": {
+                                                        "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                                                        "zeroRecords": "Không tìm thấy dữ liệu",
+                                                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                                                        "infoEmpty": "Không có dữ liệu để hiển thị",
+                                                        "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                                                        "search": "",
+                                                        "paginate": {
+                                                            "first": "Trang đầu",
+                                                            "last": "Trang cuối",
+                                                            "next": "Tiếp theo",
+                                                            "previous": "Quay lại"
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
+                                            } catch (error) {
+                                                console.error("DataTable initialization error for shop {{$shopId}}:", error);
+                                            }
                                         });
                                     </script>
                                 </div>
@@ -475,18 +500,69 @@
         </div>
     </div>
 </div>
-<!-- Include DataTables JS -->
-
 
 <script>
-    document.querySelectorAll('.customer_cost').forEach(td => {
-        const shopId = td.dataset.shopId; // Gắn shopId vào dataset
-        if (shopId) {
-            const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
-            td.style.color = color;
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            $('#orderTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthMenu": [10, 20, 50, 100, 150],
+                "order": [
+                    [2, "desc"]
+                ],
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ đơn hàng",
+                    "zeroRecords": "Không tìm thấy dữ liệu",
+                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                    "search": "",
+                    "paginate": {
+                        "first": "Trang đầu",
+                        "last": "Trang cuối",
+                        "next": "Tiếp theo",
+                        "previous": "Quay lại"
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Main DataTable initialization error:", error);
         }
+        
+        document.querySelectorAll('.customer_cost').forEach(td => {
+            try {
+                const shopId = td.dataset.shopId;
+                if (shopId && !isNaN(parseInt(shopId))) {
+                    const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+                    td.style.color = color;
+                }
+            } catch (e) {
+                console.error("Error applying shop color:", e);
+            }
+        });
+        
+        document.addEventListener('click', function(e) {
+            try {
+                const icon = e.target.closest('.order-link .icon');
+                if (!icon) return;
+                const orderLink = icon.closest('.order-link');
+                const orderCode = orderLink?.getAttribute('data-order-code');
+                if (!orderCode) return;
+                if (icon.dataset.throttled === "true") return;
+                icon.dataset.throttled = "true";
+                
+                // Copy functionality can be added here if needed
+                setTimeout(() => {
+                    icon.dataset.throttled = "false";
+                }, 1000);
+            } catch (e) {
+                console.error("Error in click handler:", e);
+            }
+        });
     });
 </script>
-
 
 @endsection
