@@ -102,7 +102,7 @@ Route::middleware(['auth', 'checkrole:seller'])->group(function () {
 });
 
 // Admin and manager routes
-Route::middleware(['auth', 'rocheckrolele:admin,manager'])->group(function () {
+Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
     Route::get('/program/processing', [OrderController::class, 'Program_processing'])->name('program.processing');
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
