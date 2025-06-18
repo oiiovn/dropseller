@@ -21,9 +21,6 @@ use App\Models\ReturnOrder; // Import the ReturnOrder model
 
 class OrderController extends Controller
 {
-    /**
-     * Constructor - apply role-based middleware
-     */
     public function __construct()
     {
         // Restrict access to admin and manager roles for specific methods
@@ -32,10 +29,9 @@ class OrderController extends Controller
             'Program_processing',
             'changeStatus_Program'
         ]);
-        
+
         // All users can access other methods
     }
-
     function Getorder()
     {
         return view('payment.transaction_all');
@@ -43,11 +39,11 @@ class OrderController extends Controller
     public function Get_orders_all(Request $request)
     {
         $itemsPerPage = (int) $request->get('limit', 10);
-        
+
         // Eager load relationships để tránh N+1 query
         $shops = Shop::with([
             'user',
-            'orders' => function($query) {
+            'orders' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             },
             'orders.orderDetails',
@@ -55,7 +51,7 @@ class OrderController extends Controller
 
         $orders_all = [];
         $allOrders = collect([]);
-        
+
         foreach ($shops as $shop) {
             $userName = $shop->user->name ?? 'Unknown User';
             if (!isset($orders_all[$userName])) {
@@ -327,7 +323,7 @@ class OrderController extends Controller
             ->sortBy('sku')
             ->values();
         $tongSanPham = $sanPhamGop->sum('so_luong');
-        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham , 'shops' => $shops]);
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham, 'shops' => $shops]);
     }
     public function taoThanhToan(Request $request)
     {
@@ -336,7 +332,7 @@ class OrderController extends Controller
         $donCanThanhToan = $ketQuaGop->filter(function ($item) {
             return $item['order_code'] !== null && $item['tong_tien'] > 0;
         })->values();
-// dd($donCanThanhToan);
+        // dd($donCanThanhToan);
         if ($donCanThanhToan->isNotEmpty()) {
             foreach ($donCanThanhToan as $don) {
                 ReturnOrder::create([
@@ -355,6 +351,4 @@ class OrderController extends Controller
             return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
         }
     }
-
-    
 }
