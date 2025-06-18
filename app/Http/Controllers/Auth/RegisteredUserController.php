@@ -35,20 +35,26 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'referral_code' => ['nullable', 'string', 'exists:' . User::class . ',referral_code'],
         ]);
-    
+
         // Tạo mã referral_code
         $referralCode = $this->generateReferralCode();
-    
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'referral_code' => $referralCode,
         ]);
-    
-        // Gửi sự kiện đã đăng ký (nếu có xử lý sự kiện như gửi email xác thực)
+
+        $sellerRole = \App\Models\Role::where('slug', 'seller')->first();
+        if ($sellerRole) {
+            $user->roles()->syncWithoutDetaching([$sellerRole->id]);
+        }
+
+
+        // Gửi sự kiện đã đăng ký
         event(new Registered($user));
-    
+
         // Chuyển hướng về trang đăng nhập với thông báo
         return redirect()->route('login')->with('status', 'Registration successful. Please log in.');
     }
@@ -56,15 +62,12 @@ class RegisteredUserController extends Controller
      * Generate a unique referral code with the format NAP_<random_number>.
      */
     private function generateReferralCode(): string
-{
-    do {
-        // Tạo mã gồm 5 ký tự ngẫu nhiên (chữ cái viết hoa và số)
-        $code = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 5));
-    } while (User::where('referral_code', $code)->exists()); // Kiểm tra mã đã tồn tại chưa
+    {
+        do {
+            // Tạo mã gồm 5 ký tự ngẫu nhiên (chữ cái viết hoa và số)
+            $code = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 5));
+        } while (User::where('referral_code', $code)->exists()); // Kiểm tra mã đã tồn tại chưa
 
-    return $code;
-}
-
-    
-    
+        return $code;
+    }
 }

@@ -33,19 +33,30 @@
     .search-box input:valid~.clear-icon {
         display: inline;
     }
-
-    .lazy-load {
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .lazy-load.loaded {
-        opacity: 1;
-    }
 </style>
 <div class="container-fluid" style=" width: 100%; background: white; ">
     <div class="row">
         <div class="col-lg-12">
+            @if(Auth::check() && DB::table('role_user')
+                ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                ->where('role_user.user_id', Auth::id())
+                ->where('roles.slug', 'admin')
+                ->exists())
+                <div class="alert alert-info">
+                    Chào mừng Admin! Bạn có thể quản lý tất cả các đơn hàng ở đây.
+                </div>
+            @endif
+            
+            @if(Auth::check() && DB::table('role_user')
+                ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                ->where('role_user.user_id', Auth::id())
+                ->where('roles.slug', 'manager')
+                ->exists())
+                <div class="alert alert-info">
+                    Chào mừng Manager! Bạn có thể quản lý đơn hàng ở đây.
+                </div>
+            @endif
+            
             <div class="card" id="orderList">
                 <div class="card-body pt-0">
                     <div>
@@ -105,6 +116,15 @@
                                                     @elseif($order->shop->platform == 'Shoppe')
                                                     <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
                                                     @endif
+                                                    {{ $order->shop->shop_name ?? 'N/A' }}
+                                                </td>
+                                                <td class="export_date">{{$order->created_at}}</td>
+                                                <td class="total_products">{{$order->total_products}}</td>
+                                                <td class="total_dropship">{{ number_format($order->total_dropship, 0, ',', '.') }} đ</td>
+                                                <td class="total_bill">{{ number_format($order->total_bill, 0, ',', '.') }} đ</td>
+                                                @if($order->payment_status == 'Chưa thanh toán')
+                                                <td class="payment_status" style="color:red;">
+                                                    {{ $order->payment_status }}
                                                 </td>
                                                 @else
                                                 <td class="payment_status" style="color:green;">
@@ -157,7 +177,7 @@
                                                                                                     <th scope="col" style="width: 12%;">Số Lượng</th>
                                                                                                     <th scope="col" style="width: 15%;">Giá Nhập</th>
                                                                                                     <th scope="col" style="width: 20%;">Tổng Giá Nhập</th>
-                                                                                                </tr> 
+                                                                                                </tr>
                                                                                             </thead>
                                                                                             <tbody>
                                                                                                 @foreach($order->orderDetails as $detail)

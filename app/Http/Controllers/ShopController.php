@@ -72,7 +72,7 @@ class ShopController extends Controller
             'shop_id' => 'required|max:255|unique:shops_name,shop_id,' . $shop->id,
             'shop_name' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
-            'platform' => 'required|in:Shopee,Tiktok',
+            'platform' => 'required|in:Shoppe,Tiktok',
         ]);
         if ($validator->fails()) {
             return redirect()->back()

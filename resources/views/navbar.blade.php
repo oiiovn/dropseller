@@ -85,6 +85,7 @@
                         <span>Dashboards</span>
                     </a>
                 </li>
+                @if(Auth::check() && Auth::user()->hasRole('seller'))
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#donhang" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class=" ri-shopping-bag-3-line"></i>
@@ -163,7 +164,8 @@
                         </ul>
                     </div>
                 </li>
-                @if(Auth::check() && Auth::user()->role == '2')
+                @endif
+              @if(Auth::check() && Auth::user()->hasRole('admin'))
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>

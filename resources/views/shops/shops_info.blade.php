@@ -106,7 +106,7 @@
                                             <label for="platform" class="form-label">Platform</label>
                                             <select name="platform" id="platform" class="form-control" required>
                                                 <option value="" disabled {{ old('platform', $shop->platform) ? '' : 'selected' }}>Chọn Platform</option>
-                                                <option value="Shopee" {{ old('platform', $shop->platform) == 'Shopee' ? 'selected' : '' }}>Shopee</option>
+                                                <option value="Shoppe" {{ old('platform', $shop->platform) == 'Shoppe' ? 'selected' : '' }}>Shoppe</option>
                                                 <option value="Tiktok" {{ old('platform', $shop->platform) == 'Tiktok' ? 'selected' : '' }}>Tiktok</option>
                                             </select>
                                             @error('platform')

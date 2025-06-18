@@ -67,4 +67,15 @@ class Kernel extends HttpKernel
         'check_balance' => \App\Http\Middleware\EnsurePositiveBalance::class,
 
     ];
+
+    /**
+     * The application's route middleware.
+     *
+     * These middleware may be assigned to groups or used individually.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'role' => \App\Http\Middleware\CheckRole::class,
+    ];
 }

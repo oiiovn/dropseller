@@ -4,22 +4,48 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class checkrole
+class CheckRole
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string|array  ...$roles
+     * @return mixed
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-
-        if(auth()->user()->role == '2'){
-            return $next($request);
-        }else{
-            return redirect('dashboard');
+        if (!Auth::check()) {
+            return redirect('login');
         }
+
+        $userId = Auth::id();
+        
+        // Không cần kiểm tra nếu không có vai trò nào được yêu cầu
+        if (empty($roles)) {
+            return $next($request);
+        }
+        
+        // Nếu roles được truyền dưới dạng chuỗi phân cách bằng dấu phẩy, chuyển nó thành mảng
+        if (is_string($roles[0]) && str_contains($roles[0], ',')) {
+            $roles = explode(',', $roles[0]);
+        }
+        
+        // Kiểm tra trực tiếp trong database thay vì thông qua model
+        $hasRole = DB::table('role_user')
+            ->join('roles', 'role_user.role_id', '=', 'roles.id')
+            ->where('role_user.user_id', $userId)
+            ->whereIn('roles.slug', $roles)
+            ->exists();
+        
+        if ($hasRole) {
+            return $next($request);
+        }
+        
+        return redirect()->back()->with('error', 'Bạn không có quyền truy cập chức năng này.');
     }
 }

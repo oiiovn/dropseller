@@ -25,7 +25,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register User model observer
+       
     }
 
     /**

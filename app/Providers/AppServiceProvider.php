@@ -16,6 +16,8 @@ use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Notification;
 use App\Observers\TransactionObserver;
+use Illuminate\Support\Facades\Blade;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -89,7 +91,15 @@ class AppServiceProvider extends ServiceProvider
 
             // Kiểm tra người dùng có đăng nhập không
             $user = Auth::user();
-            if ($user && $user->role == '2') {
+            
+            // Check if user is admin or manager using DB query
+            $isAdminOrManager = $user && DB::table('role_user')
+                ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                ->where('role_user.user_id', $user->id)
+                ->whereIn('roles.slug', ['admin', 'manager'])
+                ->exists();
+                
+            if ($isAdminOrManager) {
                 $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
                     ->whereNotIn('sku', $excludedCodes)
                     ->sum('quantity');
@@ -186,6 +196,18 @@ class AppServiceProvider extends ServiceProvider
                 ]
             );
 
+        });
+        // Add @role directive for Blade templates
+        Blade::directive('role', function ($expression) {
+            return "<?php if(Auth::check() && DB::table('role_user')
+                ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                ->where('role_user.user_id', Auth::id())
+                ->whereIn('roles.slug', is_array($expression) ? $expression : explode(',', $expression))
+                ->exists()): ?>";
+        });
+        
+        Blade::directive('endrole', function () {
+            return "<?php endif; ?>";
         });
     }
 }
