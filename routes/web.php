@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin-only routes
-Route::middleware(['auth', 'role:seller'])->group(function () {
+Route::middleware(['auth', 'checkrole:seller'])->group(function () {
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
@@ -102,7 +102,7 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
 });
 
 // Admin and manager routes
-Route::middleware(['auth', 'role:admin,manager'])->group(function () {
+Route::middleware(['auth', 'rocheckrolele:admin,manager'])->group(function () {
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
     Route::get('/program/processing', [OrderController::class, 'Program_processing'])->name('program.processing');
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
