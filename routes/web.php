@@ -104,6 +104,9 @@ Route::middleware(['auth', 'checkrole:seller'])->group(function () {
 // Admin and manager routes
 Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
+    Route::get('/orders/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
+    Route::get('/api/orders/{id}/details', [OrderController::class, 'getOrderDetails'])->name('orders.details');
+    
     Route::get('/program/processing', [OrderController::class, 'Program_processing'])->name('program.processing');
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
     Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
@@ -114,6 +117,8 @@ Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
     Route::get('/tat-ca-giao-dich', [TransactionController::class, 'Get_transaction_all'])->name('transaction_all');
     Route::get('/tat-ca-don-hang', [OrderController::class, 'Get_orders_all'])->name('Get_orders_all');
+    Route::get('/don-hang/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
+
     Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
     Route::get('chuon_trình_san_pham', [ProgramController::class, 'program'])->name('program_view');
     Route::post('/product-report', [ProductController::class, 'fetchProductReport'])->name('product.report');

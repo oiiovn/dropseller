@@ -18,26 +18,69 @@ use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
 use App\Models\Product;
 use App\Models\Transaction; // Import the Transaction model
 use App\Models\ReturnOrder; // Import the ReturnOrder model
-
+use Yajra\DataTables\Facades\DataTables;
 class OrderController extends Controller
 {
+    public function getOrdersData(Request $request)
+{
+    // Start with a base query
+    $query = Order::with('shop.user')->orderByDesc('created_at');
+    
+    // Filter by user if specified
+    if ($request->has('user')) {
+        $userSlug = $request->user;
+        $userName = str_replace('-', ' ', $userSlug);
+        
+        $query = $query->whereHas('shop.user', function($q) use ($userName) {
+            $q->where(DB::raw("LOWER(name)"), 'LIKE', "%" . strtolower($userName) . "%");
+        });
+    }
+    
+    return DataTables::of($query)
+        ->addColumn('shop_name', function($order) {
+            $platform = '';
+            if ($order->shop && $order->shop->platform == 'Tiktok') {
+                $platform = '<img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px; margin-right: 5px;">';
+            } elseif ($order->shop && $order->shop->platform == 'Shoppe') {
+                $platform = '<img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px; margin-right: 5px;">';
+            }
+            return $platform . ($order->shop ? $order->shop->shop_name : 'N/A');
+        })
+        ->addColumn('created_at', fn($order) => $order->created_at->format('d/m/Y H:i'))
+        ->addColumn('filter_date', fn($order) => $order->filter_date)
+        ->addColumn('total_products', fn($order) => $order->total_products)
+        ->addColumn('total_dropship', fn($order) => number_format($order->total_dropship, 0, ',', '.') . ' đ')
+        ->addColumn('total_bill', fn($order) => number_format($order->total_bill, 0, ',', '.') . ' đ')
+        ->addColumn('payment_status', function($order) {
+            $color = $order->payment_status == 'Chưa thanh toán' ? 'red' : 'green';
+            return '<span style="color:'.$color.';">'.$order->payment_status.'</span>';
+        })
+        ->addColumn('transaction_id', fn($order) => $order->transaction_id ?: 'N/A')
+        ->addColumn('reconciled', function($order) {
+            return $order->reconciled ? '<span style="color:red;">Chưa đối soát</span>' : '<span style="color:green;">Đã đối soát</span>';
+        })
+        ->addColumn('action', fn($order) => '<button class="btn btn-sm btn-primary view-details" data-id="'.$order->id.'"><i class="ri-eye-line"></i></button>')
+        ->rawColumns(['shop_name', 'payment_status', 'reconciled', 'action'])
+        ->make(true);
+}
+
     function Getorder()
     {
         return view('payment.transaction_all');
     }
     public function Get_orders_all()
     {
-        $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
+        $shops = Shop::with('orders')->get();
         $orders_all = [];
 
         foreach ($shops as $shop) {
-            $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
+            $userName = $shop->user->name ?? 'Unknown User'; 
 
             if (!isset($orders_all[$userName])) {
-                $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
+                $orders_all[$userName] = []; 
             }
 
-            $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
+            $orders_all[$userName][$shop->shop_name] = $shop->orders; 
         }
 
         return view('order.orders_all', compact('orders_all'));
@@ -321,5 +364,22 @@ class OrderController extends Controller
         }
     }
 
-    
+    public function getOrderDetails($id)
+{
+    try {
+        $order = Order::with(['shop', 'orderDetails'])->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'order' => $order,
+            'details' => $order->orderDetails,
+            'shop' => $order->shop
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 }
