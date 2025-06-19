@@ -21,57 +21,26 @@ use App\Models\ReturnOrder; // Import the ReturnOrder model
 
 class OrderController extends Controller
 {
-    public function __construct()
-    {
-        // Restrict access to admin and manager roles for specific methods
-        $this->middleware('role:admin,manager')->only([
-            'Get_orders_all',
-            'Program_processing',
-            'changeStatus_Program'
-        ]);
-
-        // All users can access other methods
-    }
     function Getorder()
     {
         return view('payment.transaction_all');
     }
-    public function Get_orders_all(Request $request)
+    public function Get_orders_all()
     {
-        $itemsPerPage = (int) $request->get('limit', 10);
-
-        // Eager load relationships để tránh N+1 query
-        $shops = Shop::with([
-            'user',
-            'orders' => function ($query) {
-                $query->orderBy('created_at', 'desc');
-            },
-            'orders.orderDetails',
-        ])->get();
-
+        $shops = Shop::with('orders')->get(); // Lấy shop cùng với đơn hàng
         $orders_all = [];
-        $allOrders = collect([]);
 
         foreach ($shops as $shop) {
-            $userName = $shop->user->name ?? 'Unknown User';
+            $userName = $shop->user->name ?? 'Unknown User'; // Kiểm tra nếu user có tồn tại
+
             if (!isset($orders_all[$userName])) {
-                $orders_all[$userName] = [];
+                $orders_all[$userName] = []; // Tạo user nếu chưa tồn tại trong mảng
             }
-            $orders_all[$userName][$shop->shop_name] = $shop->orders;
-            $allOrders = $allOrders->concat($shop->orders);
+
+            $orders_all[$userName][$shop->shop_name] = $shop->orders; // Gán đơn hàng theo shop_id
         }
 
-        // Phân trang và cache kết quả
-        $pagedOrders = $allOrders
-            ->sortByDesc('created_at')
-            ->slice(($request->get('page', 1) - 1) * $itemsPerPage, $itemsPerPage)
-            ->values();
-
-        return view('order.orders_all', [
-            'orders_all' => $orders_all,
-            'pagedOrders' => $pagedOrders,
-            'currentLimit' => $itemsPerPage
-        ])->render();
+        return view('order.orders_all', compact('orders_all'));
     }
 
 
@@ -323,7 +292,7 @@ class OrderController extends Controller
             ->sortBy('sku')
             ->values();
         $tongSanPham = $sanPhamGop->sum('so_luong');
-        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham, 'shops' => $shops]);
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham , 'shops' => $shops]);
     }
     public function taoThanhToan(Request $request)
     {
@@ -332,7 +301,7 @@ class OrderController extends Controller
         $donCanThanhToan = $ketQuaGop->filter(function ($item) {
             return $item['order_code'] !== null && $item['tong_tien'] > 0;
         })->values();
-        // dd($donCanThanhToan);
+// dd($donCanThanhToan);
         if ($donCanThanhToan->isNotEmpty()) {
             foreach ($donCanThanhToan as $don) {
                 ReturnOrder::create([
@@ -351,4 +320,6 @@ class OrderController extends Controller
             return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
         }
     }
+
+    
 }

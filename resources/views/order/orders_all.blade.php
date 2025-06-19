@@ -37,26 +37,6 @@
 <div class="container-fluid" style=" width: 100%; background: white; ">
     <div class="row">
         <div class="col-lg-12">
-            @if(Auth::check() && DB::table('role_user')
-                ->join('roles', 'role_user.role_id', '=', 'roles.id')
-                ->where('role_user.user_id', Auth::id())
-                ->where('roles.slug', 'admin')
-                ->exists())
-                <div class="alert alert-info">
-                    Chào mừng Admin! Bạn có thể quản lý tất cả các đơn hàng ở đây.
-                </div>
-            @endif
-            
-            @if(Auth::check() && DB::table('role_user')
-                ->join('roles', 'role_user.role_id', '=', 'roles.id')
-                ->where('role_user.user_id', Auth::id())
-                ->where('roles.slug', 'manager')
-                ->exists())
-                <div class="alert alert-info">
-                    Chào mừng Manager! Bạn có thể quản lý đơn hàng ở đây.
-                </div>
-            @endif
-            
             <div class="card" id="orderList">
                 <div class="card-body pt-0">
                     <div>
