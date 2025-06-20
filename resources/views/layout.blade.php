@@ -344,7 +344,7 @@
             // Sửa lại hàm loadPage
             async function loadPage(url, pushState = true) {
                 if (isLoading) return;
-                
+
                 try {
                     isLoading = true;
                     showLoading();
@@ -355,7 +355,9 @@
                         if (cachedData) {
                             $mainContent.html(cachedData);
                             if (pushState) {
-                                window.history.pushState({url: url}, '', url);
+                                window.history.pushState({
+                                    url: url
+                                }, '', url);
                             }
                             initFeatures();
                             hideLoading();
@@ -377,7 +379,7 @@
                     }
 
                     const html = await response.text();
-                    
+
                     // Kiểm tra xem response có phải là JSON error không
                     try {
                         const jsonResponse = JSON.parse(html);
@@ -404,7 +406,9 @@
 
                     // Cập nhật URL nếu cần
                     if (pushState) {
-                        window.history.pushState({url: url}, '', url);
+                        window.history.pushState({
+                            url: url
+                        }, '', url);
                     }
 
                     // Khởi tạo lại các tính năng
@@ -413,7 +417,7 @@
                 } catch (error) {
                     console.error('Load page error:', error);
                     showToast(error.message || 'Có lỗi xảy ra, vui lòng thử lại sau');
-                    
+
                     // Nếu lỗi 401 (Unauthorized) hoặc 419 (CSRF token mismatch)
                     if (error.status === 401 || error.status === 419) {
                         setTimeout(() => {
@@ -454,7 +458,9 @@
                     stateSave: true, // Save table state to avoid reloading
                     deferLoading: 0, // Prevent initial loading delay
                     lengthMenu: [10, 20, 50],
-                    order: [[2, "desc"]],
+                    order: [
+                        [2, "desc"]
+                    ],
                     language: {
                         processing: "Đang xử lý...",
                         search: "🔍",
@@ -535,6 +541,13 @@
                 icon?.addEventListener('click', icon._copyHandler);
             });
         }
+    </script>
+    <script>
+        setInterval(function() {
+            fetch('{{ route("keep-alive") }}', {
+                credentials: 'same-origin'
+            });
+        }, 5 * 60 * 1000); // 5 phút ping 1 lần
     </script>
 
 

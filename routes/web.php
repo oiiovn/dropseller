@@ -86,6 +86,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
         Route::get('/settlementt', [SettlementController::class, 'showDetail'])->name('settlement.settlement-detail');
     });
+    Route::get('/keep-alive', function () {
+        return response()->json(['status' => 'alive']);
+    })->name('keep-alive');
 
     //Affiliate mời nhà bán hàng
     Route::get('affiliate', [ProgramController::class, 'affiliatePage'])->name('affiliate.affiliate');
@@ -106,7 +109,7 @@ Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
     Route::get('/orders/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
     Route::get('/api/orders/{id}/details', [OrderController::class, 'getOrderDetails'])->name('orders.details');
-    
+
     Route::get('/program/processing', [OrderController::class, 'Program_processing'])->name('program.processing');
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
     Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
