@@ -67,10 +67,10 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Get the roles that belong to the user.
      */
-   public function roles()
-{
-    return $this->belongsToMany(Role::class);
-}
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 
 
     /**
@@ -90,12 +90,12 @@ class User extends Authenticatable implements JWTSubject
         if (is_string($roles) && str_contains($roles, ',')) {
             $roles = explode(',', $roles);
         }
-        
+
         // If it's still a string, convert to array
         if (is_string($roles)) {
             $roles = [$roles];
         }
-        
+
         // Use direct DB query for better performance
         return DB::table('role_user')
             ->join('roles', 'role_user.role_id', '=', 'roles.id')
@@ -123,7 +123,7 @@ class User extends Authenticatable implements JWTSubject
         } else {
             return;
         }
-        
+
         if (!$this->hasRoleId($roleId)) {
             DB::table('role_user')->insert([
                 'user_id' => $this->id,
@@ -145,6 +145,20 @@ class User extends Authenticatable implements JWTSubject
             ->where('role_id', $roleId)
             ->exists();
     }
+    public function getCurrentBalance()
+    {
+        $refCode = $this->referral_code;
+
+        $transactions = \App\Models\Transaction::whereRaw("description REGEXP '[[:<:]]{$refCode}[[:>:]]'")->get();
+
+        $balance = 0;
+        foreach ($transactions as $tran) {
+            $balance += $tran->type === 'IN' ? $tran->amount : -$tran->amount;
+        }
+
+        return $balance;
+    }
+
 
     /**
      * The "booted" method of the model.

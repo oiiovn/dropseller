@@ -36,7 +36,7 @@ class AutoPaymentOrders extends Command
 
     private function thanhtoan($user)
     {
-        $total_amount = $user->total_amount;
+        $total_amount = $user->getCurrentBalance();
         $shops = Shop::where('user_id', $user->id)->get();
         $allOrders = [];
 
@@ -52,21 +52,24 @@ class AutoPaymentOrders extends Command
         foreach ($allOrders as $orderData) {
             DB::beginTransaction();
             try {
-                // Khoá dòng này lại để không tiến trình nào khác xử lý đồng thời
                 $order = Order::where('id', $orderData['id'])->lockForUpdate()->first();
 
-                // Có thể đơn đã được thanh toán ở transaction khác
                 if (!$order || $order->payment_status !== 'Chưa thanh toán') {
                     DB::rollBack();
                     continue;
                 }
 
-                if ($total_amount >= $order->total_bill) {
+                // ✅ THÊM 2 DÒNG NÀY NGAY TRƯỚC KHI CHECK SỐ DƯ
+                $user->refresh();
+                $currentBalance = $user->total_amount;
+
+                if ($currentBalance >= $order->total_bill) {
                     $transactionId = $this->generateUniqueTransactionId();
 
                     $order->payment_status = 'Đã thanh toán';
                     $order->transaction_id = $transactionId;
                     $order->save();
+
                     Transaction::create([
                         'bank' => 'DROP',
                         'account_number' => $user->referral_code,
