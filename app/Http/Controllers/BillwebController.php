@@ -8,7 +8,7 @@ use App\Models\Order;
 use App\Exports\TotalBillExport;
 use App\Models\ProgramShop;
 use Maatwebsite\Excel\Facades\Excel;
-
+use App\Models\Transaction;
 class BillwebController extends Controller
 {
 
@@ -26,7 +26,7 @@ class BillwebController extends Controller
             ->sum('total_dropship');
         $total_dropship_web = $total_dropship / 5 / 2;
 
-        $total_program = ProgramShop::where('status_payment', 'Đã thanh toán')
+        $total_program = Transaction::where('bank', 'PSP')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_payment');
         $share_total_program = $total_program / 2 / 2;
