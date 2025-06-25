@@ -28,7 +28,7 @@ class BillwebController extends Controller
 
         $total_program = Transaction::where('bank', 'PSP')
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->sum('total_payment');
+            ->sum('amount');
         $share_total_program = $total_program / 2 / 2;
         return view('billweb.totalbill', compact('startDate', 'endDate', 'total_dropship_web', 'total_dropship', 'share_total_program', 'total_program'));
     }
