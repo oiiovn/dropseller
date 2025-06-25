@@ -106,6 +106,7 @@ Route::middleware(['auth', 'checkrole:seller'])->group(function () {
 
 // Admin and manager routes
 Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
+    Route::post('kiem-tra-bien-dong', [AdminController::class, 'check_AI'])->name('check_AI');
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
     Route::get('/orders/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
     Route::get('/api/orders/{id}/details', [OrderController::class, 'getOrderDetails'])->name('orders.details');

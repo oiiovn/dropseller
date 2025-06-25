@@ -5,7 +5,12 @@
 @section('main')
 <div class="container mt-4">
     <h4>📛 Danh sách lỗi số dư</h4>
-
+<form action="{{ route('check_AI') }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-robot"></i> Kiểm tra lỗi số dư
+    </button>
+</form>
     <table class="table table-bordered mt-3">
         <thead class="table-light">
             <tr>
