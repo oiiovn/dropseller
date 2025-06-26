@@ -3,7 +3,7 @@
 
 @section('main')
 <div class="container-fluid bg-white">
-<h4 class="pt-2">Quyết Toán </h4>
+    <h4 class="pt-2">Quyết Toán </h4>
     <div class="table-responsive mt-4">
         <table class="table table-bordered">
             <thead class="table-light">
@@ -25,19 +25,19 @@
             <tbody>
                 @foreach($userMonthlyReports as $item)
                 <tr>
-                <td class="id text-black-50" style="max-width: 5px;">
-                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                <li class="hienthicopy">
-                                    <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->id_QT}}">
+                    <td class="id text-black-50" style="max-width: 5px;">
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li class="hienthicopy">
+                                <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$item->id_QT}}">
                                     {{ $item->id_QT }}
-                                        <span class="ri-checkbox-multiple-blank-line icon"></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="text-body-secondary" style="font-size: 11px;">{{ $item->created_at }}</a>
-                                </li>
-                            </ul>
-                        </td>
+                                    <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="text-body-secondary" style="font-size: 11px;">{{ $item->created_at }}</a>
+                            </li>
+                        </ul>
+                    </td>
                     <td>{{ $item->user->name }}</td>
                     <td>{{ $item->month }}</td>
                     <td>{{ number_format($item->total_paid) }}đ</td>
@@ -49,11 +49,9 @@
                     <td>{{ number_format($item->tien_thuc_te) }}đ</td>
                     <td>{{ number_format($item->tien_phai_thanh_toan) }}đ</td>
                     <td>
-                        @if($item->status_payment == 'Chưa thanh toán')
-                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Cập nhật</button>
+                        @if($item->status_payment == 'Chưa thanh toán' && $item->created_at > now()->subDays(3))
+                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Cập nhật</button>
                         @endif
-                      
-
                         <!-- Modal -->
                         <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">

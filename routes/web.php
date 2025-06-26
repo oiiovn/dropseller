@@ -151,3 +151,8 @@ Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/Khach_hang', [ProfileController::class, 'Get_all'])->name('Get_all');
     // Other shared admin/manager routes...
 });
+
+// Route để làm mới CAPTCHA
+Route::get('/reload-captcha', function () {
+    return response()->json(['captcha' => \Mews\Captcha\Facades\Captcha::img('default')]);
+})->name('reload.captcha');

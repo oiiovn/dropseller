@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'fe5a709a2881f6b921d9cbbb6a49479373e7c19f',
+        'reference' => '3487185e10182f31c991816acb47a91bd33fb4db',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(
@@ -447,6 +447,24 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'intervention/gif' => array(
+            'pretty_version' => '4.2.2',
+            'version' => '4.2.2.0',
+            'reference' => '5999eac6a39aa760fb803bc809e8909ee67b451a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../intervention/gif',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'intervention/image' => array(
+            'pretty_version' => '3.11.3',
+            'version' => '3.11.3.0',
+            'reference' => 'd0f097b8a3fa8fb758efc9440b513aa3833cda17',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../intervention/image',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'kodova/hamcrest-php' => array(
             'dev_requirement' => true,
             'replaced' => array(
@@ -474,7 +492,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'fe5a709a2881f6b921d9cbbb6a49479373e7c19f',
+            'reference' => '3487185e10182f31c991816acb47a91bd33fb4db',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(
@@ -632,6 +650,15 @@
             'reference' => '728434227fe21be27ff6d86621a1b13107a2562c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../markbaker/matrix',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'mews/captcha' => array(
+            'pretty_version' => '3.4.6',
+            'version' => '3.4.6.0',
+            'reference' => 'cead591ddc544b2b80a4136897893dd3bd70e7a7',
+            'type' => 'package',
+            'install_path' => __DIR__ . '/../mews/captcha',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

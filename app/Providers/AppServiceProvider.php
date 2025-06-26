@@ -209,5 +209,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('endrole', function () {
             return "<?php endif; ?>";
         });
+        // Thêm directive để load jQuery
+        Blade::directive('jquery', function () {
+            return '<?php echo \'<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>\'; ?>';
+        });
     }
 }

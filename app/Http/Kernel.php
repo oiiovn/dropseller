@@ -42,6 +42,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'throttle:api', // Đảm bảo middleware throttle được kích hoạt
         ],
     ];
 
@@ -77,5 +78,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'checkrole' => \App\Http\Middleware\CheckRole::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
 }

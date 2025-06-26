@@ -1,0 +1,25 @@
+.captcha-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.captcha-container span {
+    margin-right: 15px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+    background: #f9f9f9;
+}
+
+.captcha-container .refresh-captcha {
+    padding: 8px 15px;
+    white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+    .captcha-container span {
+        margin-bottom: 10px;
+    }
+}

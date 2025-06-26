@@ -30,6 +30,24 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- CAPTCHA -->
+        <div class="form-group mb-3">
+            <label for="captcha">Mã xác thực <span class="text-danger">*</span></label>
+            <div class="captcha-container">
+                <span>{!! Captcha::img('default') !!}</span>
+                <a href="{{ route('register') }}" class="btn btn-primary">
+                    <i class="fa fa-refresh"></i> Làm mới mã
+                </a>
+            </div>
+            <input id="captcha" type="text" class="form-control mt-2 @error('captcha') is-invalid @enderror"
+                name="captcha" placeholder="Nhập mã xác thực">
+            @error('captcha')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
         <div class="flex items-center justify-between mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Nếu bạn chưa có tài khoản?') }}
