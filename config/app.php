@@ -213,4 +213,17 @@ return [
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Referral Code Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Cấu hình cho hệ thống tạo mã giới thiệu
+    |
+    */
+
+    'referral_code_prefix' => env('REFERRAL_CODE_PREFIX', 'DS'),
+    'referral_code_number_length' => env('REFERRAL_CODE_NUMBER_LENGTH', 3),
+    'referral_code_start' => env('REFERRAL_CODE_START', 1),
+
 ];

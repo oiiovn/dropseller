@@ -332,6 +332,11 @@
                         <a class="dropdown-item" href="{{route('balance.history')}}"> <span class="align-middle"> 💰 Biến động số dư</span></a>
                         @if(Auth::check() && Auth::user()->hasRole('admin'))
                         <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
+                        <!-- Thêm liên kết vào trang Admin với modal -->
+                        <a class="dropdown-item" href="#" id="adminAccessLink">
+                            <i class="mdi mdi-shield-account text-muted fs-16 align-middle me-1"></i> 
+                            <span class="align-middle">Trang Admin</span>
+                        </a>
                         @endif
                         <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
@@ -354,3 +359,63 @@
         </div>
     </div>
 </header>
+
+<!-- Modal để nhập mã xác nhận Admin -->
+<div class="modal fade" id="adminAccessModal" tabindex="-1" aria-labelledby="adminAccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminAccessModalLabel">Xác nhận quyền Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="adminAccessForm" method="post" action="{{ route('admin.verify_access') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="accessCode" class="form-label">Nhập mã xác nhận</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="accessCode" name="access_code" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="mdi mdi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">Vui lòng nhập mã xác nhận để truy cập trang quản trị.</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="submitAccessCode">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Khi tài liệu đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', function() {
+        // Khi nhấp vào liên kết Admin
+        document.getElementById('adminAccessLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Hiển thị modal
+            var adminModal = new bootstrap.Modal(document.getElementById('adminAccessModal'));
+            adminModal.show();
+        });
+
+        // Khi nhấp vào nút xác nhận trong modal
+        document.getElementById('submitAccessCode').addEventListener('click', function() {
+            document.getElementById('adminAccessForm').submit();
+        });
+
+        // Hiển thị/ẩn mật khẩu
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const accessCode = document.getElementById('accessCode');
+            const type = accessCode.getAttribute('type') === 'password' ? 'text' : 'password';
+            accessCode.setAttribute('type', type);
+            
+            // Thay đổi biểu tượng
+            this.querySelector('i').classList.toggle('mdi-eye');
+            this.querySelector('i').classList.toggle('mdi-eye-off');
+        });
+    });
+</script>

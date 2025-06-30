@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
@@ -33,7 +32,7 @@ return [
 
     'lifetime' => env('SESSION_LIFETIME', 120),
 
-    'expire_on_close' => false,
+    'expire_on_close' => true, // Đổi thành true để session hết hạn khi đóng trình duyệt
 
     /*
     |--------------------------------------------------------------------------
@@ -168,7 +167,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', true), // Đảm bảo cookie chỉ được gửi qua HTTPS
 
     /*
     |--------------------------------------------------------------------------
@@ -197,5 +196,4 @@ return [
     */
 
     'same_site' => 'lax',
-
 ];

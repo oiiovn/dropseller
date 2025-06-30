@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class, // Thêm dòng này nếu chưa có
         ],
 
         'api' => [
@@ -74,10 +75,13 @@ class Kernel extends HttpKernel
      *
      * These middleware may be assigned to groups or used individually.
      *
-     * @var array
+     * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
         'checkrole' => \App\Http\Middleware\CheckRole::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'admin.access' => \App\Http\Middleware\AdminAccessCode::class,
+        'admin.verified' => \App\Http\Middleware\AdminVerified::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
     ];
 }

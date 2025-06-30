@@ -12,7 +12,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CampaignController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ADSController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\BillwebController;
@@ -23,6 +23,16 @@ use App\Http\Controllers\Admin\BalanceIssueController;
 use App\Http\Controllers\UserMonthlyReportController;
 use App\Http\Controllers\FinanceTrackerController;
 use App\Models\User;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ShopController as AdminShopController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
+use App\Http\Controllers\Admin\SecurityController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\ActivityController;
+use App\Http\Controllers\Admin\DashboardController;
 
 
 Route::get('/', function () {
@@ -86,8 +96,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/bao-cao-quyet-toan', [SettlementController::class, 'settlementReport'])->name('settlement.settlement-report');
         Route::get('/settlementt', [SettlementController::class, 'showDetail'])->name('settlement.settlement-detail');
     });
+    // Thêm route keep-alive
     Route::get('/keep-alive', function () {
-        return response()->json(['status' => 'alive']);
+        if (!auth()->check()) {
+            return response()->json(['redirect' => route('login')], 401);
+        }
+        return response()->json([], 204); // Return empty response with 204 No Content
     })->name('keep-alive');
 
     //Affiliate mời nhà bán hàng
@@ -156,3 +170,60 @@ Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
 Route::get('/reload-captcha', function () {
     return response()->json(['captcha' => \Mews\Captcha\Facades\Captcha::img('default')]);
 })->name('reload.captcha');
+
+// Thêm route để kiểm tra tình trạng phiên
+Route::get('/check-session', function () {
+    if (auth()->check()) {
+        return response()->json(['authenticated' => true]);
+    }
+    return response()->json(['authenticated' => false], 401);
+})->middleware('web');
+
+// Route xác thực mã truy cập admin
+Route::post('/admin/verify-access', 'App\Http\Controllers\AdminAccessController@verifyAccess')->name('admin.verify_access');
+
+// Routes cho admin
+Route::middleware(['auth', 'admin.verified'])->prefix('admin')->group(function () {
+    // Trang dashboard admin
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+    
+    // Thêm các route admin khác ở đây
+});
+
+// Route group cho admin
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    // Dashboard admin
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // API lấy dữ liệu dashboard
+    // Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
+    
+    // // Quản lý người dùng
+    // Route::resource('users', AdminUserController::class);
+    
+    // // Quản lý shop
+    // Route::resource('shops', AdminShopController::class);
+    
+    // // Quản lý giao dịch
+    // Route::resource('transactions', AdminTransactionController::class);
+    
+    // // Quản lý sản phẩm
+    // Route::resource('products', AdminProductController::class);
+    
+    // // Báo cáo và thống kê
+    // Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+    
+    // // Quản lý thông báo
+    // Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('notifications');
+    
+    // // Kiểm tra an toàn
+    // Route::get('/security', [SecurityController::class, 'index'])->name('security');
+    
+    // // Cài đặt hệ thống
+    // Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    
+    // // Hoạt động của người dùng
+    // Route::get('/activities', [ActivityController::class, 'index'])->name('activities');
+});

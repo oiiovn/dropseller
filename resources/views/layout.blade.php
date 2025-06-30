@@ -550,10 +550,29 @@
         }, 5 * 60 * 1000); // 5 phút ping 1 lần
     </script>
 
+    </div> {{-- Đóng container chính --}}
+    
+    {{-- Thêm script kiểm tra session --}}
+    <script>
+        function checkSession() {
+            fetch('/keep-alive', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    window.location.href = "{{ route('login') }}";
+                }
+            })
+            .catch(() => {
+                window.location.href = "{{ route('login') }}";
+            });
+        }
 
+        // Kiểm tra mỗi 5 phút
+        setInterval(checkSession, 5 * 60 * 1000);
+    </script>
 </body>
-
-
-<!-- Mirrored from themesbrand.com/velzon/html/master/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 12 Aug 2024 07:45:33 GMT -->
-
 </html>
