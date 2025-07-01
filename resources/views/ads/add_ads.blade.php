@@ -117,7 +117,7 @@
     }
 
     // Tính toán VAT và tổng tiền
-    const vat = amount * 0.05;
+    const vat = amount * 0.10;
     const total = amount + vat;
     const now = new Date();
     const createdDate = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
