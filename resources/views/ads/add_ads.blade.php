@@ -59,7 +59,7 @@
                     <p><strong>Shop:</strong> <span id="modalShopName"></span></p>
                     <p><strong>Ngày chi:</strong> <span id="modalStartDate"></span> - <span id="modalEndDate"></span></p>
                     <p><strong>Số Tiền Chi Tiêu:</strong> <span id="modalAmount"></span></p>
-                    <p><strong>VAT (5%):</strong> <span id="modalVAT"></span></p>
+                    <p><strong>VAT (10%):</strong> <span id="modalVAT"></span></p>
                     <p><strong>Tổng cộng:</strong> <span id="modalTotal"></span></p>
                     <p><strong>Ngày tạo phiếu:</strong> <span id="modalCreatedDate"></span></p>
 
