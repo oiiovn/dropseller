@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
             'hasNegativeBalance' => $hasNegativeBalance,
         ]);
     })->name('dashboard');
-   Route::get('/api/stats', [\App\Http\Controllers\DashboardController::class, 'getDashboardStats']);
+    Route::get('/api/dashboard', [\App\Http\Controllers\DashboardController::class, 'getDashboardStats']);
 
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
     Route::middleware('check_balance')->group(function () {
@@ -190,7 +190,7 @@ Route::middleware(['auth', 'admin.verified'])->prefix('admin')->group(function (
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-    
+
     // Thêm các route admin khác ở đây
 });
 
@@ -198,34 +198,34 @@ Route::middleware(['auth', 'admin.verified'])->prefix('admin')->group(function (
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     // Dashboard admin
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // API lấy dữ liệu dashboard
     // Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
-    
+
     // // Quản lý người dùng
     // Route::resource('users', AdminUserController::class);
-    
+
     // // Quản lý shop
     // Route::resource('shops', AdminShopController::class);
-    
+
     // // Quản lý giao dịch
     // Route::resource('transactions', AdminTransactionController::class);
-    
+
     // // Quản lý sản phẩm
     // Route::resource('products', AdminProductController::class);
-    
+
     // // Báo cáo và thống kê
     // Route::get('/reports', [ReportController::class, 'index'])->name('reports');
-    
+
     // // Quản lý thông báo
     // Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('notifications');
-    
+
     // // Kiểm tra an toàn
     // Route::get('/security', [SecurityController::class, 'index'])->name('security');
-    
+
     // // Cài đặt hệ thống
     // Route::get('/settings', [SettingController::class, 'index'])->name('settings');
-    
+
     // // Hoạt động của người dùng
     // Route::get('/activities', [ActivityController::class, 'index'])->name('activities');
 });
