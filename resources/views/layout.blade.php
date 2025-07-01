@@ -138,7 +138,7 @@
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content">
-            <div class="page-content " style="padding-top:80px;">
+            <div style="padding-top:80px;">
                 @if (session('success'))
                 <div class="alert alert-success" id="successMessage">
                     {{ session('success') }}
