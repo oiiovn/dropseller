@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
             'hasNegativeBalance' => $hasNegativeBalance,
         ]);
     })->name('dashboard');
+   Route::get('/api/stats', [\App\Http\Controllers\DashboardController::class, 'getDashboardStats']);
+
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
     Route::middleware('check_balance')->group(function () {
 
