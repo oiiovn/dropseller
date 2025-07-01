@@ -1,5 +1,4 @@
-﻿<?php
-
+<?php
 namespace App\Services;
 
 use GuzzleHttp\Client;
@@ -20,12 +19,12 @@ class ProductReportService
         $response = $this->client->post('report/product', [
             'headers' => [
                 'client-id' => '1605',
-                'token' => '+AXBRK19RPa6MG5wxYOhD7BPUGgibb76FnxirVzkW/9FMf9nSmJIg9OINUDk8X5L',
+                'token' => '...'
             ],
             'json' => [
                 'time_start' => $timeStart,
-                'time_end' => $timeEnd,
-            ],
+                'time_end' => $timeEnd
+            ]
         ]);
 
         return json_decode($response->getBody()->getContents(), true);

@@ -16,8 +16,6 @@ class DashboardController extends Controller
     public function getDashboardStats(Request $request)
     {
         $excludedCodes = ['QUA_TRANG', 'QUA001'];
-
-        // ✅ Ưu tiên xử lý theo range
         $range = $request->input('range', null);
 
         if ($range) {
@@ -153,7 +151,6 @@ class DashboardController extends Controller
             'total_dropship' => $total_dropship,
             'total_orders_by_shop' => $totalOrdersByShop->toArray(),
         ];
-
         // Cache kết quả
         Cache::put($cacheKey, $result, now()->addMinutes(10));
 
