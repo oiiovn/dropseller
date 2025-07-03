@@ -33,11 +33,7 @@
                 </div>
 
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none" id="topnav-hamburger-icon">
-                    <span class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
+                   <img src="{{ asset('assets/images/icons/ic-menu.png') }}" alt="menu" class="hamburger-icon rounded" style="width: 24px; height: 24px">
                 </button>
 
                 <!-- App Search-->
@@ -128,27 +124,16 @@
             </div>
             <div class="d-flex align-items-center">
                 <div class="balance-info d-flex flex-column align-items-start">
-                    <a class="text-dark fw-medium text-decoration-none" href="{{ route('balance.history') }}">
-                        <i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.') }} đ</b></span>
+                    <a class="text-dark fw-bold text-decoration-none" href="{{ route('balance.history') }}">
+                       <img src="{{ asset('assets/images/icons/ic-wallet.png') }}" alt="Wallet" height="24" class="rounded">
+                        <span class="align-middle">Số dư : <b style="color: #038DC8;">{{ number_format($totalAmount, 0, ',', '.') }} đ</b></span>
                     </a>
-                    <small class="text-muted fst-italic">(Chờ đối soát: {{ number_format($balace, 0, ',', '.') }} đ)</small>
+                   
                 </div>
-                <div class="dropdown ms-1 topbar-head-dropdown header-item">
-                    <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="header-lang-img" src="assets/images/flags/vn.svg" alt="Header Language" height="20" class="rounded">
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language py-2" data-lang="en" title="English">
-                            <img src="assets/images/flags/vn.svg" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Tiếng Việt</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
+                
+                <div class="dropdown topbar-head-dropdown header-item ms-1 ms-sm-5" id="notificationDropdown">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <i class='bx bx-bell fs-22'></i>
+                        <img src="{{ asset('assets/images/icons/ic-bell.png') }}" alt="bell" height="24" class="rounded">
                         @if($unreadNotificationsCount > 0)
                         <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">{{$unreadNotificationsCount ?? 0}}<span class="visually-hidden">unread messages</span></span>
                         @endif
@@ -313,14 +298,14 @@
                                     @endif
                                     " alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                                <span class="d-none d-xl-inline-block ms-1 fw-bold user-name-text">
                                     @if (Auth::check())
                                     {{ Auth::user()->name }}
                                     @else
                                     Welcome, Guest
                                     @endif
                                 </span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text border rounded p-1" style="background-color: #faa887; color: black;">Nhà Bán Mới</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text border rounded p-1" style="background-color: #FABABA; color: rgba(0, 0, 0, 0.56); text-align: center; font-size: 11px; font-style: normal; font-weight: 590; line-height: 22px;">Nhà Bán Mới</span>
 
                             </span>
                         </span>
@@ -328,15 +313,10 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
 
-                        <a class="dropdown-item" href="{{route('portfolio')}}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ Sơ</span></a>
-                        <a class="dropdown-item" href="{{route('balance.history')}}"> <span class="align-middle"> 💰 Biến động số dư</span></a>
+                        <a class="dropdown-item" href="{{route('portfolio')}}"><img src="{{ asset('assets/images/icons/ic-user.png') }}" alt="profile" height="20" class="rounded"> <span class="align-middle">Hồ Sơ <button class="text-center btn btn-link btn-sm px-2 py-0 m-0" style="font-size: 10px;background-color: #038DC8; color: #fff; font-weight: 500; line-height: 22px;">+ Nạp web</button></span></a>
+                        <a class="dropdown-item" href="{{route('balance.history')}}"> <span class="align-middle"> <img src="{{ asset('assets/images/icons/ic-coin.png') }}" alt="coin" height="20" class="rounded"> Biến động số dư</span></a>
                         @if(Auth::check() && Auth::user()->hasRole('admin'))
-                        <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
-                        <!-- Thêm liên kết vào trang Admin với modal -->
-                        <a class="dropdown-item" href="#" id="adminAccessLink">
-                            <i class="mdi mdi-shield-account text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Trang Admin</span>
-                        </a>
+                        <a class="dropdown-item" href="{{route('shop')}}"><img src="{{ asset('assets/images/icons/ic-shop.png') }}" alt="shop" height="20" class="rounded"> <span class="align-middle">Quản lý shop</span></a>
                         @endif
                         <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
@@ -349,7 +329,7 @@
                         </form>
 
                         <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                            <img src="{{ asset('assets/images/icons/ic-logout.png') }}" alt="logout" height="20" class="rounded">
                             <span class="align-middle" data-key="t-logout">Đăng xuất</span>
                         </a>
 
