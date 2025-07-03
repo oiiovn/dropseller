@@ -138,7 +138,7 @@
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content">
-            <div style="padding-top:80px;">
+            <div style="padding-top:70px;">
                 @if (session('success'))
                 <div class="alert alert-success" id="successMessage">
                     {{ session('success') }}
@@ -281,35 +281,6 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const orderLinks = document.querySelectorAll('.order-link');
-            orderLinks.forEach(link => {
-                const icon = link.querySelector('.icon');
-                const orderCode = link.getAttribute('data-order-code');
-                let isThrottled = false;
-                icon.addEventListener('click', function() {
-                    if (isThrottled) return;
-                    isThrottled = true;
-                    // Copy the order code to clipboard
-                    navigator.clipboard.writeText(orderCode)
-                        .then(() => {
-                            // Show notification
-                            showToast(`Đã copy mã :  ${orderCode} !`);
-                        })
-                        .catch(err => {
-                            console.error('Không có dữ liệu copy: ', err);
-                        })
-                        .finally(() => {
-                            setTimeout(() => {
-                                isThrottled = false;
-                            }, 2200);
-                        });
-                });
-            });
-
-
-        });
-
         function clearSearchInput() {
             document.querySelector('.search-box input').value = '';
             document.querySelector('.search-box input').dispatchEvent(new Event('input'));
@@ -512,33 +483,47 @@
     </script>
     <script>
         function initOrderCopy() {
+            // Remove all existing copy event listeners first
+            document.querySelectorAll('.order-link .icon').forEach(icon => {
+                if (icon._copyHandler) {
+                    icon.removeEventListener('click', icon._copyHandler);
+                    delete icon._copyHandler;
+                }
+            });
+
             const orderLinks = document.querySelectorAll('.order-link');
             orderLinks.forEach(link => {
                 const icon = link.querySelector('.icon');
                 const orderCode = link.getAttribute('data-order-code');
-                let isThrottled = false;
+                
+                if (!icon || !orderCode) return;
 
-                // Xoá event cũ trước khi thêm lại
-                icon?.removeEventListener('click', icon._copyHandler);
-
-                icon._copyHandler = function() {
-                    if (isThrottled) return;
-                    isThrottled = true;
+                // Create a unique handler for this icon
+                icon._copyHandler = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Check if already copying
+                    if (icon.dataset.copying === 'true') return;
+                    
+                    icon.dataset.copying = 'true';
+                    
                     navigator.clipboard.writeText(orderCode)
                         .then(() => {
                             showToast(`Đã copy mã: ${orderCode} !`);
                         })
                         .catch(err => {
                             console.error('Không có dữ liệu copy: ', err);
+                            showToast('Lỗi khi copy!');
                         })
                         .finally(() => {
                             setTimeout(() => {
-                                isThrottled = false;
-                            }, 2200);
+                                icon.dataset.copying = 'false';
+                            }, 1000);
                         });
                 };
 
-                icon?.addEventListener('click', icon._copyHandler);
+                icon.addEventListener('click', icon._copyHandler);
             });
         }
     </script>
