@@ -39,114 +39,124 @@
                         <div class="tab-content">
                             <!-- Tất cả đơn hàng -->
                             <div class="tab-pane fade show active" id="home1" role="tabpanel">
-                                @include('order.components.order-filters')
-                                @include('order.components.order-table')
-
-                                <!-- Mobile Card Layout -->
-                               @include('order.order_mobile_cards')
-
-                                    <script>
-                                        $(document).ready(function() {
-                                    // All functionality is now handled by OrderPage class in order-page.js
-                                });
-                                </script>
+                                @if($orders->count() == 0)
+                                    <div class="text-center py-5">
+                                        <i class="ri-search-line text-muted mb-3" style="font-size: 48px;"></i>
+                                        <h5 class="text-muted mb-2">Không có đơn hàng nào</h5>
+                                        <p class="text-muted mb-0">Tài khoản này hiện chưa có đơn hàng nào.</p>
+                                    </div>
+                                @else
+                                    @include('order.components.order-filters')
+                                    @include('order.components.order-table')
+                                    @include('order.order_mobile_cards')
+                                @endif
+                                <script>
+                                    $(document).ready(function() {
+                                // All functionality is now handled by OrderPage class in order-page.js
+                            });
+                            </script>
                             </div>
                             @foreach($shops as $shop)
                             <div class="tab-pane fade" id="shop-{{$shop->shop_id}}-content" role="tabpanel">
-                                @include('order.components.shop-filters', ['shop' => $shop])
-                                @include('order.components.shop-table', ['shop' => $shop, 'orders' => $orders])
-
-                                <!-- Mobile Card Layout for Shop -->
-                                <div class="mobile-card-container">
-                                    @foreach($orders->where('shop_id', $shop->shop_id) as $order)
-                                    @php
-                                        // Format filter_date to show only the first date
-                                        $displayDate = $order->filter_date;
-                                        if (strpos($order->filter_date, ' - ') !== false) {
-                                            $dateParts = explode(' - ', $order->filter_date);
-                                            $displayDate = $dateParts[0];
-                                        }
-                                    @endphp
-                                    <div class="mobile-order-card" 
-                                         data-created-at="{{$order->created_at}}"
-                                         data-filter-date="{{$order->filter_date}}"
-                                         data-payment-status="{{$order->payment_status}}"
-                                         data-reconciled="{{$order->reconciled == 1 ? 'Chưa đối soát' : 'Đã đối soát'}}"
-                                         data-order-code="{{$order->order_code}}"
-                                         data-shop-name="{{$shop->shop_name ?? 'N/A'}}">
-                                         
-                                        <!-- Header với platform icon và shop name -->
-                                        <div class="mobile-card-header">
-                                            @if($shop->platform == 'Tiktok')
-                                            <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="TikTok" class="mobile-platform-icon">
-                                            @elseif($shop->platform == 'Shoppe')
-                                            <img src="https://img.icons8.com/fluency/240/shopee.png" alt="Shopee" class="mobile-platform-icon">
-                                            @else
-                                            <div class="mobile-platform-icon" style="background: #ccc; border-radius: 4px;"></div>
-                                            @endif
-                                            <span class="mobile-shop-name">{{ $shop->shop_name ?? 'N/A' }}</span>
-                                                                    </div>
-
-                                        <!-- Order Info -->
-                                        <div class="mobile-order-info">
-                                            <div class="mobile-order-code hienthicopy" data-order-code="{{$order->order_code}}">
-                                                {{$order->order_code}}
-                                                                            </div>
-                                            <div class="mobile-order-date">{{$displayDate}}</div>
+                                @if($orders->where('shop_id', $shop->shop_id)->count() == 0)
+                                    <div class="text-center py-5">
+                                        <i class="ri-search-line text-muted mb-3" style="font-size: 48px;"></i>
+                                        <h5 class="text-muted mb-2">Không có đơn hàng cho shop này</h5>
+                                    </div>
+                                @else
+                                    @include('order.components.shop-filters', ['shop' => $shop])
+                                    @include('order.components.shop-table', ['shop' => $shop, 'orders' => $orders])
+                                    <div class="mobile-card-container">
+                                        @foreach($orders->where('shop_id', $shop->shop_id) as $order)
+                                        @php
+                                            // Format filter_date to show only the first date
+                                            $displayDate = $order->filter_date;
+                                            if (strpos($order->filter_date, ' - ') !== false) {
+                                                $dateParts = explode(' - ', $order->filter_date);
+                                                $displayDate = $dateParts[0];
+                                            }
+                                        @endphp
+                                        <div class="mobile-order-card" 
+                                             data-created-at="{{$order->created_at}}"
+                                             data-filter-date="{{$order->filter_date}}"
+                                             data-payment-status="{{$order->payment_status}}"
+                                             data-reconciled="{{$order->reconciled == 1 ? 'Chưa đối soát' : 'Đã đối soát'}}"
+                                             data-order-code="{{$order->order_code}}"
+                                             data-shop-name="{{$shop->shop_name ?? 'N/A'}}">
+                                            
+                                            <!-- Header với platform icon và shop name -->
+                                            <div class="mobile-card-header">
+                                                @if($shop->platform == 'Tiktok')
+                                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="TikTok" class="mobile-platform-icon">
+                                                @elseif($shop->platform == 'Shoppe')
+                                                <img src="https://img.icons8.com/fluency/240/shopee.png" alt="Shopee" class="mobile-platform-icon">
+                                                @else
+                                                <div class="mobile-platform-icon" style="background: #ccc; border-radius: 4px;"></div>
+                                                @endif
+                                                <span class="mobile-shop-name">{{ $shop->shop_name ?? 'N/A' }}</span>
                                                                         </div>
 
-                                        <!-- Products count và amount -->
-                                        <div class="mobile-order-details">
-                                            <span class="mobile-products-count">Sản phẩm: {{$order->total_products}}</span>
-                                            <span class="mobile-amount">{{ number_format($order->total_bill, 0, ',', '.') }} VND</span>
-                                                                    </div>
+                                            <!-- Order Info -->
+                                            <div class="mobile-order-info">
+                                                <div class="mobile-order-code hienthicopy" data-order-code="{{$order->order_code}}">
+                                                    {{$order->order_code}}
+                                                                            </div>
+                                                <div class="mobile-order-date">{{$displayDate}}</div>
+                                                                            </div>
 
-                                        <!-- Status pills -->
-                                        <div class="mobile-status-section">
-                                            @if($order->payment_status == 'Chưa thanh toán')
-                                            <span class="mobile-status-pill mobile-status-unpaid">
-                                                Chưa thanh toán
-                                            </span>
-                                            @else
-                                            <span class="mobile-status-pill mobile-status-paid">
-                                                Đã thanh toán
-                                            </span>
-                                            @endif
+                                            <!-- Products count và amount -->
+                                            <div class="mobile-order-details">
+                                                <span class="mobile-products-count">Sản phẩm: {{$order->total_products}}</span>
+                                                <span class="mobile-amount">{{ number_format($order->total_bill, 0, ',', '.') }} VND</span>
+                                                                            </div>
 
-                                            @if($order->reconciled == 1)
-                                            <span class="mobile-status-pill mobile-status-not-reconciled">
-                                                Chưa đối soát
-                                            </span>
-                                            @else
-                                            <span class="mobile-status-pill mobile-status-reconciled">
-                                                Đã đối soát
-                                            </span>
-                                            @endif
-                                                                </div>
-                                        
-                                        <!-- Detail button -->
-                                        <button class="mobile-detail-btn view-order-btn" 
-                                             data-order-id="{{$order->id}}"
-                                             data-order-code="{{$order->order_code}}"
-                                             data-shop-name="{{ $order->shop->shop_name ?? 'N/A' }}"
-                                             data-filter-date="{{$order->filter_date}}"
-                                             data-total-products="{{$order->total_products}}"
-                                             data-total-dropship="{{$order->total_dropship}}"
-                                             data-total-bill="{{$order->total_bill}}"
-                                             data-order-details='@json($order->orderDetails->toArray())'>
-                                            <i class="ri-eye-line"></i>Chi tiết
-                                        </button>
-                                                            </div>
-                                            @endforeach
-                                </div>
+                                            <!-- Status pills -->
+                                            <div class="mobile-status-section">
+                                                @if($order->payment_status == 'Chưa thanh toán')
+                                                <span class="mobile-status-pill mobile-status-unpaid">
+                                                    Chưa thanh toán
+                                                </span>
+                                                @else
+                                                <span class="mobile-status-pill mobile-status-paid">
+                                                    Đã thanh toán
+                                                </span>
+                                                @endif
 
-                                    <script>
-                                        $(document).ready(function() {
-                                    // Shop DataTable initialization is now handled by ShopOrderPage class in order-page.js
+                                                @if($order->reconciled == 1)
+                                                <span class="mobile-status-pill mobile-status-not-reconciled">
+                                                    Chưa đối soát
+                                                </span>
+                                                @else
+                                                <span class="mobile-status-pill mobile-status-reconciled">
+                                                    Đã đối soát
+                                                </span>
+                                                @endif
+                                                                        </div>
+                                            
+                                            <!-- Detail button -->
+                                            <button class="mobile-detail-btn view-order-btn" 
+                                                 data-order-id="{{$order->id}}"
+                                                 data-order-code="{{$order->order_code}}"
+                                                 data-shop-name="{{ $order->shop->shop_name ?? 'N/A' }}"
+                                                 data-filter-date="{{$order->filter_date}}"
+                                                 data-total-products="{{$order->total_products}}"
+                                                 data-total-dropship="{{$order->total_dropship}}"
+                                                 data-total-bill="{{$order->total_bill}}"
+                                                 data-order-details='@json($order->orderDetails->toArray())'>
+                                                <i class="ri-eye-line"></i>Chi tiết
+                                            </button>
+                                                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
 
-                                        // All shop functionality is now handled by ShopOrderPage class in order-page.js
-                                    });
-                                    </script>
+                                <script>
+                                    $(document).ready(function() {
+                                // Shop DataTable initialization is now handled by ShopOrderPage class in order-page.js
+
+                                    // All shop functionality is now handled by ShopOrderPage class in order-page.js
+                                });
+                                </script>
                             </div>
                             @endforeach
                         </div>
@@ -349,7 +359,7 @@ $(document).ready(function() {
 });
 </script>
 
-@include('order.components.order-modal')
+@include('order.components.order-modal', ['order' => null])
 
 <script>
     // Color coding for shop IDs

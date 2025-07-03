@@ -3,23 +3,25 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light py-1 px-4">
-                <h5 class="modal-title mb-0 fw-bold hienthicopy" id="orderDetailModalLabel" data-order-code="{{$order->order_code}}">
-                    {{$order->order_code}}
-                    <span class="ri-clipboard-line icon" style="cursor:pointer;" onclick="navigator.clipboard.writeText('{{$order->order_code}}');"></span>
-                </h5>
+                @if(isset($order) && $order)
+                    <h5 class="modal-title mb-0 fw-bold hienthicopy" id="orderDetailModalLabel" data-order-code="{{$order->order_code}}">
+                        {{$order->order_code}}
+                        <span class="ri-clipboard-line icon" style="cursor:pointer;" onclick="navigator.clipboard.writeText('{{$order->order_code}}');"></span>
+                    </h5>
+                @else
+                    <h5 class="modal-title mb-0 fw-bold hienthicopy" id="orderDetailModalLabel">
+                        Không có dữ liệu chi tiết đơn hàng
+                    </h5>
+                @endif
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                
-             
-
+                @if(isset($order) && $order)
                 <!-- Order Details Table -->
                 <div class=" shadow-sm border-0">
-                   
                     <div class="card-body p-0">
                         <div class="table-responsive" style="max-height: 400px;">
                             <table class="table table-hover align-middle mb-0">
-
                                 <tbody id="modal-order-details">
                                     <!-- Order details will be loaded here -->
                                 </tbody>
@@ -37,6 +39,12 @@
                         </div>
                     </div>
                 </div>
+                @else
+                <div class="text-center p-4">
+                    <i class="ri-information-line fs-2 text-muted"></i>
+                    <p class="mt-2 mb-0 text-muted">Không có dữ liệu chi tiết đơn hàng</p>
+                </div>
+                @endif
             </div>
         </div>
     </div>
