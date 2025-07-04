@@ -14,8 +14,8 @@
 </div>
 </a>
 @endif -->
-<!-- @unless (Request::is('chien-dich'))
-    <div class="alert alert-success alert-dismissible alert-additional fade show mb-0 material-shadow mb-3" role="alert">
+@unless (Request::is('chien-dich'))
+    <div class="alert alert-info alert-dismissible alert-additional fade show  material-shadow m-3 " role="alert" >
         <div class="alert-body">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <div class="d-flex">
@@ -23,19 +23,19 @@
                     <i class="ri-alert-line fs-16 align-middle"></i>
                 </div>
                 <div class="flex-grow-1">
-                    <h5 class="alert-heading">📢 Thông báo: TikTok Ads áp dụng VAT 10%</h5>
-                    <p class="mb-0">Từ 01/07/2025, TikTok bắt đầu thu 10% thuế GTGT khi nạp tiền quảng cáo, thay vì 5% trước đây.</p>
+                    <h5 class="alert-heading">📢 Thông báo: Phí dropship</h5>
+                    <p class="mb-0">Từ 01/07/2025, Dropships.vn bắt đầu thu 5% tổng giá vốn, thay vì 5.000 d/ SKU như trước đây.</p>
                 </div>
             </div>
         </div>
-        <a href="{{ route('campaign') }}">
+        <!-- <a href="{{ route('campaign') }}">
             <div class="alert-content">
                 <p class="mb-0">Xem Ngay Công Thức Tính Chiến Dịch</p>
             </div>
-        </a>
+        </a> -->
     </div>
 @endunless
- -->
+
 
 <!-- Primary Alert
  <div class="alert alert-light alert-border-left alert-dismissible fade show material-shadow" style="border-left: 4px solid #000; margin-top:5px; color: darkslategray;"role="alert">

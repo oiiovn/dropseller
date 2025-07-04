@@ -52,7 +52,7 @@ class UpdateReconciledOrders extends Command
                             'account_number' => $shopUser->referral_code,
                             'transaction_date' => now(),
                             'transaction_id' => $this->generateUniqueTransactionId(),
-                            'description' => $shopUser->referral_code . ' Thanh toán tiền huỷ đơn ' . $order->order_code . ' , Chúng tôi sẽ đối soát lại đơn hoàn cho bạn sau',
+                            'description' => $shopUser->referral_code . ' Thanh toán tiền huỷ đơn ' . $order->order_code . ' , Bao gồm phí dropship được giảm !',
                             'type' => 'IN',
                             'amount' => $amountDiff,
                         ]);
