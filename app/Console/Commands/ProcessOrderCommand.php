@@ -125,7 +125,7 @@ class ProcessOrderCommand extends Command
                     }
                 }
 
-                $total_dropship = in_array($shopId, $excludedShopIds, true) ? 0 : $totalAmount * 5000;
+                $total_dropship = in_array($shopId, $excludedShopIds, true) ? 0 : $totalRevenue * 0.05;
                 $total_tong = $totalRevenue + $total_dropship;
 
                 $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 12);
