@@ -14,7 +14,7 @@
 </div>
 </a>
 @endif -->
-@unless (Request::is('chien-dich'))
+<!-- @unless (Request::is('chien-dich'))
     <div class="alert alert-success alert-dismissible alert-additional fade show mb-0 material-shadow mb-3" role="alert">
         <div class="alert-body">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -28,14 +28,14 @@
                 </div>
             </div>
         </div>
-        <!-- <a href="{{ route('campaign') }}">
+        <a href="{{ route('campaign') }}">
             <div class="alert-content">
                 <p class="mb-0">Xem Ngay Công Thức Tính Chiến Dịch</p>
             </div>
-        </a> -->
+        </a>
     </div>
 @endunless
-
+ -->
 
 <!-- Primary Alert
  <div class="alert alert-light alert-border-left alert-dismissible fade show material-shadow" style="border-left: 4px solid #000; margin-top:5px; color: darkslategray;"role="alert">
