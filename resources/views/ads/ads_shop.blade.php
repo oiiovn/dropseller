@@ -3,24 +3,61 @@
 
 @section('main')
 
-<style>
-    .table thead th {
-        position: sticky;
-        top: 0;
-        background: #f8f9fa;
-        z-index: 2;
-    }
-</style>
+@include('ads.components.ads-styles')
 
 <div class="container-fluid" style="width: 100%; background: white;">
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card" id="adsList">
-                <div class="card-body pt-0">
-
-
+        <div class="col-lg-12 p-0">
+        <!-- <div class="d-flex flex-row gap-3 flex-wrap px-4 pt-4 pb-2" style="height: 450px;">
+            <div class="card flex-fill" style="margin-bottom: 0px;">
+                <div class="card-body p-0 d-flex align-items-center justify-content-center">
+                    <x-chart-ads 
+                        :labels="['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']"
+                        :datasets="[
+                            [
+                                'label' => 'Lovito',
+                                'data' => [2500000, 8000000, 1500000, 4000000, 3200000, 9000000, 1000000, 3500000, 4200000, 6000000, 1800000, 7000000],
+                                'borderColor' => '#FF0000', // đỏ
+                                'backgroundColor' => 'rgba(255,0,0,0.18)',
+                                'fill' => true,
+                            ],
+                            [
+                                'label' => 'BRANIA',
+                                'data' => [9000000, 2000000, 3500000, 7000000, 1000000, 9500000, 3000000, 8000000, 5000000, 4000000, 6000000, 7500000],
+                                'borderColor' => '#FFD600', // vàng
+                                'backgroundColor' => 'rgba(255,214,0,0.18)',
+                                'fill' => true,
+                            ],
+                            [
+                                'label' => 'DIVA HCM',
+                                'data' => [5000000, 3000000, 1000000, 2000000, 8000000, 4000000, 6000000, 1500000, 9500000, 2500000, 7000000, 3500000],
+                                'borderColor' => '#00C853', // xanh lá
+                                'backgroundColor' => 'rgba(0,200,83,0.18)',
+                                'fill' => true,
+                            ]
+                        ]"
+                        title="Biểu đồ chi phí quảng cáo"
+                        canvasId="adsChart1"
+                    />
+                </div>
+            </div>
+            <div class="card flex-fill" style="max-width: 400px; min-width: 400px; margin-bottom: 0px;">
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <x-chart-ads-poler-area
+                        :labels="['Lovito', 'BRANIA', 'DIVA HCM']"
+                        dataset-label="Chi tiêu quảng cáo"
+                        :data="[1200000, 900000, 1500000]"
+                        :background-colors="['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)']"
+                        title="Biểu đồ chi tiêu quảng cáo"
+                        canvas-id="adsPolarAreaChart"
+                    />
+                </div>
+            </div>
+        </div> -->
+                        
+                     <div>
                     <!-- Tabs hiển thị theo Shop -->
-                    <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
+                    <ul class="nav nav-tabs nav-tabs-custom nav-success mb-0 d-none d-md-flex" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active All py-3" data-bs-toggle="tab" id="All" href="#home1" role="tab" aria-selected="true">
                                 <i class="ri-store-2-fill me-1 align-bottom"></i> Tất cả quảng cáo
@@ -39,139 +76,38 @@
                     <div class="tab-content">
                         <!-- Tất cả quảng cáo -->
                         <div class="tab-pane fade show active" id="home1" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
-                                <table class="table table-hover" id="ads_all">
-                                    <thead class="text-muted table-light">
-                                        <tr class="text-uppercase">
-                                            <th>Mã Hóa Đơn</th>
-                                            <th>Shop</th>
-                                            <th>Ngày Chi</th>
-                                            <th>Số Tiền</th>
-                                            <th>VAT</th>
-                                            <th>Tổng Cộng</th>
-                                            <th>Thanh Toán</th>
-                                            <th>Mã Thanh Toán</th>
-                                            <th>Ngày tạo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="list form-check-all text-black-50">
-                                        @foreach($ads_shop as $shopName => $ads)
-                                        @foreach($ads as $ad)
-                                        <tr>
-                                            <td>{{ $ad['invoice_id'] }}</td>
-                                            <td>{{ $shopName }}</td>
-                                            <td>{{ $ad['date_range'] }}</td>
-                                            <td>{{ number_format($ad['amount'], 0, ',', '.') }} đ</td>
-                                            <td>{{ number_format($ad['vat'], 0, ',', '.') }} đ</td>
-                                            <td>{{ number_format($ad['total_amount'] ?? 0, 0, ',', '.') }} đ</td>
-                                            <td class="{{ $ad['payment_status'] == 'Chưa thanh toán' ? 'text-danger' : 'text-success' }}">
-                                                {{ $ad['payment_status'] }}
-                                            </td>
-                                            <td>{{ $ad['payment_code'] }}</td>
-                                            <td>{{ $ad['created_at'] }}</td>
-                                        </tr>
-                                        @endforeach
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <script>
-                                    $(document).ready(function() {
-                                        $('#ads_all').DataTable({
-                                            "paging": true, // Bật phân trang
-                                            "searching": true, // Bật tìm kiếm
-                                            "ordering": true, // Bật sắp xếp
-                                            "info": true, // Hiển thị thông tin
-                                            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                                            "order": [
-                                                [8, "desc"]
-                                            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                                            // Chỉnh Tiếng Việt
-                                            "language": {
-                                                "lengthMenu": "Hiển thị _MENU_ quảng cáo",
-                                                "zeroRecords": "Không tìm thấy dữ liệu",
-                                                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ quảng cáo",
-                                                "infoEmpty": "Không có dữ liệu để hiển thị",
-                                                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                "search": "",
-                                                "paginate": {
-                                                    "first": "Trang đầu",
-                                                    "last": "Trang cuối",
-                                                    "next": "Tiếp theo",
-                                                    "previous": "Quay lại"
-                                                }
-                                            }
-                                        });
-                                    });
-                                </script>
+                            {{-- Desktop Filter --}}
+                            <div class="d-none d-md-block">
+                                @include('ads.components.ads-filters')
                             </div>
+                            {{-- Mobile Filter --}}
+                            <div class="d-block d-md-none">
+                                @include('ads.components.ads-mobile-filters')
+                            </div>
+                            @php
+                                $allAds = collect();
+                                foreach($ads_shop as $shopName => $ads) {
+                                    foreach($ads as $ad) {
+                                        $ad['shop_name'] = $shopName;
+                                        $allAds->push($ad);
+                                    }
+                                }
+                            @endphp
+                            @include('ads.components.ads-table', ['ads' => $allAds, 'shopName' => null])
                         </div>
 
                         <!-- Quảng cáo theo từng Shop -->
                         @foreach($ads_shop as $shopName => $ads)
                         <div class="tab-pane fade" id="shop-{{ Str::slug($shopName)}}-content" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
-                                <table  class="table table-nowrap align-middle table-hover" id="ads_shop_{{ Str::slug($shopName) }}_haha">  
-                                    <thead class="text-muted table-light">
-                                        <tr class="text-uppercase">
-                                            <th>Mã Hóa Đơn</th>
-                                            <th>Ngày Chi</th>
-                                            <th>Số Tiền</th>
-                                            <th>VAT</th>
-                                            <th>Tổng Cộng</th>
-                                            <th>Thanh Toán</th>
-                                            <th>Mã Thanh Toán</th>
-                                            <th>Ngày Tạo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-black-50">
-                                        @foreach($ads as $ad)
-                                        <tr>
-                                            <td>{{ $ad['invoice_id'] }}</td>
-                                            <td>{{ $ad['date_range'] }}</td>
-                                            <td>{{ number_format($ad['amount'], 0, ',', '.') }} đ</td>
-                                            <td>{{ number_format($ad['vat'], 0, ',', '.') }} đ</td>
-                                            <td>{{ number_format($ad['total_amount'] ?? 0, 0, ',', '.') }} đ</td>
-                                            <td class="{{ $ad['payment_status'] == 'Chưa thanh toán' ? 'text-danger' : 'text-success' }}">
-                                                {{ $ad['payment_status'] }}
-                                            </td>
-                                            <td>{{ $ad['payment_code'] }}</td>
-                                            <td>{{ $ad['created_at'] }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <script>
-                                    $(document).ready(function() {
-                                        $('#ads_shop_{{ Str::slug($shopName) }}_haha').DataTable({
-                                            "paging": true, // Bật phân trang
-                                            "searching": true, // Bật tìm kiếm
-                                            "ordering": true, // Bật sắp xếp
-                                            "info": true, // Hiển thị thông tin
-                                            "lengthMenu": [10, 20, 50, 100, 150], // Số lượng dòng hiển thị
-                                            "order": [
-                                                [7, "desc"]
-                                            ], // Mặc định sắp xếp cột thứ 3 (Ngày tạo đơn) theo mới nhất
-
-                                            // Chỉnh Tiếng Việt
-                                            "language": {
-                                                "lengthMenu": "Hiển thị _MENU_ quảng cáo",
-                                                "zeroRecords": "Không tìm thấy dữ liệu",
-                                                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ quảng cáo",
-                                                "infoEmpty": "Không có dữ liệu để hiển thị",
-                                                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                                                "search": "",
-                                                "paginate": {
-                                                    "first": "Trang đầu",
-                                                    "last": "Trang cuối",
-                                                    "next": "Tiếp theo",
-                                                    "previous": "Quay lại"
-                                                }
-                                            }
-                                        });
-                                    });
-                                </script>
+                            {{-- Desktop Filter --}}
+                            <div class="d-none d-md-block">
+                                @include('ads.components.ads-filters')
                             </div>
+                            {{-- Mobile Filter --}}
+                            <div class="d-block d-md-none">
+                                @include('ads.components.ads-mobile-filters')
+                            </div>
+                            @include('ads.components.ads-table', ['ads' => $ads, 'shopName' => $shopName])
                         </div>
                         @endforeach
                     </div> <!-- End Tab Content -->
@@ -180,5 +116,62 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // Initialize copy functionality
+        $(document).on('click', '[data-clipboard]', function(e) {
+            e.stopPropagation();
+            const text = $(this).data('clipboard');
+            navigator.clipboard.writeText(text).then(() => {
+                $(this).removeClass('ri-clipboard-line').addClass('ri-check-line text-success');
+                setTimeout(() => {
+                    $(this).removeClass('ri-check-line text-success').addClass('ri-clipboard-line');
+                }, 1500);
+            });
+        });
+
+        // Initialize DataTable for all ads
+        $('#adsTable').DataTable({
+            "paging": true,
+            "searching": false, // Disable built-in search since we have custom search
+            "ordering": true,
+            "info": true,
+            "lengthMenu": [10, 20, 50, 100, 150],
+            "order": [[8, "desc"]], // Sort by created_at column
+            "dom": '<""<"col-sm-12"tr>>' +
+                   '<"row justify-content-between align-items-center mt-2 mx-0 no-gutters"<"col-auto"l><"col-auto"i><"col-auto"p>>',
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ quảng cáo",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "",
+                "infoEmpty": "Không có dữ liệu để hiển thị",
+                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                "search": "",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp theo",
+                    "previous": "Quay lại"
+                }
+            }
+        });
+
+        // Di chuyển phân trang ra ngoài table cho mobile
+        function movePaginationForMobile() {
+            if (window.innerWidth < 768) {
+                // Di chuyển phân trang ra ngoài table cho mobile
+                $('#mobile-pagination').html($('.dataTables_paginate'));
+                $('#mobile-pagination').append($('.dataTables_info'));
+            } else {
+                // Đưa lại vào vị trí cũ cho desktop nếu cần
+                $('.dataTables_wrapper .row.justify-content-between .col-auto:last').append($('.dataTables_paginate'));
+                $('.dataTables_wrapper .row.justify-content-between .col-auto').first().append($('.dataTables_info'));
+            }
+        }
+        movePaginationForMobile();
+        $(window).on('resize', movePaginationForMobile);
+    });
+</script>
 
 @endsection

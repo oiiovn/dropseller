@@ -475,6 +475,24 @@
 
                 // Khởi tạo copy functionality
                 initOrderCopy();
+                
+                // Luôn gọi lại OrderPage nếu là trang order
+                if (window.location.pathname.includes('/order') || 
+                    window.location.pathname.includes('/don-hang') ||
+                    $('#orderList').length > 0) {
+                    console.log('🔄 Order page detected, initializing OrderPage...');
+                    if (typeof window.initializeOrderPage === 'function') {
+                        setTimeout(() => {
+                            window.initializeOrderPage();
+                        }, 100);
+                    }
+                }
+                // Luôn gọi lại mobile filter nếu có mobile filter bar
+                if (document.getElementById('mobile-filter-bar') && typeof window.initOrderMobile === 'function') {
+                    setTimeout(() => {
+                        window.initOrderMobile();
+                    }, 100);
+                }
             }
 
             // Khởi tạo ban đầu
@@ -559,5 +577,7 @@
         // Kiểm tra mỗi 5 phút
         setInterval(checkSession, 5 * 60 * 1000);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @stack('scripts')
 </body>
 </html>

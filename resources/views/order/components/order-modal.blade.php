@@ -2,8 +2,8 @@
 <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-light py-1 px-4">
-                <h5 class="modal-title mb-0 fw-bold hienthicopy" id="orderDetailModalLabel" data-order-code="">
+            <div class="modal-header bg-light py-2 px-4">
+                <h5 class="modal-title mb-0 fw-bold hienthicopy gap-2" id="orderDetailModalLabel" data-order-code="">
                     <span id="modal-order-code"></span>
                     <span class="ri-clipboard-line icon" style="cursor:pointer;" onclick="navigator.clipboard.writeText(document.getElementById('modal-order-code').innerText);"></span>
                 </h5>

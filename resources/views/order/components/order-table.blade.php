@@ -1,4 +1,5 @@
 {{-- Component: Order Table --}}
+<link rel="stylesheet" href="{{ asset('assets/css/order-page.css') }}">
 <div class="modern-table-container">
     <div class="table-wrapper">
         <table id="orderTable" class="modern-table table" >
@@ -39,9 +40,9 @@
                     <td class="customer_cost" data-shop-id="{{ $item->shop->shop_id ?? 0 }}">
                         <div class="d-flex align-items-center gap-2">
                             @if($item->shop->platform == 'Tiktok')
-                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" class="shop-platform-icon">
+                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" loading="lazy" alt="" style="width: 24px; height: 24px; border-radius: 4px;">
                             @elseif($item->shop->platform == 'Shoppe')
-                                <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" class="shop-platform-icon">
+                                <img src="https://img.icons8.com/fluency/240/shopee.png" loading="lazy" alt="" style="width: 24px; height: 24px; border-radius: 4px;">
                             @endif
                             <span class="shop-name">{{ $item->shop->shop_name ?? 'N/A' }}</span>
                         </div>

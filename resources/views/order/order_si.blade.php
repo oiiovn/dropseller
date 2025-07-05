@@ -8,6 +8,27 @@
 
 <!-- Include JavaScript -->
 <script src="{{ asset('assets/js/order-page.js') }}"></script>
+<script>
+    // Ensure OrderPage is initialized when this page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 Order page DOM loaded, ensuring OrderPage is initialized...');
+        if (typeof window.initializeOrderPage === 'function') {
+            // Small delay to ensure all scripts are loaded
+            setTimeout(() => {
+                window.initializeOrderPage();
+            }, 200);
+        }
+    });
+    
+    // Also initialize when page becomes visible (for AJAX navigation)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && typeof window.initializeOrderPage === 'function') {
+            setTimeout(() => {
+                window.initializeOrderPage();
+            }, 100);
+        }
+    });
+</script>
 
 <div class="" style=" width: 100%; background: white; overflow: hidden; ">
     <div class="row " style="overflow: hidden;">
@@ -25,9 +46,9 @@
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="shop-{{$shop->shop_id}}" href="#shop-{{$shop->shop_id}}-content" role="tab" aria-selected="false">
                                     @if($shop->platform == 'Tiktok')
-                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" loading="lazy" alt="" style="width: 20px; height: 20px;">
                                     @elseif($shop->platform == 'Shoppe')
-                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                    <img src="https://img.icons8.com/fluency/240/shopee.png" loading="lazy" alt="" style="width: 20px; height: 20px;">
                                     @else
                                     <i class="fas fa-store me-1"></i>
                                     @endif
@@ -87,11 +108,11 @@
                                             <!-- Header với platform icon và shop name -->
                                             <div class="mobile-card-header">
                                                 @if($shop->platform == 'Tiktok')
-                                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="TikTok" class="mobile-platform-icon">
+                                                <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" loading="lazy" alt="TikTok" style="width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0;">
                                                 @elseif($shop->platform == 'Shoppe')
-                                                <img src="https://img.icons8.com/fluency/240/shopee.png" alt="Shopee" class="mobile-platform-icon">
+                                                <img src="https://img.icons8.com/fluency/240/shopee.png" loading="lazy" alt="Shopee" style="width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0;">
                                                 @else
-                                                <div class="mobile-platform-icon" style="background: #ccc; border-radius: 4px;"></div>
+                                                <div style="width: 24px; height: 24px; background: #ccc; border-radius: 4px; flex-shrink: 0;"></div>
                                                 @endif
                                                 <span class="mobile-shop-name">{{ $shop->shop_name ?? 'N/A' }}</span>
                                                                         </div>

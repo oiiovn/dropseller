@@ -1,8 +1,8 @@
 {{-- Component: Mobile Order Cards + Filter + Pagination --}}
 <div class="mobile-card-container">
     <!-- Mobile Order Cards UI giống hình user gửi, cập nhật search bar động -->
-    <div id="mobile-filter-bar-wrap">
-        <div id="mobile-filter-bar" class="mobile-order-filter-bar d-flex align-items-center gap-2 p-2" style="background:#fff;  position:sticky;top:0;z-index:10; transition:all .3s;">
+    <div id="mobile-filter-bar-wrap ">
+        <div id="mobile-filter-bar" class=" mb-1 mobile-order-filter-bar d-flex align-items-center gap-2 p-2" style="background:#fff;  position:sticky;top:0;z-index:10; transition:all .3s;">
             <select class="form-select form-select-sm flex-grow-1" id="mobileShopFilter" style="max-width:110px; min-width:80px;">
                 <option value="">All shops</option>
                 @foreach($shops ?? [] as $shop)
@@ -42,7 +42,7 @@
     </div>
     
     <!-- Mobile Cards Container with Pagination -->
-    <div class="mobile-card-list pb-2" id="mobileCardList">
+    <div class="mobile-card-list pb-2 " id="mobileCardList">
         @foreach($orders as $item)
         @php
             // Format filter_date to show only the first date
@@ -62,7 +62,7 @@
              style="background:#fff; border:1px solid #e0e0e0; border-radius:12px; box-shadow:0 1px 2px rgba(0,0,0,0.03);">
         <div class="d-flex align-items-center">
         <span class="fs-12 fw-bold" style="color: #4EBBD3;">{{$item->order_code}}</span>    
-        <span class="ms-auto" style="font-size:13px;color:#888;">Số lượng: {{$item->total_products}}</span>
+        <span class="ms-auto" style="font-size:13px;color:#666;">Số lượng: <span class="">{{$item->total_products}}</span></span>
         </div>   
         <div class="d-flex align-items-center justify-content-between">
 
@@ -77,11 +77,11 @@
 
                 <span class="fw-bold" style="font-size:12px; line-height: 22px;">{{ $item->shop->shop_name ?? 'N/A' }}</span>
             </div> 
-            <span class="text-end" style="font-size:12px;color:#5D5D5D;line-height: 22px;">Phí drop : <span class="fw-semibold">{{ number_format($item->total_dropship, 0, ',', '.') }} vnd</span></span>              
+            <span class="text-end" style="font-size:12px;color:#5D5D5D;line-height: 22px; color: #666;">Phí drop : <span class="">{{ number_format($item->total_dropship, 0, ',', '.') }} VNĐ</span></span>              
             </div>
             <div class="d-flex align-items-center justify-content-between">
-                <span class="" style="font-size:12px;color:#888;line-height: 22px;">{{$displayDate}}</span>
-                <span class="fw-bold" style="font-size:15px;color: #4EBBD3;">{{ number_format($item->total_bill, 0, ',', '.') }}<span class="fs-15" style="color: #888;"> VND</span></span>
+                <span class="" style="font-size:12px;color:#888;line-height: 22px;">Ngày tạo: {{$displayDate}}</span>
+                <span class="fw-bold" style="font-size:15px;color: #4EBBD3;">{{ number_format($item->total_bill, 0, ',', '.') }}<span class="fs-15" style="color: #888;"> VNĐ</span></span>
             </div>
             
            
@@ -113,10 +113,8 @@
     
     <!-- Mobile Pagination -->
     <div class="mobile-pagination-container d-flex justify-content-between align-items-center p-3" style="background:#f8f9fa; border-top:1px solid #eee;">
-        <div class="mobile-pagination-info">
-            <small class="text-muted">Hiển thị <span id="mobileStartIndex">1</span>-<span id="mobileEndIndex">10</span> của <span id="mobileTotalItems">{{count($orders)}}</span> đơn hàng</small>
-        </div>
-        <div class="mobile-pagination-controls d-flex gap-2">
+        
+        <div class="mobile-pagination-controls d-flex gap-2 m-auto">
             <button class="btn btn-sm btn-outline-primary" id="mobilePrevPage" disabled>
                 <i class="ri-arrow-left-s-line"></i> Trước
             </button>
@@ -160,7 +158,7 @@
     
     .mobile-pagination-controls .btn {
         font-size: 12px;
-        padding: 6px 12px;
+        padding: 3px 6px;
         border-radius: 6px;
     }
     
@@ -174,255 +172,4 @@
     }
     </style>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const filterBar = document.getElementById('mobile-filter-bar');
-    const searchBar = document.getElementById('mobile-search-bar');
-    const showSearchBtn = document.getElementById('mobileShowSearchBar');
-    const closeSearchBtn = document.getElementById('mobileCloseSearchBar');
-    
-    // Mobile pagination variables
-    let currentPage = 1;
-    const itemsPerPage = 10;
-    let filteredCards = [];
-    let totalPages = 1;
-    
-    // Helper function to format date for display (get first date from range)
-    function formatDisplayDate(filterDate) {
-        if (filterDate && filterDate.includes(' - ')) {
-            return filterDate.split(' - ')[0];
-        }
-        return filterDate;
-    }
-    
-    // Mobile filter functionality
-    function applyMobileFilters() {
-        const dateFilter = document.getElementById('mobileDateInput').value;
-        const paymentFilter = document.getElementById('mobilePaymentFilter').value;
-        const reconciledFilter = document.getElementById('mobileReconciledFilter').value;
-        const searchFilter = document.getElementById('mobileSearchInput').value.toLowerCase();
-        const shopFilter = document.getElementById('mobileShopFilter').value;
-        
-        console.log('🔍 Applying mobile filters:', {
-            date: dateFilter,
-            payment: paymentFilter,
-            reconciled: reconciledFilter,
-            search: searchFilter,
-            shop: shopFilter
-        });
-        
-        // Hide all cards in current tab first
-        const allCards = Array.from(document.querySelectorAll('.mobile-order-card'));
-        const visibleCards = allCards.filter(card => {
-            const cardContainer = card.closest('.tab-pane');
-            return !cardContainer || cardContainer.classList.contains('active');
-        });
-        
-        visibleCards.forEach(function(card) {
-            card.style.display = 'none';
-        });
-        
-        // Filter cards
-        filteredCards = [];
-        visibleCards.forEach(function(card) {
-            let show = true;
-            
-            // Date filter
-            if (dateFilter) {
-                const cardFilterDate = card.dataset.filterDate;
-                const cardCreatedAt = card.dataset.createdAt;
-                const createdAtDate = cardCreatedAt.split(' ')[0];
-                
-                // Convert yyyy-mm-dd to d/m/Y
-                const parts = dateFilter.split('-');
-                const formattedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
-                
-                // Check both the full filter_date and the first date from range
-                const displayDate = formatDisplayDate(cardFilterDate);
-                
-                if (cardFilterDate !== formattedDate && createdAtDate !== formattedDate && displayDate !== formattedDate) {
-                    show = false;
-                }
-            }
-            
-            // Payment status filter
-            if (paymentFilter && show) {
-                const cardPaymentStatus = card.dataset.paymentStatus;
-                if (cardPaymentStatus !== paymentFilter) {
-                    show = false;
-                }
-            }
-            
-            // Reconciled filter
-            if (reconciledFilter && show) {
-                const cardReconciledStatus = card.dataset.reconciled;
-                if (cardReconciledStatus !== reconciledFilter) {
-                    show = false;
-                }
-            }
-            
-            // Search filter
-            if (searchFilter && show) {
-                const cardOrderCode = card.dataset.orderCode.toLowerCase();
-                const cardShopName = card.dataset.shopName.toLowerCase();
-                if (!cardOrderCode.includes(searchFilter) && !cardShopName.includes(searchFilter)) {
-                    show = false;
-                }
-            }
-            
-            // Shop filter
-            if (shopFilter && show) {
-                const cardShopName = card.dataset.shopName;
-                if (cardShopName !== shopFilter) {
-                    show = false;
-                }
-            }
-            
-            if (show) {
-                filteredCards.push(card);
-            }
-        });
-        
-        // Reset to first page when filtering
-        currentPage = 1;
-        
-        // Update pagination
-        updateMobilePagination();
-        
-        // Show/hide no data message
-        const noDataMessage = document.getElementById('mobileNoDataMessage');
-        if (filteredCards.length === 0) {
-            noDataMessage.style.display = 'block';
-            document.querySelector('.mobile-pagination-container').style.display = 'none';
-        } else {
-            noDataMessage.style.display = 'none';
-            document.querySelector('.mobile-pagination-container').style.display = 'flex';
-        }
-        
-        console.log(`✅ Mobile: Found ${filteredCards.length} cards after filtering`);
-    }
-    
-    // Update mobile pagination
-    function updateMobilePagination() {
-        totalPages = Math.ceil(filteredCards.length / itemsPerPage);
-        
-        // Update pagination info
-        document.getElementById('mobileTotalItems').textContent = filteredCards.length;
-        document.getElementById('mobileTotalPages').textContent = totalPages;
-        document.getElementById('mobileCurrentPage').textContent = currentPage;
-        
-        // Calculate start and end indices
-        const startIndex = (currentPage - 1) * itemsPerPage + 1;
-        const endIndex = Math.min(currentPage * itemsPerPage, filteredCards.length);
-        
-        document.getElementById('mobileStartIndex').textContent = startIndex;
-        document.getElementById('mobileEndIndex').textContent = endIndex;
-        
-        // Update pagination buttons
-        document.getElementById('mobilePrevPage').disabled = currentPage === 1;
-        document.getElementById('mobileNextPage').disabled = currentPage === totalPages;
-        
-        // Show only current page cards
-        filteredCards.forEach((card, index) => {
-            const shouldShow = index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage;
-            card.style.display = shouldShow ? 'block' : 'none';
-        });
-        
-        console.log(`📄 Mobile: Page ${currentPage} of ${totalPages}, showing ${endIndex - startIndex + 1} cards`);
-    }
-    
-    // Pagination event listeners
-    document.getElementById('mobilePrevPage').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            updateMobilePagination();
-        }
-    });
-    
-    document.getElementById('mobileNextPage').addEventListener('click', function() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            updateMobilePagination();
-        }
-    });
-    
-    // Clear mobile filters function
-    window.clearMobileFilters = function() {
-        document.getElementById('mobileDateInput').value = '';
-        document.getElementById('mobilePaymentFilter').value = '';
-        document.getElementById('mobileReconciledFilter').value = '';
-        document.getElementById('mobileSearchInput').value = '';
-        document.getElementById('mobileShopFilter').value = '';
-        
-        // Reset pagination
-        currentPage = 1;
-        
-        // Show all cards in current tab only
-        const visibleCards = Array.from(document.querySelectorAll('.mobile-order-card')).filter(card => {
-            const cardContainer = card.closest('.tab-pane');
-            return !cardContainer || cardContainer.classList.contains('active');
-        });
-        
-        visibleCards.forEach(function(card) {
-            card.style.display = 'block';
-        });
-        
-        // Update filtered cards array
-        filteredCards = visibleCards;
-        
-        // Update pagination
-        updateMobilePagination();
-        
-        // Show pagination and hide no data message
-        document.getElementById('mobileNoDataMessage').style.display = 'none';
-        document.querySelector('.mobile-pagination-container').style.display = 'flex';
-        
-        console.log('🧹 Mobile filters cleared');
-    };
-    
-    // Search bar toggle
-    showSearchBtn && showSearchBtn.addEventListener('click', function() {
-        filterBar.classList.add('d-none');
-        searchBar.classList.remove('d-none');
-        setTimeout(()=>{searchBar.querySelector('input').focus();}, 200);
-    });
-    
-    closeSearchBtn && closeSearchBtn.addEventListener('click', function() {
-        searchBar.classList.add('d-none');
-        filterBar.classList.remove('d-none');
-    });
-    
-    // Filter event listeners
-    document.getElementById('mobileDateInput').addEventListener('change', applyMobileFilters);
-    document.getElementById('mobilePaymentFilter').addEventListener('change', applyMobileFilters);
-    document.getElementById('mobileReconciledFilter').addEventListener('change', applyMobileFilters);
-    document.getElementById('mobileShopFilter').addEventListener('change', applyMobileFilters);
-    document.getElementById('mobileSearchInput').addEventListener('keyup', applyMobileFilters);
-    
-    // Initialize pagination - only count cards in current tab
-    function initializeMobilePagination() {
-        // Only count mobile cards that are currently visible (not hidden by tab system)
-        const visibleCards = Array.from(document.querySelectorAll('.mobile-order-card')).filter(card => {
-            const cardContainer = card.closest('.tab-pane');
-            return !cardContainer || cardContainer.classList.contains('active');
-        });
-        
-        filteredCards = visibleCards;
-        updateMobilePagination();
-        
-        console.log(`📱 Mobile: Initialized with ${filteredCards.length} visible cards`);
-    }
-    
-    // Initialize pagination
-    initializeMobilePagination();
-    
-    // Re-initialize when tab changes
-    $(document).on('shown.bs.tab', function() {
-        setTimeout(initializeMobilePagination, 100);
-    });
-    
-    // Ẩn nút mở modal màu xanh nếu có
-    
-});
-
-</script> 
+<script src="{{ asset('assets/js/order-mobile.js') }}"></script>

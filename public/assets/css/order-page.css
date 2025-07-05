@@ -20,9 +20,7 @@
 
 /* Pagination Container - nằm ngoài table */
 .pagination-container {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border: 1px solid #e8eaed;
+    background: #fff;
     border-top: none;
     padding: 0px 5px;
     border-radius: 0 0 6px 6px;
@@ -130,6 +128,28 @@
     width: 24px;
     height: 24px;
     border-radius: 4px;
+}
+
+/* Prevent icon jumping during load */
+img[src*="icons8.com"] {
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 30px;
+    max-height: 30px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Ensure icon containers have fixed dimensions */
+.d-flex.align-items-center.gap-2 {
+    min-height: 24px;
+}
+
+.customer_cost {
+    min-height: 24px;
+    display: flex;
+    align-items: center;
 }
 
 /* Status Pills */
