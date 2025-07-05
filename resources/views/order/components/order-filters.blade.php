@@ -1,6 +1,9 @@
 {{-- Component: Order Filters --}}
 <div class="filter-section" id="filtersSection">
     <div class="row align-items-end">
+    <div class="col-md-3">
+            <input type="text" class="form-control" id="customSearch" placeholder="Tìm theo mã đơn, shop...">
+        </div>
         <div class="col-md-3">
             <input type="date" class="form-control" id="dateFilter" placeholder="Chọn ngày">
         </div>
@@ -18,9 +21,7 @@
     <option value="Chưa đối soát">Chưa đối soát</option>
   </select>
         </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" id="customSearch" placeholder="Tìm theo mã đơn, shop...">
-        </div>
+        
         <div class="col-md-2">
             <div class="d-flex gap-2">
                 <button type="button" class="btn btn-primary" id="applyFilters">

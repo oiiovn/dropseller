@@ -33,11 +33,15 @@ use App\Http\Controllers\Admin\SecurityController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\GiftCardController;
 
 
 Route::get('/', function () {
     return redirect('/login');
 });
+
+// Public route for gift card printing - no authentication required
+Route::get('/in-giay-tang-qua', [GiftCardController::class, 'inGiayTangQua'])->name('gift-card.print');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();

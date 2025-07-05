@@ -48,7 +48,7 @@ class OrderPage {
                     "language": {
                         "lengthMenu": "Hiển thị _MENU_ đơn hàng",
                         "zeroRecords": "Không tìm thấy dữ liệu",
-                        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                        "info": "",
                         "infoEmpty": "Không có dữ liệu để hiển thị",
                         "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
                         "search": "",
@@ -956,6 +956,45 @@ class OrderPage {
             console.log('- window.showAllShopTables() - Show all shop tables');
         }, 2000);
     }
+
+    // Thêm phương thức destroy để cleanup khi re-init
+    destroy() {
+        // Destroy DataTable nếu có
+        if (this.mainTable && $.fn.DataTable.isDataTable('#orderTable')) {
+            $('#orderTable').DataTable().destroy();
+            this.mainTable = null;
+        }
+        // Unbind filter events
+        $('#applyFilters').off('click');
+        $('#clearFilters').off('click');
+        $('#customSearch').off('keyup');
+        $('#paymentFilter, #reconciledFilter').off('change');
+        $('#dateFilter').off('change');
+        // Unbind mobile filter events
+        $('#mobileFilterToggle').off('click touchstart');
+        $('#mobileFilterOverlay').off('click touchstart');
+        $(document).off('click touchstart', '#mobileFilterClose');
+        $(document).off('keydown');
+        $(window).off('resize');
+        // Unbind modal events
+        $(document).off('click', '.view-order-btn');
+        $('#orderDetailModal').off('show.bs.modal');
+        $('#orderDetailModal').off('hide.bs.modal');
+        // Unbind copy events
+        $(document).off('click', '.order-link, .mobile-order-code');
+        $('#modal-copy-info').off('click');
+        // Remove debug functions from window
+        delete window.debugFiltering;
+        delete window.testFilter;
+        delete window.resetAllFilters;
+        delete window.quickTest;
+        delete window.testMobileFilter;
+        delete window.testModal;
+        delete window.testModalClick;
+        delete window.testTabSwitching;
+        delete window.switchToShopTab;
+        delete window.showAllShopTables;
+    }
 }
 
 // Shop-specific functions
@@ -1004,7 +1043,7 @@ class ShopOrderPage {
                 "language": {
                     "lengthMenu": "Hiển thị _MENU_ đơn hàng",
                     "zeroRecords": "Không tìm thấy dữ liệu",
-                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
+                    "info": "",
                     "infoEmpty": "Không có dữ liệu để hiển thị",
                     "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
                     "search": "",
@@ -1272,3 +1311,12 @@ $(document).ready(function() {
         $(this).find('.view-order-btn').trigger('click');
     });
 });
+
+// At the end of the file, expose a global function to (re)initialize OrderPage
+window.initializeOrderPage = function() {
+    if (window.orderPage && typeof window.orderPage.destroy === 'function') {
+        window.orderPage.destroy();
+    }
+    window.orderPage = new OrderPage();
+};
+

@@ -7,6 +7,15 @@
     font-size: 13px;
     margin-top: 2px;
 }
+.height-notification{
+    max-height: 300px;
+
+}
+@media (max-width: 600px) {
+    .height-notification{
+        max-height: 700px;
+    }
+}
 </style>
 <header id="page-topbar">
     <div class="layout-width">
@@ -138,7 +147,7 @@
                         <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">{{$unreadNotificationsCount ?? 0}}<span class="visually-hidden">unread messages</span></span>
                         @endif
                     </button>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" style="box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);" aria-labelledby="page-header-notifications-dropdown">
 
                         <div class="dropdown-head bg-white rounded-top">
                             <div class="p-3">
@@ -149,12 +158,15 @@
                                     <div class="col-auto dropdown-tabs">
                                         <span class="badge bg-light text-body fs-13"> {{$unreadNotificationsCount ?? 0}} Mới</span>
                                     </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-sm btn-outline-secondary" id="closeNotification" type="button" data-bs-dismiss="dropdown" aria-label="Close">X</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="px-2 pt-2">
 
                                 <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist" style="overflow-x: unset;">
                                         <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất Cả ({{$NotificationsCount ?? 0}})</button>
                                         <button id="markReadButton" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                                             Thông báo mới ({{$unreadNotificationsCount ?? 0}})
@@ -164,10 +176,10 @@
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                         <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
-                                            <div data-simplebar style="max-height: 300px;" class="pe-2">
+                                            <div data-simplebar class="pe-2 height-notification">
                                                 @if($Notifications && $Notifications->count() > 0)
                                                 @foreach($Notifications as $notification)
-                                                <div class="text-reset notification-item d-block dropdown-item position-relative" id="notification-{{ $notification->id }}" data-id="{{ $notification->id }}">
+                                                <div class="text-reset notification-item d-block dropdown-item position-relative" style="border-radius: 10px;border-bottom: 1px solid #ddd;" id="notification-{{ $notification->id }}" data-id="{{ $notification->id }}">
                                                     <div class="d-flex">
                                                         <div class="avatar-xs me-3 flex-shrink-0">
                                                             <span class="avatar-title bg-info-subtle text-info rounded-circle fs-16">
@@ -310,13 +322,13 @@
                             </span>
                         </span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
+                    <div class="dropdown-menu dropdown-menu-end px-2 mt-2" style="width: unset; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);">
                         <!-- item-->
 
-                        <a class="dropdown-item" href="{{route('portfolio')}}"><img src="{{ asset('assets/images/icons/ic-user.png') }}" alt="profile" height="20" class="rounded"> <span class="align-middle">Hồ Sơ <button class="text-center btn btn-link btn-sm px-2 py-0 m-0" style="font-size: 10px;background-color: #038DC8; color: #fff; font-weight: 500; line-height: 22px;">+ Nạp web</button></span></a>
-                        <a class="dropdown-item" href="{{route('balance.history')}}"> <span class="align-middle"> <img src="{{ asset('assets/images/icons/ic-coin.png') }}" alt="coin" height="20" class="rounded"> Biến động số dư</span></a>
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="{{route('portfolio')}}"><img src="{{ asset('assets/images/icons/ic-user.png') }}" alt="profile" height="20" class="rounded"> <span class="align-middle">Hồ Sơ</span></a>
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="{{route('balance.history')}}"> <span class="align-middle"> <img src="{{ asset('assets/images/icons/ic-coin.png') }}" alt="coin" height="20" class="rounded"> Biến động số dư</span></a>
                         @if(Auth::check() && Auth::user()->hasRole('admin'))
-                        <a class="dropdown-item" href="{{route('shop')}}"><img src="{{ asset('assets/images/icons/ic-shop.png') }}" alt="shop" height="20" class="rounded"> <span class="align-middle">Quản lý shop</span></a>
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="{{route('shop')}}"><img src="{{ asset('assets/images/icons/ic-shop.png') }}" alt="shop" height="20" class="rounded"> <span class="align-middle">Quản lý shop</span></a>
                         @endif
                         <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
@@ -328,7 +340,7 @@
                             @csrf
                         </form>
 
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <img src="{{ asset('assets/images/icons/ic-logout.png') }}" alt="logout" height="20" class="rounded">
                             <span class="align-middle" data-key="t-logout">Đăng xuất</span>
                         </a>
@@ -375,27 +387,61 @@
     // Khi tài liệu đã sẵn sàng
     document.addEventListener('DOMContentLoaded', function() {
         // Khi nhấp vào liên kết Admin
-        document.getElementById('adminAccessLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            // Hiển thị modal
-            var adminModal = new bootstrap.Modal(document.getElementById('adminAccessModal'));
-            adminModal.show();
-        });
+        const adminAccessLink = document.getElementById('adminAccessLink');
+        if (adminAccessLink) {
+            adminAccessLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Hiển thị modal
+                var adminModal = new bootstrap.Modal(document.getElementById('adminAccessModal'));
+                adminModal.show();
+            });
+        }
 
         // Khi nhấp vào nút xác nhận trong modal
-        document.getElementById('submitAccessCode').addEventListener('click', function() {
-            document.getElementById('adminAccessForm').submit();
-        });
+        const submitAccessCode = document.getElementById('submitAccessCode');
+        if (submitAccessCode) {
+            submitAccessCode.addEventListener('click', function() {
+                document.getElementById('adminAccessForm').submit();
+            });
+        }
 
         // Hiển thị/ẩn mật khẩu
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const accessCode = document.getElementById('accessCode');
-            const type = accessCode.getAttribute('type') === 'password' ? 'text' : 'password';
-            accessCode.setAttribute('type', type);
-            
-            // Thay đổi biểu tượng
-            this.querySelector('i').classList.toggle('mdi-eye');
-            this.querySelector('i').classList.toggle('mdi-eye-off');
-        });
+        const togglePassword = document.getElementById('togglePassword');
+        if (togglePassword) {
+            togglePassword.addEventListener('click', function() {
+                const accessCode = document.getElementById('accessCode');
+                const type = accessCode.getAttribute('type') === 'password' ? 'text' : 'password';
+                accessCode.setAttribute('type', type);
+                
+                // Thay đổi biểu tượng
+                this.querySelector('i').classList.toggle('mdi-eye');
+                this.querySelector('i').classList.toggle('mdi-eye-off');
+            });
+        }
+
+        // Close notification dropdown
+        const closeNotification = document.getElementById('closeNotification');
+        if (closeNotification) {
+            closeNotification.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Sử dụng Bootstrap dropdown API để đóng dropdown
+                const notificationDropdown = document.getElementById('notificationDropdown');
+                if (notificationDropdown) {
+                    const dropdown = bootstrap.Dropdown.getInstance(notificationDropdown);
+                    if (dropdown) {
+                        dropdown.hide();
+                    } else {
+                        // Fallback: ẩn dropdown bằng cách xóa class show
+                        notificationDropdown.classList.remove('show');
+                        const dropdownMenu = notificationDropdown.querySelector('.dropdown-menu');
+                        if (dropdownMenu) {
+                            dropdownMenu.classList.remove('show');
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
