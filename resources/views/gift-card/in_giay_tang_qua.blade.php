@@ -230,7 +230,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="userCode" class="form-label">Mã đơn hàng</label>
-                    <input type="text" class="form-control" id="userCode" placeholder="Nhập mã đơn hàng" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" pattern="[0-9]*">
+                    <input type="text" class="form-control" id="userCode" placeholder="Nhập mã đơn hàng">
                 </div>
                 <div class="mb-3">
                     <label for="sku" class="form-label">SKU</label>
