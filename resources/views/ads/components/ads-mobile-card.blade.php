@@ -25,8 +25,8 @@
             </div>
           
             <div class="mobile-status-section">
-            <div><b class="mobile-created-at">Ngày tạo: {{ $ad['created_at'] }}</b></div>
-            <div class="mobile-invoice-date"><b class="mobile-vat">Ngày lọc: {{ $ad['date_range'] }}</b></div>
+            <div><b class="mobile-created-at">Ngày tạo: {{ \Carbon\Carbon::parse($ad['created_at'])->format('d/m/Y') }}</b></div>
+            <div class="mobile-invoice-date"><b class="mobile-vat">Ngày lọc: {{ \Carbon\Carbon::parse(explode(' - ', $ad['date_range'])[0])->format('d/m/Y') }}</b></div>
             </div>
         </div>
     </div>
