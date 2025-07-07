@@ -42,7 +42,7 @@
                 </div>
 
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none" id="topnav-hamburger-icon">
-                   <img src="{{ asset('assets/images/icons/ic-menu.png') }}" alt="menu" class="hamburger-icon rounded" style="width: 24px; height: 24px">
+                   <img src="{{ asset('assets/images/icons/ic-menu.png') }}" alt="menu" class="hamburger-icon rounded" style="width: 24px; height: 24px; transform: unset; ">
                 </button>
 
                 <!-- App Search-->

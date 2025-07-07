@@ -124,7 +124,7 @@
                     <div class="collapse menu-dropdown" id="thanhtoan">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link ajax-link" id="openNapTienModal">Nạp</a>
+                                <a href="" class="nav-link ajax-link" id="openNapTienModal">Nạp</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('transaction') }}" class="nav-link ajax-link" data-key="t-chat">Lịch sử giao dịch</a>
@@ -376,13 +376,42 @@
 <script>
     $(document).ready(function() {
         $('#openNapTienModal').click(function() {
-            $.get('{{ route("naptien") }}', function(data) {
-                // Thêm modal vào body nếu chưa tồn tại
-                if ($('#napTienModal').length === 0) {
-                    $('body').append(data);
-                }
+            // Đóng modal cũ nếu còn đang mở (chuẩn Bootstrap)
+            if ($('#napTienModal').length) {
+                const napModalInstance = bootstrap.Modal.getInstance(document.getElementById('napTienModal'));
+                if (napModalInstance) napModalInstance.hide();
+            }
+            if ($('#qrModal').length) {
+                const qrModalInstance = bootstrap.Modal.getInstance(document.getElementById('qrModal'));
+                if (qrModalInstance) qrModalInstance.hide();
+            }
 
-                // Hiển thị modal
+            // Đợi modal đóng xong rồi mới xóa khỏi DOM
+            $(document).one('hidden.bs.modal', function() {
+                $('#napTienModal').remove();
+                $('#qrModal').remove();
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+            });
+
+            // Nếu không có modal nào đang mở thì xóa luôn
+            if (!$('#napTienModal').length && !$('#qrModal').length) {
+                $('#napTienModal').remove();
+                $('#qrModal').remove();
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+            }
+
+            // Gọi AJAX lấy modal mới
+            $.get('{{ route("naptien") }}', function(data) {
+                // Tạo một div tạm để parse HTML
+                var $tmp = $('<div>').html(data);
+                // Lấy script trong modal và thực thi (không cần nữa vì đã đưa ra ngoài)
+                // Append phần HTML (không bao gồm script) vào body
+                $('body').append($tmp.contents().not('script'));
+                if (typeof window.initNapTienModalEvents === 'function') {
+                    window.initNapTienModalEvents();
+                }
                 const napTienModal = new bootstrap.Modal(document.getElementById('napTienModal'));
                 napTienModal.show();
             });
@@ -425,19 +454,4 @@
         });
     });
 </script>
-<script>
-    $(document).ready(function() {
-        $('#openNapTienModal').click(function() {
-            $.get('{{ route("naptien") }}', function(data) {
-                // Thêm modal vào body nếu chưa tồn tại
-                if ($('#napTienModal').length === 0) {
-                    $('body').append(data);
-                }
-
-                // Hiển thị modal
-                const napTienModal = new bootstrap.Modal(document.getElementById('napTienModal'));
-                napTienModal.show();
-            });
-        });
-    });
-</script>
+<script src="{{ asset('assets/js/naptien.js') }}"></script>
