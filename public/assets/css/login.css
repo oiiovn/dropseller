@@ -3,7 +3,7 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f9f9f9;
+  background-color: #0089ED;
 }
 
 .layout-wrapper {
@@ -161,7 +161,6 @@ body, html {
 
   .login-card {
     padding: 10px;
-    height: 90%;
   }
   
   .fs-wellcom-card {
@@ -198,10 +197,6 @@ body, html {
 }
 
 @media (max-width: 768px) {
-  .captcha-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
   
   .captcha-container .btn {
     margin-top: 5px;

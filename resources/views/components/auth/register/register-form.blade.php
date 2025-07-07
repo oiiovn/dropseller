@@ -26,11 +26,11 @@
   <div class="row mb-3">
     <div class="col-md-6 position-relative mb-3">
       <input type="password" name="password" placeholder="Mật khẩu" id="password" class="form-control" required>
-      <i class="fa-solid fa-eye" id="togglePassword" style="position:absolute; top: 15px; right: 25px; cursor:pointer;"></i>
+      <i class="fa-solid fa-eye" id="togglePassword" style="position:absolute; top: 15px; right: 25px; cursor:pointer; color: #777;"></i>
     </div>
     <div class="col-md-6 position-relative">
       <input type="password" name="password_confirmation" placeholder="Xác nhận mật khẩu" id="password_confirmation" class="form-control" required>
-      <i class="fa-solid fa-eye" id="togglePasswordConfirm" style="position:absolute; top: 15px; right: 25px; cursor:pointer;"></i>
+      <i class="fa-solid fa-eye" id="togglePasswordConfirm" style="position:absolute; top: 15px; right: 25px; cursor:pointer; color: #777;"></i>
     </div>
   </div>
 

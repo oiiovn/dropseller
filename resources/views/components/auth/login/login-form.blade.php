@@ -23,7 +23,7 @@
   <div class="mb-3 position-relative">
     <label for="password" class="form-label fw-semibold">Mật khẩu</label>
     <input type="password" name="password" id="password" class="form-control" required>
-    <i class="fa-solid fa-eye" id="togglePassword" style="position:absolute; top: 45px; right: 16px; cursor:pointer;"></i>
+    <i class="fa-solid fa-eye" id="togglePassword" style="position:absolute; top: 45px; right: 16px; cursor:pointer; color: #777;"></i>
     @if ($errors->has('password'))
       <div class="text-danger mt-1">Mật khẩu không đúng hoặc không hợp lệ.</div>
     @endif
