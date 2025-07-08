@@ -13,13 +13,6 @@
         display: inline;
     }
 
-    .table thead th {
-        position: sticky;
-        top: 0;
-        background: #f8f9fa;
-        z-index: 2;
-    }
-
     .search-box .clear-icon {
         position: absolute;
         right: 10px;
@@ -53,194 +46,409 @@
     .tooltip.bs-tooltip-top .tooltip-arrow::before {
         border-top-color: #ffffff !important;
     }
+
+    .user-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 0;
+        margin: 0 2px;
+    }
+
+    .user-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-color: #007bff;
+    }
+
+    .user-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .user-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-code {
+        font-size: 0.9rem;
+        color: #6c757d;
+        
+    }
+
+    .user-stats {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2e397f;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .shop-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        background: #f8f9fa;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        margin: 0.25rem 0;
+    }
+
+    .shop-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .payment-warning {
+        background: linear-gradient(45deg, #dc3545, #c82333);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 0.75rem;
+        text-align: center;
+    }
+
+    .action-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: none;
+        background: #007bff;
+        color: white;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .action-btn:hover {
+        background: #0056b3;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .search-container {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 0.75rem;
+    }
+
+    .search-input {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .filters-container {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .filter-btn.active {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .filter-btn:hover {
+        background: #f8f9fa;
+    }
+
+    .filter-btn.active:hover {
+        background: #0056b3;
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .page-link {
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        border: 1px solid #dee2e6;
+        background: white;
+        color: #000;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .page-link:hover {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .page-link.active {
+        background: #007bff;
+        color: white;
+       
+    }
+    .page-link.disabled{
+        border: 1px solid #dee2e6;
+        background: white;;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+
+    .no-results i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+        .user-stats {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filters-container {
+            flex-direction: column;
+        }
+        
+        .search-container {
+            padding: 1rem;
+        }
+    }
 </style>
 
-
-
-
-<div class="container-fluid" style=" width: 100%; background: white; ">
-    <!-- end page title -->
+<div class="container-fluid mt-2" style="width: 100%; background: #f8f9fa; min-height: 100vh;">
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card" id="orderList">
-                <div class="card-body pt-0">
-                    <div>
-                        <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active All py-3" data-bs-toggle="tab" id="All" href="#home1" role="tab" aria-selected="true">
-                                    <i class="ri-store-2-fill me-1 align-bottom"></i>Tất cả khách hàng
+        <div class="col-12">
+            <!-- Search and Filters -->
+            <div class="search-container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="position-relative">
+                            <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm kiếm khách hàng...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                                                 <div class="filters-container">
+                             <button class="filter-btn active" data-filter="all">Tất cả</button>
+                             <button class="filter-btn" data-filter="admin">Admin</button>
+                             <button class="filter-btn" data-filter="official">Nhà bán chính thức</button>
+                             <button class="filter-btn" data-filter="dropship">Nhà bán dropship</button>
+                             <button class="filter-btn" data-filter="overdue">Đơn quá hạn</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+                         <!-- User Cards Container -->
+             <div class="row g-2" id="userCardsContainer">
+                @foreach($users as $user)
+                    <div class="col-lg-2 col-md-6 col-sm-12 mb-1 user-card-wrapper" 
+                      data-user-type="{{ $user->name == 'CEO' ? 'admin' : (in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']) ? 'official' : 'dropship') }}"
+                      data-has-overdue="{{ $user->shops->where('orders_unpaid_count', '>', 0)->count() > 0 ? 'true' : 'false' }}">
+                    <div class="card user-card h-100">
+                        <div class="card-body p-3">
+                                                         <!-- User Header -->
+                             <div class="d-flex align-items-start mb-2">
+                                <div class="flex-shrink-0 me-3">
+                                    <img src="@if(isset($user->image) && !empty($user->image)){{ $user->image }}@else https://img.icons8.com/ios-filled/100/user-male-circle.png @endif" 
+                                         alt="{{ $user->name }}" class="user-avatar">
+                                </div>
+                                <div class="user-info">
+                                                                         <h5 class="user-name">
+                                         {{ $user->name }}
+                                         @if($user->name == 'CEO')
+                                             <i class="ri-shield-star-fill text-secondary" data-bs-toggle="tooltip" title="Admin"></i>
+                                         @elseif(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
+                                             <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
+                                         @else
+                                             <i class="ri-verified-badge-fill text-muted" data-bs-toggle="tooltip" title="Nhà bán dropship"></i>
+                                         @endif
+                                     </h5>
+                                    <div class="user-code">
+                                        Code: <strong style="color:#2e397f;">{{ $user->referral_code ?? 'CODE' }}</strong>
+                                    </div>
+                                    <div class="text-muted small">{{ $user->email }}</div>
+                                </div>
+                            </div>
+
+                            <!-- User Stats -->
+                            <div class="user-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">{{ number_format($user->total_amount, 0, ',', '.') }}</span>
+                                    <span class="stat-label">VNĐ</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">{{ $user->shops->sum('orders_unpaid_count') }}</span>
+                                    <span class="stat-label">Quá hạn</span>
+                                </div>
+                            </div>
+
+                                                         <!-- Shops Info -->
+                             <div class="mt-2">
+                                @foreach ($user->shops as $shop)
+                                    <div class="shop-badge">
+                                        @if($shop->platform == 'Tiktok')
+                                            <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" class="shop-icon">
+                                        @elseif($shop->platform == 'Shoppe')
+                                            <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" class="shop-icon">
+                                        @else
+                                            <i class="fas fa-store shop-icon"></i>
+                                        @endif
+                                        <span>{{ $shop->shop_name }}</span>
+                                        @if($shop->orders_unpaid_count > 0)
+                                            <span class="badge bg-danger ms-1">{{ $shop->orders_unpaid_count }}</span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+
+                                                         <!-- Action Button -->
+                             <div class="mt-2 text-center">
+                                <a href="#" class="action-btn" data-bs-toggle="modal" data-bs-target="#user-{{$user->id}}">
+                                    <i class="ri-eye-fill"></i>
+                                    Xem chi tiết
                                 </a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <!-- Tất cả đơn hàng -->
-                            <div class="tab-pane fade show active" id="home1" role="tabpanel">
-                                <div class="table-responsive table-card mb-1">
-                                    <table id="user_list" class="table table-hover">
-                                        <thead class="text-muted table-light ">
-                                            <tr class="text-uppercase ">
-                                                <th class="sort" data-sort="soluong">Thông tin khách hàng</th>
-                                                <th class="sort" data-sort="phidrop">Số Sư</th>
-                                                <th class="sort" data-sort="product_cost">Đơn quá hạn thanh toán</th>
-                                                <th class="sort" data-sort="date">Email</th>
-                                                <th class="sort" data-sort="product_cost">Hành động</th>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal for User Details -->
+                <div class="modal fade" id="user-{{$user->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalTitle-{{$user->id}}" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title" id="modalTitle-{{$user->id}}">Đơn hàng chậm thanh toán - {{ $user->name }}</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="text-muted table-light">
+                                            <tr class="text-uppercase">
+                                                <th>Mã đơn nhập hàng</th>
+                                                <th>Tên Chủ shop</th>
+                                                <th>Shop</th>
+                                                <th>Ngày tạo đơn</th>
+                                                <th>Số lượng</th>
+                                                <th>Phí drop</th>
+                                                <th>Tổng Bill</th>
+                                                <th>Thanh toán</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
-                                            @foreach($users as $user)
-                                            <tr>
-                                                <td class="total_dropship" style="vertical-align: middle; width: 25%;">
-                                                    <div class="position-relative d-flex align-items-center">
-
-                                                        <!-- Thêm dòng chữ thông báo trên cùng -->
-
-
-                                                        <div class="flex-shrink-0 me-2">
-                                                            <img src="
-                                                                @if(isset($user->image) && !empty($user->image))
-                                                                    {{ $user->image }}
-                                                                @else
-                                                                   https://img.icons8.com/ios-filled/100/user-male-circle.png
-                                                                @endif
-                                                            " alt="" class="avatar-sm" style="border-radius:10px" />
-                                                        </div>
-
-                                                        <div>
-                                                            <h5 class="col-2 fs-16 mb-1 fw-medium" style="white-space: nowrap;">
-                                                                {{ $user->name }}
-                                                                @if(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
-                                                                <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
-                                                                @else
-                                                                <i class="ri-verified-badge-fill text-muted" data-bs-toggle="tooltip" title="Nhà bán dropship"></i>
-                                                                @endif
-                                                            </h5>
-
-                                                            <span>Code: <b style="color:#2e397f;">{{ $user->referral_code ?? 'CODE' }}</b></span>
-                                                        </div>
-
-                                                        @foreach ($user->shops as $shop)
-                                                        @if($shop->orders_unpaid_count > 0)
-                                                        <div class="h-100 d-flex align-items-center">
-                                                            <span class="badge bg-danger m-4 py-2">
-                                                                Chậm Thanh Toán
-                                                            </span>
-                                                        </div>
+                                            @php
+                                                $hasOverdueOrders = false;
+                                            @endphp
+                                            @foreach ($user->shops as $shop)
+                                                @if($shop->orders_unpaid_count > 0)
+                                                    @foreach($shop->orders_unpaid as $orders_unpai)
+                                                        @if($orders_unpai->payment_status == 'Chưa thanh toán')
+                                                            @php $hasOverdueOrders = true; @endphp
+                                                            <tr>
+                                                                <td class="id text-black-50">
+                                                                    <div class="hienthicopy">
+                                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$orders_unpai->order_code}}">
+                                                                            {{$orders_unpai['order_code']}}
+                                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="text-body-secondary" style="font-size: 11px;">{{$orders_unpai->filter_date}}</div>
+                                                                </td>
+                                                                <td class="customer_cost">
+                                                                    {{ $orders_unpai->shop->user->name?? 'N/A' }}
+                                                                </td>
+                                                                <td class="customer_cost" data-shop-id="{{ optional($orders_unpai->shop)->id ?? 0 }}">
+                                                                    @if($shop->platform == 'Tiktok')
+                                                                        <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                                                    @elseif($shop->platform == 'Shoppe')
+                                                                        <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                                                    @else
+                                                                        <i class="fas fa-store me-1"></i>
+                                                                    @endif
+                                                                    {{ optional($orders_unpai->shop)->shop_name ?? 'N/A' }}
+                                                                </td>
+                                                                <td class="export_date">{{$orders_unpai->created_at}}</td>
+                                                                <td class="total_products">{{$orders_unpai->total_products}}</td>
+                                                                <td class="total_dropship">{{ number_format($orders_unpai->total_dropship, 0, ',', '.') }} đ</td>
+                                                                <td class="total_bill">{{ number_format($orders_unpai->total_bill, 0, ',', '.') }} đ</td>
+                                                                <td class="payment_status" style="color: red;">
+                                                                    {{ $orders_unpai->payment_status }}
+                                                                </td>
+                                                            </tr>
                                                         @endif
-                                                        @endforeach
-                                                    </div>
-                                                </td>
-
-                                                <td class="total_products" style=" vertical-align: middle;">
-                                                    {{ number_format($user->total_amount, 0, ',', '.') }} VNĐ
-                                                </td>
-                                                <td class="total_products" style=" vertical-align: middle;">
-                                                    @foreach ($user->shops as $shop)
-                                                    <p><b>
-                                                            @if($shop->platform == 'Tiktok')
-                                                            <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                            @elseif($shop->platform == 'Shoppe')
-                                                            <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
-                                                            @else
-                                                            <i class="fas fa-store me-1"></i>
-                                                            @endif
-                                                            {{ $shop->shop_name }}
-                                                        </b>: <strong>{{ $shop->orders_unpaid_count ?? 0 }} Đơn</strong></p>
                                                     @endforeach
-                                                </td>
-                                                <td class="total_products" style=" vertical-align: middle;">{{$user->email}}</td>
-                                                <td style="vertical-align: middle;">
-                                                    <ul class="list-inline d-flex justify-content-center gap-2 mb-0">
-                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Xem chi tiết">
-                                                            <a href="#" class="text-primary d-inline-block" data-bs-toggle="modal" data-bs-target="#user-{{$user->id}}">
-                                                                <i class="ri-eye-fill fs-16"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="modal fade" id="user-{{$user->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalTitle-{{$user->id}}" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 90%; width: 100%;">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h6 class="modal-title" id="modalTitle-{{$user->id}}">Đơn hàng chậm thanh toán</h6>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <table class="table table-hover">
-                                                                        <thead class="text-muted table-light ">
-                                                                            <tr class="text-uppercase ">
-                                                                                <th class="sort" data-sort="id">Mã đơn nhập hàng</th>
-                                                                                <th class="sort" data-sort="shop_name">Tên Chủ shop</th>
-                                                                                <th class="sort" data-sort="shop_name">Shop</th>
-                                                                                <th class="sort" data-sort="date">Ngày tạo đơn</th>
-                                                                                <th class="sort" data-sort="soluong">Số lượng</th>
-                                                                                <th class="sort" data-sort="phidrop">Phí drop</th>
-                                                                                <th class="sort" data-sort="product_cost">Tổng Bill</th>
-                                                                                <th class="sort" data-sort="shop_name">Thanh toán</th>
-
-
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody class="list form-check-all text-black-50">
-                                                                            @foreach ($user->shops as $shop)
-                                                                            @foreach($shop->orders_unpaid as $orders_unpai)
-                                                                            <tr>
-                                                                                <td class="id text-black-50" style="max-width: 5px;">
-                                                                                    <ul style="list-style: none; padding: 0; margin: 0;">
-                                                                                        <li class="hienthicopy">
-                                                                                            <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$orders_unpai->order_code}}">
-                                                                                                {{$orders_unpai['order_code']}}
-                                                                                                <span class="ri-checkbox-multiple-blank-line icon"></span>
-                                                                                            </a>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$orders_unpai->filter_date}}</a>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </td>
-                                                                                <td class="customer_cost">
-                                                                                    {{ $orders_unpai->shop->user->name?? 'N/A' }}
-                                                                                </td>
-
-                                                                                <td class="customer_cost" data-shop-id="{{ optional($orders_unpai->shop)->id ?? 0 }}">
-                                                                                    @if($shop->platform == 'Tiktok')
-                                                                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                                                    @elseif($shop->platform == 'Shoppe')
-                                                                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
-                                                                                    @else
-                                                                                    <i class="fas fa-store me-1"></i>
-                                                                                    @endif
-
-                                                                                    {{ optional($orders_unpai->shop)->shop_name ?? 'N/A' }}
-                                                                                </td>
-
-
-                                                                                <td class="export_date">{{$orders_unpai->created_at}}</td>
-                                                                                <td class="total_products">{{$orders_unpai->total_products}}</td>
-                                                                                <td class="total_dropship">{{ number_format($orders_unpai->total_dropship, 0, ',', '.') }} đ</td>
-                                                                                <td class="total_bill">{{ number_format($orders_unpai->total_bill, 0, ',', '.') }} đ</td>
-                                                                                @if($orders_unpai->payment_status == 'Chưa thanh toán')
-                                                                                <td class="payment_status" style="color:red;">
-                                                                                    {{ $orders_unpai->payment_status }}
-                                                                                </td>
-                                                                                @else
-                                                                                <td class="payment_status" style="color:green;">
-                                                                                    {{ $orders_unpai->payment_status }}
-                                                                                </td>
-                                                                                @endif
-                                                                            </tr>
-                                                                            @endforeach
-                                                                            @endforeach
-                                                                        </tbody>
-
-                                                                    </table>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                            </tr>
+                                                @endif
                                             @endforeach
+                                            @if(!$hasOverdueOrders)
+                                                <tr>
+                                                    <td colspan="8" class="text-center text-muted py-4">
+                                                        <i class="ri-check-line fs-1 text-success"></i>
+                                                        <p class="mt-2 mb-0">Không có đơn hàng quá hạn thanh toán</p>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -248,57 +456,142 @@
                         </div>
                     </div>
                 </div>
+                @endforeach
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="ri-search-line"></i>
+                <h5>Không tìm thấy khách hàng nào</h5>
+                <p>Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container" id="paginationContainer">
+                <!-- Pagination will be generated by JavaScript -->
             </div>
         </div>
     </div>
 </div>
+
 <script>
 $(document).ready(function() {
+    let currentPage = 1;
+    const itemsPerPage = 12;
+    let filteredUsers = [];
+    let allUsers = [];
 
-    // Khởi tạo DataTable
-    var table = $('#user_list').DataTable({
-        "paging": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "lengthMenu": [10, 20, 50, 100, 150],
-        "order": [
-            [0, "desc"]
-        ],
-        "language": {
-            "lengthMenu": "Hiển thị _MENU_ đơn hàng",
-            "zeroRecords": "Không tìm thấy dữ liệu",
-            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ đơn hàng",
-            "infoEmpty": "Không có dữ liệu để hiển thị",
-            "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-            "search": "🔍",
-            "paginate": {
-                "first": "Trang đầu",
-                "last": "Trang cuối",
-                "next": "Tiếp theo",
-                "previous": "Quay lại"
+    // Initialize all users
+    function initializeUsers() {
+        allUsers = $('.user-card-wrapper').toArray();
+        filteredUsers = [...allUsers];
+        updateDisplay();
+    }
+
+    // Filter users
+    function filterUsers() {
+        const searchTerm = $('#searchInput').val().toLowerCase();
+        const activeFilter = $('.filter-btn.active').data('filter');
+        
+        filteredUsers = allUsers.filter(userCard => {
+            const $card = $(userCard);
+            const userName = $card.find('.user-name').text().toLowerCase();
+            const userEmail = $card.find('.text-muted').text().toLowerCase();
+            const userCode = $card.find('.user-code').text().toLowerCase();
+            
+            // Search filter
+            const matchesSearch = userName.includes(searchTerm) || 
+                                userEmail.includes(searchTerm) || 
+                                userCode.includes(searchTerm);
+            
+                         // Type filter
+             let matchesType = true;
+             if (activeFilter === 'admin') {
+                 matchesType = $card.data('user-type') === 'admin';
+             } else if (activeFilter === 'official') {
+                 matchesType = $card.data('user-type') === 'official';
+             } else if (activeFilter === 'dropship') {
+                 matchesType = $card.data('user-type') === 'dropship';
+             } else if (activeFilter === 'overdue') {
+                 matchesType = $card.attr('data-has-overdue') === 'true';
+             }
+            
+            return matchesSearch && matchesType;
+        });
+        
+        currentPage = 1;
+        updateDisplay();
+    }
+
+    // Update display
+    function updateDisplay() {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const usersToShow = filteredUsers.slice(startIndex, endIndex);
+        
+        // Hide all cards
+        $('.user-card-wrapper').hide();
+        
+        // Show filtered cards
+        usersToShow.forEach(card => {
+            $(card).show();
+        });
+        
+        // Show/hide no results message
+        if (filteredUsers.length === 0) {
+            $('#noResults').show();
+            $('#paginationContainer').hide();
+        } else {
+            $('#noResults').hide();
+            $('#paginationContainer').show();
+            generatePagination();
+        }
+    }
+
+    // Generate pagination
+    function generatePagination() {
+        const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+        let paginationHtml = '';
+        
+        if (totalPages > 1) {
+            // Previous button
+            paginationHtml += `<a href="#" class="page-link ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">Trước</a>`;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHtml += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHtml += `<span class="page-link disabled">...</span>`;
+                }
             }
+            
+            // Next button
+            paginationHtml += `<a href="#" class="page-link ${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">Sau</a>`;
+        }
+        
+        $('#paginationContainer').html(paginationHtml);
+    }
+
+    // Event listeners
+    $('#searchInput').on('input', filterUsers);
+    
+    $('.filter-btn').on('click', function() {
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        filterUsers();
+    });
+    
+    $(document).on('click', '.page-link', function(e) {
+        e.preventDefault();
+        const page = $(this).data('page');
+        if (page && !$(this).hasClass('disabled')) {
+            currentPage = page;
+            updateDisplay();
         }
     });
 
-    // Khởi tạo Tooltip lần đầu (sau khi DOM sẵn sàng)
-    initTooltips();
-
-    // Khởi tạo lại Tooltip mỗi lần DataTable render lại (sau khi tìm kiếm, phân trang...)
-    table.on('draw', function() {
-        initTooltips();
-    });
-
-    // Tô màu theo shop ID
-    document.querySelectorAll('.customer_cost').forEach(td => {
-        const shopId = td.dataset.shopId;
-        if (shopId) {
-            const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
-            td.style.color = color;
-        }
-    });
-
-    // Hàm khởi tạo tooltip (viết riêng cho gọn)
+    // Initialize tooltips
     function initTooltips() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.forEach(function(tooltipTriggerEl) {
@@ -306,8 +599,26 @@ $(document).ready(function() {
         });
     }
 
+    // Initialize everything
+    initializeUsers();
+    initTooltips();
+
+    // Reinitialize tooltips when modal opens
+    $('.modal').on('shown.bs.modal', function() {
+        initTooltips();
+    });
+
+    // Color coding for shop IDs in modal
+    $('.modal').on('shown.bs.modal', function() {
+        $(this).find('.customer_cost').each(function() {
+            const shopId = $(this).data('shop-id');
+            if (shopId) {
+                const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+                $(this).css('color', color);
+            }
+        });
+    });
 });
 </script>
-
 
 @endsection
