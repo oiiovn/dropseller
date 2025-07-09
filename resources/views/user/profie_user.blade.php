@@ -339,7 +339,9 @@
                                     <span class="stat-label">VNĐ</span>
                                 </div>
                                 <div class="stat-item">
-                                    <span class="stat-value">{{ $user->shops->sum('orders_unpaid_count') }}</span>
+                                    <span class="stat-value" style="color: {{ $user->shops->sum('orders_unpaid_count') > 0 ? '#dc3545' : '#212529' }};">
+                                        {{ $user->shops->sum('orders_unpaid_count') }}
+                                    </span>
                                     <span class="stat-label">Quá hạn</span>
                                 </div>
                             </div>
