@@ -80,7 +80,7 @@
                     </span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ajax-link" href="{{route('dashboard')}}">
+                    <a class="nav-link menu-link ajax-link" href="{{route('dashboard')}}">
                         <i class="ri-dashboard-2-line"></i>
                         <span>Dashboards</span>
                     </a>
@@ -133,7 +133,7 @@
                                 <a href="{{ route('balance.history') }}" class="nav-link ajax-link" data-key="t-chat">Biến động số dư</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="{{ route('settlement.settlement-report') }}">
+                                <a class="nav-link ajax-link" href="{{ route('settlement.settlement-report') }}">
                                     <span data-key="t-settlement-report">Báo cáo quyết toán</span>
                                 </a>
                             </li>

@@ -50,7 +50,7 @@ class ShopController extends Controller
             'shop_id' => 'required|max:255',
             'shop_name' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
-            'platform' => 'required|in:Shopee,Tiktok', // Thêm trường platform
+            'platform' => 'required|in:Shoppe,Tiktok', // Thêm trường platform
         ]);
         // Debug dữ liệu được gửi
         // Kiểm tra shop_id đã tồn tại
