@@ -88,7 +88,7 @@
                 @if(Auth::check() && Auth::user()->hasRole('seller'))
                 <li class="nav-item">
                     <a class="nav-link menu-link ajax-link" href="{{route('order_si')}}">
-                    <i class=" ri-shopping-bag-3-line"></i>
+                        <i class=" ri-shopping-bag-3-line"></i>
                         <span>Quản lý đơn hàng</span>
                     </a>
                 </li>
@@ -170,14 +170,17 @@
                                 <a href="{{route('list_program')}}" class="nav-link ajax-link" data-key="t-chat">Gói đăng sản phẩm</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('check_so_dt') }}" class="nav-link" data-key="t-chat">Check số điện thoại</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{route('campaign')}}" class="nav-link ajax-link" data-key="t-horizontal">Tính % chiến dịch</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                
+
                 @endif
-              @if(Auth::check() && Auth::user()->hasRole('admin'))
+                @if(Auth::check() && Auth::user()->hasRole('admin'))
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>
@@ -274,8 +277,8 @@
                                     </ul>
                                 </div>
                             </li>
-                           
-                           
+
+
                             <!-- <li class="nav-item">
                                 <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">Email</a>
                                 <div class="collapse menu-dropdown" id="sidebarEmail">
@@ -310,7 +313,7 @@
                 </li>
 
                 <li class="nav-item">
-                    
+
                     <a class="nav-link menu-link" href="#1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Hệ thống</span>

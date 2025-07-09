@@ -34,6 +34,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\GiftCardController;
+use App\Http\Controllers\PhoneCheckController;
 
 
 Route::get('/', function () {
@@ -233,3 +234,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // // Hoạt động của người dùng
     // Route::get('/activities', [ActivityController::class, 'index'])->name('activities');
 });
+// Routes cho các công cụ check số điện thoại
+Route::get('/kiem-tra-so-dien-thoai', [PhoneCheckController::class, 'form'])->name('check_so_dt');
+Route::post('/kiem-tra-so-dien-thoai', [PhoneCheckController::class, 'check'])->name('check_so_dt_submit');
+Route::post('/gui-username', [PhoneCheckController::class, 'submitUsername'])->name('username.submit');
+
