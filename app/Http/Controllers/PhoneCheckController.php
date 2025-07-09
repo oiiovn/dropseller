@@ -18,7 +18,9 @@ class PhoneCheckController extends Controller
     {
         $request->validate([
             'username' => 'required|string|max:255',
-    
+        ]);
+
+
 
         $username = trim($request->username);
         // Lấy referral_code theo username
