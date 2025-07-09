@@ -117,12 +117,29 @@ window.initNapTienModalEvents = function() {
             backgroundColor: null,
             useCORS: true
         }).then(function(canvas) {
-            const link = document.createElement('a');
-            link.href = canvas.toDataURL('image/png');
-            link.download = 'qr-only-' + new Date().getTime() + '.png';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Chuyển canvas thành blob
+            canvas.toBlob(function(blob) {
+                // Tạo URL cho blob
+                const blobUrl = URL.createObjectURL(blob);
+                
+                // Tạo thẻ a với thuộc tính để lưu vào thư viện ảnh
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.download = 'QR-Thanh-Toan-' + new Date().getTime() + '.png';
+                
+                // Thêm thuộc tính để mở trong thư viện ảnh (chỉ hoạt động trên một số trình duyệt)
+                link.setAttribute('data-gallery', 'photo-library');
+                
+                // Click vào link để mở hộp thoại lưu/mở
+                document.body.appendChild(link);
+                link.click();
+                
+                // Dọn dẹp
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+            }, 'image/png');
 
             // Hiện lại modal backdrop
             document.querySelectorAll('.modal-backdrop').forEach(e => e.style.display = '');
