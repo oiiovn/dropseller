@@ -132,11 +132,66 @@ class DashboardController extends Controller
         return response()->json($result);
     }
 
+    public function Chart_v1(Request $request)
+    {
+        $excludedCodes = ['QUA_TRANG', 'QUA001'];
+
+        $range = $request->input('range', 'last7days');
+        [$startDate, $endDate] = match ($range) {
+            'yesterday'    => [Carbon::yesterday()->startOfDay(), Carbon::yesterday()->endOfDay()],
+            'last7days'    => [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()],
+            'lastmonth'    => [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()],
+            'today'        => [Carbon::today()->startOfDay(), Carbon::now()->endOfDay()],
+            default        => [
+                Carbon::parse($request->input('start_date', now()->startOfMonth()))->startOfDay(),
+                Carbon::parse($request->input('end_date', now()))->endOfDay()
+            ]
+        };
+
+        $user = Auth::user();
+        $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id');
+
+        $filterDateClause = "STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?";
+        $filterBindings   = [$startDate->toDateString(), $endDate->toDateString()];
+
+        $totalQuantitySold = OrderDetail::whereHas('order', function ($q) use ($shopIds, $filterDateClause, $filterBindings) {
+            $q->whereIn('shop_id', $shopIds)->whereRaw($filterDateClause, $filterBindings);
+        })
+            ->whereNotIn('sku', $excludedCodes)
+            ->sum('quantity');
+
+        $totalBillPaid = Order::whereIn('shop_id', $shopIds)
+            ->whereRaw($filterDateClause, $filterBindings)
+            ->sum('total_bill');
+
+        $totalOrders = Order::whereIn('shop_id', $shopIds)
+            ->whereRaw($filterDateClause, $filterBindings)
+            ->count();
+
+        $totalDropship = Order::whereIn('shop_id', $shopIds)
+            ->whereRaw($filterDateClause, $filterBindings)
+            ->sum('total_dropship');
+
+        $totalAds = ADS::whereIn('shop_id', $shopIds)
+            ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(date_range, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", $filterBindings)
+            ->sum('total_amount');
+
+        return response()->json([
+            'start_date'           => $startDate->toDateTimeString(),
+            'end_date'             => $endDate->toDateTimeString(),
+            'total_quantity_sold'  => $totalQuantitySold,
+            'total_bill_paid'      => $totalBillPaid,
+            'total_orders'         => $totalOrders,
+            'total_dropship'       => $totalDropship,
+            'total_ads'            => $totalAds,
+        ]);
+    }
 
 
 
 
-    
+
+
     public function getChartData(Request $request)
     {
         $range = $request->input('range', 'last7days');

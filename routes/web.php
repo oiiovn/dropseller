@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
     Route::get('/api/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'getDashboardStats']);
     Route::get('/api/char', [\App\Http\Controllers\Admin\DashboardController::class, 'getChartData']);
+     Route::get('/api/char-v1', [\App\Http\Controllers\Admin\DashboardController::class, 'Chart_v1']);
 
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
     Route::middleware('check_balance')->group(function () {
