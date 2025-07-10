@@ -5,6 +5,33 @@
 
 @include('ads.components.ads-styles')
 
+{{-- Add CSS for no ads message --}}
+<style>
+    .no-ads-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+        background: white;
+    }
+    .no-ads-icon {
+        font-size: 48px;
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+    .no-ads-message {
+        font-size: 20px;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+    .no-ads-submessage {
+        font-size: 16px;
+        color: #8c959d;
+    }
+</style>
+
 <div class="container-fluid" style="width: 100%; background: white;">
     <div class="row">
         <div class="col-lg-12 p-0">
@@ -93,7 +120,17 @@
                                     }
                                 }
                             @endphp
-                            @include('ads.components.ads-table', ['ads' => $allAds, 'shopName' => null])
+                            @if($allAds->isEmpty())
+                                <div class="no-ads-container">
+                                    <div class="no-ads-icon">
+                                        <i class="ri-search-line"></i>
+                                    </div>
+                                    <div class="no-ads-message">Không có hóa đơn quảng cáo nào</div>
+                                    <div class="no-ads-submessage">Tài khoản này hiện chưa có quảng cáo.</div>
+                                </div>
+                            @else
+                                @include('ads.components.ads-table', ['ads' => $allAds, 'shopName' => null])
+                            @endif
                         </div>
 
                         <!-- Quảng cáo theo từng Shop -->
@@ -107,7 +144,17 @@
                             <div class="d-block d-md-none">
                                 @include('ads.components.ads-mobile-filters')
                             </div>
-                            @include('ads.components.ads-table', ['ads' => $ads, 'shopName' => $shopName])
+                            @if(empty($ads))
+                                <div class="no-ads-container">
+                                    <div class="no-ads-icon">
+                                        <i class="ri-search-line"></i>
+                                    </div>
+                                    <div class="no-ads-message">Không có hóa đơn quảng cáo nào</div>
+                                    <div class="no-ads-submessage">Tài khoản này hiện chưa có quảng cáo.</div>
+                                </div>
+                            @else
+                                @include('ads.components.ads-table', ['ads' => $ads, 'shopName' => $shopName])
+                            @endif
                         </div>
                         @endforeach
                     </div> <!-- End Tab Content -->

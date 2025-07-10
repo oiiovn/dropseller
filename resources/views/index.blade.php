@@ -94,7 +94,7 @@
         <div class="">
 
             <div class="h-100 pt-2">
-            <div class="row g-3 mb-3">
+                <div class="row g-3 mb-3">
                     <div class="col-6 col-md-6 col-xl-3">
                         <div class="card mb-0 card-animate">
                             <div class="card-body p-2 p-md-3">
@@ -106,8 +106,8 @@
                                 <div class="d-flex align-items-center justify-content-between mt-1 md:mt-3">
                                     <div>
                                         <h5 class="fw-semibold ff-secondary mb-1 fs-12 fs-md-16">
-                                            <span class="d-inline-block text-nowrap">
-                                                {{ number_format($totalBillPaid ?? 0) }} <span class="text-muted">VNĐ</span>
+                                            <span class="d-inline-block text-nowrap" id="totalBillPaid">
+                                                0 <span class="text-muted">VNĐ</span>
                                             </span>
                                         </h5>
                                     </div>
@@ -132,8 +132,8 @@
                                 <div class="d-flex align-items-center justify-content-between mt-1 md:mt-3">
                                     <div>
                                         <h5 class="fw-semibold ff-secondary mb-1 fs-12 md:fs-16">
-                                            <span class="d-inline-block text-nowrap">
-                                                {{ number_format($totalOrders ?? 0) }} <span class="text-muted">Đơn</span>
+                                            <span class="d-inline-block text-nowrap" id="totalOrders">
+                                                0 <span class="text-muted">Đơn</span>
                                             </span>
                                         </h5>
                                     </div>
@@ -158,8 +158,8 @@
                                 <div class="d-flex align-items-center justify-content-between mt-1 md:mt-3">
                                     <div>
                                         <h5 class="fw-semibold ff-secondary mb-1 fs-12 md:fs-16">
-                                            <span class="d-inline-block text-nowrap">
-                                                {{ number_format($totalQuantitySold ?? 0) }} <span class="text-muted">Sản phẩm</span>
+                                            <span class="d-inline-block text-nowrap" id="totalQuantitySold">
+                                                0 <span class="text-muted">Sản phẩm</span>
                                             </span>
                                         </h5>
                                     </div>
@@ -184,8 +184,8 @@
                                 <div class="d-flex align-items-center justify-content-between mt-1 md:mt-3">
                                     <div>
                                         <h5 class="fw-semibold ff-secondary mb-1 fs-12 md:fs-16">
-                                            <span class="d-inline-block text-nowrap">
-                                                {{ number_format($total_dropship ?? 0) }} <span class="text-muted">VNĐ</span>
+                                            <span class="d-inline-block text-nowrap" id="totalDropship">
+                                                0 <span class="text-muted">VNĐ</span>
                                             </span>
                                         </h5>
                                     </div>
@@ -199,10 +199,39 @@
                         </div>
                     </div>
                 </div>
+
+@push('scripts')
+<script>
+    function updateStatisticsFromChart(data) {
+        // Cập nhật giá trị cho các card từ dữ liệu biểu đồ
+        document.getElementById('totalBillPaid').innerHTML = 
+            `${new Intl.NumberFormat('vi-VN').format(data.total_bill_paid)} <span class="text-muted">VNĐ</span>`;
+        
+        document.getElementById('totalOrders').innerHTML = 
+            `${new Intl.NumberFormat('vi-VN').format(data.total_orders)} <span class="text-muted">Đơn</span>`;
+        
+        document.getElementById('totalQuantitySold').innerHTML = 
+            `${new Intl.NumberFormat('vi-VN').format(data.total_quantity_sold)} <span class="text-muted">Sản phẩm</span>`;
+        
+        document.getElementById('totalDropship').innerHTML = 
+            `${new Intl.NumberFormat('vi-VN').format(data.total_dropship)} <span class="text-muted">VNĐ</span>`;
+    }
+
+    // Lắng nghe sự kiện dữ liệu được cập nhật từ biểu đồ
+    window.addEventListener('dashboardDataUpdated', function(event) {
+        updateStatisticsFromChart(event.detail);
+    });
+
+    // Kiểm tra nếu đã có dữ liệu sẵn từ biểu đồ
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.dashboardData) {
+            updateStatisticsFromChart(window.dashboardData);
+        }
+    });
+</script>
+@endpush
                 <!-- Charts Component -->
-                
-                
-                
+                @include('components.dashboard-charts')
                 <div class="row">
                     <div class="col-xl-7">
                         <div class="card h-100">
