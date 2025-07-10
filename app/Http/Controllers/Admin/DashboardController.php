@@ -140,11 +140,15 @@ class DashboardController extends Controller
                 Carbon::parse($request->input('end_date', now()))->endOfDay()
             ]
         };
+        $user = Auth::user();
+        $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id');
         $raw = Order::selectRaw("DATE(created_at) as date, SUM(total_bill) as total_bill, SUM(total_dropship) as total_dropship")
+            ->whereIn('shop_id', $shopIds)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->groupBy(DB::raw("DATE(created_at)"))
             ->orderBy('date')
             ->get();
+
         $data = [];
         foreach ($raw as $row) {
             $data[$row->date] = [
