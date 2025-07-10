@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{User, Shop, Order, OrderDetail};
+use App\Models\{User, Shop, Order, OrderDetail, ADS};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Auth, Cache};
@@ -74,10 +74,14 @@ class DashboardController extends Controller
         $totalBillPaid = 0;
         $totalOrders = 0;
         $totalDropship = 0;
+        $totalAds = 0;
+
 
         if ($isAdmin) {
             $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
                 ->whereNotIn('sku', $excludedCodes)->sum('quantity');
+            $totalAds = ADS::whereBetween(DB::raw("STR_TO_DATE(SUBSTRING_INDEX(date_range, ' - ', 1), '%Y-%m-%d')"), [$startDate->toDateString(), $endDate->toDateString()])
+                ->sum('total_amount');
 
             $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_bill');
             $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
@@ -85,19 +89,20 @@ class DashboardController extends Controller
         } elseif ($isSeller) {
             $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id');
 
+
             $filterDateClause = "STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?";
             $filterBindings = [$startDate->toDateString(), $endDate->toDateString()];
 
             $totalQuantitySold = OrderDetail::whereHas('order', function ($q) use ($shopIds, $filterDateClause, $filterBindings) {
                 $q->whereIn('shop_id', $shopIds)->whereRaw($filterDateClause, $filterBindings);
             })->whereNotIn('sku', $excludedCodes)->sum('quantity');
-
+            $totalAds = ADS::whereIn('shop_id', $shopIds)
+                ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(date_range, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", $filterBindings)
+                ->sum('total_amount');
             $totalBillPaid = Order::whereIn('shop_id', $shopIds)->whereRaw($filterDateClause, $filterBindings)->sum('total_bill');
             $totalOrders = Order::whereIn('shop_id', $shopIds)->whereRaw($filterDateClause, $filterBindings)->count();
             $totalDropship = Order::whereIn('shop_id', $shopIds)->whereRaw($filterDateClause, $filterBindings)->sum('total_dropship');
         }
-
-        // Đơn theo shop
         $ordersByShop = Order::select(
             'shop_id',
             DB::raw('COUNT(*) as order_count'),
@@ -119,12 +124,19 @@ class DashboardController extends Controller
             'total_bill_paid' => $totalBillPaid,
             'total_orders' => $totalOrders,
             'total_dropship' => $totalDropship,
+            'total_ads' => $totalAds,
             'total_orders_by_shop' => $ordersByShop,
         ];
 
         Cache::put($cacheKey, $result, now()->addMinutes(10));
         return response()->json($result);
     }
+
+
+
+
+
+    
     public function getChartData(Request $request)
     {
         $range = $request->input('range', 'last7days');
