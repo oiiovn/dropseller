@@ -16,9 +16,9 @@ class PhoneCheckController extends Controller
 
     public function submitUsername(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:255',
-        ]);
+        // $request->validate([
+        //     'username' => 'required|string|max:255',
+        // ]);
 
 
 
@@ -28,13 +28,21 @@ class PhoneCheckController extends Controller
         $referralCode = $user ? $user->referral_code : null;
 
         // 1. Gửi yêu cầu tạo đơn
-        $postResponse = Http::asForm()->post('https://hawksocia.com/ajaxs/client/buyStorefanpage.php', [
-            'coupon' => '',
-            'token' => 'GSN6PN3TYFNDO5VW', // ← Thay bằng token web của bạn
-            'url' => $username,
-            'new_name' => $username,
-            'id' => '437', // ID dịch vụ Fanpage
-        ]);
+        $postResponse = Http::asForm()
+            ->withHeaders([
+                'User-Agent' => 'Mozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F140.0.0.0%20Safari%2F537.36',
+            ])
+            ->withCookies([
+                'user_login' => '32f4744fe9893659c458b50aa4c8c34dd97478e0877bcf00e8d8430144df871d'
+            ], 'hawksocia.com')
+            ->post('https://hawksocia.com/ajaxs/client/buyStorefanpage.php', [
+                'coupon' => '',
+                'token' => '32f4744fe9893659c458b50aa4c8c34dd97478e0877bcf00e8d8430144df871d',
+                'url' => $username,
+                'new_name' => $username,
+                'id' => '437',
+            ]);
+
 
         // 2. Lưu tạm vào DB trạng thái đang xử lý
         $record = CheckSo::create([
@@ -51,9 +59,9 @@ class PhoneCheckController extends Controller
 
         // 4. Gửi GET để lấy kết quả
         $getResponse = Http::withHeaders([
-            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+            'User-Agent' => 'Mozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F140.0.0.0%20Safari%2F537.36',
         ])->withCookies([
-            'user_login' => '60d27e648da79ea1b8f9e625f22023965698bfb576f8d4f2e855af2f3e59ccfcvubui92'
+            'user_login' => '32f4744fe9893659c458b50aa4c8c34dd97478e0877bcf00e8d8430144df871d'
         ], 'hawksocia.com')->get('https://hawksocia.com/client/store-fanpage-orders');
 
         if ($getResponse->successful()) {

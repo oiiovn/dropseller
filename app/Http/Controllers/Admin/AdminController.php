@@ -164,19 +164,19 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-    public function check_code() 
+    public function check_code()
     {
         // Kiểm tra quyền truy cập
         if (!auth()->user()->hasRole('admin')) {
             return redirect()->back()->with('error', 'Bạn không có quyền thực hiện chức năng này');
         }
-        
+
         // Lấy tất cả các mã từ cơ sở dữ liệu để kiểm tra
         $referralCodes = User::pluck('referral_code')->toArray();
-        $duplicateCodes = array_filter(array_count_values($referralCodes), function($count) {
+        $duplicateCodes = array_filter(array_count_values($referralCodes), function ($count) {
             return $count > 1;
         });
-        
+
         $results = [
             'duplicate_codes' => $duplicateCodes,
             'invalid_format' => [],
@@ -186,12 +186,12 @@ class AdminController extends Controller
                 'duplicates' => count($duplicateCodes),
             ]
         ];
-        
+
         // Kiểm tra định dạng mã
         $users = User::all();
         foreach ($users as $user) {
             $code = $user->referral_code;
-            
+
             // Kiểm tra định dạng mã (5 ký tự chữ và số viết hoa)
             if ($code && (!preg_match('/^[A-Z0-9]{5}$/', $code))) {
                 $results['invalid_format'][] = [
@@ -203,27 +203,27 @@ class AdminController extends Controller
                 ];
             }
         }
-        
+
         // Kiểm tra xung đột với các mã giao dịch
         $transactionCodes = Transaction::pluck('transaction_id')->toArray();
         $conflictCodes = array_intersect($referralCodes, $transactionCodes);
-        
+
         if (!empty($conflictCodes)) {
             $results['transaction_conflicts'] = $conflictCodes;
         }
-        
+
         // Ghi lại log kết quả kiểm tra
         Log::info('Admin check_code: ' . json_encode($results));
-        
+
         // Hiển thị kết quả trên giao diện người dùng
         session(['code_check_results' => $results]);
-        
+
         return view('admin.code_check', [
             'results' => $results,
             'users' => $users
         ]);
     }
-    
+
     /**
      * Tự động sửa mã không hợp lệ
      */
@@ -233,31 +233,31 @@ class AdminController extends Controller
         if (!auth()->user()->hasRole('admin')) {
             return redirect()->back()->with('error', 'Bạn không có quyền thực hiện chức năng này');
         }
-        
+
         $users = User::whereRaw("LENGTH(referral_code) != 5 OR referral_code NOT REGEXP '^[A-Z0-9]{5}$'")
-                     ->orWhereNull('referral_code')
-                     ->get();
-                     
+            ->orWhereNull('referral_code')
+            ->get();
+
         $fixed = 0;
-        
+
         foreach ($users as $user) {
             $newCode = $this->generateUniqueReferralCode();
             $user->referral_code = $newCode;
             $user->save();
             $fixed++;
-            
+
             Log::info("Fixed user ID {$user->id} referral code to: {$newCode}");
         }
-        
+
         // Sửa mã trùng lặp
         $referralCodes = User::pluck('referral_code', 'id')->toArray();
         $codeCount = array_count_values($referralCodes);
-        
+
         foreach ($codeCount as $code => $count) {
             if ($count > 1) {
                 // Tìm tất cả người dùng có mã trùng lặp
                 $duplicateUsers = User::where('referral_code', $code)->get();
-                
+
                 // Giữ nguyên mã cho người dùng đầu tiên, thay đổi cho những người còn lại
                 for ($i = 1; $i < count($duplicateUsers); $i++) {
                     $user = $duplicateUsers[$i];
@@ -265,15 +265,15 @@ class AdminController extends Controller
                     $user->referral_code = $newCode;
                     $user->save();
                     $fixed++;
-                    
+
                     Log::info("Fixed duplicate code for user ID {$user->id}: {$code} -> {$newCode}");
                 }
             }
         }
-        
+
         return redirect()->route('admin.check_code')->with('success', "Đã sửa {$fixed} mã không hợp lệ");
     }
-    
+
     /**
      * Tạo mã giới thiệu dựa trên cấu hình
      */
@@ -281,18 +281,18 @@ class AdminController extends Controller
     {
         // Lấy mã tiền tố từ cấu hình (ví dụ: "DS")
         $prefix = config('app.referral_code_prefix', 'DS');
-        
+
         // Lấy độ dài phần số (mặc định: 3 chữ số)
         $numberLength = config('app.referral_code_number_length', 3);
-        
+
         // Bắt đầu từ số được cấu hình hoặc mặc định từ 1
         $startNumber = config('app.referral_code_start', 1);
-        
+
         // Tìm mã cuối cùng đã được sử dụng để tạo mã tiếp theo
         $lastCode = User::where('referral_code', 'LIKE', $prefix . '%')
-                        ->orderByRaw('CAST(SUBSTRING(referral_code, ' . (strlen($prefix) + 1) . ') AS UNSIGNED) DESC')
-                        ->value('referral_code');
-        
+            ->orderByRaw('CAST(SUBSTRING(referral_code, ' . (strlen($prefix) + 1) . ') AS UNSIGNED) DESC')
+            ->value('referral_code');
+
         if ($lastCode) {
             // Trích xuất phần số từ mã cuối cùng
             $lastNumber = (int) substr($lastCode, strlen($prefix));
@@ -300,10 +300,10 @@ class AdminController extends Controller
         } else {
             $nextNumber = $startNumber;
         }
-        
+
         // Tạo mã mới với số được định dạng theo độ dài cấu hình
         $code = $prefix . str_pad($nextNumber, $numberLength, '0', STR_PAD_LEFT);
-        
+
         // Kiểm tra xem mã đã tồn tại chưa và tăng số nếu cần
         while (User::where('referral_code', $code)->exists()) {
             $nextNumber++;
@@ -312,7 +312,7 @@ class AdminController extends Controller
 
         return $code;
     }
-    
+
     /**
      * Xác thực mã truy cập admin
      */
@@ -320,31 +320,31 @@ class AdminController extends Controller
     {
         // Lấy mã truy cập từ config (ở đây mã được đặt cố định trong config)
         $validAccessCode = config('admin.access_code', 'ADMIN_1994');
-        
+
         $inputCode = $request->input('access_code');
-        
+
         if ($inputCode === $validAccessCode) {
             // Lưu trạng thái xác thực vào session
             session(['admin_access_verified' => true, 'admin_verified_at' => now()]);
-            
+
             // Log hoạt động
             Log::info("Admin access code verified by user: " . auth()->user()->id);
-            
+
             return redirect()->back()->with([
                 'access_code_status' => 'success',
                 'access_code_message' => 'Mã truy cập hợp lệ. Quyền quản trị cao cấp đã được kích hoạt.'
             ]);
         }
-        
+
         // Log thất bại
         Log::warning("Failed admin access code attempt by user: " . auth()->user()->id . ", code: " . $inputCode);
-        
+
         return redirect()->back()->with([
             'access_code_status' => 'error',
             'access_code_message' => 'Mã truy cập không hợp lệ. Vui lòng thử lại.'
         ]);
     }
-    
+
     /**
      * Kiểm tra xác thực mã truy cập admin (để sử dụng trong middleware)
      */
@@ -354,17 +354,17 @@ class AdminController extends Controller
         if (!session()->has('admin_access_verified') || !session()->has('admin_verified_at')) {
             return false;
         }
-        
+
         // Kiểm tra xem xác thực có quá cũ không (ví dụ: hết hạn sau 1 giờ)
         $verifiedAt = session('admin_verified_at');
         $expiresAt = Carbon::parse($verifiedAt)->addHour();
-        
+
         if (now()->greaterThan($expiresAt)) {
             // Xác thực đã hết hạn
             session()->forget(['admin_access_verified', 'admin_verified_at']);
             return false;
         }
-        
+
         return session('admin_access_verified') === true;
     }
 }

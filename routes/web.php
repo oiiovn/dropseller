@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
             'hasNegativeBalance' => $hasNegativeBalance,
         ]);
     })->name('dashboard');
-    Route::get('/api/dashboard', [\App\Http\Controllers\DashboardController::class, 'getDashboardStats']);
+    Route::get('/api/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'getDashboardStats']);
 
     Route::get('naptien', [PaymentController::class, 'Getnaptien'])->name('naptien');
     Route::middleware('check_balance')->group(function () {
@@ -121,7 +121,7 @@ Route::middleware(['auth', 'checkrole:seller'])->group(function () {
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');
-    Route::post('/get_shop', [ProductController::class, 'Getshopid'])->name('get_shop');
+
     Route::get('/dang-san-pham', [ProgramController::class, 'list_program'])->name('list_program');
 });
 
@@ -131,7 +131,7 @@ Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
     Route::get('/orders/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
     Route::get('/api/orders/{id}/details', [OrderController::class, 'getOrderDetails'])->name('orders.details');
-
+    Route::post('/get_shop', [ProductController::class, 'Getshopid'])->name('get_shop');
     Route::get('/program/processing', [OrderController::class, 'Program_processing'])->name('program.processing');
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
     Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
@@ -238,4 +238,3 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 Route::get('/kiem-tra-so-dien-thoai', [PhoneCheckController::class, 'form'])->name('check_so_dt');
 Route::post('/kiem-tra-so-dien-thoai', [PhoneCheckController::class, 'check'])->name('check_so_dt_submit');
 Route::post('/gui-username', [PhoneCheckController::class, 'submitUsername'])->name('username.submit');
-
