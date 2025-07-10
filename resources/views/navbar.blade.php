@@ -192,38 +192,55 @@
                             <li class="nav-item">
                                 <a href="{{route('Get_all')}}" class="nav-link ajax-link" data-key="t-horizontal">Thông tin khách hàng</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="{{ route('naptien_khach_hang') }}">Nạp tiền cho khách hàng</a>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            <!-- <li class="nav-item">
                                 <a href="{{route('transaction_all')}}" class="nav-link ajax-link" data-key="t-chat">Lịch sử nạp </a>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            <!-- <li class="nav-item">
                                 <a href="{{route('Get_orders_all')}}" class="nav-link ajax-link" data-key="t-detached">Tất cả đơn hàng</a>
+                            </li> -->
+                           
+                            <li class="nav-item">
+                                <a href="{{route('get_all_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached">Nạp tiền & lịch sử nạp</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('get_all_transaction.list')}}" class="nav-link ajax-link" data-key="t-detached">Lịch sử giao dịch drop</a>
+                                <a href="#sidebarCalendar" class="nav-link " data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                                    Đơn hàng
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('Get_orders_all')}}" class="nav-link ajax-link" data-key="t-main-calender">Tất cả</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('Overdue_Order')}}" class="nav-link ajax-link">Đơn chậm</a>
+                                        </li>
+                                        <!-- <li class="nav-item">
+                                            <a href="{{route('list_program')}}" class="nav-link" data-key="t-month-grid">Danh sách sản phẩm</a>
+                                        </li> -->
+                                    </ul>
+                                </div>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="{{route('Overdue_Order')}}" class="nav-link ajax-link" data-key="t-chat">Đơn hàng trễ thanh toán </a>
 
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('productsss')}}" class="nav-link ajax-link" data-key="t-chat">Lọc</a>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            
+                            <!-- <li class="nav-item">
                                 <a href="{{route('shops')}}" class="nav-link ajax-link" data-key="t-chat">Shop</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                    <a class="nav-link menu-link" href="#quyettoan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Quyết toán</span>
 
                     </a>
-                    <div class="collapse menu-dropdown" id="1">
+                    <div class="collapse menu-dropdown" id="quyettoan">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('order.import_don_hoan')}}" class="nav-link ajax-link" data-key="t-chat">Cập nhật đơn hoàn</a>
@@ -314,18 +331,18 @@
 
                 <li class="nav-item">
 
-                    <a class="nav-link menu-link" href="#1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <a class="nav-link menu-link" href="#hethong" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i>
                         <span data-key="t-apps">Hệ thống</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="1">
+                    <div class="collapse menu-dropdown" id="hethong">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.balance_issues.index') }}" class="nav-link ajax-link" data-key="t-chat">Lỗi số dư AI</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="{{route('user-monthly-reports.index')}}" class="nav-link ajax-link" data-key="t-horizontal">Công cụ</a>
-                            </li> -->
+                            <li class="nav-item">
+                                <a href="{{route('productsss')}}" class="nav-link ajax-link" data-key="t-horizontal">Công cụ</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

@@ -52,8 +52,14 @@
         border: 1px solid #e9ecef;
         border-radius: 8px;
         overflow: hidden;
-        margin-bottom: 0;
         margin: 0 2px;
+        height: 100%;
+        position: relative;
+    }
+
+    .user-card .card-body {
+        padding-bottom: 60px !important; /* Space for button */
+        height: 100%;
     }
 
     .user-card:hover {
@@ -155,7 +161,12 @@
         text-decoration: none;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.5rem;
+        width: calc(100% - 2rem);
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
     }
 
     .action-btn:hover {

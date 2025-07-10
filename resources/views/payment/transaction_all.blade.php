@@ -389,6 +389,57 @@
         opacity: 0.5;
     }
 
+    /* Modal styles */
+    .modal-content {
+        border-radius: var(--border-radius);
+        border: none;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        border: none;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+        padding: 1rem;
+    }
+
+    .btn-deposit {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .btn-deposit:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 0.5rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+
     @media (max-width: 768px) {
         .main-container {
             padding: 1rem 0;
@@ -530,6 +581,16 @@
                     <i class="ri-stack-line me-2"></i>Tất cả giao dịch
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#deposit-history" role="tab">
+                    <i class="ri-history-line me-2"></i>Lịch sử nạp
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#deposit-money" role="tab">
+                    <i class="ri-money-dollar-circle-line me-2"></i>Nạp tiền
+                </a>
+            </li>
             @foreach($transactionsByReferral as $userId => $data)
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#user-{{ $userId }}-content" role="tab">
@@ -601,6 +662,102 @@
                 </div>
             </div>
 
+            <!-- Deposit History Tab -->
+            <div class="tab-pane fade" id="deposit-history" role="tabpanel">
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table id="deposit_history" class="table table-modern table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Người nạp</th>
+                                    <th>Mã giao dịch</th>
+                                    <th>Nội dung</th>
+                                    <th>Số tiền</th>
+                                    <th>Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $depositTransactions = [];
+                                    foreach($transactionsByReferral as $data) {
+                                        foreach($data['transactions'] as $transaction) {
+                                            // Chỉ lấy giao dịch nạp tiền từ ngân hàng MBB
+                                            if($transaction->type === 'IN' && $transaction->bank === 'MBB') {
+                                                $depositTransactions[] = [
+                                                    'user' => $data['user'],
+                                                    'transaction' => $transaction
+                                                ];
+                                            }
+                                        }
+                                    }
+                                @endphp
+
+                                @foreach($depositTransactions as $deposit)
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ $deposit['user']->image ?? 'https://img.icons8.com/ios-filled/100/user-male-circle.png' }}" 
+                                                 alt="Avatar" class="user-avatar me-3">
+                                            <div class="user-info">
+                                                <h5>{{ $deposit['user']->name }}</h5>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="transaction-id">{{ $deposit['transaction']->transaction_id }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="transaction-description" title="{{ $deposit['transaction']->description }}">
+                                            {{ $deposit['transaction']->description }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="transaction-badge badge-income">
+                                            +{{ number_format($deposit['transaction']->amount, 0, '.', ',') }} VNĐ
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="transaction-date">{{ $deposit['transaction']->created_at }}</div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deposit Money Tab -->
+            <div class="tab-pane fade" id="deposit-money" role="tabpanel">
+                <div class="table-container p-4">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-group me-3 col-4">
+                                            <label for="userSelect" class="mb-2">Chọn Người Dùng:</label>
+                                            <select class="form-control" id="userSelect">
+                                                @foreach($transactionsByReferral as $userId => $data)
+                                                    <option value="{{ $userId }}">{{ $data['user']->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group me-3 col-4">
+                                            <label for="amountInput" class="mb-2">Số Tiền:</label>
+                                            <input type="text" class="form-control" id="amountInput" placeholder="Nhập số tiền">
+                                        </div>
+                                        <button type="button" class="btn btn-deposit mt-4" id="previewDeposit" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                            <i class="ri-money-dollar-circle-line me-2"></i>Nạp tiền
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- User-specific Transaction Tabs -->
             @foreach($transactionsByReferral as $userId => $data)
             <div class="tab-pane fade" id="user-{{ $userId }}-content" role="tabpanel">
@@ -664,8 +821,54 @@
     </div>
 </div>
 
+<!-- Deposit Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">
+                    <i class="ri-money-dollar-circle-line me-2"></i>
+                    Xác Nhận Nạp Tiền
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="naptienForm" method="POST" action="{{ route('transaction.store') }}">
+                    @csrf
+                    <input type="hidden" id="hiddenuser" name="referral_code">
+                    <input type="hidden" id="hiddenAmount" name="Amount">
+                    <p><strong>Người Dùng:</strong> <span id="modalUserName"></span></p>
+                    <p><strong>Mã Người Dùng:</strong> <span id="modaluser"></span></p>
+                    <p><strong>Số Tiền:</strong> <span id="modalAmount"></span></p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-deposit" id="confirmButton">
+                    <i class="ri-check-line me-2"></i>Xác Nhận
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
+    // Function to generate and apply transaction ID colors
+    function applyTransactionColors(container) {
+        $(container).find('.transaction-id').each(function() {
+            const transactionId = $(this).text().trim();
+            if (transactionId) {
+                const hash = transactionId.split('').reduce((a, b) => {
+                    a = ((a << 5) - a) + b.charCodeAt(0);
+                    return a & a;
+                }, 0);
+                const color = `#${((hash * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+                $(this).css('borderLeft', `3px solid ${color}`);
+            }
+        });
+    }
+
     // DataTable configuration
     const dataTableConfig = {
         "paging": true,
@@ -692,11 +895,18 @@ $(document).ready(function() {
             "loadingRecords": "Đang tải...",
             "processing": "Đang xử lý..."
         },
-        "dom": '<"row"<"col-sm-12"tr>><"row"<"col-sm-5"l><"col-sm-7"p>>'
+        "dom": '<"row"<"col-sm-12"tr>><"row"<"col-sm-5"l><"col-sm-7"p>>',
+        "drawCallback": function(settings) {
+            // Reapply transaction colors after table redraw
+            applyTransactionColors(this);
+        }
     };
 
     // Initialize main transactions table
     $('#transaction_all').DataTable(dataTableConfig);
+
+    // Initialize deposit history table
+    $('#deposit_history').DataTable(dataTableConfig);
 
     // Initialize user-specific tables
     @foreach($transactionsByReferral as $userId => $data)
@@ -714,8 +924,14 @@ $(document).ready(function() {
     });
 
     $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        // Recalculate column widths for all DataTables
         $($.fn.dataTable.tables(true)).DataTable().columns.adjust().responsive.recalc();
-        // Scroll đến tab active sau khi chuyển
+        
+        // Reapply transaction colors for the active tab
+        const activeTabId = $(e.target).attr('href');
+        applyTransactionColors(activeTabId);
+
+        // Scroll to active tab
         const activeTab = e.target;
         if (activeTab) {
             setTimeout(() => {
@@ -750,19 +966,66 @@ $(document).ready(function() {
             }
         });
     }
-});
 
-// Custom color generation for transaction IDs
-document.querySelectorAll('.transaction-id').forEach(el => {
-    const transactionId = el.textContent.trim();
-    if (transactionId) {
-        const hash = transactionId.split('').reduce((a, b) => {
-            a = ((a << 5) - a) + b.charCodeAt(0);
-            return a & a;
-        }, 0);
-        const color = `#${((hash * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
-        el.style.borderLeft = `3px solid ${color}`;
-    }
+    // Deposit functionality
+    let isSubmitting = false;
+
+    document.getElementById('previewDeposit').addEventListener('click', function() {
+        const userSelect = document.getElementById('userSelect');
+        const userId = userSelect.value;
+        const userName = userSelect.options[userSelect.selectedIndex].text;
+        const amount = document.getElementById('amountInput').value.replace(/[^0-9]/g, '');
+
+        if (!userId) {
+            alert("Vui lòng chọn Người Dùng!");
+            return;
+        }
+
+        if (!amount || isNaN(amount) || amount <= 0) {
+            alert("Vui lòng nhập số tiền hợp lệ!");
+            return;
+        }
+
+        // Reset submission flag when opening modal
+        isSubmitting = false;
+
+        // Display in modal
+        document.getElementById('modalUserName').textContent = userName;
+        document.getElementById('modaluser').textContent = userId;
+        document.getElementById('modalAmount').textContent = new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
+
+        // Set hidden input values
+        document.getElementById('hiddenuser').value = userId;
+        document.getElementById('hiddenAmount').value = amount;
+    });
+
+    document.getElementById('confirmButton').addEventListener('click', function() {
+        if (isSubmitting) return; // Prevent double submission
+        isSubmitting = true;
+        
+        const form = document.getElementById('naptienForm');
+        form.submit();
+        
+        // Disable the confirm button
+        this.disabled = true;
+        this.innerHTML = '<i class="ri-loader-2-line me-2 animate-spin"></i>Đang xử lý...';
+    });
+
+    // Reset form and flags when modal is hidden
+    document.getElementById('confirmModal').addEventListener('hidden.bs.modal', function () {
+        isSubmitting = false;
+        const confirmButton = document.getElementById('confirmButton');
+        confirmButton.disabled = false;
+        confirmButton.innerHTML = '<i class="ri-check-line me-2"></i>Xác Nhận';
+    });
+
+    document.getElementById('amountInput').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        e.target.value = new Intl.NumberFormat('vi-VN').format(value) + ' VNĐ';
+    });
+
+    // Initial application of transaction colors
+    applyTransactionColors('body');
 });
 </script>
 
