@@ -256,7 +256,7 @@ class DashboardController extends Controller
                 $start->addMonth();
             }
         } else {
-            $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate->copy()->addDay());
+            $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate->copy());
             foreach ($period as $date) {
                 $d = $date->format('Y-m-d');
                 $labels[] = $d;

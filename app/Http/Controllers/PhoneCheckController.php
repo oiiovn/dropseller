@@ -26,8 +26,6 @@ class PhoneCheckController extends Controller
         // Lấy referral_code theo username
         $user = \App\Models\User::where('name', $username)->first();
         $referralCode = $user ? $user->referral_code : null;
-
-        // 1. Gửi yêu cầu tạo đơn
         $postResponse = Http::asForm()
             ->withHeaders([
                 'User-Agent' => 'Mozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F140.0.0.0%20Safari%2F537.36',
