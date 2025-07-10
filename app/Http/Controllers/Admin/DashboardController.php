@@ -125,4 +125,51 @@ class DashboardController extends Controller
         Cache::put($cacheKey, $result, now()->addMinutes(10));
         return response()->json($result);
     }
+    public function getChartData(Request $request)
+    {
+        $range = $request->input('range', 'last7days');
+
+        [$startDate, $endDate] = match ($range) {
+            'yesterday' => [Carbon::yesterday()->startOfDay(), Carbon::yesterday()->endOfDay()],
+            'last7days' => [Carbon::now()->subDays(6)->startOfDay(), Carbon::now()->endOfDay()],
+            'last30days' => [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()],
+            'lastmonth' => [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()],
+            'today'     => [Carbon::today()->startOfDay(), Carbon::now()->endOfDay()],
+            default     => [
+                Carbon::parse($request->input('start_date', now()->startOfMonth()))->startOfDay(),
+                Carbon::parse($request->input('end_date', now()))->endOfDay()
+            ]
+        };
+        $raw = Order::selectRaw("DATE(created_at) as date, SUM(total_bill) as total_bill, SUM(total_dropship) as total_dropship")
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy(DB::raw("DATE(created_at)"))
+            ->orderBy('date')
+            ->get();
+        $data = [];
+        foreach ($raw as $row) {
+            $data[$row->date] = [
+                'total_bill' => $row->total_bill,
+                'total_dropship' => $row->total_dropship,
+            ];
+        }
+        $labels = [];
+        $total_Expenses = [];
+        $dropships = [];
+        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate->copy());
+        foreach ($period as $date) {
+            $d = $date->format('Y-m-d');
+            $labels[] = $d;
+            $total_Expenses[] = isset($data[$d]) ? (float) $data[$d]['total_bill'] : 0;
+            $dropships[] = isset($data[$d]) ? (float) $data[$d]['total_dropship'] : 0;
+        }
+        $data = [];
+        foreach ($labels as $i => $date) {
+            $data[] = [
+                'date'           => $date,
+                'total_expense'  => $total_Expenses[$i],
+                'dropship_fee'   => $dropships[$i],
+            ];
+        }
+        return response()->json($data);
+    }
 }
