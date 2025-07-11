@@ -9,14 +9,13 @@ class CheckSo extends Model
 {
     protected $table = 'checkso';
 
+    // app/Models/CheckSo.php
     protected $fillable = [
-        'phone',
         'username',
-        'referral_code', // Thêm trường referral_code
-        'type', // Thêm trường type để phân biệt check và submit
+        'referral_code',
+        'phone',
         'exists',
         'status',
-        'created_at',
-        'updated_at',
+        'type'
     ];
 }

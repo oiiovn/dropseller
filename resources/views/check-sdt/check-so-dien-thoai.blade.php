@@ -43,18 +43,18 @@
                             <td class="text-center">{{ $index + 1 }}</td>
                             <td>{{ $record->username }}</td>
                             <td class="text-center">
-                                @if ($record->status === 'pending')
-                                <span class="text-warning">[ . . . ]</span>
-                                @elseif (preg_match('/\d{8,15}/', $record->status))
-                                <span class="text-success">{{ $record->status }}</span>
+                                @if($record->phone)
+                                <span class="text-success">{{$record->phone}}</span>
+                                @elseif($record->status === 'pending')
+                                <span class="text-danger">[...]</span>
                                 @else
                                 <span class="text-danger">Không check được (Chờ hoàn)</span>
                                 @endif
                             </td>
                             <td class="text-center">
                                 @if ($record->status === 'pending')
-                                <span class="badge bg-warning text-dark">Đang check</span>
-                                @elseif (preg_match('/\d{8,15}/', $record->status))
+                                <span class="badge bg-warning text-warning">Đang check</span>
+                                @elseif ( $record->status === 'success')
                                 <span class="badge bg-success">Thành công</span>
                                 @else
                                 <span class="badge bg-danger">Thất bại</span>

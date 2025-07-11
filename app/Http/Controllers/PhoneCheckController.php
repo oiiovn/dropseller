@@ -69,3 +69,4 @@ class PhoneCheckController extends Controller
         return redirect()->route('check_so_dt')->with('success', 'Đã gửi và đang kiểm tra.');
     }
 }
+
