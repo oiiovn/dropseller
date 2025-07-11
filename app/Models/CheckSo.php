@@ -16,5 +16,7 @@ class CheckSo extends Model
         'type', // Thêm trường type để phân biệt check và submit
         'exists',
         'status',
+        'created_at',
+        'updated_at',
     ];
 }

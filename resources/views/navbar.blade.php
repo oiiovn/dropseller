@@ -169,9 +169,9 @@
                             <li class="nav-item">
                                 <a href="{{route('list_program')}}" class="nav-link ajax-link" data-key="t-chat">Gói đăng sản phẩm</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="{{ route('check_so_dt') }}" class="nav-link" data-key="t-chat">Check số điện thoại</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a href="{{route('campaign')}}" class="nav-link ajax-link" data-key="t-horizontal">Tính % chiến dịch</a>
                             </li>
