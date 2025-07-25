@@ -72,6 +72,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
         Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
             ->name('balance.history');
+        // API endpoints cho lịch sử số dư
+        Route::get('/api/balance-history', [BalanceHistoryController::class, 'apiIndex']);
+        Route::get('/api/balance-history/types', [BalanceHistoryController::class, 'getTransactionTypes']);
+        Route::get('/api/balance-history/statistics', [BalanceHistoryController::class, 'getStatistics']);
         Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
         Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
         Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');

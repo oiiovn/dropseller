@@ -493,6 +493,13 @@
                         window.initOrderMobile();
                     }, 100);
                 }
+                
+                // Khởi tạo lại JavaScript cho trang balance history
+                if (window.location.pathname.includes('/balance/history') || 
+                    document.getElementById('balance-history-cards')) {
+                    console.log('🔄 Balance history page detected, initializing balance history...');
+                    initBalanceHistory();
+                }
             }
 
             // Khởi tạo ban đầu
@@ -543,6 +550,181 @@
 
                 icon.addEventListener('click', icon._copyHandler);
             });
+        }
+        
+        function initBalanceHistory() {
+            const historyCards = document.getElementById('balance-history-cards');
+            const paginationNav = document.getElementById('balance-pagination');
+            const searchForm = document.getElementById('balance-search-form');
+            const searchInput = document.getElementById('search-input');
+            const typeSelect = document.getElementById('type-select');
+
+            if (!historyCards || !searchForm) return;
+
+            // Xóa event listeners cũ nếu có
+            if (searchForm._submitHandler) {
+                searchForm.removeEventListener('submit', searchForm._submitHandler);
+            }
+            if (paginationNav._clickHandler) {
+                paginationNav.removeEventListener('click', paginationNav._clickHandler);
+            }
+
+            // Lấy danh sách loại giao dịch cho dropdown
+            fetch('/api/balance-history/types')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Xóa options cũ trừ option đầu tiên
+                        while (typeSelect.children.length > 1) {
+                            typeSelect.removeChild(typeSelect.lastChild);
+                        }
+                        data.data.forEach(opt => {
+                            const option = document.createElement('option');
+                            option.value = opt.value;
+                            option.textContent = opt.label;
+                            typeSelect.appendChild(option);
+                        });
+                    }
+                });
+
+            // Hàm render lịch sử số dư
+            function renderHistories(histories) {
+                historyCards.innerHTML = '';
+                if (!histories.length) {
+                    historyCards.innerHTML = '<div class="col-12"><div class="alert alert-info">Không có dữ liệu để hiển thị.</div></div>';
+                    return;
+                }
+                histories.forEach(item => {
+                    historyCards.innerHTML += `
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card balance-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="balance-icon">
+                                            ${getIcon(item.type)}
+                                        </span>
+                                        <span class="badge balance-type-badge">${item.type_label}</span>
+                                    </div>
+                                    <span class="text-muted small">${item.created_at}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-muted">Mã GD:</span> <span class="fw-semibold text-primary">${item.transaction_code}</span>
+                                </div>
+                                <div class="mb-2 fw-bold balance-amount ${item.is_positive ? 'text-success' : 'text-danger'}">
+                                    ${item.formatted_amount}
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-muted">Số dư sau:</span> <span class="fw-semibold">${item.formatted_balance}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-muted">Ghi chú:</span>
+                                    ${item.note ? `<span class="note-box">${item.note}</span>` : '<span class="text-muted">-</span>'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+
+            // Hàm render phân trang
+            function renderPagination(pagination) {
+                if (pagination.last_page <= 1) {
+                    paginationNav.innerHTML = '';
+                    return;
+                }
+                let html = '<ul class="pagination">';
+                // Nút Previous
+                if (pagination.current_page > 1) {
+                    html += `<li class="page-item"><a class="page-link" href="#" data-page="${pagination.current_page - 1}"><i class="bi bi-chevron-left"></i></a></li>`;
+                }
+                // Tính toán range trang
+                let startPage = Math.max(1, pagination.current_page - 2);
+                let endPage = Math.min(pagination.last_page, pagination.current_page + 2);
+                if (startPage > 1) {
+                    html += `<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`;
+                    if (startPage > 2) {
+                        html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                    }
+                }
+                for (let i = startPage; i <= endPage; i++) {
+                    html += `<li class="page-item${i === pagination.current_page ? ' active' : ''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                }
+                if (endPage < pagination.last_page) {
+                    if (endPage < pagination.last_page - 1) {
+                        html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                    }
+                    html += `<li class="page-item"><a class="page-link" href="#" data-page="${pagination.last_page}">${pagination.last_page}</a></li>`;
+                }
+                // Nút Next
+                if (pagination.current_page < pagination.last_page) {
+                    html += `<li class="page-item"><a class="page-link" href="#" data-page="${pagination.current_page + 1}"><i class="bi bi-chevron-right"></i></a></li>`;
+                }
+                html += '</ul>';
+                paginationNav.innerHTML = html;
+            }
+
+            // Lấy icon theo loại giao dịch
+            function getIcon(type) {
+                switch(type) {
+                    case 'deposit': return '<i class="bi bi-arrow-down-circle-fill text-success"></i>';
+                    case 'withdraw': return '<i class="bi bi-arrow-up-circle-fill text-danger"></i>';
+                    case 'order': return '<i class="bi bi-bag-check-fill text-warning"></i>';
+                    case 'refund': return '<i class="bi bi-arrow-repeat text-info"></i>';
+                    case 'ads': return '<i class="bi bi-bullseye text-dark"></i>';
+                    case 'Monthly': return '<i class="bi bi-calendar-check text-dark"></i>';
+                    case 'product_fee': return '<i class="bi bi-cash-coin text-secondary"></i>';
+                    default: return '<i class="bi bi-cash-stack text-secondary"></i>';
+                }
+            }
+
+            // Hàm load dữ liệu từ API
+            function loadHistories(page = 1) {
+                const params = new URLSearchParams();
+                if (searchInput.value) params.append('search', searchInput.value);
+                if (typeSelect.value) params.append('type', typeSelect.value);
+                params.append('page', page);
+                params.append('limit', 12);
+
+                const url = '/api/balance-history?' + params.toString();
+                console.log('Loading data from:', url);
+
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log('API Response:', data);
+                        if (data.success) {
+                            renderHistories(data.data.histories);
+                            renderPagination(data.data.pagination);
+                        } else {
+                            console.error('API Error:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                    });
+            }
+
+            // Sự kiện submit form tìm kiếm/lọc
+            searchForm._submitHandler = function(e) {
+                e.preventDefault();
+                loadHistories(1);
+            };
+            searchForm.addEventListener('submit', searchForm._submitHandler);
+
+            // Sự kiện click phân trang
+            paginationNav._clickHandler = function(e) {
+                if (e.target.classList.contains('page-link')) {
+                    e.preventDefault();
+                    const page = parseInt(e.target.getAttribute('data-page'));
+                    loadHistories(page);
+                }
+            };
+            paginationNav.addEventListener('click', paginationNav._clickHandler);
+
+            // Load lần đầu
+            loadHistories();
         }
     </script>
     <script>

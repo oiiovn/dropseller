@@ -116,7 +116,7 @@
                     <div class="collapse menu-dropdown" id="thanhtoan">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link ajax-link" id="openNapTienModal"><span style="font-size: 12px;padding: 5px 10px; background-color: #1a90f4; color: #fff; border-radius: 7px;">+ Nạp tiền</span></a>
+                                <a href="#" class="nav-link ajax-link" id="openNapTienModal"><span style="font-size: 12px;padding: 5px 10px; background-color: #1a90f4; color: #fff; border-radius: 7px;">+ Nạp tiền</span></a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('transaction') }}" class="nav-link ajax-link" data-key="t-chat">Lịch sử giao dịch</a>
@@ -277,10 +277,10 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarCalendar" class="nav-link " data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                                <a href="#sidebarAds" class="nav-link " data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAds" data-key="t-calender">
                                     Quản lý quảng cáo
                                 </a>
-                                <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                <div class="collapse menu-dropdown" id="sidebarAds">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
                                             <a href="{{route('quang-cao')}}" class="nav-link ajax-link" data-key="t-chat"> Thêm mới</a>

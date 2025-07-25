@@ -24,8 +24,6 @@
     }
 </style>
 
-
-
 <div class="container-fluid d-flex flex-column justify-content-start">
     <div class="cover-wrapper ">
         <div class="cover-wrapper bg-white shadow-sm rounded-3 w-100">
@@ -201,17 +199,6 @@
             </div>
             <hr>
         </div>
-
-
-
-
-
-
-
-
-
-
-
         <div class=" col-9 body-info bg-white shadow-sm rounded-3 p-3 gap-3">
             <div class="body-content col-12 mx-auto ">
                 <div class="row g-3">
@@ -241,7 +228,6 @@
         </div>
     </div>
 </div>
-
 </div>
 
 
