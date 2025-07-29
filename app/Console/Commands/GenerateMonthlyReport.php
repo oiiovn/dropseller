@@ -18,25 +18,28 @@ class GenerateMonthlyReport extends Command
         $startDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->startOfMonth();
         $endDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->endOfMonth();
 
+        // Lấy đơn dropship
         $donDropship = Order::whereRaw("
             STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') 
             BETWEEN ? AND ?", [
             $startDate->toDateString(),
             $endDate->toDateString()
         ])
-            ->where('payment_status', 'Đã thanh toán') // nếu cần lọc giống ReturnOrder
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->shop->user->id . '_' . $item->shop_id;
-            })
-            ->map(function ($group) {
-                return [
-                    'user_id' => $group->first()->shop->user->id,
-                    'shop_id' => $group->first()->shop_id,
-                    'tong_tien_dropship' => $group->sum('total_dropship'),
-                ];
-            });
-        $donHoan = ReturnOrder::with('shop.user')
+        ->where('payment_status', 'Đã thanh toán')
+        ->get()
+        ->groupBy(function ($item) {
+            return $item->shop->user->id . '_' . $item->shop_id;
+        })
+        ->map(function ($group) {
+            return [
+                'user_id' => $group->first()->shop->user->id,
+                'shop_id' => $group->first()->shop_id,
+                'tong_tien_dropship' => $group->sum('total_dropship'),
+            ];
+        });
+
+        // Lấy đơn hoàn hàng
+        $donHoanGoc = ReturnOrder::with('shop.user')
             ->where('payment_status', 'Đã thanh toán')
             ->whereBetween('ngay', [$startDate, $endDate])
             ->get()
@@ -49,16 +52,24 @@ class GenerateMonthlyReport extends Command
                     'shop_id' => $group->first()->shop_id,
                     'tong_tien_hoan' => $group->sum('tong_tien'),
                 ];
-            })
-            ->values();
-        $donHoan = $donHoan->map(function ($item) use ($donDropship) {
-            $key = $item['user_id'] . '_' . $item['shop_id'];
-            $dropshipData = $donDropship->get($key);
-            return array_merge($item, [
-                'tong_tien_dropship' => $dropshipData['tong_tien_dropship'] ?? 0,
-            ]);
-        });
-        $gopTheoUser = collect($donHoan)
+            });
+
+        // Gộp danh sách user-shop từ cả đơn hoàn và đơn dropship
+        $donTong = collect($donDropship->keys())
+            ->merge($donHoanGoc->keys())
+            ->unique()
+            ->map(function ($key) use ($donDropship, $donHoanGoc) {
+                [$userId, $shopId] = explode('_', $key);
+                return [
+                    'user_id' => (int)$userId,
+                    'shop_id' => (int)$shopId,
+                    'tong_tien_dropship' => $donDropship->get($key)['tong_tien_dropship'] ?? 0,
+                    'tong_tien_hoan' => $donHoanGoc->get($key)['tong_tien_hoan'] ?? 0,
+                ];
+            });
+
+        // Gom lại theo user
+        $gopTheoUser = collect($donTong)
             ->groupBy('user_id')
             ->map(function ($items, $userId) {
                 return [
@@ -75,50 +86,68 @@ class GenerateMonthlyReport extends Command
                 ];
             })
             ->values();
+
+        // Duyệt từng user tạo báo cáo
         foreach ($gopTheoUser as $report) {
             $id_QT = $this->generateUniqueTransactionId();
             $user = User::find($report['user_id']);
             $userCode = $user->referral_code;
+
+            // Tổng nạp MBB
             $totalTopup = Transaction::whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
                 ->where('bank', 'MBB')
                 ->where('type', 'IN')
                 ->whereBetween('transaction_date', [$startDate, $endDate])
                 ->sum('amount');
+
+            // Lấy shop_id của user
             $shopIds = Shop::where('user_id', $user->id)->pluck('shop_id')->toArray();
+
+            // Lấy mã giao dịch đơn hàng
             $code_transction = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()
             ])
-                ->whereIn('shop_id', $shopIds)
-                ->pluck('transaction_id');
-            $totalPaid = Transaction::whereIn('transaction_id', $code_transction)
-                ->sum('amount');
+            ->whereIn('shop_id', $shopIds)
+            ->pluck('transaction_id');
+
+            // Tổng chi thanh toán đơn
+            $totalPaid = Transaction::whereIn('transaction_id', $code_transction)->sum('amount');
+
+            // Tổng chi quảng cáo (ADS)
             $totalPaid_ads = Transaction::where('account_number', $userCode)
                 ->where('bank', 'ADS')
                 ->where('type', 'OUT')
                 ->whereBetween('transaction_date', [$startDate, $endDate])
                 ->sum('amount');
+
+            // Tính hoàn tiền đơn bị huỷ
             $code_order = Order::whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
                 $startDate->toDateString(),
                 $endDate->toDateString()
             ])
-                ->whereIn('shop_id', $shopIds)
-                ->pluck('order_code');
+            ->whereIn('shop_id', $shopIds)
+            ->pluck('order_code');
+
             $totalCanceled = Transaction::where(function ($query) use ($code_order) {
                 foreach ($code_order as $code) {
                     $query->orWhere('description', 'LIKE', "%huỷ đơn $code%");
                 }
             })
-                ->get()
-                ->sum(function ($transaction) {
-                    return $transaction->type === 'IN'
-                        ? $transaction->amount
-                        : -$transaction->amount;
-                });
-            // dd($totalCanceled);            
+            ->get()
+            ->sum(function ($transaction) {
+                return $transaction->type === 'IN'
+                    ? $transaction->amount
+                    : -$transaction->amount;
+            });
+
+            // Tính số dư cuối
             $ending_balance = $totalTopup - $totalPaid - $totalPaid_ads + $totalCanceled;
+
+            // Tổng chi khác (nếu có)
             $total_chi = $totalPaid - $totalCanceled - $report['tong_tien_user'] - $report['tong_tien_user_dropship'];
 
+            // Lưu vào bảng báo cáo
             UserMonthlyReport::updateOrCreate(
                 [
                     'user_id' => $report['user_id'],
@@ -134,7 +163,7 @@ class GenerateMonthlyReport extends Command
                     'total_chi' => $total_chi,
                     'ending_balance' => $ending_balance,
                     'shop_details' => $report['shops'],
-                    'Drop_ships' => $report['tong_tien_user_dropship'],
+                    'drop_ships' => $report['tong_tien_user_dropship'],
                     'status_payment' =>  'Chưa thanh toán',
                 ]
             );
@@ -142,6 +171,7 @@ class GenerateMonthlyReport extends Command
 
         $this->info("✅ Đã tạo quyết toán cho tháng $month");
     }
+
     private function generateUniqueTransactionId()
     {
         do {
