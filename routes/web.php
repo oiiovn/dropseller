@@ -204,7 +204,7 @@ Route::middleware(['auth', 'admin.verified'])->prefix('admin')->group(function (
 // Route group cho admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     // Dashboard admin
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
     // API lấy dữ liệu dashboard
     // Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
