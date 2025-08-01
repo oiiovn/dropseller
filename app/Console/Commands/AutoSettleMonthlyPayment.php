@@ -14,7 +14,7 @@ class AutoSettleMonthlyPayment extends Command
 
     public function handle()
     {
-        $targetMonth = Carbon::now()->subMonth()->format('Y-m');
+        $targetMonth = Carbon::now()->subMonth(2)->format('Y-m');
 
         $reports = UserMonthlyReport::where('month', $targetMonth)
         ->where('status_payment', 'Chưa thanh toán')
