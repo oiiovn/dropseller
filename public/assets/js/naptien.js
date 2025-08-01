@@ -81,9 +81,9 @@ window.initNapTienModalEvents = function() {
         
         // Lấy nội dung chuyển khoản từ input hidden
         const addInfo = encodeURIComponent(noiDungChuyenKhoanInput.value.trim());
-        const bankAccount = "62886838888";
-        const accountName = "BUI QUOC VU";
-        const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}`;
+        const bankAccount = "75928668";
+        const accountName = "OIIO.VN";
+        const qrUrl = `https://img.vietqr.io/image/ACB-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}`;
         const qrImage = document.getElementById("qrCode");
         const spinner = document.getElementById("spinner");
         spinner.classList.remove("d-none");

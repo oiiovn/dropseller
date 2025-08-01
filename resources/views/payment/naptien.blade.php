@@ -114,11 +114,11 @@
                                             
                                             <div class="d-flex gap-2 mt-2">
                                                 <small class="text-muted">Tài khoản nhận:</small>
-                                                <div class="fw-bold">62886838888</div>
+                                                <div class="fw-bold">75928668</div>
                                             </div>
                                             <div class="d-flex gap-2 mt-2">
                                                 <small class="text-muted">Tên người nhận:</small>
-                                                <div class="fw-bold">BUI QUOC VU</div>
+                                                <div class="fw-bold">OIIO VN </div>
                                             </div>
                                             <div class="d-flex gap-2 mt-2">
                                                 <small class="text-muted">Số tiền:</small>
