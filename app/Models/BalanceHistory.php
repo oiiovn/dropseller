@@ -15,7 +15,10 @@ class BalanceHistory extends Model
         'reference_type',
         'note',
         'transaction_code',
+        'created_at',
+        'updated_at'
     ];
+
 
     public function user()
     {
