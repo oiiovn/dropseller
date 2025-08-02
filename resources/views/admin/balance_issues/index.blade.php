@@ -11,6 +11,12 @@
         <i class="bi bi-robot"></i> Kiểm tra lỗi số dư
     </button>
 </form>
+<form action="{{ route('admin.balance_issues.delete_all') }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-robot"></i> xoá tất cả lỗi
+    </button>
+</form>
     <table class="table table-bordered mt-3">
         <thead class="table-light">
             <tr>

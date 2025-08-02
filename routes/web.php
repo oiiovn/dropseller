@@ -164,6 +164,7 @@ Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
     Route::get('/phi-web', [BillwebController::class, 'view_total_bill'])->name('view_total_bill');
     Route::post('/export-totalbill', [BillwebController::class, 'exportTotalBill'])->name('export.totalbill');
     Route::get('/balance-issues', [BalanceIssueController::class, 'index'])->name('admin.balance_issues.index');
+    Route::post('/balance-issues/delete-all', [BalanceIssueController::class, 'delete_all'])->name('admin.balance_issues.delete_all');
     Route::post('/tao-thanh-toan', [OrderController::class, 'taoThanhToan'])->name('order.taoThanhToan');
     // hoàn dơn
     Route::get('/import-don-hoan', [OrderController::class, 'showImportForm'])->name('order.import_don_hoan');
