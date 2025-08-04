@@ -109,7 +109,7 @@
                                         <div class="">
                                             <div class="d-flex gap-2">
                                                 <small class="text-muted">Ngân hàng:</small>
-                                                <div class="fw-bold text-success">MB Bank</div>
+                                                <div class="fw-bold text-success">ACB</div>
                                             </div>
                                             
                                             <div class="d-flex gap-2 mt-2">
