@@ -682,7 +682,7 @@
                                     foreach($transactionsByReferral as $data) {
                                         foreach($data['transactions'] as $transaction) {
                                             // Chỉ lấy giao dịch nạp tiền từ ngân hàng MBB
-                                            if($transaction->type === 'IN' && $transaction->bank === 'MBB') {
+                                            if($transaction->type === 'IN' && $transaction->bank ===['MBB', 'ACB']) {
                                                 $depositTransactions[] = [
                                                     'user' => $data['user'],
                                                     'transaction' => $transaction

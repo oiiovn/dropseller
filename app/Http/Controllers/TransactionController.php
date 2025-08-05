@@ -20,19 +20,19 @@ class TransactionController extends Controller
     {
         $userCode = Auth::user()->referral_code;
         $Transactions = Transaction::with('order')
-        ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->get();
         $Transaction_nap = Transaction::with('order')
-        ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
-            ->where('bank', 'MBB')
+            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->whereIn('bank', ['MBB', 'ACB'])
             ->where('type', '=', 'IN')
             ->get();
         $Transactions_Drop = Transaction::with('order')
-             ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->where('bank', 'DROP')
             ->get();
         $Transactions_ads = Transaction::with('ads')
-             ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
             ->where('bank', 'ADS')
             ->get();
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads'));

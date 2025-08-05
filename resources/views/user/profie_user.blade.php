@@ -58,7 +58,8 @@
     }
 
     .user-card .card-body {
-        padding-bottom: 60px !important; /* Space for button */
+        padding-bottom: 60px !important;
+        /* Space for button */
         height: 100%;
     }
 
@@ -95,7 +96,7 @@
     .user-code {
         font-size: 0.9rem;
         color: #6c757d;
-        
+
     }
 
     .user-stats {
@@ -253,11 +254,13 @@
     .page-link.active {
         background: #007bff;
         color: white;
-       
+
     }
-    .page-link.disabled{
+
+    .page-link.disabled {
         border: 1px solid #dee2e6;
-        background: white;;
+        background: white;
+        ;
     }
 
     .no-results {
@@ -277,11 +280,11 @@
             flex-direction: column;
             gap: 0.5rem;
         }
-        
+
         .filters-container {
             flex-direction: column;
         }
-        
+
         .search-container {
             padding: 1rem;
         }
@@ -300,42 +303,42 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                                                 <div class="filters-container">
-                             <button class="filter-btn active" data-filter="all">Tất cả</button>
-                             <button class="filter-btn" data-filter="admin">Admin</button>
-                             <button class="filter-btn" data-filter="official">Nhà bán chính thức</button>
-                             <button class="filter-btn" data-filter="dropship">Nhà bán dropship</button>
-                             <button class="filter-btn" data-filter="overdue">Đơn quá hạn</button>
-                         </div>
+                        <div class="filters-container">
+                            <button class="filter-btn active" data-filter="all">Tất cả</button>
+                            <button class="filter-btn" data-filter="admin">Admin</button>
+                            <button class="filter-btn" data-filter="official">Nhà bán chính thức</button>
+                            <button class="filter-btn" data-filter="dropship">Nhà bán dropship</button>
+                            <button class="filter-btn" data-filter="overdue">Đơn quá hạn</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-                         <!-- User Cards Container -->
-             <div class="row g-2" id="userCardsContainer">
+            <!-- User Cards Container -->
+            <div class="row g-2" id="userCardsContainer">
                 @foreach($users as $user)
-                    <div class="col-lg-2 col-md-6 col-sm-12 mb-1 user-card-wrapper" 
-                      data-user-type="{{ $user->name == 'CEO' ? 'admin' : (in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']) ? 'official' : 'dropship') }}"
-                      data-has-overdue="{{ $user->shops->where('orders_unpaid_count', '>', 0)->count() > 0 ? 'true' : 'false' }}">
+                <div class="col-lg-2 col-md-6 col-sm-12 mb-1 user-card-wrapper"
+                    data-user-type="{{ $user->name == 'CEO' ? 'admin' : (in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']) ? 'official' : 'dropship') }}"
+                    data-has-overdue="{{ $user->shops->where('orders_unpaid_count', '>', 0)->count() > 0 ? 'true' : 'false' }}">
                     <div class="card user-card h-100">
                         <div class="card-body p-3">
-                                                         <!-- User Header -->
-                             <div class="d-flex align-items-start mb-2">
+                            <!-- User Header -->
+                            <div class="d-flex align-items-start mb-2">
                                 <div class="flex-shrink-0 me-3">
-                                    <img src="@if(isset($user->image) && !empty($user->image)){{ $user->image }}@else https://img.icons8.com/ios-filled/100/user-male-circle.png @endif" 
-                                         alt="{{ $user->name }}" class="user-avatar">
+                                    <img src="@if(isset($user->image) && !empty($user->image)){{ $user->image }}@else https://img.icons8.com/ios-filled/100/user-male-circle.png @endif"
+                                        alt="{{ $user->name }}" class="user-avatar">
                                 </div>
                                 <div class="user-info">
-                                                                         <h5 class="user-name">
-                                         {{ $user->name }}
-                                         @if($user->name == 'CEO')
-                                             <i class="ri-shield-star-fill text-secondary" data-bs-toggle="tooltip" title="Admin"></i>
-                                         @elseif(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
-                                             <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
-                                         @else
-                                             <i class="ri-verified-badge-fill text-muted" data-bs-toggle="tooltip" title="Nhà bán dropship"></i>
-                                         @endif
-                                     </h5>
+                                    <h5 class="user-name">
+                                        {{ $user->name }}
+                                        @if($user->name == 'CEO')
+                                        <i class="ri-shield-star-fill text-secondary" data-bs-toggle="tooltip" title="Admin"></i>
+                                        @elseif(in_array($user->name, ['Bùi Quốc Vũ', 'Vân', 'Trần Hoàng']))
+                                        <i class="ri-verified-badge-fill text-secondary" data-bs-toggle="tooltip" title="Nhà bán chính thức"></i>
+                                        @else
+                                        <i class="ri-verified-badge-fill text-muted" data-bs-toggle="tooltip" title="Nhà bán dropship"></i>
+                                        @endif
+                                    </h5>
                                     <div class="user-code">
                                         Code: <strong style="color:#2e397f;">{{ $user->referral_code ?? 'CODE' }}</strong>
                                     </div>
@@ -357,27 +360,27 @@
                                 </div>
                             </div>
 
-                                                         <!-- Shops Info -->
-                             <div class="mt-2">
+                            <!-- Shops Info -->
+                            <div class="mt-2">
                                 @foreach ($user->shops as $shop)
-                                    <div class="shop-badge">
-                                        @if($shop->platform == 'Tiktok')
-                                            <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" class="shop-icon">
-                                        @elseif($shop->platform == 'Shoppe')
-                                            <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" class="shop-icon">
-                                        @else
-                                            <i class="fas fa-store shop-icon"></i>
-                                        @endif
-                                        <span>{{ $shop->shop_name }}</span>
-                                        @if($shop->orders_unpaid_count > 0)
-                                            <span class="badge bg-danger ms-1">{{ $shop->orders_unpaid_count }}</span>
-                                        @endif
-                                    </div>
+                                <div class="shop-badge">
+                                    @if($shop->platform == 'Tiktok')
+                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" class="shop-icon">
+                                    @elseif($shop->platform == 'Shoppe')
+                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" class="shop-icon">
+                                    @else
+                                    <i class="fas fa-store shop-icon"></i>
+                                    @endif
+                                    <span>{{ $shop->shop_name }}</span>
+                                    @if($shop->orders_unpaid_count > 0)
+                                    <span class="badge bg-danger ms-1">{{ $shop->orders_unpaid_count }}</span>
+                                    @endif
+                                </div>
                                 @endforeach
                             </div>
 
-                                                         <!-- Action Button -->
-                             <div class="mt-2 text-center">
+                            <!-- Action Button -->
+                            <div class="mt-2 text-center">
                                 <a href="#" class="action-btn" data-bs-toggle="modal" data-bs-target="#user-{{$user->id}}">
                                     <i class="ri-eye-fill"></i>
                                     Xem chi tiết
@@ -412,55 +415,55 @@
                                         </thead>
                                         <tbody class="list form-check-all text-black-50">
                                             @php
-                                                $hasOverdueOrders = false;
+                                            $hasOverdueOrders = false;
                                             @endphp
                                             @foreach ($user->shops as $shop)
-                                                @if($shop->orders_unpaid_count > 0)
-                                                    @foreach($shop->orders_unpaid as $orders_unpai)
-                                                        @if($orders_unpai->payment_status == 'Chưa thanh toán')
-                                                            @php $hasOverdueOrders = true; @endphp
-                                                            <tr>
-                                                                <td class="id text-black-50">
-                                                                    <div class="hienthicopy">
-                                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$orders_unpai->order_code}}">
-                                                                            {{$orders_unpai['order_code']}}
-                                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="text-body-secondary" style="font-size: 11px;">{{$orders_unpai->filter_date}}</div>
-                                                                </td>
-                                                                <td class="customer_cost">
-                                                                    {{ $orders_unpai->shop->user->name?? 'N/A' }}
-                                                                </td>
-                                                                <td class="customer_cost" data-shop-id="{{ optional($orders_unpai->shop)->id ?? 0 }}">
-                                                                    @if($shop->platform == 'Tiktok')
-                                                                        <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
-                                                                    @elseif($shop->platform == 'Shoppe')
-                                                                        <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
-                                                                    @else
-                                                                        <i class="fas fa-store me-1"></i>
-                                                                    @endif
-                                                                    {{ optional($orders_unpai->shop)->shop_name ?? 'N/A' }}
-                                                                </td>
-                                                                <td class="export_date">{{$orders_unpai->created_at}}</td>
-                                                                <td class="total_products">{{$orders_unpai->total_products}}</td>
-                                                                <td class="total_dropship">{{ number_format($orders_unpai->total_dropship, 0, ',', '.') }} đ</td>
-                                                                <td class="total_bill">{{ number_format($orders_unpai->total_bill, 0, ',', '.') }} đ</td>
-                                                                <td class="payment_status" style="color: red;">
-                                                                    {{ $orders_unpai->payment_status }}
-                                                                </td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
+                                            @if($shop->orders_unpaid_count > 0)
+                                            @foreach($shop->orders_unpaid as $orders_unpai)
+                                            @if($orders_unpai->payment_status == 'Chưa thanh toán')
+                                            @php $hasOverdueOrders = true; @endphp
+                                            <tr>
+                                                <td class="id text-black-50">
+                                                    <div class="hienthicopy">
+                                                        <a class="fw-medium link-primary order-link text-secondary" data-order-code="{{$orders_unpai->order_code}}">
+                                                            {{$orders_unpai['order_code']}}
+                                                            <span class="ri-checkbox-multiple-blank-line icon"></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="text-body-secondary" style="font-size: 11px;">{{$orders_unpai->filter_date}}</div>
+                                                </td>
+                                                <td class="customer_cost">
+                                                    {{ $orders_unpai->shop->user->name?? 'N/A' }}
+                                                </td>
+                                                <td class="customer_cost" data-shop-id="{{ optional($orders_unpai->shop)->id ?? 0 }}">
+                                                    @if($shop->platform == 'Tiktok')
+                                                    <img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px;">
+                                                    @elseif($shop->platform == 'Shoppe')
+                                                    <img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px;">
+                                                    @else
+                                                    <i class="fas fa-store me-1"></i>
+                                                    @endif
+                                                    {{ optional($orders_unpai->shop)->shop_name ?? 'N/A' }}
+                                                </td>
+                                                <td class="export_date">{{$orders_unpai->created_at}}</td>
+                                                <td class="total_products">{{$orders_unpai->total_products}}</td>
+                                                <td class="total_dropship">{{ number_format($orders_unpai->total_dropship, 0, ',', '.') }} đ</td>
+                                                <td class="total_bill">{{ number_format($orders_unpai->total_bill, 0, ',', '.') }} đ</td>
+                                                <td class="payment_status" style="color: red;">
+                                                    {{ $orders_unpai->payment_status }}
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                            @endif
                                             @endforeach
                                             @if(!$hasOverdueOrders)
-                                                <tr>
-                                                    <td colspan="8" class="text-center text-muted py-4">
-                                                        <i class="ri-check-line fs-1 text-success"></i>
-                                                        <p class="mt-2 mb-0">Không có đơn hàng quá hạn thanh toán</p>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td colspan="8" class="text-center text-muted py-4">
+                                                    <i class="ri-check-line fs-1 text-success"></i>
+                                                    <p class="mt-2 mb-0">Không có đơn hàng quá hạn thanh toán</p>
+                                                </td>
+                                            </tr>
                                             @endif
                                         </tbody>
                                     </table>
@@ -488,150 +491,150 @@
 </div>
 
 <script>
-$(document).ready(function() {
-    let currentPage = 1;
-    const itemsPerPage = 12;
-    let filteredUsers = [];
-    let allUsers = [];
+    $(document).ready(function() {
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredUsers = [];
+        let allUsers = [];
 
-    // Initialize all users
-    function initializeUsers() {
-        allUsers = $('.user-card-wrapper').toArray();
-        filteredUsers = [...allUsers];
-        updateDisplay();
-    }
-
-    // Filter users
-    function filterUsers() {
-        const searchTerm = $('#searchInput').val().toLowerCase();
-        const activeFilter = $('.filter-btn.active').data('filter');
-        
-        filteredUsers = allUsers.filter(userCard => {
-            const $card = $(userCard);
-            const userName = $card.find('.user-name').text().toLowerCase();
-            const userEmail = $card.find('.text-muted').text().toLowerCase();
-            const userCode = $card.find('.user-code').text().toLowerCase();
-            
-            // Search filter
-            const matchesSearch = userName.includes(searchTerm) || 
-                                userEmail.includes(searchTerm) || 
-                                userCode.includes(searchTerm);
-            
-                         // Type filter
-             let matchesType = true;
-             if (activeFilter === 'admin') {
-                 matchesType = $card.data('user-type') === 'admin';
-             } else if (activeFilter === 'official') {
-                 matchesType = $card.data('user-type') === 'official';
-             } else if (activeFilter === 'dropship') {
-                 matchesType = $card.data('user-type') === 'dropship';
-             } else if (activeFilter === 'overdue') {
-                 matchesType = $card.attr('data-has-overdue') === 'true';
-             }
-            
-            return matchesSearch && matchesType;
-        });
-        
-        currentPage = 1;
-        updateDisplay();
-    }
-
-    // Update display
-    function updateDisplay() {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const usersToShow = filteredUsers.slice(startIndex, endIndex);
-        
-        // Hide all cards
-        $('.user-card-wrapper').hide();
-        
-        // Show filtered cards
-        usersToShow.forEach(card => {
-            $(card).show();
-        });
-        
-        // Show/hide no results message
-        if (filteredUsers.length === 0) {
-            $('#noResults').show();
-            $('#paginationContainer').hide();
-        } else {
-            $('#noResults').hide();
-            $('#paginationContainer').show();
-            generatePagination();
-        }
-    }
-
-    // Generate pagination
-    function generatePagination() {
-        const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-        let paginationHtml = '';
-        
-        if (totalPages > 1) {
-            // Previous button
-            paginationHtml += `<a href="#" class="page-link ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">Trước</a>`;
-            
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
-                    paginationHtml += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
-                } else if (i === currentPage - 3 || i === currentPage + 3) {
-                    paginationHtml += `<span class="page-link disabled">...</span>`;
-                }
-            }
-            
-            // Next button
-            paginationHtml += `<a href="#" class="page-link ${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">Sau</a>`;
-        }
-        
-        $('#paginationContainer').html(paginationHtml);
-    }
-
-    // Event listeners
-    $('#searchInput').on('input', filterUsers);
-    
-    $('.filter-btn').on('click', function() {
-        $('.filter-btn').removeClass('active');
-        $(this).addClass('active');
-        filterUsers();
-    });
-    
-    $(document).on('click', '.page-link', function(e) {
-        e.preventDefault();
-        const page = $(this).data('page');
-        if (page && !$(this).hasClass('disabled')) {
-            currentPage = page;
+        // Initialize all users
+        function initializeUsers() {
+            allUsers = $('.user-card-wrapper').toArray();
+            filteredUsers = [...allUsers];
             updateDisplay();
         }
-    });
 
-    // Initialize tooltips
-    function initTooltips() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-            new bootstrap.Tooltip(tooltipTriggerEl);
+        // Filter users
+        function filterUsers() {
+            const searchTerm = $('#searchInput').val().toLowerCase();
+            const activeFilter = $('.filter-btn.active').data('filter');
+
+            filteredUsers = allUsers.filter(userCard => {
+                const $card = $(userCard);
+                const userName = $card.find('.user-name').text().toLowerCase();
+                const userEmail = $card.find('.text-muted').text().toLowerCase();
+                const userCode = $card.find('.user-code').text().toLowerCase();
+
+                // Search filter
+                const matchesSearch = userName.includes(searchTerm) ||
+                    userEmail.includes(searchTerm) ||
+                    userCode.includes(searchTerm);
+
+                // Type filter
+                let matchesType = true;
+                if (activeFilter === 'admin') {
+                    matchesType = $card.data('user-type') === 'admin';
+                } else if (activeFilter === 'official') {
+                    matchesType = $card.data('user-type') === 'official';
+                } else if (activeFilter === 'dropship') {
+                    matchesType = $card.data('user-type') === 'dropship';
+                } else if (activeFilter === 'overdue') {
+                    matchesType = $card.attr('data-has-overdue') === 'true';
+                }
+
+                return matchesSearch && matchesType;
+            });
+
+            currentPage = 1;
+            updateDisplay();
+        }
+
+        // Update display
+        function updateDisplay() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const usersToShow = filteredUsers.slice(startIndex, endIndex);
+
+            // Hide all cards
+            $('.user-card-wrapper').hide();
+
+            // Show filtered cards
+            usersToShow.forEach(card => {
+                $(card).show();
+            });
+
+            // Show/hide no results message
+            if (filteredUsers.length === 0) {
+                $('#noResults').show();
+                $('#paginationContainer').hide();
+            } else {
+                $('#noResults').hide();
+                $('#paginationContainer').show();
+                generatePagination();
+            }
+        }
+
+        // Generate pagination
+        function generatePagination() {
+            const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+            let paginationHtml = '';
+
+            if (totalPages > 1) {
+                // Previous button
+                paginationHtml += `<a href="#" class="page-link ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">Trước</a>`;
+
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                        paginationHtml += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                    } else if (i === currentPage - 3 || i === currentPage + 3) {
+                        paginationHtml += `<span class="page-link disabled">...</span>`;
+                    }
+                }
+
+                // Next button
+                paginationHtml += `<a href="#" class="page-link ${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">Sau</a>`;
+            }
+
+            $('#paginationContainer').html(paginationHtml);
+        }
+
+        // Event listeners
+        $('#searchInput').on('input', filterUsers);
+
+        $('.filter-btn').on('click', function() {
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+            filterUsers();
         });
-    }
 
-    // Initialize everything
-    initializeUsers();
-    initTooltips();
-
-    // Reinitialize tooltips when modal opens
-    $('.modal').on('shown.bs.modal', function() {
-        initTooltips();
-    });
-
-    // Color coding for shop IDs in modal
-    $('.modal').on('shown.bs.modal', function() {
-        $(this).find('.customer_cost').each(function() {
-            const shopId = $(this).data('shop-id');
-            if (shopId) {
-                const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
-                $(this).css('color', color);
+        $(document).on('click', '.page-link', function(e) {
+            e.preventDefault();
+            const page = $(this).data('page');
+            if (page && !$(this).hasClass('disabled')) {
+                currentPage = page;
+                updateDisplay();
             }
         });
+
+        // Initialize tooltips
+        function initTooltips() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        // Initialize everything
+        initializeUsers();
+        initTooltips();
+
+        // Reinitialize tooltips when modal opens
+        $('.modal').on('shown.bs.modal', function() {
+            initTooltips();
+        });
+
+        // Color coding for shop IDs in modal
+        $('.modal').on('shown.bs.modal', function() {
+            $(this).find('.customer_cost').each(function() {
+                const shopId = $(this).data('shop-id');
+                if (shopId) {
+                    const color = `#${((parseInt(shopId) * 1234567) & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+                    $(this).css('color', color);
+                }
+            });
+        });
     });
-});
 </script>
 
 @endsection
