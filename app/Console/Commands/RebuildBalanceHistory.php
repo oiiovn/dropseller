@@ -22,14 +22,9 @@ class RebuildBalanceHistory extends Command
             $this->error("❌ Không tìm thấy user với ID {$userId}");
             return;
         }
-
-        // ✅ XÓA HẾT balance_histories của user
         $deleted = \App\Models\BalanceHistory::where('user_id', $user->id)->delete();
         $this->info("🧹 Đã xoá {$deleted} dòng balance_histories cũ của user ID {$userId}");
-
-        // ✅ Ghi lại từ đầu
         $this->generateBalanceHistoryForUser($user);
-
         $this->info("✅ Đã cập nhật balance_histories mới cho user ID {$userId}");
     }
-}
+} 

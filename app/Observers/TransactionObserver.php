@@ -20,8 +20,7 @@ class TransactionObserver
         }
 
         if ($user) {
-            // ✅ Gọi đúng cho 1 user duy nhất
-            $this->generateBalanceHistoryForUser($user);
+            $this->generateBalanceHistoryForTransaction($user, $tran);
         }
     }
 }
