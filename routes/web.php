@@ -70,8 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('check_balance')->group(function () {
 
         Route::get('/admin/generate-balance/{userId}', [AdminController::class, 'generateBalanceHistory']);
-        Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
-            ->name('balance.history');
+
         Route::get('order', [ShopController::class, 'Overdue_Order'])->name('Overdue_Order');
         Route::get('/transaction', [TransactionController::class, 'fetchTransactionHistory'])->name('transaction');
         Route::post('/GetUser', [UserController::class, 'GetUser'])->name('GetUser');
@@ -123,7 +122,8 @@ Route::middleware(['auth', 'checkrole:seller'])->group(function () {
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
     Route::get('/quang-cao_shop', [ADSController::class, 'ads_shop'])->name('quang_cao_shop');
-
+    Route::get('/balance_history', [BalanceHistoryController::class, 'index'])
+        ->name('balance.history');
     Route::get('/dang-san-pham', [ProgramController::class, 'list_program'])->name('list_program');
 });
 
