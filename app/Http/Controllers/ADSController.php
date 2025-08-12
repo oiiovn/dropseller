@@ -93,37 +93,43 @@ class ADSController extends Controller
 
     public function ads_shop()
     {
-        // Lấy user đang đăng nhập
         $user = Auth::user();
         if (!$user) {
             return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem quảng cáo.');
         }
-        $shops = $user->shops()->with('ads')->get();
+
+        // Lấy tất cả shop kèm quảng cáo mới nhất
+        $shops = $user->shops()
+            ->with(['ads' => function ($query) {
+                $query->latest('created_at'); // sắp xếp mới nhất trước
+            }])
+            ->get();
+
         $ads_shop = [];
 
         foreach ($shops as $shop) {
             $shopName = $shop->shop_name ?? 'Unknown Shop';
-
             if (!isset($ads_shop[$shopName])) {
                 $ads_shop[$shopName] = [];
             }
 
             if ($shop->ads->isNotEmpty()) {
-                foreach ($shop->ads as $ads) {
-                    $ads_shop[$shopName][] = [
-                        'invoice_id' => $ads->invoice_id,
-                        'date_range' => $ads->date_range,
-                        'shop_id' => $ads->shop_id,
-                        'amount' => $ads->amount,
-                        'vat' => $ads->vat,
-                        'total_amount' => $ads->total_amount,
-                        'payment_status' => $ads->payment_status,
-                        'payment_code' => $ads->payment_code ?? 'Chưa có mã thanh toán',
-                        'created_at' => $ads->created_at,
-                    ];
-                }
+                // Lấy bản ghi quảng cáo mới nhất (vì đã sắp xếp)
+                $ads = $shop->ads->first();
+                $ads_shop[$shopName][] = [
+                    'invoice_id' => $ads->invoice_id,
+                    'date_range' => $ads->date_range,
+                    'shop_id' => $ads->shop_id,
+                    'amount' => $ads->amount,
+                    'vat' => $ads->vat,
+                    'total_amount' => $ads->total_amount,
+                    'payment_status' => $ads->payment_status,
+                    'payment_code' => $ads->payment_code ?? 'Chưa có mã thanh toán',
+                    'created_at' => $ads->created_at,
+                ];
             }
         }
+
         return view('ads.ads_shop', compact('ads_shop', 'user'));
     }
 }
