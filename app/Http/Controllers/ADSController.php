@@ -91,31 +91,31 @@ class ADSController extends Controller
         return view('ads.ads_all', compact('ads_all'));
     }
 
-    public function ads_shop()
-    {
-        $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem quảng cáo.');
+   public function ads_shop()
+{
+    $user = Auth::user();
+    if (!$user) {
+        return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem quảng cáo.');
+    }
+
+    // Lấy tất cả shop kèm quảng cáo, sắp xếp mới nhất trước
+    $shops = $user->shops()
+        ->with(['ads' => function ($query) {
+            $query->orderBy('created_at', 'desc'); // sắp xếp mới nhất
+        }])
+        ->get();
+
+    $ads_shop = [];
+
+    foreach ($shops as $shop) {
+        $shopName = $shop->shop_name ?? 'Unknown Shop';
+
+        if (!isset($ads_shop[$shopName])) {
+            $ads_shop[$shopName] = [];
         }
 
-        // Lấy tất cả shop kèm quảng cáo mới nhất
-        $shops = $user->shops()
-            ->with(['ads' => function ($query) {
-                $query->latest('created_at'); // sắp xếp mới nhất trước
-            }])
-            ->get();
-
-        $ads_shop = [];
-
-        foreach ($shops as $shop) {
-            $shopName = $shop->shop_name ?? 'Unknown Shop';
-            if (!isset($ads_shop[$shopName])) {
-                $ads_shop[$shopName] = [];
-            }
-
-            if ($shop->ads->isNotEmpty()) {
-                // Lấy bản ghi quảng cáo mới nhất (vì đã sắp xếp)
-                $ads = $shop->ads->first();
+        if ($shop->ads->isNotEmpty()) {
+            foreach ($shop->ads as $ads) {
                 $ads_shop[$shopName][] = [
                     'invoice_id' => $ads->invoice_id,
                     'date_range' => $ads->date_range,
@@ -129,7 +129,9 @@ class ADSController extends Controller
                 ];
             }
         }
-
-        return view('ads.ads_shop', compact('ads_shop', 'user'));
     }
+
+    return view('ads.ads_shop', compact('ads_shop', 'user'));
+}
+
 }
