@@ -12,12 +12,17 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->decimal('amount_change', 12, 2);
             $table->decimal('balance_after', 12, 2);
-            $table->enum('type', ['deposit', 'withdraw', 'order', 'refund', 'ads', 'product_fee']);
+            $table->enum('type', ['deposit', 'withdraw', 'order', 'refund', 'ads', 'product_fee', 'monthly']);
             $table->unsignedBigInteger('reference_id')->nullable();
             $table->string('reference_type')->nullable();
-            $table->string('transaction_code')->nullable(); // 👈 Thêm dòng này
+            $table->string('transaction_code')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
+
+            // 🔹 Ngăn tạo trùng một transaction
+            $table->unique(['reference_type', 'reference_id']);
+            // 🔹 Index hỗ trợ truy vấn dồn chỉnh nhanh hơn
+            $table->index(['user_id', 'created_at', 'id']);
         });        
     }
 
@@ -26,3 +31,4 @@ return new class extends Migration {
         Schema::dropIfExists('balance_histories');
     }
 };
+

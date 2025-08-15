@@ -36,7 +36,6 @@ class AutoPaymentOrders extends Command
 
     private function thanhtoan($user)
     {
-        $total_amount = $user->getCurrentBalance();
         $shops = Shop::where('user_id', $user->id)->get();
         $allOrders = [];
 
@@ -52,6 +51,7 @@ class AutoPaymentOrders extends Command
         foreach ($allOrders as $orderData) {
             DB::beginTransaction();
             try {
+                // 🔒 1) Khóa order để tránh 2 tiến trình cùng thanh toán 1 đơn
                 $order = Order::where('id', $orderData['id'])->lockForUpdate()->first();
 
                 if (!$order || $order->payment_status !== 'Chưa thanh toán') {
@@ -59,32 +59,41 @@ class AutoPaymentOrders extends Command
                     continue;
                 }
 
-                // ✅ THÊM 2 DÒNG NÀY NGAY TRƯỚC KHI CHECK SỐ DƯ
-                $user->refresh();
-                $currentBalance = $user->total_amount;
+                // 🔒 2) Khóa user trước khi kiểm tra số dư
+                $userLocked = User::where('id', $user->id)->lockForUpdate()->first();
 
-                if ($currentBalance >= $order->total_bill) {
+                // 🔒 3) Lấy số dư thực từ BalanceHistory cuối (đã được trait cập nhật chuẩn)
+                $currentBalance = \App\Models\BalanceHistory::where('user_id', $userLocked->id)
+                    ->orderBy('created_at', 'desc')
+                    ->orderBy('id', 'desc')
+                    ->lockForUpdate()
+                    ->value('balance_after') ?? 0.0;
+
+                // 4) Nếu đủ tiền thì tạo giao dịch OUT (Observer sẽ tự trừ & dồn)
+                if ($currentBalance >= (float)$order->total_bill) {
                     $transactionId = $this->generateUniqueTransactionId();
 
+                    // Cập nhật đơn (vẫn đang dưới lock)
                     $order->payment_status = 'Đã thanh toán';
                     $order->transaction_id = $transactionId;
                     $order->save();
 
+                    // Tạo Transaction OUT -> TransactionObserver.created sẽ gọi BalanceLoggable
                     Transaction::create([
-                        'bank' => 'DROP',
-                        'account_number' => $user->referral_code,
+                        'bank'             => 'DROP',
+                        'account_number'   => $userLocked->referral_code,
                         'transaction_date' => now(),
-                        'transaction_id' => $transactionId,
-                        'description' => $user->referral_code . ' ' . $order->order_code,
-                        'type' => 'OUT',
-                        'amount' => $order->total_bill,
+                        'transaction_id'   => $transactionId,
+                        'description'      => $userLocked->referral_code . ' ' . $order->order_code,
+                        'type'             => 'OUT',
+                        'amount'           => $order->total_bill,
                     ]);
 
                     Notification::create([
                         'user_id' => $order->shop->user->id,
                         'shop_id' => $order->shop_id,
-                        'image' => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
-                        'title' => 'Đơn hàng của bạn đã được thanh toán',
+                        'image'   => 'https://res.cloudinary.com/dup7bxiei/image/upload/v1739331596/c8dfdc013a52840cdd43_em29fp.jpg',
+                        'title'   => 'Đơn hàng của bạn đã được thanh toán',
                         'message' => 'Đơn hàng ' . $order->order_code . ' đã được thanh toán số tiền ' . number_format($order->total_bill) . ' VND.',
                     ]);
                 }
