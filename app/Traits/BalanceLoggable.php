@@ -113,4 +113,41 @@ trait BalanceLoggable
             $user->save();
         });
     }
+    // App/Traits/BalanceLoggable.php
+
+    public function generateBalanceHistoryForUser(User $user): void
+    {
+        DB::transaction(function () use ($user) {
+            // Lấy tất cả transaction “thuộc” user này
+            // Ưu tiên: account_number == referral_code
+            // Dự phòng: description có chứa referral_code theo token (không match chuỗi con mơ hồ)
+            $code = strtoupper(trim((string)$user->referral_code));
+            $safe = preg_quote($code, '/'); // escape cho regex
+
+            $transactions = Transaction::query()
+                ->where(function ($q) use ($code, $safe) {
+                    $q->whereRaw('UPPER(account_number) = ?', [$code])
+                        ->orWhereRaw("UPPER(description) REGEXP ?", [
+                            "(^|[^A-Z0-9]){$safe}([^A-Z0-9]|$)"
+                        ]);
+                })
+                ->orderBy('transaction_date', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+
+            foreach ($transactions as $tran) {
+                // Hàm này đã xử lý chèn quá khứ + dồn tương lai + khoá
+                $this->generateBalanceHistoryForTransaction($user, $tran);
+            }
+
+            // Cập nhật lại tổng số dư = bản ghi cuối cùng
+            $latest = BalanceHistory::where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->value('balance_after') ?? 0;
+
+            $user->total_amount = $latest;
+            $user->save();
+        });
+    }
 }
