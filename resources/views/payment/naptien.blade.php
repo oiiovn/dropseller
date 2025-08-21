@@ -114,7 +114,7 @@
                                             
                                             <div class="d-flex gap-2 mt-2">
                                                 <small class="text-muted">Tài khoản nhận:</small>
-                                                <div class="fw-bold">75928668</div>
+                                                <div class="fw-bold">PHATLOC934584939</div>
                                             </div>
                                             <div class="d-flex gap-2 mt-2">
                                                 <small class="text-muted">Tên người nhận:</small>
