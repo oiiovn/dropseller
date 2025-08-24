@@ -28,8 +28,8 @@ class TransactionObserver
             }
         }
 
-        // 2) Tách các token chữ/số trong description (bắt cả chữ + số như O02JP)
-        //    VD: "MBVCB.10486082653.605764.O02JP.CT tu" -> ["MBVCB","10486082653","605764","O02JP","CT","tu"]
+        // 2) Tách các token chữ/số trong description (bắt cả chữ + số như V9999)
+        //    VD: "MBVCB.10486082653.605764.V9999.CT tu" -> ["MBVCB","10486082653","605764","V9999","CT","tu"]
         $tokens = preg_split('/[^A-Za-z0-9]+/', strtoupper($desc), -1, PREG_SPLIT_NO_EMPTY);
         $tokens = array_values(array_unique($tokens));
 
