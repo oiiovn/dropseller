@@ -116,8 +116,8 @@ Route::middleware('auth')->group(function () {
     Route::get('affiliate', [ProgramController::class, 'affiliatePage'])->name('affiliate.affiliate');
 });
 
-// Admin-only routes
-Route::middleware(['auth', 'checkrole:seller'])->group(function () {
+// Seller and Product Manager routes
+Route::middleware(['auth', 'checkrole:seller,product_manager'])->group(function () {
     Route::get('order_si', [OrderController::class, 'order_si'])->name('order_si');
     Route::post('/program-shop/create', [ProgramController::class, 'createProgramShop'])->name('program.shop.register');
     Route::get('/settlement', [SettlementController::class, 'monthly'])->name('settlement.monthly');
