@@ -127,8 +127,8 @@ Route::middleware(['auth', 'checkrole:seller'])->group(function () {
     Route::get('/dang-san-pham', [ProgramController::class, 'list_program'])->name('list_program');
 });
 
-// Admin and manager routes
-Route::middleware(['auth', 'checkrole:admin,manager'])->group(function () {
+// Admin, manager and product_manager routes
+Route::middleware(['auth', 'checkrole:admin,manager,product_manager'])->group(function () {
     Route::post('kiem-tra-bien-dong', [AdminController::class, 'check_AI'])->name('check_AI');
     Route::get('/orders/all', [OrderController::class, 'Get_orders_all'])->name('orders.all');
     Route::get('/orders/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
