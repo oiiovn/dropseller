@@ -19,22 +19,40 @@ class TransactionController extends Controller
     public function fetchTransactionHistory()
     {
         $userCode = Auth::user()->referral_code;
+        
+        // Tìm giao dịch có referral_code trong description HOẶC account_number
         $Transactions = Transaction::with('order')
-            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->where(function($query) use ($userCode) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                      ->orWhere('account_number', $userCode);
+            })
             ->get();
+            
         $Transaction_nap = Transaction::with('order')
-            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->where(function($query) use ($userCode) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                      ->orWhere('account_number', $userCode);
+            })
             ->whereIn('bank', ['MBB', 'ACB'])
             ->where('type', '=', 'IN')
             ->get();
+            
         $Transactions_Drop = Transaction::with('order')
-            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->where(function($query) use ($userCode) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                      ->orWhere('account_number', $userCode);
+            })
             ->where('bank', 'DROP')
             ->get();
+            
         $Transactions_ads = Transaction::with('ads')
-            ->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+            ->where(function($query) use ($userCode) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                      ->orWhere('account_number', $userCode);
+            })
             ->where('bank', 'ADS')
             ->get();
+            
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads'));
     }
 
@@ -88,10 +106,15 @@ class TransactionController extends Controller
         $transactionsByReferral = [];
 
         foreach ($users as $user) {
-            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
-                ->where('bank', 'MBB')
-                ->where('type', 'IN')
-                ->get();
+            // Tìm giao dịch có referral_code trong description HOẶC account_number
+            $transactions = Transaction::where(function($query) use ($user) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
+                      ->orWhere('account_number', $user->referral_code);
+            })
+            ->where('bank', 'MBB')
+            ->where('type', 'IN')
+            ->get();
+            
             $transactionsByReferral[$user->referral_code] = [
                 'user' => $user,
                 'transactions' => $transactions
@@ -105,8 +128,12 @@ class TransactionController extends Controller
         $users = User::all();
         $transactionsByReferral = [];
         foreach ($users as $user) {
-            $transactions = Transaction::whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
-                ->get();
+            // Tìm giao dịch có referral_code trong description HOẶC account_number
+            $transactions = Transaction::where(function($query) use ($user) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$user->referral_code}[[:>:]]'")
+                      ->orWhere('account_number', $user->referral_code);
+            })->get();
+            
             $transactionsByReferral[$user->referral_code] = [
                 'user' => $user,
                 'transactions' => $transactions
