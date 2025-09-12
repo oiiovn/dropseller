@@ -27,6 +27,11 @@ class RoleSeeder extends Seeder
                 'description' => 'Quản lý có quyền truy cập vào hầu hết các tính năng ngoại trừ cài đặt hệ thống',
             ],
             [
+                'name' => 'Product Manager',
+                'slug' => 'product_manager',
+                'description' => 'Quản lý sản phẩm có quyền như seller + tạo & đăng sản phẩm như admin',
+            ],
+            [
                 'name' => 'Seller',
                 'slug' => 'seller',
                 'description' => 'Người bán có quyền quản lý các cửa hàng và sản phẩm của họ',

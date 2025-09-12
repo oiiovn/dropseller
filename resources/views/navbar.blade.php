@@ -85,7 +85,7 @@
                         <span>Dashboards</span>
                     </a>
                 </li>
-                @if(Auth::check() && Auth::user()->hasRole('seller'))
+                @if(Auth::check() && (Auth::user()->hasRole('seller') || Auth::user()->hasRole('product_manager')))
                 <li class="nav-item">
                     <a class="nav-link menu-link ajax-link" href="{{route('order_si')}}">
                         <i class=" ri-shopping-bag-3-line"></i>
@@ -178,6 +178,24 @@
                         </ul>
                     </div>
                 </li>
+                @if(Auth::check() && Auth::user()->hasRole('product_manager'))
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#tao_dang_sp_pm" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="tao_dang_sp_pm">
+                        <i class="ri-apps-2-line"></i>
+                        <span data-key="t-apps">Tạo & Đăng sản phẩm</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="tao_dang_sp_pm">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('program_view')}}" class="nav-link ajax-link" data-key="t-main-calender">Tạo gói</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('procerssing')}}" class="nav-link ajax-link">Danh sách gói</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @endif
 
                 @endif
                 @if(Auth::check() && Auth::user()->hasRole('admin'))
