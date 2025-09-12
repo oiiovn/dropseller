@@ -88,7 +88,7 @@ class DashboardController extends Controller
             ->value('roles.slug');
 
         $isAdminOrManager = in_array($roleSlug, ['admin', 'manager']);
-        $isSeller = $roleSlug === 'seller';
+        $isSeller = in_array($roleSlug, ['seller', 'product_manager']);
 
         // Tổng quan
         if ($isAdminOrManager) {

@@ -68,7 +68,7 @@ class DashboardController extends Controller
             ->value('roles.slug');
 
         $isAdmin = in_array($role, ['admin', 'manager']);
-        $isSeller = $role === 'seller';
+        $isSeller = in_array($role, ['seller', 'product_manager']);
 
         $totalQuantitySold = 0;
         $totalBillPaid = 0;
