@@ -68,7 +68,10 @@
                 <label for="package_description" class="form-label">Mô tả gói</label>
                 <textarea class="form-control" id="package_description" name="description" rows="3" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Tạo gói đăng sản phẩm</button>
+            <button type="submit" class="btn btn-primary" id="createPackageBtn">
+                <span id="btnText">Tạo gói đăng sản phẩm</span>
+                <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            </button>
         </div>
     </form>
 </div>
@@ -94,6 +97,24 @@
 
     document.getElementById('package_name').addEventListener('input', function() {
         this.dataset.userEdited = "true";
+    });
+
+    // Prevent double submission
+    document.getElementById('programForm').addEventListener('submit', function(e) {
+        const submitBtn = document.getElementById('createPackageBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        btnText.textContent = 'Đang tạo gói...';
+        btnSpinner.classList.remove('d-none');
+        
+        // Prevent form from being submitted again
+        submitBtn.onclick = function(e) {
+            e.preventDefault();
+            return false;
+        };
     });
 
     function updateProductCount() {
