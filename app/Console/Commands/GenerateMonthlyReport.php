@@ -163,7 +163,7 @@ class GenerateMonthlyReport extends Command
                     'total_chi' => $total_chi,
                     'ending_balance' => $ending_balance,
                     'shop_details' => $report['shops'],
-                    'drop_ships' => $report['tong_tien_user_dropship'],
+                    'Drop_ships' => $report['tong_tien_user_dropship'],
                     'status_payment' =>  'Chưa thanh toán',
                 ]
             );
