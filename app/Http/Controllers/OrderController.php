@@ -469,6 +469,75 @@ class OrderController extends Controller
     }
 
     /**
+     * Thanh toán tất cả đơn hoàn chưa thanh toán
+     */
+    public function payAllReturnOrders()
+    {
+        try {
+            // Lấy tất cả đơn hoàn chưa thanh toán
+            $unpaidOrders = ReturnOrder::with('shop.user')
+                ->where('payment_status', 'Chưa thanh toán')
+                ->get();
+
+            if ($unpaidOrders->isEmpty()) {
+                return redirect()->back()->with('error', '❌ Không có đơn hoàn nào cần thanh toán!');
+            }
+
+            $successCount = 0;
+            $errorCount = 0;
+            $errors = [];
+
+            foreach ($unpaidOrders as $returnOrder) {
+                try {
+                    // Kiểm tra có shop và user không
+                    if (!$returnOrder->shop || !$returnOrder->shop->user) {
+                        $errorCount++;
+                        $errors[] = "Đơn {$returnOrder->order_code}: Không tìm thấy shop/user";
+                        continue;
+                    }
+
+                    // Tạo transaction ID duy nhất
+                    $transactionId = $this->generateUniqueTransactionId();
+
+                    // Tạo giao dịch thanh toán
+                    \App\Models\Transaction::create([
+                        'bank' => 'DROP',
+                        'account_number' => $returnOrder->shop->user->referral_code,
+                        'transaction_date' => now(),
+                        'transaction_id' => $transactionId,
+                        'description' => $returnOrder->shop->user->referral_code . " Thanh toán đơn hoàn: {$returnOrder->order_code}",
+                        'type' => 'IN',
+                        'amount' => $returnOrder->tong_tien,
+                    ]);
+
+                    // Cập nhật trạng thái đơn hoàn
+                    $returnOrder->update([
+                        'payment_status' => 'Đã thanh toán',
+                        'transaction_id' => $transactionId,
+                    ]);
+
+                    $successCount++;
+                } catch (\Exception $e) {
+                    $errorCount++;
+                    $errors[] = "Đơn {$returnOrder->order_code}: {$e->getMessage()}";
+                }
+            }
+
+            $message = "✅ Đã thanh toán thành công {$successCount} đơn hoàn!";
+            if ($errorCount > 0) {
+                $message .= " ⚠️ Có {$errorCount} đơn lỗi.";
+                if (count($errors) <= 5) {
+                    $message .= "<br><small>" . implode("<br>", $errors) . "</small>";
+                }
+            }
+
+            return redirect()->back()->with('success', $message);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Generate unique transaction ID
      */
     private function generateUniqueTransactionId()

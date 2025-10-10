@@ -176,6 +176,7 @@ Route::middleware(['auth', 'checkrole:admin,manager,product_manager'])->group(fu
     // Quản lý đơn hoàn
     Route::get('/quan-ly-don-hoan', [OrderController::class, 'allReturnOrders'])->name('return-orders.index');
     Route::post('/thanh-toan-don-hoan/{returnOrder}', [OrderController::class, 'payReturnOrder'])->name('return-orders.pay');
+    Route::post('/thanh-toan-tat-ca-don-hoan', [OrderController::class, 'payAllReturnOrders'])->name('return-orders.pay-all');
 
     Route::get('/Khach_hang', [ProfileController::class, 'Get_all'])->name('Get_all');
     // Other shared admin/manager routes...

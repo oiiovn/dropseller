@@ -5,18 +5,65 @@
 <div class="container-fluid bg-white p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Quản lý đơn hoàn - Tất cả User</h4>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#payAllModal">
+            <i class="ri-money-dollar-circle-line"></i> Thanh toán tất cả đơn hoàn
+        </button>
+    </div>
+
+    <!-- Modal thanh toán tất cả -->
+    <div class="modal fade" id="payAllModal" tabindex="-1" aria-labelledby="payAllModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('return-orders.pay-all') }}" method="POST" onsubmit="return confirm('Xác nhận thanh toán TẤT CẢ đơn hoàn chưa thanh toán?')">
+                    @csrf
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="payAllModalLabel">
+                            <i class="ri-money-dollar-circle-line"></i> Thanh toán tất cả đơn hoàn
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <i class="ri-alert-line"></i>
+                            <strong>Cảnh báo:</strong> Hành động này sẽ thanh toán TẤT CẢ đơn hoàn có trạng thái "Chưa thanh toán"!
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="ri-information-line"></i>
+                            <strong>Hệ thống sẽ:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Tìm tất cả đơn hoàn "Chưa thanh toán"</li>
+                                <li>Tạo giao dịch cho từng đơn (bank: DROP, type: IN)</li>
+                                <li>Cập nhật trạng thái thành "Đã thanh toán"</li>
+                                <li>Hiển thị kết quả chi tiết sau khi hoàn tất</li>
+                            </ul>
+                        </div>
+                        <p class="mb-0 text-center">
+                            <strong>Bạn có chắc chắn muốn tiếp tục?</strong>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="ri-close-line"></i> Hủy
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="ri-check-line"></i> Xác nhận thanh toán tất cả
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
+            {!! session('success') !!}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
     @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
+            {!! session('error') !!}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
