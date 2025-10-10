@@ -49,7 +49,7 @@
                     <td>{{ number_format($item->tien_thuc_te) }}đ</td>
                     <td>{{ number_format($item->tien_phai_thanh_toan) }}đ</td>
                     <td>
-                        @if($item->status_payment == 'Chưa thanh toán' && $item->created_at > now()->subDays(3))
+                        @if($item->status_payment == 'Chưa thanh toán') {{-- && $item->created_at > now()->subDays(3) --}}
                         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Cập nhật</button>
                         @endif
                         <!-- Modal -->
