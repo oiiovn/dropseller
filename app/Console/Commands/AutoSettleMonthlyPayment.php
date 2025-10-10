@@ -9,12 +9,21 @@ use Carbon\Carbon;
 
 class AutoSettleMonthlyPayment extends Command
 {
-    protected $signature = 'auto:settle-monthly';
-    protected $description = 'Tự động tạo giao dịch thanh toán chênh lệch mỗi tháng';
+    protected $signature = 'auto:settle-monthly {month?}';
+    protected $description = 'Tự động tạo giao dịch thanh toán chênh lệch mỗi tháng. VD: auto:settle-monthly 2025-08';
 
     public function handle()
     {
-        $targetMonth = Carbon::now()->subMonth()->format('Y-m');
+        // Lấy tháng từ tham số hoặc mặc định là tháng trước
+        $targetMonth = $this->argument('month') ?? Carbon::now()->subMonth()->format('Y-m');
+        
+        // Validate format tháng
+        if (!preg_match('/^\d{4}-\d{2}$/', $targetMonth)) {
+            $this->error('❌ Format tháng không hợp lệ. Sử dụng format: YYYY-MM (VD: 2025-08)');
+            return;
+        }
+        
+        $this->info("📅 Đang xử lý thanh toán quyết toán tháng: $targetMonth");
 
         $reports = UserMonthlyReport::where('month', $targetMonth)
         ->where('status_payment', 'Chưa thanh toán')
