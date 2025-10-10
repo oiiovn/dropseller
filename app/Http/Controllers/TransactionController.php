@@ -27,7 +27,7 @@ class TransactionController extends Controller
                       ->orWhere('account_number', $userCode);
             })
             ->orderBy('transaction_date', 'desc')
-            ->get();
+            ->paginate(10);
             
         $Transaction_nap = Transaction::with('order')
             ->where(function($query) use ($userCode) {
@@ -37,7 +37,7 @@ class TransactionController extends Controller
             ->whereIn('bank', ['MBB', 'ACB'])
             ->where('type', '=', 'IN')
             ->orderBy('transaction_date', 'desc')
-            ->get();
+            ->paginate(10);
             
         $Transactions_Drop = Transaction::with('order')
             ->where(function($query) use ($userCode) {
@@ -46,7 +46,7 @@ class TransactionController extends Controller
             })
             ->where('bank', 'DROP')
             ->orderBy('transaction_date', 'desc')
-            ->get();
+            ->paginate(10);
             
         $Transactions_ads = Transaction::with('ads')
             ->where(function($query) use ($userCode) {
@@ -55,7 +55,7 @@ class TransactionController extends Controller
             })
             ->where('bank', 'ADS')
             ->orderBy('transaction_date', 'desc')
-            ->get();
+            ->paginate(10);
         
         // Aliases for view compatibility
         $Bill_Si = $Transactions_Drop; // Giao dịch đơn sỉ
@@ -68,7 +68,7 @@ class TransactionController extends Controller
             })
             ->whereIn('bank', ['QTD', 'V9999'])
             ->orderBy('transaction_date', 'desc')
-            ->get();
+            ->paginate(10);
             
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads', 'Bill_Si', 'Naptien', 'ADS', 'Dich_Vu'));
     }

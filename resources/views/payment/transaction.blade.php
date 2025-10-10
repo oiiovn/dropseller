@@ -988,6 +988,11 @@
                             @endforeach
                         </div>
 
+                        <!-- Mobile Pagination -->
+                        <div class="d-lg-none mt-3">
+                            {{ $Transactions->links() }}
+                        </div>
+
                         <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table class="table" id="all">
@@ -1113,6 +1118,11 @@
                             @endforeach
                         </div>
 
+                        <!-- Mobile Pagination -->
+                        <div class="d-lg-none mt-3">
+                            {{ $Bill_Si->links() }}
+                        </div>
+
                         <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="bill-si">
@@ -1226,6 +1236,11 @@
                                 </div>
                             </div>
                             @endforeach
+                        </div>
+
+                        <!-- Mobile Pagination -->
+                        <div class="d-lg-none mt-3">
+                            {{ $Naptien->links() }}
                         </div>
 
                         <!-- Desktop Table View -->
@@ -1344,6 +1359,11 @@
                             @endforeach
                         </div>
 
+                        <!-- Mobile Pagination -->
+                        <div class="d-lg-none mt-3">
+                            {{ $ADS->links() }}
+                        </div>
+
                         <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="ADS">
@@ -1460,6 +1480,11 @@
                                 </div>
                             </div>
                             @endforeach
+                        </div>
+
+                        <!-- Mobile Pagination -->
+                        <div class="d-lg-none mt-3">
+                            {{ $Dich_Vu->links() }}
                         </div>
 
                         <!-- Desktop Table View -->
