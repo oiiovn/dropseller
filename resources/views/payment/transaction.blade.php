@@ -234,8 +234,134 @@
         }
     }
 
+    /* Mobile Card View Styles */
+    .transaction-card {
+        display: none;
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border-left: 4px solid #459fff;
+        transition: all 0.3s ease;
+    }
+
+    .transaction-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+    }
+
+    .transaction-card.type-in {
+        border-left-color: #16a34a;
+    }
+
+    .transaction-card.type-out {
+        border-left-color: #dc2626;
+    }
+
+    .card-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .card-transaction-id {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 14px;
+    }
+
+    .card-type-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .card-type-badge.type-in {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .card-type-badge.type-out {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .card-info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 13px;
+    }
+
+    .card-info-label {
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .card-info-value {
+        color: #1e293b;
+        font-weight: 600;
+        text-align: right;
+        max-width: 60%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .card-amount {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .card-amount-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .card-amount-value {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .card-amount-value.positive {
+        color: #16a34a;
+    }
+
+    .card-amount-value.negative {
+        color: #dc2626;
+    }
+
+    .card-description {
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 8px;
+        word-break: break-word;
+    }
+
     /* Mobile Optimization */
     @media (max-width: 768px) {
+        /* Hide table, show cards */
+        .table-responsive {
+            display: none !important;
+        }
+
+        .transaction-card {
+            display: block;
+        }
+
         .stats-card {
             margin-bottom: 10px;
             padding: 15px;
@@ -386,58 +512,57 @@
         }
 
         /* Mobile Card Optimization */
-        @media (max-width: 768px) {
-            .stats-card {
-                padding: 6px;
-                margin-bottom: 8px;
-                display: flex;
-                align-items: center;
-                min-height: auto;
-            }
-
-            .stats-icon {
-                width: 24px;
-                height: 24px;
-                margin-bottom: 0;
-                margin-right: 6px;
-            }
-
-            .stats-icon i {
-                font-size: 16px !important;
-            }
-
-            .stats-content {
-                flex: 1;
-            }
-
-            .stats-title {
-                font-size: 12px;
-                margin-bottom: 2px;
-                color: #64748b;
-            }
-
-            .stats-value {
-                font-size: 14px;
-                margin-bottom: 0;
-                line-height: 1.2;
-            }
-
-            /* Adjust grid columns for mobile */
-            .col-md-6 {
-                padding-left: 6px;
-                padding-right: 6px;
-            }
-
-            .row {
-                margin-left: -6px;
-                margin-right: -6px;
-            }
-
-            /* Container padding adjustment */
-            .container-fluid {
-                padding: 10px;
-            }
+        .stats-card {
+            padding: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            min-height: auto;
         }
+
+        .stats-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 0;
+            margin-right: 6px;
+        }
+
+        .stats-icon i {
+            font-size: 16px !important;
+        }
+
+        .stats-content {
+            flex: 1;
+        }
+
+        .stats-title {
+            font-size: 12px;
+            margin-bottom: 2px;
+            color: #64748b;
+        }
+
+        .stats-value {
+            font-size: 14px;
+            margin-bottom: 0;
+            line-height: 1.2;
+        }
+
+        /* Adjust grid columns for mobile */
+        .col-md-6 {
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        .row {
+            margin-left: -6px;
+            margin-right: -6px;
+        }
+
+        /* Container padding adjustment */
+        .container-fluid {
+            padding: 10px;
+        }
+    }
     </style>
 
     @php
@@ -546,6 +671,35 @@
                 <div class="tab-content" id="pills-tabContent">
                     <!-- Tất cả giao dịch -->
                     <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+                        <!-- Mobile Cards View -->
+                        <div class="mobile-cards-container">
+                            @foreach($Transactions as $Transaction)
+                            <div class="transaction-card {{ $Transaction->type === 'IN' ? 'type-in' : 'type-out' }}">
+                                <div class="card-header-row">
+                                    <div class="card-transaction-id">{{ $Transaction->transaction_id }}</div>
+                                    <span class="card-type-badge {{ $Transaction->type === 'IN' ? 'type-in' : 'type-out' }}">
+                                        {{ $Transaction->type === 'IN' ? 'Nạp số dư' : 'Chi số dư' }}
+                                    </span>
+                                </div>
+                                <div class="card-info-row">
+                                    <span class="card-info-label">Ngày giao dịch:</span>
+                                    <span class="card-info-value">{{ $Transaction->transaction_date }}</span>
+                                </div>
+                                <div class="card-description">
+                                    <strong class="card-info-label">Nội dung:</strong><br>
+                                    {{ $Transaction->description }}
+                                </div>
+                                <div class="card-amount">
+                                    <span class="card-amount-label">Số tiền:</span>
+                                    <span class="card-amount-value {{ $Transaction->type === 'IN' ? 'positive' : 'negative' }}">
+                                        {{ $Transaction->type === 'IN' ? '+' : '-' }}{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style=" width: 100%;" class="table table-nowrap " id="all">
                                 <thead class="table-light">
@@ -634,6 +788,35 @@
                     </div>
                     <!-- Giao dịch đơn sỉ -->
                     <div class="tab-pane fade" id="pills-bill-si" role="tabpanel" aria-labelledby="pills-bill-si-tab">
+                        <!-- Mobile Cards View -->
+                        <div class="mobile-cards-container">
+                            @foreach($Bill_Si as $Transaction)
+                            <div class="transaction-card {{ $Transaction->type === 'IN' ? 'type-in' : 'type-out' }}">
+                                <div class="card-header-row">
+                                    <div class="card-transaction-id">{{ $Transaction->transaction_id }}</div>
+                                    <span class="card-type-badge {{ $Transaction->type === 'IN' ? 'type-in' : 'type-out' }}">
+                                        {{ $Transaction->type === 'IN' ? 'Nạp số dư' : 'Chi số dư' }}
+                                    </span>
+                                </div>
+                                <div class="card-info-row">
+                                    <span class="card-info-label">Ngày giao dịch:</span>
+                                    <span class="card-info-value">{{ $Transaction->transaction_date }}</span>
+                                </div>
+                                <div class="card-description">
+                                    <strong class="card-info-label">Nội dung:</strong><br>
+                                    {{ $Transaction->description }}
+                                </div>
+                                <div class="card-amount">
+                                    <span class="card-amount-label">Số tiền:</span>
+                                    <span class="card-amount-value {{ $Transaction->type === 'IN' ? 'positive' : 'negative' }}">
+                                        {{ $Transaction->type === 'IN' ? '+' : '-' }}{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="bill-si">
                                 <thead class="table-light">
@@ -722,6 +905,33 @@
                     </div>
                     <!-- Nạp tiền -->
                     <div class="tab-pane fade" id="pills-nap" role="tabpanel" aria-labelledby="pills-nap-tab">
+                        <!-- Mobile Cards View -->
+                        <div class="mobile-cards-container">
+                            @foreach($Naptien as $Transaction)
+                            <div class="transaction-card type-in">
+                                <div class="card-header-row">
+                                    <div class="card-transaction-id">{{ $Transaction->transaction_id }}</div>
+                                    <span class="card-type-badge type-in">Nạp số dư</span>
+                                </div>
+                                <div class="card-info-row">
+                                    <span class="card-info-label">Ngày giao dịch:</span>
+                                    <span class="card-info-value">{{ $Transaction->transaction_date }}</span>
+                                </div>
+                                <div class="card-description">
+                                    <strong class="card-info-label">Nội dung:</strong><br>
+                                    {{ $Transaction->description }}
+                                </div>
+                                <div class="card-amount">
+                                    <span class="card-amount-label">Số tiền:</span>
+                                    <span class="card-amount-value positive">
+                                        +{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="nap">
                                 <thead class="table-light">
@@ -811,6 +1021,33 @@
                     </div>
                     <!-- Chi tiêu ADS -->
                     <div class="tab-pane fade" id="pills-ads" role="tabpanel" aria-labelledby="pills-ads-tab">
+                        <!-- Mobile Cards View -->
+                        <div class="mobile-cards-container">
+                            @foreach($ADS as $Transaction)
+                            <div class="transaction-card type-out">
+                                <div class="card-header-row">
+                                    <div class="card-transaction-id">{{ $Transaction->transaction_id }}</div>
+                                    <span class="card-type-badge type-out">Chi tiêu ADS</span>
+                                </div>
+                                <div class="card-info-row">
+                                    <span class="card-info-label">Ngày giao dịch:</span>
+                                    <span class="card-info-value">{{ $Transaction->transaction_date }}</span>
+                                </div>
+                                <div class="card-description">
+                                    <strong class="card-info-label">Nội dung:</strong><br>
+                                    {{ $Transaction->description }}
+                                </div>
+                                <div class="card-amount">
+                                    <span class="card-amount-label">Số tiền:</span>
+                                    <span class="card-amount-value negative">
+                                        -{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style="table-layout: fixed; width: 100%;" class="table table-nowrap " id="ADS">
                                 <thead class="table-light">
@@ -900,6 +1137,35 @@
                     </div>
                     <!-- Hoá đơn dịch vụ -->
                     <div class="tab-pane fade" id="pills-dich-vu" role="tabpanel" aria-labelledby="pills-dich-vu-tab">
+                        <!-- Mobile Cards View -->
+                        <div class="mobile-cards-container">
+                            @foreach($Dich_Vu as $Transaction)
+                            <div class="transaction-card {{ $Transaction->type === 'IN' ? 'type-in' : 'type-out' }}">
+                                <div class="card-header-row">
+                                    <div class="card-transaction-id">{{ $Transaction->transaction_id }}</div>
+                                    <span class="card-type-badge {{ $Transaction->type === 'IN' ? 'type-in' : 'type-out' }}">
+                                        {{ $Transaction->type === 'IN' ? 'Nạp số dư' : 'Chi số dư' }}
+                                    </span>
+                                </div>
+                                <div class="card-info-row">
+                                    <span class="card-info-label">Ngày giao dịch:</span>
+                                    <span class="card-info-value">{{ $Transaction->transaction_date }}</span>
+                                </div>
+                                <div class="card-description">
+                                    <strong class="card-info-label">Nội dung:</strong><br>
+                                    {{ $Transaction->description }}
+                                </div>
+                                <div class="card-amount">
+                                    <span class="card-amount-label">Số tiền:</span>
+                                    <span class="card-amount-value {{ $Transaction->type === 'IN' ? 'positive' : 'negative' }}">
+                                        {{ $Transaction->type === 'IN' ? '+' : '-' }}{{ number_format($Transaction->amount, 0, '.', ',') }} VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Desktop Table View -->
                         <div class="table-responsive">
                             <table style="table-layout: fixed; width: 100%;" class="table table-nowrap ">
                                 <thead class="table-light">

@@ -52,8 +52,20 @@ class TransactionController extends Controller
             })
             ->where('bank', 'ADS')
             ->get();
+        
+        // Aliases for view compatibility
+        $Bill_Si = $Transactions_Drop; // Giao dịch đơn sỉ
+        $Naptien = $Transaction_nap;   // Nạp tiền
+        $ADS = $Transactions_ads;       // Chi tiêu ADS
+        $Dich_Vu = Transaction::with('order')
+            ->where(function($query) use ($userCode) {
+                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                      ->orWhere('account_number', $userCode);
+            })
+            ->whereIn('bank', ['QTD', 'V9999'])
+            ->get();
             
-        return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads'));
+        return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads', 'Bill_Si', 'Naptien', 'ADS', 'Dich_Vu'));
     }
 
     public function updateOrderReconciled()
