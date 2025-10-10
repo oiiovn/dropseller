@@ -171,6 +171,7 @@ Route::middleware(['auth', 'checkrole:admin,manager,product_manager'])->group(fu
     Route::post('/import-don-hoan', [OrderController::class, 'import']);
     Route::get('/quyet-toan-drop', [UserMonthlyReportController::class, 'index'])->name('user-monthly-reports.index');
     Route::put('/user-monthly-reports/{userMonthlyReport}', [UserMonthlyReportController::class, 'update'])->name('user-monthly-reports.update');
+    Route::post('/chay-thanh-toan-quyet-toan', [UserMonthlyReportController::class, 'processPayment'])->name('user-monthly-reports.process-payment');
     
     // Quản lý đơn hoàn
     Route::get('/quan-ly-don-hoan', [OrderController::class, 'allReturnOrders'])->name('return-orders.index');

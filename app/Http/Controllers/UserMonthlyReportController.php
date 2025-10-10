@@ -75,4 +75,31 @@ class UserMonthlyReportController extends Controller
     {
         //
     }
+
+    /**
+     * Process payment for settlements
+     */
+    public function processPayment(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'month' => 'required|string|regex:/^\d{4}-\d{2}$/',
+            ]);
+
+            $month = $validated['month'];
+
+            // Gọi command thanh toán quyết toán
+            \Illuminate\Support\Facades\Artisan::call('auto:settle-monthly', [
+                'month' => $month
+            ]);
+
+            $output = \Illuminate\Support\Facades\Artisan::output();
+
+            return redirect()->route('user-monthly-reports.index')
+                ->with('success', "✅ Đã chạy thanh toán quyết toán tháng {$month} thành công! {$output}");
+        } catch (\Exception $e) {
+            return redirect()->route('user-monthly-reports.index')
+                ->with('error', '❌ Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
 }

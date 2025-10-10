@@ -2,8 +2,69 @@
 @section('title', 'Danh sách báo cáo tháng')
 
 @section('main')
-<div class="container-fluid bg-white">
-    <h4 class="pt-2">Quyết Toán </h4>
+<div class="container-fluid bg-white p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>Quyết Toán</h4>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+            <i class="ri-money-dollar-circle-line"></i> Chạy thanh toán quyết toán
+        </button>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {!! session('success') !!}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <!-- Modal chạy thanh toán -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('user-monthly-reports.process-payment') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="paymentModalLabel">Chạy thanh toán quyết toán</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Chọn tháng thanh toán <span class="text-danger">*</span></label>
+                            <input type="month" name="month" class="form-control" required 
+                                   value="{{ now()->subMonth()->format('Y-m') }}">
+                            <small class="text-muted">
+                                Chọn tháng cần chạy thanh toán quyết toán. 
+                                <br>Mặc định: Tháng trước ({{ now()->subMonth()->format('m/Y') }})
+                            </small>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="ri-information-line"></i>
+                            <strong>Lưu ý:</strong> Command sẽ tự động:
+                            <ul class="mb-0 mt-2">
+                                <li>Tìm các quyết toán "Chưa thanh toán" trong tháng đã chọn</li>
+                                <li>Tạo giao dịch thanh toán (bank: QTD)</li>
+                                <li>Cập nhật trạng thái thành "Đã thanh toán"</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ri-check-line"></i> Xác nhận thanh toán
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="table-responsive mt-4">
         <table class="table table-bordered">
             <thead class="table-light">
