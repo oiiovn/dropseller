@@ -357,10 +357,21 @@
         word-break: break-word;
     }
 
-    /* Mobile Search Styles */
+    /* Mobile Search Styles - Ẩn mặc định */
     .mobile-search-container {
         margin-bottom: 15px;
-        display: none; /* Ẩn mặc định, hiện khi cần */
+        display: none;
+    }
+    
+    /* Hiển thị mobile search trên tablet/mobile */
+    @media (max-width: 1180px) {
+        .row .mobile-search-container {
+            display: block !important;
+        }
+        
+        .row:has(.mobile-search-container) {
+            display: flex !important;
+        }
     }
 
     .mobile-search-container .input-group-text {
@@ -396,8 +407,8 @@
     }
 
 
-    /* Tablet/iPad Optimization */
-    @media (max-width: 1024px) and (min-width: 769px) {
+    /* Tablet/iPad Optimization - iPad Air 5 có width 820px landscape */
+    @media (max-width: 1180px) and (min-width: 769px) {
         /* Hide table, show cards */
         .table-responsive {
             display: none !important;
@@ -731,8 +742,8 @@
         display: flex !important;
     }
 
-    /* Tối ưu cho tablet/iPad */
-    @media (max-width: 1024px) and (min-width: 769px) {
+    /* Tối ưu cho tablet/iPad (iPad Air 5 = 820px landscape) */
+    @media (max-width: 1180px) and (min-width: 769px) {
         .tab-content {
             height: auto;
         }
@@ -924,8 +935,8 @@
                     </li>
                 </ul>
 
-                <!-- Mobile Search Bar (visible on tablet and mobile) -->
-                <div class="row mb-4 d-xl-none">
+                <!-- Mobile Search Bar (visible on tablet and mobile, hidden on desktop > 1180px) -->
+                <div class="row mb-4" style="display: none;">
                     <div class="col-12">
                         <div class="mobile-search-container">
                             <div class="input-group">
