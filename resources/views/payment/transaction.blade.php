@@ -1590,6 +1590,32 @@ $(document).ready(function() {
     const mobileSearchInput = $('#mobileTransactionSearch');
     const mobileClearButton = $('#mobileClearSearch');
     
+    // Function to sort mobile cards by date (descending)
+    function sortMobileCardsByDate(targetId) {
+        const container = $('#' + targetId + ' .mobile-cards-container');
+        const cards = container.find('.transaction-card').toArray();
+        
+        // Sort cards by date (descending)
+        cards.sort(function(a, b) {
+            const dateA = $(a).find('.card-info-row').first().find('.card-info-value').text().trim();
+            const dateB = $(b).find('.card-info-row').first().find('.card-info-value').text().trim();
+            
+            // Convert to Date objects for comparison
+            const dateObjA = new Date(dateA);
+            const dateObjB = new Date(dateB);
+            
+            // Sort descending (newest first)
+            return dateObjB - dateObjA;
+        });
+        
+        // Re-append sorted cards to container
+        cards.forEach(function(card) {
+            container.append(card);
+        });
+        
+        console.log('Sorted mobile cards by date for:', targetId);
+    }
+    
     function performMobileSearch() {
         const searchTerm = mobileSearchInput.val().toLowerCase().trim();
         console.log('Mobile search for:', searchTerm);
@@ -1626,6 +1652,12 @@ $(document).ready(function() {
         
         console.log('Visible cards:', visibleCount);
         
+        // Sort visible cards by date after search
+        if (searchTerm === '') {
+            // Only sort when not searching (all cards visible)
+            sortMobileCardsByDate(targetId);
+        }
+        
         // Show/hide clear button
         if (searchTerm !== '') {
             mobileClearButton.show();
@@ -1660,8 +1692,29 @@ $(document).ready(function() {
         }, 200);
     });
     
-    // Initialize mobile search
+    // Sort mobile cards by date on page load and tab switch
+    function initializeMobileSorting() {
+        const tabs = ['pills-all', 'pills-bill-si', 'pills-nap', 'pills-ADS', 'pills-dich-vu'];
+        tabs.forEach(function(tabId) {
+            sortMobileCardsByDate(tabId);
+        });
+    }
+    
+    // Initialize mobile search and sorting
     mobileClearButton.hide();
+    
+    // Sort cards on page load
+    setTimeout(function() {
+        initializeMobileSorting();
+    }, 500);
+    
+    // Sort cards when switching tabs
+    $('.nav-pills .nav-link').on('shown.bs.tab', function() {
+        const targetId = $(this).attr('data-bs-target').replace('#', '');
+        setTimeout(function() {
+            sortMobileCardsByDate(targetId);
+        }, 100);
+    });
 });
 </script>
 
