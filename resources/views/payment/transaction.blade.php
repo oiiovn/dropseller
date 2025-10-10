@@ -1540,8 +1540,9 @@ $(document).ready(function() {
         "pageLength": 25, // Tăng số dòng hiển thị
         "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Tất cả"]],
         "order": [], // Không sort, giữ nguyên thứ tự từ database
+        "ordering": false, // Disable tất cả sorting
         "columnDefs": [
-            { "orderable": false, "targets": [4] },
+            { "orderable": false, "targets": "_all" }, // Disable sort cho tất cả cột
             { "width": "180px", "targets": 0 }, // ID column
             { "width": "auto", "targets": 1 },  // Description column
             { "width": "160px", "targets": 2 }, // Date column
@@ -1558,8 +1559,12 @@ $(document).ready(function() {
     // Initialize DataTables for all tables (check if already initialized)
     function initDataTable(tableId) {
         if (!$.fn.DataTable.isDataTable('#' + tableId)) {
-            $('#' + tableId).DataTable(dataTableConfig);
-            console.log('Initialized DataTable for:', tableId);
+            const tableConfig = Object.assign({}, dataTableConfig);
+            // Force disable ordering cho từng table
+            tableConfig.ordering = false;
+            tableConfig.order = [];
+            $('#' + tableId).DataTable(tableConfig);
+            console.log('Initialized DataTable for:', tableId, 'with no ordering');
         } else {
             console.log('DataTable already initialized for:', tableId);
         }
