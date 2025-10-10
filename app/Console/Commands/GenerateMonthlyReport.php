@@ -9,14 +9,24 @@ use App\Models\{User, Transaction, ReturnOrder, UserMonthlyReport, Order, Shop};
 
 class GenerateMonthlyReport extends Command
 {
-    protected $signature = 'report:generate-monthly';
-    protected $description = 'Tạo báo cáo quyết toán hàng tháng cho tất cả người dùng';
+    protected $signature = 'report:generate-monthly {month?}';
+    protected $description = 'Tạo báo cáo quyết toán hàng tháng cho tất cả người dùng. VD: report:generate-monthly 2025-08';
 
     public function handle()
     {
-        $month = Carbon::now()->subMonth()->format('Y-m');
+        // Lấy tháng từ tham số hoặc mặc định là tháng trước
+        $month = $this->argument('month') ?? Carbon::now()->subMonth()->format('Y-m');
+        
+        // Validate format tháng
+        if (!preg_match('/^\d{4}-\d{2}$/', $month)) {
+            $this->error('❌ Format tháng không hợp lệ. Sử dụng format: YYYY-MM (VD: 2025-08)');
+            return;
+        }
+        
         $startDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->startOfMonth();
         $endDate = Carbon::parse($month, 'Asia/Ho_Chi_Minh')->endOfMonth();
+        
+        $this->info("📅 Đang tạo quyết toán cho tháng: $month");
 
         // Lấy đơn dropship
         $donDropship = Order::whereRaw("
