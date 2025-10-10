@@ -26,6 +26,7 @@ class TransactionController extends Controller
                 $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
                       ->orWhere('account_number', $userCode);
             })
+            ->orderBy('transaction_date', 'desc')
             ->get();
             
         $Transaction_nap = Transaction::with('order')
@@ -35,6 +36,7 @@ class TransactionController extends Controller
             })
             ->whereIn('bank', ['MBB', 'ACB'])
             ->where('type', '=', 'IN')
+            ->orderBy('transaction_date', 'desc')
             ->get();
             
         $Transactions_Drop = Transaction::with('order')
@@ -43,6 +45,7 @@ class TransactionController extends Controller
                       ->orWhere('account_number', $userCode);
             })
             ->where('bank', 'DROP')
+            ->orderBy('transaction_date', 'desc')
             ->get();
             
         $Transactions_ads = Transaction::with('ads')
@@ -51,6 +54,7 @@ class TransactionController extends Controller
                       ->orWhere('account_number', $userCode);
             })
             ->where('bank', 'ADS')
+            ->orderBy('transaction_date', 'desc')
             ->get();
         
         // Aliases for view compatibility
@@ -63,6 +67,7 @@ class TransactionController extends Controller
                       ->orWhere('account_number', $userCode);
             })
             ->whereIn('bank', ['QTD', 'V9999'])
+            ->orderBy('transaction_date', 'desc')
             ->get();
             
         return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads', 'Bill_Si', 'Naptien', 'ADS', 'Dich_Vu'));
