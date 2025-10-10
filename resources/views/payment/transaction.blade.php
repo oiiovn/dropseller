@@ -1539,7 +1539,7 @@ $(document).ready(function() {
         "paging": true,
         "pageLength": 25, // Tăng số dòng hiển thị
         "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Tất cả"]],
-        "order": [[ 2, "desc" ]],
+        "order": [], // Không sort, giữ nguyên thứ tự từ database
         "columnDefs": [
             { "orderable": false, "targets": [4] },
             { "width": "180px", "targets": 0 }, // ID column
