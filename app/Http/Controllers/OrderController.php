@@ -383,4 +383,100 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Hiển thị tất cả đơn hoàn của tất cả user
+     */
+    public function allReturnOrders(Request $request)
+    {
+        $query = ReturnOrder::with(['shop.user', 'order'])
+            ->orderBy('created_at', 'desc');
+
+        // Filter theo trạng thái thanh toán
+        if ($request->has('status') && $request->status != '') {
+            $query->where('payment_status', $request->status);
+        }
+
+        // Filter theo shop
+        if ($request->has('shop_id') && $request->shop_id != '') {
+            $query->where('shop_id', $request->shop_id);
+        }
+
+        // Filter theo user
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->whereHas('shop', function($q) use ($request) {
+                $q->where('user_id', $request->user_id);
+            });
+        }
+
+        // Filter theo khoảng thời gian
+        if ($request->has('start_date') && $request->start_date != '') {
+            $query->whereDate('ngay', '>=', $request->start_date);
+        }
+        if ($request->has('end_date') && $request->end_date != '') {
+            $query->whereDate('ngay', '<=', $request->end_date);
+        }
+
+        $returnOrders = $query->paginate(50);
+
+        // Lấy danh sách users và shops cho filter
+        $users = \App\Models\User::orderBy('name')->get();
+        $shops = \App\Models\Shop::orderBy('shop_name')->get();
+
+        return view('admin.return_orders', compact('returnOrders', 'users', 'shops'));
+    }
+
+    /**
+     * Thanh toán đơn hoàn
+     */
+    public function payReturnOrder(ReturnOrder $returnOrder)
+    {
+        try {
+            // Kiểm tra đã thanh toán chưa
+            if ($returnOrder->payment_status == 'Đã thanh toán') {
+                return redirect()->back()->with('error', '❌ Đơn hoàn này đã được thanh toán rồi!');
+            }
+
+            // Kiểm tra có shop và user không
+            if (!$returnOrder->shop || !$returnOrder->shop->user) {
+                return redirect()->back()->with('error', '❌ Không tìm thấy thông tin shop hoặc user!');
+            }
+
+            // Tạo transaction ID duy nhất
+            $transactionId = $this->generateUniqueTransactionId();
+
+            // Tạo giao dịch thanh toán
+            \App\Models\Transaction::create([
+                'bank' => 'DROP',
+                'account_number' => $returnOrder->shop->user->referral_code,
+                'transaction_date' => now(),
+                'transaction_id' => $transactionId,
+                'description' => $returnOrder->shop->user->referral_code . " Thanh toán đơn hoàn: {$returnOrder->order_code}",
+                'type' => 'IN',
+                'amount' => $returnOrder->tong_tien,
+            ]);
+
+            // Cập nhật trạng thái đơn hoàn
+            $returnOrder->update([
+                'payment_status' => 'Đã thanh toán',
+                'transaction_id' => $transactionId,
+            ]);
+
+            return redirect()->back()->with('success', "✅ Đã thanh toán đơn hoàn {$returnOrder->order_code} thành công!");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Generate unique transaction ID
+     */
+    private function generateUniqueTransactionId()
+    {
+        do {
+            $transactionId = 'DH' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+        } while (\App\Models\Transaction::where('transaction_id', $transactionId)->exists());
+
+        return $transactionId;
+    }
 }

@@ -264,6 +264,9 @@
                                 <a href="{{route('order.import_don_hoan')}}" class="nav-link ajax-link" data-key="t-chat">Cập nhật đơn hoàn</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{route('return-orders.index')}}" class="nav-link ajax-link" data-key="t-return-orders">Quản lý đơn hoàn</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{route('user-monthly-reports.index')}}" class="nav-link ajax-link" data-key="t-horizontal">Cập nhật quyết toán</a>
                             </li>
                         </ul>
