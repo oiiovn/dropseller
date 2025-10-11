@@ -35,6 +35,27 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Product Sync from API -->
+                <div class="col-md-6">
+                    <div class="border rounded p-3">
+                        <h5 class="card-title mb-3">Đồng bộ giá vốn tự động</h5>
+                        <p class="text-muted small mb-3">Lấy giá vốn trực tiếp từ API Salework mà không cần upload file</p>
+                        <form action="{{ route('products.sync') }}" method="POST" id="syncForm">
+                            @csrf
+                            <button type="submit" class="btn btn-success w-100" id="syncBtn">
+                                <i class="ri-refresh-line me-1"></i>
+                                Đồng bộ giá vốn từ Salework
+                            </button>
+                        </form>
+                        <div id="syncProgress" class="mt-2" style="display:none;">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                            </div>
+                            <small class="text-muted">Đang đồng bộ dữ liệu...</small>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Status Messages -->
@@ -243,4 +264,20 @@
         </div>
     @endif
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const syncForm = document.getElementById('syncForm');
+    const syncBtn = document.getElementById('syncBtn');
+    const syncProgress = document.getElementById('syncProgress');
+
+    if (syncForm) {
+        syncForm.addEventListener('submit', function(e) {
+            // Show progress indicator
+            syncBtn.disabled = true;
+            syncProgress.style.display = 'block';
+        });
+    }
+});
+</script>
 @endsection

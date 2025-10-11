@@ -23,6 +23,9 @@ class Kernel extends ConsoleKernel
             ->monthlyOn(24, '00:05') // chạy vào 00:05 ngày 24 hàng tháng
             ->withoutOverlapping();
         // $schedule->command('check:balance-ai')->dailyAt('01:00');
+        
+        // Đồng bộ giá vốn từ Salework mỗi ngày lúc 3h sáng
+        $schedule->command('products:sync-salework')->dailyAt('03:00');
     }
 
 

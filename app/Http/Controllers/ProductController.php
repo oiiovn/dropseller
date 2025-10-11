@@ -157,4 +157,91 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * Đồng bộ giá vốn sản phẩm từ API Salework
+     */
+    public function syncFromSalework()
+    {
+        try {
+            $apiUrl = "https://salework.net/api/open/stock/v1/product/list";
+            $clientId = "1605";
+            $token = "+AXBRK19RPa6MG5wxYOhD7BPUGgibb76FnxirVzkW/9FMf9nSmJIg9OINUDk8X5L";
+
+            // Gọi API để lấy danh sách sản phẩm
+            $ch = curl_init($apiUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "client-id: $clientId",
+                "token: $token"
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if (!$response || $httpCode !== 200) {
+                return redirect()->back()->with('error', 'Không thể kết nối tới API Salework.');
+            }
+
+            $data = json_decode($response, true);
+
+            if (!isset($data['status']) || $data['status'] !== 'success') {
+                return redirect()->back()->with('error', 'API trả về lỗi: ' . ($data['message'] ?? 'Không xác định.'));
+            }
+
+            $products = $data['data']['products'] ?? [];
+
+            if (empty($products)) {
+                return redirect()->back()->with('error', 'Không có sản phẩm nào được trả về từ API.');
+            }
+
+            $skipped = [];
+            $updated = [];
+            $inserted = [];
+
+            foreach ($products as $productData) {
+                // Lấy SKU và giá vốn từ API
+                // Cấu trúc dữ liệu có thể khác nhau, cần điều chỉnh theo response thực tế
+                $sku = $productData['code'] ?? $productData['sku'] ?? null;
+                $price = $productData['price'] ?? $productData['cost'] ?? null;
+
+                if (!$sku || !$price) {
+                    continue; // Bỏ qua nếu thiếu thông tin
+                }
+
+                // Kiểm tra sản phẩm có tồn tại không
+                $product = Product::where('sku', $sku)->first();
+
+                if ($product) {
+                    // Nếu giá giống nhau thì bỏ qua
+                    if ($product->price == $price) {
+                        $skipped[] = $sku;
+                        continue;
+                    }
+
+                    // Cập nhật giá
+                    $product->update(['price' => $price]);
+                    $updated[] = $sku;
+                } else {
+                    // Thêm mới sản phẩm
+                    Product::create([
+                        'sku' => $sku,
+                        'price' => $price,
+                    ]);
+                    $inserted[] = $sku;
+                }
+            }
+
+            return redirect()->back()->with([
+                'success' => 'Đồng bộ giá vốn từ Salework thành công!',
+                'skipped' => $skipped,
+                'updated' => $updated,
+                'inserted' => $inserted,
+            ]);
+
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
+
 }

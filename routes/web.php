@@ -137,6 +137,7 @@ Route::middleware(['auth', 'checkrole:admin,manager,product_manager'])->group(fu
     Route::get('/program/processing', [OrderController::class, 'Program_processing'])->name('program.processing');
     Route::post('/shops/import', [ShopController::class, 'import'])->name('shops.import');
     Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
+    Route::post('/products/sync-salework', [ProductController::class, 'syncFromSalework'])->name('products.sync');
     Route::get('/shops_insert', [ShopController::class, 'shop_one'])->name('shops');
     Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
     Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
