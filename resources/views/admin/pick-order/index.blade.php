@@ -909,12 +909,18 @@ $(document).ready(function() {
                     const isPicked = checkbox.is(':checked');
                     
                     // Cập nhật màu dựa trên số lượng và trạng thái picked
+                    // Nếu đã tick và số lượng = 0 → màu đỏ
+                    // Nếu đã tick và số lượng > 0 → màu xanh
+                    // Nếu chưa tick → không màu
                     if (isPicked) {
                         if (newQuantity === 0) {
                             allRows.addClass('zero-quantity');
                         } else {
                             allRows.removeClass('zero-quantity');
                         }
+                    } else {
+                        // Nếu chưa tick thì xóa class zero-quantity
+                        allRows.removeClass('zero-quantity');
                     }
                     
                     // Hiển thị label thay đổi
