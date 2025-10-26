@@ -743,11 +743,11 @@
         padding-top: 0.5rem;
     }
 
-    /* Mobile cards - giữ nguyên khi cuộn */
+    /* Mobile cards - cuộn toàn bộ trang thay vì chỉ container */
     @media (max-width: 767.98px) {
-        .mobile-card-container {
-            height: calc(100vh - 400px);
-            overflow-y: auto;
+        .table-responsive thead {
+            position: relative;
+            top: auto;
         }
     }
 </style>
