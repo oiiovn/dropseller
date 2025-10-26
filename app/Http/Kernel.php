@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check_balance' => \App\Http\Middleware\EnsurePositiveBalance::class,
+        'pick_order.access' => \App\Http\Middleware\CheckPickOrderAccess::class,
 
     ];
 

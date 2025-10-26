@@ -168,14 +168,6 @@ Route::middleware(['auth', 'checkrole:admin,manager,product_manager'])->group(fu
     Route::post('/balance-issues/delete-all', [BalanceIssueController::class, 'delete_all'])->name('admin.balance_issues.delete_all');
     Route::post('/tao-thanh-toan', [OrderController::class, 'taoThanhToan'])->name('order.taoThanhToan');
     
-    // Quản lý nhặt hàng
-    Route::get('/nhat-hang', [\App\Http\Controllers\Admin\PickOrderController::class, 'index'])->name('admin.pick_order.index');
-    Route::get('/nhat-hang/pick-orders', [\App\Http\Controllers\Admin\PickOrderController::class, 'getPickOrders'])->name('admin.pick_order.pick_orders');
-    Route::get('/nhat-hang/purchase-orders', [\App\Http\Controllers\Admin\PickOrderController::class, 'getPurchaseOrders'])->name('admin.pick_order.purchase_orders');
-    Route::post('/nhat-hang/upload-excel', [\App\Http\Controllers\Admin\PickOrderController::class, 'uploadExcel'])->name('admin.pick_order.upload_excel');
-    Route::post('/nhat-hang/upload-salework', [\App\Http\Controllers\Admin\PickOrderController::class, 'uploadSalework'])->name('admin.pick_order.upload_salework');
-    Route::post('/nhat-hang/mark-picked/{id}', [\App\Http\Controllers\Admin\PickOrderController::class, 'markAsPicked'])->name('admin.pick_order.mark_picked');
-    Route::post('/nhat-hang/update-quantity/{id}', [\App\Http\Controllers\Admin\PickOrderController::class, 'updateQuantity'])->name('admin.pick_order.update_quantity');
     // hoàn dơn
     Route::get('/import-don-hoan', [OrderController::class, 'showImportForm'])->name('order.import_don_hoan');
     Route::post('/import-don-hoan', [OrderController::class, 'import']);
@@ -253,6 +245,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // // Hoạt động của người dùng
     // Route::get('/activities', [ActivityController::class, 'index'])->name('activities');
 });
+
+// Quản lý nhặt hàng - Admin và van.btd90@gmail.com
+Route::middleware(['auth', 'pick_order.access'])->group(function () {
+    Route::get('/nhat-hang', [\App\Http\Controllers\Admin\PickOrderController::class, 'index'])->name('admin.pick_order.index');
+    Route::get('/nhat-hang/pick-orders', [\App\Http\Controllers\Admin\PickOrderController::class, 'getPickOrders'])->name('admin.pick_order.pick_orders');
+    Route::get('/nhat-hang/purchase-orders', [\App\Http\Controllers\Admin\PickOrderController::class, 'getPurchaseOrders'])->name('admin.pick_order.purchase_orders');
+    Route::post('/nhat-hang/upload-excel', [\App\Http\Controllers\Admin\PickOrderController::class, 'uploadExcel'])->name('admin.pick_order.upload_excel');
+    Route::post('/nhat-hang/upload-salework', [\App\Http\Controllers\Admin\PickOrderController::class, 'uploadSalework'])->name('admin.pick_order.upload_salework');
+    Route::post('/nhat-hang/mark-picked/{id}', [\App\Http\Controllers\Admin\PickOrderController::class, 'markAsPicked'])->name('admin.pick_order.mark_picked');
+    Route::post('/nhat-hang/update-quantity/{id}', [\App\Http\Controllers\Admin\PickOrderController::class, 'updateQuantity'])->name('admin.pick_order.update_quantity');
+});
+
 // Routes cho các công cụ check số điện thoại
 Route::get('/kiem-tra-so-dien-thoai', [PhoneCheckController::class, 'form'])->name('check_so_dt');
 Route::post('/kiem-tra-so-dien-thoai', [PhoneCheckController::class, 'check'])->name('check_so_dt_submit');
