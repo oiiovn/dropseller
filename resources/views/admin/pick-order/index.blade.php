@@ -999,7 +999,7 @@ $(document).ready(function() {
     $(document).on('change', '.pick-order-checkbox', function() {
         const checkbox = $(this);
         const orderId = checkbox.data('order-id');
-        const row = checkbox.closest('tr');
+        const row = checkbox.closest('tr, .card');
         const isChecked = checkbox.is(':checked');
         
         // Gọi API để cập nhật trạng thái
