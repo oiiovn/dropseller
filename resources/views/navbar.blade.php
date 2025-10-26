@@ -85,7 +85,7 @@
                         <span>Dashboards</span>
                     </a>
                 </li>
-                @if(Auth::check() && Auth::user()->hasRole('admin'))
+                @if(Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->email === 'van.btd90@gmail.com'))
                 <li class="nav-item">
                     <a class="nav-link menu-link ajax-link" href="{{route('admin.pick_order.index')}}">
                         <i class="ri-archive-line"></i>
