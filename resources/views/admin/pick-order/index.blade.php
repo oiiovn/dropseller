@@ -749,6 +749,15 @@
             position: relative;
             top: auto;
         }
+        
+        /* Ngăn scroll ngang trên mobile */
+        body {
+            overflow-x: hidden;
+        }
+        
+        .container-fluid, .row, .col-12 {
+            overflow-x: hidden;
+        }
     }
 </style>
 
