@@ -145,7 +145,7 @@ Route::middleware(['auth', 'checkrole:admin,manager,product_manager'])->group(fu
     Route::get('/shopss', [ShopController::class, 'shops'])->name('shop');
     Route::get('/tat-ca-giao-dich', [TransactionController::class, 'Get_transaction_all'])->name('transaction_all');
     Route::get('/tat-ca-don-hang', [OrderController::class, 'Get_orders_all'])->name('Get_orders_all');
-    Route::get('/don-hang/data', [OrderController::class, 'getOrdersData'])->name('orders.data');
+    Route::get('/don-hang/data', [OrderController::class, 'getOrdersData'])->name('orders.data.tat-ca');
 
     Route::get('list_products', [ProductController::class, 'Getproduct'])->name('list_products');
     Route::get('chuon_trình_san_pham', [ProgramController::class, 'program'])->name('program_view');
