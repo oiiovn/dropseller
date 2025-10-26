@@ -5,7 +5,7 @@
 <div class="container-fluid pt-3">
     <div class="row">
         <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <div class="page-title-box d-none d-md-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0">Quản Lý Nhặt Hàng</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -55,7 +55,7 @@
                                 <div class="col-lg-12">
                                     <div class="d-flex align-items-center justify-content-between mb-3">
                                         <h5 class="card-title mb-0">Danh Sách Đơn Cần Nhặt</h5>
-                                        <div class="d-flex gap-2">
+                                        <div class="d-none d-md-flex gap-2">
                                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
                                                 <i class="ri-upload-line align-middle me-1"></i>
                                                 Tải Excel
