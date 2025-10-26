@@ -85,6 +85,14 @@
                         <span>Dashboards</span>
                     </a>
                 </li>
+                @if(Auth::check() && Auth::user()->hasRole('admin'))
+                <li class="nav-item">
+                    <a class="nav-link menu-link ajax-link" href="{{route('admin.pick_order.index')}}">
+                        <i class="ri-archive-line"></i>
+                        <span>Nhặt hàng</span>
+                    </a>
+                </li>
+                @endif
                 @if(Auth::check() && (Auth::user()->hasRole('seller') || Auth::user()->hasRole('product_manager')))
                 <li class="nav-item">
                     <a class="nav-link menu-link ajax-link" href="{{route('order_si')}}">
