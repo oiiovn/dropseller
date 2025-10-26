@@ -144,7 +144,7 @@
                                                 <tr>
                                                     <th scope="col" style="width: 80px;">Ảnh SP</th>
                                                     <th scope="col" style="width: 120px;">SKU</th>
-                                                    <th scope="col">Tên sản phẩm</th>
+                                                    <th scope="col" style="width: 250px; max-width: 250px;">Tên sản phẩm</th>
                                                     <th scope="col" style="width: 100px;" class="text-center">Kệ</th>
                                                     <th scope="col" style="width: 100px;" class="text-center">Tồn kho</th>
                                                     <th scope="col" style="width: 120px;" class="text-center">Danh mục</th>
@@ -758,6 +758,14 @@
         border-bottom: 2px solid #dee2e6;
         border-top: 4px solid #dee2e6;
         padding-top: 0.5rem;
+    }
+
+    /* Giới hạn cột tên sản phẩm */
+    .table td:nth-child(3) {
+        max-width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     /* Mobile cards - cuộn toàn bộ trang thay vì chỉ container */
