@@ -342,8 +342,8 @@
                                                 $shelfColor = $colors[$colorIndex];
                                             }
                                         @endphp
-                                        <div class="card mb-3 {{ $order->status === 'picked' ? 'picked-row' : '' }} {{ ($order->status === 'picked' && ($order->quantity_sold ?? 0) == 0) ? 'zero-quantity' : '' }}">
-                                            <div class="card-body">
+                                        <div class="card mb-3 shadow-sm {{ $order->status === 'picked' ? 'picked-row' : '' }} {{ ($order->status === 'picked' && ($order->quantity_sold ?? 0) == 0) ? 'zero-quantity' : '' }}" style="border-width: 2px;">
+                                            <div class="card-body p-3">
                                                 <div class="d-flex gap-3">
                                                     <!-- Ảnh sản phẩm -->
                                                     <div class="flex-shrink-0">
@@ -362,53 +362,67 @@
                                                     
                                                     <!-- Thông tin sản phẩm -->
                                                     <div class="flex-grow-1">
-                                                        <h6 class="mb-1">{{ $order->product_name }}</h6>
-                                                        <p class="text-muted mb-1 small">{{ $order->sku ?? $order->product_code }}</p>
+                                                        <h6 class="mb-2 fw-bold" style="font-size: 0.95rem;">{{ $order->product_name }}</h6>
+                                                        <p class="text-muted mb-2" style="font-size: 0.85rem;"><strong>SKU:</strong> {{ $order->sku ?? $order->product_code }}</p>
                                                         
                                                         <!-- Badges -->
-                                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                                        <div class="d-flex flex-wrap gap-2 mb-3">
                                                             @if($shelfLabel)
-                                                                <span class="badge bg-{{ $shelfColor }}">{{ $shelfLabel }}</span>
+                                                                <span class="badge bg-{{ $shelfColor }} fs-6">{{ $shelfLabel }}</span>
                                                                 @if($productCode)
-                                                                    <small class="text-muted align-self-center">{{ $productCode }}</small>
+                                                                    <small class="text-muted align-self-center fw-semibold">{{ $productCode }}</small>
                                                                 @endif
                                                             @endif
-                                                            <span class="badge bg-info">Tồn: {{ $order->stock ?? 0 }}</span>
-                                                            @php
-                                                                $category = $order->category ?? 'N/A';
-                                                                // Loại bỏ các từ loại sản phẩm
-                                                                $keywordsToRemove = ['CROPTOP', 'SƠ MI', 'SET BỘ', 'VÁY ĐẦM', 'CHÂN VÁY'];
-                                                                foreach ($keywordsToRemove as $keyword) {
-                                                                    $category = str_ireplace($keyword, '', $category);
-                                                                }
-                                                                // Loại bỏ khoảng trắng thừa và ký tự đặc biệt
-                                                                $category = trim($category);
-                                                                $category = preg_replace('/\s+/', ' ', $category); // Nhiều khoảng trắng thành 1
-                                                                $category = trim($category, '|, '); // Loại bỏ dấu | và dấu phẩy ở đầu/cuối
-                                                                if (empty($category)) {
-                                                                    $category = 'N/A';
-                                                                }
-                                                            @endphp
-                                                            <span class="badge bg-secondary">{{ $category }}</span>
+                                                        </div>
+                                                        
+                                                        <!-- Thông tin chi tiết -->
+                                                        <div class="row g-2 mb-2">
+                                                            <div class="col-6">
+                                                                <small class="text-muted d-block mb-1">Tồn kho</small>
+                                                                <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <small class="text-muted d-block mb-1">Nhà cung cấp</small>
+                                                                @php
+                                                                    $category = $order->category ?? 'N/A';
+                                                                    // Loại bỏ các từ loại sản phẩm
+                                                                    $keywordsToRemove = ['CROPTOP', 'SƠ MI', 'SET BỘ', 'VÁY ĐẦM', 'CHÂN VÁY'];
+                                                                    foreach ($keywordsToRemove as $keyword) {
+                                                                        $category = str_ireplace($keyword, '', $category);
+                                                                    }
+                                                                    // Loại bỏ khoảng trắng thừa và ký tự đặc biệt
+                                                                    $category = trim($category);
+                                                                    $category = preg_replace('/\s+/', ' ', $category); // Nhiều khoảng trắng thành 1
+                                                                    $category = trim($category, '|, '); // Loại bỏ dấu | và dấu phẩy ở đầu/cuối
+                                                                    if (empty($category)) {
+                                                                        $category = 'N/A';
+                                                                    }
+                                                                @endphp
+                                                                <span class="badge bg-secondary fs-6">{{ $category }}</span>
+                                                            </div>
                                                         </div>
                                                         
                                                         <!-- Số lượng và checkbox -->
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top">
                                                             <div class="d-flex flex-column align-items-center gap-1">
+                                                                <small class="text-muted mb-1">Số lượng</small>
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <button type="button" 
-                                                                            class="btn btn-sm btn-outline-danger decrease-quantity-btn" 
-                                                                            data-order-id="{{ $order->id }}">
+                                                                            class="btn btn-outline-danger decrease-quantity-btn" 
+                                                                            data-order-id="{{ $order->id }}"
+                                                                            style="width: 36px; height: 36px; padding: 0;">
                                                                         <i class="ri-subtract-line"></i>
                                                                     </button>
-                                                                    <span class="badge bg-primary quantity-display" 
+                                                                    <span class="badge bg-primary quantity-display fs-5" 
                                                                           data-order-id="{{ $order->id }}"
-                                                                          data-original-quantity="{{ $order->original_quantity ?? $order->quantity_sold ?? 0 }}">
+                                                                          data-original-quantity="{{ $order->original_quantity ?? $order->quantity_sold ?? 0 }}"
+                                                                          style="min-width: 50px; padding: 0.5rem;">
                                                                         {{ $order->quantity_sold ?? 0 }}
                                                                     </span>
                                                                     <button type="button" 
-                                                                            class="btn btn-sm btn-outline-success increase-quantity-btn" 
-                                                                            data-order-id="{{ $order->id }}">
+                                                                            class="btn btn-outline-success increase-quantity-btn" 
+                                                                            data-order-id="{{ $order->id }}"
+                                                                            style="width: 36px; height: 36px; padding: 0;">
                                                                         <i class="ri-add-line"></i>
                                                                     </button>
                                                                 </div>
@@ -427,11 +441,14 @@
                                                                     @endif
                                                                 </small>
                                                             </div>
-                                                            <input type="checkbox" 
-                                                                   class="form-check-input pick-order-checkbox" 
-                                                                   data-order-id="{{ $order->id }}"
-                                                                   {{ $order->status === 'picked' ? 'checked' : '' }}
-                                                                   style="width: 24px; height: 24px; cursor: pointer;">
+                                                            <div class="d-flex flex-column align-items-center">
+                                                                <small class="text-muted mb-1">Đã nhặt</small>
+                                                                <input type="checkbox" 
+                                                                       class="form-check-input pick-order-checkbox" 
+                                                                       data-order-id="{{ $order->id }}"
+                                                                       {{ $order->status === 'picked' ? 'checked' : '' }}
+                                                                       style="width: 28px; height: 28px; cursor: pointer;">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -927,6 +944,9 @@ $(document).ready(function() {
                         } else {
                             allRows.removeClass('zero-quantity');
                         }
+                        
+                        // Cập nhật "Đã nhặt" thống kê khi số lượng thay đổi
+                        updatePickedCountFromData();
                     } else {
                         // Nếu chưa tick thì xóa class zero-quantity
                         allRows.removeClass('zero-quantity');
@@ -1097,6 +1117,33 @@ $(document).ready(function() {
         const currentCount = parseInt(countElement.text()) || 0;
         const newCount = Math.max(0, currentCount + delta);
         countElement.text(newCount);
+    }
+
+    // Cập nhật số lượng đã nhặt từ dữ liệu thực
+    function updatePickedCountFromData() {
+        let totalPicked = 0;
+        const processedOrders = new Set();
+        
+        // Duyệt qua tất cả checkbox đã tick
+        $('.pick-order-checkbox:checked').each(function() {
+            const checkbox = $(this);
+            const orderId = checkbox.data('order-id');
+            
+            // Tránh đếm trùng desktop và mobile
+            if (processedOrders.has(orderId)) {
+                return;
+            }
+            processedOrders.add(orderId);
+            
+            // Lấy số lượng từ quantity-display
+            const quantityDisplay = $('.quantity-display[data-order-id="' + orderId + '"]').first();
+            const quantity = parseInt(quantityDisplay.text()) || 0;
+            
+            totalPicked += quantity;
+        });
+        
+        // Cập nhật UI
+        $('#picked-count').text(totalPicked);
     }
 
 });
