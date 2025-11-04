@@ -20,8 +20,11 @@ class PickOrderController extends Controller
     {
         $activeTab = $request->get('tab', 'pick-order'); // Mặc định là tab nhặt hàng
         
-        // Lấy dữ liệu từ database thực tế và sắp xếp theo kệ (bao gồm cả picked và pending)
-        $pickOrders = PickOrder::all()->sort(function($a, $b) {
+        // Lấy dữ liệu từ database thực tế, lọc tồn kho > 5000, và sắp xếp theo kệ, sau đó theo SKU (bao gồm cả picked và pending)
+        $pickOrders = PickOrder::all()->filter(function($order) {
+            // Chỉ hiển thị sản phẩm có tồn kho > 5000 (không bao gồm = 5000)
+            return ($order->stock ?? 0) > 5000;
+        })->sort(function($a, $b) {
             // Hàm trích xuất ký hiệu kệ từ tên sản phẩm
             $getShelfInfo = function($productName) {
                 if (preg_match('/^([A-Za-z]+)(\d+)_/', $productName, $matches)) {
@@ -37,7 +40,17 @@ class PickOrderController extends Controller
             $shelfA = $getShelfInfo($a->product_name ?? '');
             $shelfB = $getShelfInfo($b->product_name ?? '');
             
-            return strcmp($shelfA['sortKey'], $shelfB['sortKey']);
+            // Ưu tiên 1: So sánh theo kệ
+            $shelfComparison = strcmp($shelfA['sortKey'], $shelfB['sortKey']);
+            
+            // Nếu cùng kệ (sortKey giống nhau), ưu tiên 2: sắp xếp theo SKU từ A-Z
+            if ($shelfComparison === 0) {
+                $skuA = strtoupper($a->sku ?? $a->product_code ?? '');
+                $skuB = strtoupper($b->sku ?? $b->product_code ?? '');
+                return strcmp($skuA, $skuB);
+            }
+            
+            return $shelfComparison;
         })->values();
         
         // Dữ liệu cho tab đơn đặt hàng - Lấy từ database hoặc dữ liệu mẫu

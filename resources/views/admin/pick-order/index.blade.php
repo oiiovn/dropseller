@@ -143,7 +143,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col" style="width: 80px;">Ảnh SP</th>
-                                                    <th scope="col" style="width: 120px;">SKU</th>
+                                                    <th scope="col" style="width: 90px;">SKU</th>
                                                     <th scope="col" style="width: 250px; max-width: 250px;">Tên sản phẩm</th>
                                                     <th scope="col" style="width: 100px;" class="text-center">Kệ</th>
                                                     <th scope="col" style="width: 100px;" class="text-center">Tồn kho</th>
@@ -176,8 +176,7 @@
                                                         <span class="fw-medium">{{ $order->sku ?? $order->product_code }}</span>
                                                     </td>
                                                     <td>
-                                                        <h6 class="mb-1">{{ $order->product_name }}</h6>
-                                                        <p class="text-muted mb-0 small">{{ $order->product_code }}</p>
+                                                        <h6 class="mb-0">{{ $order->product_name }}</h6>
                                                     </td>
                                                     <td class="text-center">
                                                         @php
@@ -239,7 +238,7 @@
                                                         @php
                                                             $category = $order->category ?? 'N/A';
                                                             // Loại bỏ các từ loại sản phẩm
-                                                            $keywordsToRemove = ['CROPTOP', 'SƠ MI', 'SET BỘ', 'VÁY ĐẦM', 'CHÂN VÁY'];
+                                                            $keywordsToRemove = ['CROPTOP', 'SƠ MI', 'SET BỘ', 'VÁY ĐẦM', 'CHÂN VÁY', 'QUẦN ĐÙI', 'QUẦN DÀI', 'ÁO KHOÁC'];
                                                             foreach ($keywordsToRemove as $keyword) {
                                                                 $category = str_ireplace($keyword, '', $category);
                                                             }
@@ -363,7 +362,6 @@
                                                     <!-- Thông tin sản phẩm -->
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-2 fw-bold" style="font-size: 0.95rem;">{{ $order->product_name }}</h6>
-                                                        <p class="text-muted mb-2" style="font-size: 0.85rem;"><strong>SKU:</strong> {{ $order->sku ?? $order->product_code }}</p>
                                                         
                                                         <!-- Badges -->
                                                         <div class="d-flex flex-wrap gap-2 mb-3">
@@ -386,7 +384,7 @@
                                                                 @php
                                                                     $category = $order->category ?? 'N/A';
                                                                     // Loại bỏ các từ loại sản phẩm
-                                                                    $keywordsToRemove = ['CROPTOP', 'SƠ MI', 'SET BỘ', 'VÁY ĐẦM', 'CHÂN VÁY'];
+                                                                    $keywordsToRemove = ['CROPTOP', 'SƠ MI', 'SET BỘ', 'VÁY ĐẦM', 'CHÂN VÁY', 'QUẦN ĐÙI', 'QUẦN DÀI', 'ÁO KHOÁC'];
                                                                     foreach ($keywordsToRemove as $keyword) {
                                                                         $category = str_ireplace($keyword, '', $category);
                                                                     }
