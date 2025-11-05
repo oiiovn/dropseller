@@ -362,14 +362,12 @@
                                                     <!-- Thông tin sản phẩm -->
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-2 fw-bold" style="font-size: 0.95rem;">{{ $order->product_name }}</h6>
+                                                        <p class="text-muted mb-2 small"><strong>SKU:</strong> {{ $order->sku ?? $order->product_code }}</p>
                                                         
                                                         <!-- Badges -->
                                                         <div class="d-flex flex-wrap gap-2 mb-3">
                                                             @if($shelfLabel)
                                                                 <span class="badge bg-{{ $shelfColor }} fs-6">{{ $shelfLabel }}</span>
-                                                                @if($productCode)
-                                                                    <small class="text-muted align-self-center fw-semibold">{{ $productCode }}</small>
-                                                                @endif
                                                             @endif
                                                         </div>
                                                         
