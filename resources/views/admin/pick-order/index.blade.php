@@ -232,7 +232,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="text-center">
-                                                        <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
+                                                        <span class="badge bg-info fs-6">{{ ($order->stock ?? 0) - 5000 }}</span>
                                                     </td>
                                                     <td class="text-center">
                                                         @php
@@ -369,7 +369,7 @@
                                                                 <span class="badge bg-{{ $shelfColor }} fs-6">{{ $shelfLabel }}</span>
                                                             @endif
                                                             <span class="text-dark fw-medium">{{ $order->sku ?? $order->product_code }}</span>
-                                                            <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
+                                                            <span class="badge bg-info fs-6">{{ ($order->stock ?? 0) - 5000 }}</span>
                                                         </div>
                                                         
                                                         <!-- Thông tin chi tiết -->
