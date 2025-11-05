@@ -362,22 +362,19 @@
                                                     <!-- Thông tin sản phẩm -->
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-2 fw-bold" style="font-size: 0.95rem;">{{ $order->product_name }}</h6>
-                                                        <p class="text-muted mb-2 small"><strong>SKU:</strong> {{ $order->sku ?? $order->product_code }}</p>
                                                         
-                                                        <!-- Badges -->
-                                                        <div class="d-flex flex-wrap gap-2 mb-3">
+                                                        <!-- Kệ, SKU, Tồn kho - cùng 1 hàng -->
+                                                        <div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
                                                             @if($shelfLabel)
                                                                 <span class="badge bg-{{ $shelfColor }} fs-6">{{ $shelfLabel }}</span>
                                                             @endif
+                                                            <span class="text-dark fw-medium">{{ $order->sku ?? $order->product_code }}</span>
+                                                            <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
                                                         </div>
                                                         
                                                         <!-- Thông tin chi tiết -->
                                                         <div class="row g-2 mb-2">
-                                                            <div class="col-6">
-                                                                <small class="text-muted d-block mb-1">Tồn kho</small>
-                                                                <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
-                                                            </div>
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <small class="text-muted d-block mb-1">Nhà cung cấp</small>
                                                                 @php
                                                                     $category = $order->category ?? 'N/A';
