@@ -252,25 +252,16 @@ class PickOrderController extends Controller
 
     /**
      * Lấy dữ liệu từ API Salework dựa trên SKU (trước khi lưu database)
+     * Ưu tiên 1: API Salework real-time
+     * Ưu tiên 2: Database salework_products (fallback)
      */
     private function fetchSaleworkDataBySku($sku)
     {
         try {
-            // Ưu tiên lấy từ database salework_products trước
-            $saleworkProduct = SaleworkProduct::where('product_code', $sku)->first();
-            
-            if ($saleworkProduct) {
-                return [
-                    'image_url' => $saleworkProduct->image_url,
-                    'stock' => $saleworkProduct->stock,
-                    'category' => $saleworkProduct->category
-                ];
-            }
-            
-            // Nếu không có trong database, fallback về API
+            // ƯU TIÊN 1: Gọi API Salework real-time trước
             $products = $this->getAllSaleworkProducts();
             
-            // Tìm sản phẩm theo SKU
+            // Tìm sản phẩm theo SKU từ API
             foreach ($products as $product) {
                 if (isset($product['sku']) && $product['sku'] === $sku) {
                     return [
@@ -280,8 +271,19 @@ class PickOrderController extends Controller
                     ];
                 }
             }
+            
+            // ƯU TIÊN 2: Nếu API không có, fallback về database salework_products
+            $saleworkProduct = SaleworkProduct::where('product_code', $sku)->first();
+            
+            if ($saleworkProduct) {
+                return [
+                    'image_url' => $saleworkProduct->image_url,
+                    'stock' => $saleworkProduct->stock,
+                    'category' => $saleworkProduct->category
+                ];
+            }
 
-            // Trả về dữ liệu mặc định nếu không tìm thấy
+            // ƯU TIÊN 3: Trả về dữ liệu mặc định nếu không tìm thấy
             return [
                 'image_url' => null,
                 'stock' => 0,
@@ -291,7 +293,21 @@ class PickOrderController extends Controller
         } catch (\Exception $e) {
             Log::warning('Salework API error for SKU ' . $sku . ': ' . $e->getMessage());
             
-            // Trả về dữ liệu mặc định khi có lỗi API
+            // Khi có lỗi API, thử fallback về database
+            try {
+                $saleworkProduct = SaleworkProduct::where('product_code', $sku)->first();
+                if ($saleworkProduct) {
+                    return [
+                        'image_url' => $saleworkProduct->image_url,
+                        'stock' => $saleworkProduct->stock,
+                        'category' => $saleworkProduct->category
+                    ];
+                }
+            } catch (\Exception $dbError) {
+                Log::error('Database fallback also failed: ' . $dbError->getMessage());
+            }
+            
+            // Trả về dữ liệu mặc định khi cả 2 nguồn đều lỗi
             return [
                 'image_url' => null,
                 'stock' => 0,
