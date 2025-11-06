@@ -83,6 +83,28 @@
 </div>
 
 <script>
+    // Khôi phục ngày đã chọn khi load trang
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedStartDate = localStorage.getItem('ads_start_date');
+        const savedEndDate = localStorage.getItem('ads_end_date');
+        
+        if (savedStartDate) {
+            document.getElementById('startDate').value = savedStartDate;
+        }
+        if (savedEndDate) {
+            document.getElementById('endDate').value = savedEndDate;
+        }
+    });
+
+    // Lưu ngày khi người dùng thay đổi
+    document.getElementById('startDate').addEventListener('change', function() {
+        localStorage.setItem('ads_start_date', this.value);
+    });
+    
+    document.getElementById('endDate').addEventListener('change', function() {
+        localStorage.setItem('ads_end_date', this.value);
+    });
+
     document.getElementById('previewExpense').addEventListener('click', function() {
     const shopSelect = document.getElementById('shopSelect');
     const shopId = shopSelect.value;
