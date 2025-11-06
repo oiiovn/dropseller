@@ -251,68 +251,62 @@ class PickOrderController extends Controller
     }
 
     /**
-     * Lấy dữ liệu từ API Salework dựa trên SKU (trước khi lưu database)
-     * Ưu tiên 1: API Salework real-time
-     * Ưu tiên 2: Database salework_products (fallback)
+     * Lấy dữ liệu từ nhiều nguồn dựa trên SKU
+     * Stock: API Salework real-time (ưu tiên) → Database (fallback)
+     * Category: Database salework_products (chỉ lấy từ DB)
      */
     private function fetchSaleworkDataBySku($sku)
     {
+        $result = [
+            'image_url' => null,
+            'stock' => 0,
+            'category' => null
+        ];
+        
         try {
-            // ƯU TIÊN 1: Gọi API Salework real-time trước
-            $products = $this->getAllSaleworkProducts();
+            // LUÔN LẤY CATEGORY TỪ DATABASE salework_products
+            $saleworkProduct = SaleworkProduct::where('product_code', $sku)->first();
+            if ($saleworkProduct) {
+                $result['image_url'] = $saleworkProduct->image_url;
+                $result['category'] = $saleworkProduct->category;
+                // Lưu stock từ DB làm fallback
+                $dbStock = $saleworkProduct->stock;
+            }
             
-            // Tìm sản phẩm theo SKU từ API
-            foreach ($products as $product) {
-                if (isset($product['sku']) && $product['sku'] === $sku) {
-                    return [
-                        'image_url' => $product['image'] ?? null,
-                        'stock' => $product['stock'] ?? 0,
-                        'category' => $product['category'] ?? null
-                    ];
+            // STOCK: Ưu tiên lấy từ API Salework real-time
+            try {
+                $products = $this->getAllSaleworkProducts();
+                
+                // Tìm sản phẩm theo SKU từ API
+                foreach ($products as $product) {
+                    if (isset($product['sku']) && $product['sku'] === $sku) {
+                        $result['stock'] = $product['stock'] ?? 0;
+                        // Chỉ lấy image từ API nếu DB không có
+                        if (empty($result['image_url'])) {
+                            $result['image_url'] = $product['image'] ?? null;
+                        }
+                        break; // Đã tìm thấy, dừng vòng lặp
+                    }
+                }
+                
+                // Nếu API không trả về stock, dùng stock từ DB
+                if ($result['stock'] == 0 && isset($dbStock)) {
+                    $result['stock'] = $dbStock;
+                }
+                
+            } catch (\Exception $apiError) {
+                Log::warning('Salework API error for SKU ' . $sku . ': ' . $apiError->getMessage());
+                // Nếu API lỗi, dùng stock từ DB (nếu có)
+                if (isset($dbStock)) {
+                    $result['stock'] = $dbStock;
                 }
             }
             
-            // ƯU TIÊN 2: Nếu API không có, fallback về database salework_products
-            $saleworkProduct = SaleworkProduct::where('product_code', $sku)->first();
-            
-            if ($saleworkProduct) {
-                return [
-                    'image_url' => $saleworkProduct->image_url,
-                    'stock' => $saleworkProduct->stock,
-                    'category' => $saleworkProduct->category
-                ];
-            }
-
-            // ƯU TIÊN 3: Trả về dữ liệu mặc định nếu không tìm thấy
-            return [
-                'image_url' => null,
-                'stock' => 0,
-                'category' => null
-            ];
+            return $result;
 
         } catch (\Exception $e) {
-            Log::warning('Salework API error for SKU ' . $sku . ': ' . $e->getMessage());
-            
-            // Khi có lỗi API, thử fallback về database
-            try {
-                $saleworkProduct = SaleworkProduct::where('product_code', $sku)->first();
-                if ($saleworkProduct) {
-                    return [
-                        'image_url' => $saleworkProduct->image_url,
-                        'stock' => $saleworkProduct->stock,
-                        'category' => $saleworkProduct->category
-                    ];
-                }
-            } catch (\Exception $dbError) {
-                Log::error('Database fallback also failed: ' . $dbError->getMessage());
-            }
-            
-            // Trả về dữ liệu mặc định khi cả 2 nguồn đều lỗi
-            return [
-                'image_url' => null,
-                'stock' => 0,
-                'category' => null
-            ];
+            Log::error('fetchSaleworkDataBySku error for SKU ' . $sku . ': ' . $e->getMessage());
+            return $result;
         }
     }
 
