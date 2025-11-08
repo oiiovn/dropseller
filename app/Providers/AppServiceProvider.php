@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Notification;
+use App\Models\ADS;
 use App\Observers\TransactionObserver;
 use Illuminate\Support\Facades\Blade;
 
@@ -170,7 +171,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('*', function ($view) {
-            $Notifications = Notification::where('user_id', Auth::id())
+            $userId = Auth::id();
+            $Notifications = Notification::where('user_id', $userId)
                 ->with('user', 'shop')
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -179,11 +181,25 @@ class AppServiceProvider extends ServiceProvider
             $NotificationsCount = $Notifications->count();
 
             $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
-                ->whereHas('shop', function ($query) {
-                    $query->where('user_id', Auth::id());
+                ->whereHas('shop', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
                 })
                 ->where('created_at', '<', Carbon::now()->subDay())
                 ->get();
+
+            $pendingOrdersTotal = Order::where('payment_status', 'Chưa thanh toán')
+                ->whereHas('shop', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })
+                ->sum('total_bill');
+
+            $pendingAdsTotal = ADS::where('payment_status', 'Chưa thanh toán')
+                ->whereHas('shops', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })
+                ->sum('total_amount');
+
+            $pendingPaymentTotal = $pendingOrdersTotal + $pendingAdsTotal;
 
             $view->with(
                 [
@@ -191,11 +207,12 @@ class AppServiceProvider extends ServiceProvider
                     'Notifications' => $Notifications,
                     'NotificationsCount' => $NotificationsCount,
                     'unreadNotificationsCount' => $unreadNotificationsCount,
-                    'unreadNotifications' => $unreadNotifications
-
+                    'unreadNotifications' => $unreadNotifications,
+                    'pending_orders_total' => $pendingOrdersTotal,
+                    'pending_ads_total' => $pendingAdsTotal,
+                    'pending_payment_total' => $pendingPaymentTotal,
                 ]
             );
-
         });
         // Add @role directive for Blade templates
         Blade::directive('role', function ($expression) {

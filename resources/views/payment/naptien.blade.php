@@ -57,17 +57,16 @@
                     <form id="formNapTien">
                         <div class="mb-3">
                             <label for="soTien" class="form-label">Số tiền <span class="text-danger">*</span></label>
-                            @if (isset($orders_unpaid) && $orders_unpaid->isNotEmpty())
-                                @php
-                                    $total_bill = $orders_unpaid->sum('total_bill');
-                                @endphp
-                                <input type="text" class="form-control form-control-lg" id="soTien" placeholder="Số tiền ít nhất phải nạp {{ number_format($total_bill, 0, ',', '.') }} VNĐ" autocomplete="off" />
-                            @else
-                                <input type="text" class="form-control form-control-lg" id="soTien"
-                                    value="{{ request('amount') ? number_format(request('amount'), 0, ',', '.') : '' }}"
-                                    placeholder="Nhập số tiền" autocomplete="off" />
-                            @endif
-                            <div class="invalid-feedback" id="soTienError">Vui lòng nhập số tiền hợp lệ (tối thiểu 10.000đ)!</div>
+                            @php
+                                $minDeposit = $pending_payment_total ?? 0;
+                            @endphp
+                            <input type="text" class="form-control form-control-lg" id="soTien"
+                                value="{{ request('amount') ? number_format(request('amount'), 0, ',', '.') : '' }}"
+                                placeholder="{{ $minDeposit > 0 ? 'Số tiền ít nhất phải nạp ' . number_format($minDeposit, 0, ',', '.') . ' VNĐ cho các khoản chưa thanh toán' : 'Nhập số tiền' }}"
+                                autocomplete="off" />
+                            <div class="invalid-feedback" id="soTienError">
+                                Vui lòng nhập số tiền hợp lệ (tối thiểu {{ number_format($minDeposit > 0 ? $minDeposit : 10000, 0, ',', '.') }} VNĐ{{ $minDeposit > 0 ? ' cho các khoản chưa thanh toán' : '' }} )!
+                            </div>
                         </div>
                         
                         <input type="hidden" id="noiDungChuyenKhoan" value="{{ $referralCode ?? '' }}" />

@@ -23,6 +23,6 @@ class ADS extends Model
     ];
     public function shops()
     {
-        return $this->belongsTo(Shop::class, 'shop_id');
+        return $this->belongsTo(Shop::class, 'shop_id', 'shop_id');
     }
 }

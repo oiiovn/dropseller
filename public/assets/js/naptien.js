@@ -20,7 +20,7 @@ window.initNapTienModalEvents = function() {
         const minAmount = getMinAmount();
         const value = input.value.replace(/[^0-9]/g, "");
         if (minAmount !== 10000) {
-            soTienError.innerHTML = `Vui lòng nhập số tiền hợp lệ (tối thiểu ${minAmount.toLocaleString('vi-VN')} của đơn chưa thanh toán)!`;
+            soTienError.innerHTML = `Vui lòng nhập số tiền hợp lệ (tối thiểu ${minAmount.toLocaleString('vi-VN')} VNĐ cho các khoản chưa thanh toán)!`;
         } else {
             soTienError.textContent = `Vui lòng nhập số tiền hợp lệ (tối thiểu ${minAmount.toLocaleString('vi-VN')} đ)!`;
         }
