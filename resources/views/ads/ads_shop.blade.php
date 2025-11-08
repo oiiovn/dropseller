@@ -119,6 +119,7 @@
                                         $allAds->push($ad);
                                     }
                                 }
+                                $allAds = $allAds->sortByDesc('created_at')->values();
                             @endphp
                             @if($allAds->isEmpty())
                                 <div class="no-ads-container">
