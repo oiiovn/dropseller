@@ -829,24 +829,10 @@
     </style>
 
     @php
-        $balance = 0;
-        $total_in = 0;
-        $total_out = 0;
-        $total_ads = 0;
-
-        foreach ($Transactions as $transaction) {
-            if ($transaction->type === 'IN') {
-                $balance += $transaction->amount;
-                $total_in += $transaction->amount;
-            } elseif ($transaction->type === 'OUT') {
-                $balance -= $transaction->amount;
-                $total_out += $transaction->amount;
-                
-                if ($transaction->bank === 'ADS') {
-                    $total_ads += $transaction->amount;
-                }
-            }
-        }
+        $balanceValue = $balance ?? 0;
+        $totalInValue = $total_in ?? 0;
+        $totalOutValue = $total_out ?? 0;
+        $totalAdsValue = $total_ads ?? 0;
     @endphp
 
     <div class="container-fluid bg-light" style="min-height: 84vh;">
@@ -859,7 +845,7 @@
                     </div>
                     <div class="stats-content">
                         <div class="stats-title">Số dư hiện tại</div>
-                        <div class="stats-value">{{ number_format($balance) }} VNĐ</div>
+                        <div class="stats-value">{{ number_format($balanceValue) }} VNĐ</div>
                     </div>
                 </div>
             </div>
@@ -872,7 +858,7 @@
                     </div>
                     <div class="stats-content">
                         <div class="stats-title">Tổng nạp</div>
-                        <div class="stats-value">{{ number_format($total_in) }} VNĐ</div>
+                        <div class="stats-value">{{ number_format($totalInValue) }} VNĐ</div>
                     </div>
                 </div>
             </div>
@@ -885,7 +871,7 @@
                     </div>
                     <div class="stats-content">
                         <div class="stats-title">Tổng chi</div>
-                        <div class="stats-value">{{ number_format($total_out) }} VNĐ</div>
+                        <div class="stats-value">{{ number_format($totalOutValue) }} VNĐ</div>
                     </div>
                 </div>
             </div>
@@ -898,7 +884,7 @@
                     </div>
                     <div class="stats-content">
                         <div class="stats-title">Chi tiêu quảng cáo</div>
-                        <div class="stats-value">{{ number_format($total_ads) }} VNĐ</div>
+                        <div class="stats-value">{{ number_format($totalAdsValue) }} VNĐ</div>
                     </div>
                 </div>
             </div>

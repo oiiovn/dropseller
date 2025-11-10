@@ -19,40 +19,33 @@ class TransactionController extends Controller
     public function fetchTransactionHistory()
     {
         $userCode = Auth::user()->referral_code;
-        
+
+        $baseQuery = Transaction::where(function ($query) use ($userCode) {
+            $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
+                ->orWhere('account_number', $userCode);
+        });
+
         // Tìm giao dịch có referral_code trong description HOẶC account_number
-        $Transactions = Transaction::with('order')
-            ->where(function($query) use ($userCode) {
-                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
-                      ->orWhere('account_number', $userCode);
-            })
+        $Transactions = (clone $baseQuery)
+            ->with('order')
             ->orderBy('transaction_date', 'desc')
             ->paginate(10);
-            
-        $Transaction_nap = Transaction::with('order')
-            ->where(function($query) use ($userCode) {
-                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
-                      ->orWhere('account_number', $userCode);
-            })
+
+        $Transaction_nap = (clone $baseQuery)
+            ->with('order')
             ->whereIn('bank', ['MBB', 'ACB'])
             ->where('type', '=', 'IN')
             ->orderBy('transaction_date', 'desc')
             ->paginate(10);
-            
-        $Transactions_Drop = Transaction::with('order')
-            ->where(function($query) use ($userCode) {
-                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
-                      ->orWhere('account_number', $userCode);
-            })
+
+        $Transactions_Drop = (clone $baseQuery)
+            ->with('order')
             ->where('bank', 'DROP')
             ->orderBy('transaction_date', 'desc')
             ->paginate(10);
-            
-        $Transactions_ads = Transaction::with('ads')
-            ->where(function($query) use ($userCode) {
-                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
-                      ->orWhere('account_number', $userCode);
-            })
+
+        $Transactions_ads = (clone $baseQuery)
+            ->with('ads')
             ->where('bank', 'ADS')
             ->orderBy('transaction_date', 'desc')
             ->paginate(10);
@@ -61,16 +54,31 @@ class TransactionController extends Controller
         $Bill_Si = $Transactions_Drop; // Giao dịch đơn sỉ
         $Naptien = $Transaction_nap;   // Nạp tiền
         $ADS = $Transactions_ads;       // Chi tiêu ADS
-        $Dich_Vu = Transaction::with('order')
-            ->where(function($query) use ($userCode) {
-                $query->whereRaw("description REGEXP '[[:<:]]{$userCode}[[:>:]]'")
-                      ->orWhere('account_number', $userCode);
-            })
+        $Dich_Vu = (clone $baseQuery)
+            ->with('order')
             ->whereIn('bank', ['QTD', 'V9999'])
             ->orderBy('transaction_date', 'desc')
             ->paginate(10);
-            
-        return view('payment.transaction', compact('Transactions', 'Transaction_nap', 'Transactions_Drop', 'Transactions_ads', 'Bill_Si', 'Naptien', 'ADS', 'Dich_Vu'));
+
+        $total_in = (clone $baseQuery)->where('type', 'IN')->sum('amount');
+        $total_out = (clone $baseQuery)->where('type', 'OUT')->sum('amount');
+        $total_ads = (clone $baseQuery)->where('type', 'OUT')->where('bank', 'ADS')->sum('amount');
+        $balance = $total_in - $total_out;
+
+        return view('payment.transaction', compact(
+            'Transactions',
+            'Transaction_nap',
+            'Transactions_Drop',
+            'Transactions_ads',
+            'Bill_Si',
+            'Naptien',
+            'ADS',
+            'Dich_Vu',
+            'balance',
+            'total_in',
+            'total_out',
+            'total_ads'
+        ));
     }
 
     public function updateOrderReconciled()
