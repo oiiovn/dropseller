@@ -53,17 +53,44 @@
                              role="tabpanel">
                             <div class="row mb-3">
                                 <div class="col-lg-12">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                    @php
+                                        $currentParams = request()->except('sort');
+                                    @endphp
+                                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
                                         <h5 class="card-title mb-0">Danh Sách Đơn Cần Nhặt</h5>
-                                        <div class="d-none d-md-flex gap-2">
-                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
-                                                <i class="ri-upload-line align-middle me-1"></i>
-                                                Tải Excel
-                                            </button>
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#uploadSaleworkModal">
-                                                <i class="ri-database-2-line align-middle me-1"></i>
-                                                Upload Salework
-                                            </button>
+                                        <div class="d-flex flex-wrap gap-2 justify-content-end">
+                                            <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group" aria-label="Pick order sort">
+                                                <a href="{{ route('admin.pick_order.index', array_merge($currentParams, ['sort' => 'shelf'])) }}"
+                                                   class="btn {{ ($sort ?? 'shelf') === 'shelf' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                    <i class="ri-sort-ascending-2 me-1"></i> Sắp xếp theo kệ
+                                                </a>
+                                                <a href="{{ route('admin.pick_order.index', array_merge($currentParams, ['sort' => 'category'])) }}"
+                                                   class="btn {{ ($sort ?? 'shelf') === 'category' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                    <i class="ri-price-tag-3-line me-1"></i> Sắp xếp theo danh mục
+                                                </a>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
+                                                    <i class="ri-upload-line align-middle me-1"></i>
+                                                    Tải Excel
+                                                </button>
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#uploadSaleworkModal">
+                                                    <i class="ri-database-2-line align-middle me-1"></i>
+                                                    Upload Salework
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-md-none mb-3">
+                                        <div class="btn-group w-100" role="group">
+                                            <a href="{{ route('admin.pick_order.index', array_merge($currentParams, ['sort' => 'shelf'])) }}"
+                                               class="btn {{ ($sort ?? 'shelf') === 'shelf' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                Theo kệ
+                                            </a>
+                                            <a href="{{ route('admin.pick_order.index', array_merge($currentParams, ['sort' => 'category'])) }}"
+                                               class="btn {{ ($sort ?? 'shelf') === 'category' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                Theo danh mục
+                                            </a>
                                         </div>
                                     </div>
 
@@ -232,7 +259,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="text-center">
-                                                        <span class="badge bg-info fs-6">{{ ($order->stock ?? 0) - 5000 }}</span>
+                                                        <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
                                                     </td>
                                                     <td class="text-center">
                                                         @php
@@ -369,7 +396,8 @@
                                                                 <span class="badge bg-{{ $shelfColor }} fs-6">{{ $shelfLabel }}</span>
                                                             @endif
                                                             <span class="text-dark fw-medium">{{ $order->sku ?? $order->product_code }}</span>
-                                                            <span class="badge bg-info fs-6">{{ ($order->stock ?? 0) - 5000 }}</span>
+                                                            <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
+                                                            <span class="badge bg-info fs-6">{{ $order->stock ?? 0 }}</span>
                                                         </div>
                                                         
                                                         <!-- Thông tin chi tiết -->

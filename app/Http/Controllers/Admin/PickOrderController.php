@@ -19,39 +19,48 @@ class PickOrderController extends Controller
     public function index(Request $request)
     {
         $activeTab = $request->get('tab', 'pick-order'); // Mặc định là tab nhặt hàng
-        
-        // Lấy dữ liệu từ database thực tế, lọc tồn kho > 5000, và sắp xếp theo kệ, sau đó theo SKU (bao gồm cả picked và pending)
-        $pickOrders = PickOrder::all()->filter(function($order) {
-            // Chỉ hiển thị sản phẩm có tồn kho > 5000 (không bao gồm = 5000)
-            return ($order->stock ?? 0) > 5000;
-        })->sort(function($a, $b) {
-            // Hàm trích xuất ký hiệu kệ từ tên sản phẩm
-            $getShelfInfo = function($productName) {
-                if (preg_match('/^([A-Za-z]+)(\d+)_/', $productName, $matches)) {
-                    return [
-                        'letter' => strtoupper($matches[1]),
-                        'number' => (int)$matches[2],
-                        'sortKey' => strtoupper($matches[1]) . str_pad($matches[2], 5, '0', STR_PAD_LEFT)
-                    ];
+        $sort = $request->get('sort', 'shelf');
+
+        // Lấy dữ liệu từ database thực tế, lọc tồn kho > 5000
+        $pickOrders = PickOrder::all();
+
+        if ($sort === 'category') {
+            $pickOrders = $pickOrders->sort(function ($a, $b) {
+                $categoryA = $this->normalizeCategory($a->category ?? '');
+                $categoryB = $this->normalizeCategory($b->category ?? '');
+
+                return strcmp($categoryA, $categoryB);
+            })->values();
+        } else {
+            $pickOrders = $pickOrders->sort(function ($a, $b) {
+                // Hàm trích xuất ký hiệu kệ từ tên sản phẩm
+                $getShelfInfo = function ($productName) {
+                    if (preg_match('/^([A-Za-z]+)(\d+)_/', $productName, $matches)) {
+                        return [
+                            'letter' => strtoupper($matches[1]),
+                            'number' => (int) $matches[2],
+                            'sortKey' => strtoupper($matches[1]) . str_pad($matches[2], 5, '0', STR_PAD_LEFT),
+                        ];
+                    }
+                    return ['letter' => 'ZZZ', 'number' => 9999, 'sortKey' => 'ZZZ99999'];
+                };
+
+                $shelfA = $getShelfInfo($a->product_name ?? '');
+                $shelfB = $getShelfInfo($b->product_name ?? '');
+
+                // Ưu tiên 1: So sánh theo kệ
+                $shelfComparison = strcmp($shelfA['sortKey'], $shelfB['sortKey']);
+
+                // Nếu cùng kệ (sortKey giống nhau), ưu tiên 2: sắp xếp theo SKU từ A-Z
+                if ($shelfComparison === 0) {
+                    $skuA = strtoupper($a->sku ?? $a->product_code ?? '');
+                    $skuB = strtoupper($b->sku ?? $b->product_code ?? '');
+                    return strcmp($skuA, $skuB);
                 }
-                return ['letter' => 'ZZZ', 'number' => 9999, 'sortKey' => 'ZZZ99999'];
-            };
-            
-            $shelfA = $getShelfInfo($a->product_name ?? '');
-            $shelfB = $getShelfInfo($b->product_name ?? '');
-            
-            // Ưu tiên 1: So sánh theo kệ
-            $shelfComparison = strcmp($shelfA['sortKey'], $shelfB['sortKey']);
-            
-            // Nếu cùng kệ (sortKey giống nhau), ưu tiên 2: sắp xếp theo SKU từ A-Z
-            if ($shelfComparison === 0) {
-                $skuA = strtoupper($a->sku ?? $a->product_code ?? '');
-                $skuB = strtoupper($b->sku ?? $b->product_code ?? '');
-                return strcmp($skuA, $skuB);
-            }
-            
-            return $shelfComparison;
-        })->values();
+
+                return $shelfComparison;
+            })->values();
+        }
         
         // Dữ liệu cho tab đơn đặt hàng - Lấy từ database hoặc dữ liệu mẫu
         // TODO: Thay thế bằng query thực tế từ database
@@ -76,7 +85,38 @@ class PickOrderController extends Controller
             ],
         ]);
         
-        return view('admin.pick-order.index', compact('activeTab', 'pickOrders', 'purchaseOrders'));
+        return view('admin.pick-order.index', compact('activeTab', 'pickOrders', 'purchaseOrders', 'sort'));
+    }
+
+    private function normalizeCategory(?string $category): string
+    {
+        if (empty($category)) {
+            return 'n/a';
+        }
+
+        $keywordsToRemove = [
+            'CROPTOP',
+            'SƠ MI',
+            'SET BỘ',
+            'VÁY ĐẦM',
+            'CHÂN VÁY',
+            'QUẦN ĐÙI',
+            'QUẦN DÀI',
+            'ÁO KHOÁC',
+        ];
+
+        foreach ($keywordsToRemove as $keyword) {
+            $category = str_ireplace($keyword, '', $category);
+        }
+
+        $category = preg_replace('/\s+/', ' ', trim($category));
+        $category = trim($category, '|, ');
+
+        if ($category === '') {
+            $category = 'n/a';
+        }
+
+        return mb_strtolower($category);
     }
     
     /**
