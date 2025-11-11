@@ -28,8 +28,15 @@ class PickOrderController extends Controller
             $pickOrders = $pickOrders->sort(function ($a, $b) {
                 $categoryA = $this->normalizeCategory($a->category ?? '');
                 $categoryB = $this->normalizeCategory($b->category ?? '');
+                $categoryComparison = strcmp($categoryA, $categoryB);
 
-                return strcmp($categoryA, $categoryB);
+                if ($categoryComparison === 0) {
+                    $skuA = strtoupper($a->sku ?? $a->product_code ?? '');
+                    $skuB = strtoupper($b->sku ?? $b->product_code ?? '');
+                    return strcmp($skuA, $skuB);
+                }
+
+                return $categoryComparison;
             })->values();
         } else {
             $pickOrders = $pickOrders->sort(function ($a, $b) {

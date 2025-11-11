@@ -170,8 +170,8 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col" style="width: 80px;">Ảnh SP</th>
-                                                    <th scope="col" style="width: 90px;">SKU</th>
-                                                    <th scope="col" style="width: 250px; max-width: 250px;">Tên sản phẩm</th>
+                                                    <th scope="col" style="width: 70px;">SKU</th>
+                                                    <th scope="col" style="width: 280px; max-width: 280px;">Tên sản phẩm</th>
                                                     <th scope="col" style="width: 100px;" class="text-center">Kệ</th>
                                                     <th scope="col" style="width: 100px;" class="text-center">Tồn kho</th>
                                                     <th scope="col" style="width: 120px;" class="text-center">Danh mục</th>
