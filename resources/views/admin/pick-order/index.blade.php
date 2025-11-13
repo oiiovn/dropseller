@@ -59,6 +59,10 @@
                                     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
                                         <h5 class="card-title mb-0">Danh Sách Đơn Cần Nhặt</h5>
                                         <div class="d-flex flex-wrap gap-2 justify-content-end">
+                                            <div class="form-check form-switch align-self-center">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="hideLowStockToggle" {{ ($hideLowStock ?? false) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="hideLowStockToggle">Ẩn tồn kho ≤ 5.000</label>
+                                            </div>
                                             <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group" aria-label="Pick order sort">
                                                 <a href="{{ route('admin.pick_order.index', array_merge($currentParams, ['sort' => 'shelf'])) }}"
                                                    class="btn {{ ($sort ?? 'shelf') === 'shelf' ? 'btn-primary' : 'btn-outline-primary' }}">
@@ -91,6 +95,10 @@
                                                class="btn {{ ($sort ?? 'shelf') === 'category' ? 'btn-primary' : 'btn-outline-primary' }}">
                                                 Theo danh mục
                                             </a>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="hideLowStockToggleMobile" {{ ($hideLowStock ?? false) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="hideLowStockToggleMobile">Ẩn tồn kho ≤ 5.000</label>
                                         </div>
                                     </div>
 
@@ -810,6 +818,21 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+    function updateHideLowStockQuery(isChecked) {
+        const params = new URLSearchParams(window.location.search);
+        if (isChecked) {
+            params.set('hide_low_stock', '1');
+        } else {
+            params.delete('hide_low_stock');
+        }
+        const queryString = params.toString();
+        const newUrl = queryString ? `${window.location.pathname}?${queryString}` : window.location.pathname;
+        window.location.href = newUrl;
+    }
+
+    $('#hideLowStockToggle, #hideLowStockToggleMobile').on('change', function() {
+        updateHideLowStockQuery(this.checked);
+    });
 
     // Xử lý upload Excel
     $('#uploadExcelBtn').click(function() {

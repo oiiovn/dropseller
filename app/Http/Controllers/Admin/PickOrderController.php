@@ -20,9 +20,16 @@ class PickOrderController extends Controller
     {
         $activeTab = $request->get('tab', 'pick-order'); // Mặc định là tab nhặt hàng
         $sort = $request->get('sort', 'shelf');
+        $hideLowStock = $request->boolean('hide_low_stock');
 
-        // Lấy dữ liệu từ database thực tế, lọc tồn kho > 5000
+        // Lấy dữ liệu từ database thực tế
         $pickOrders = PickOrder::all();
+
+        if ($hideLowStock) {
+            $pickOrders = $pickOrders->filter(function ($order) {
+                return ($order->stock ?? 0) > 5000;
+            })->values();
+        }
 
         if ($sort === 'category') {
             $pickOrders = $pickOrders->sort(function ($a, $b) {
@@ -92,7 +99,7 @@ class PickOrderController extends Controller
             ],
         ]);
         
-        return view('admin.pick-order.index', compact('activeTab', 'pickOrders', 'purchaseOrders', 'sort'));
+        return view('admin.pick-order.index', compact('activeTab', 'pickOrders', 'purchaseOrders', 'sort', 'hideLowStock'));
     }
 
     private function normalizeCategory(?string $category): string
