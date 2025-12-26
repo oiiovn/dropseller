@@ -30,4 +30,8 @@ public function shop()
 {
     return $this->belongsTo(Shop::class, 'shop_id', 'shop_id');
 }
+public function product()
+{
+    return $this->hasMany(Product::class, 'sku', 'sku'); 
+}
 }

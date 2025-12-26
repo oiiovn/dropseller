@@ -7,37 +7,105 @@ use Illuminate\Http\Request;
 use App\Exports\OrderTiktokExport;
 use App\Imports\OrderTiktokimport;
 use App\Models\OrderDetail;
+use App\Models\User;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
-
+use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\Date; // thêm ở đầu file
+use App\Models\Product;
+use App\Models\Transaction; // Import the Transaction model
+use App\Models\ReturnOrder; // Import the ReturnOrder model
+use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
+    public function getOrdersData(Request $request)
+    {
+        // Start with a base query
+        $query = Order::with('shop.user')->orderByDesc('created_at');
+
+        // Filter by user if specified
+        if ($request->has('user')) {
+            $userSlug = $request->user;
+            $userName = str_replace('-', ' ', $userSlug);
+
+            $query = $query->whereHas('shop.user', function ($q) use ($userName) {
+                $q->where(DB::raw("LOWER(name)"), 'LIKE', "%" . strtolower($userName) . "%");
+            });
+        }
+
+        return DataTables::of($query)
+            ->addColumn('shop_name', function ($order) {
+                $platform = '';
+                if ($order->shop && $order->shop->platform == 'Tiktok') {
+                    $platform = '<img src="https://img.icons8.com/ios-filled/250/tiktok--v1.png" alt="" style="width: 20px; height: 20px; margin-right: 5px;">';
+                } elseif ($order->shop && $order->shop->platform == 'Shoppe') {
+                    $platform = '<img src="https://img.icons8.com/fluency/240/shopee.png" alt="" style="width: 20px; height: 20px; margin-right: 5px;">';
+                }
+                return $platform . ($order->shop ? $order->shop->shop_name : 'N/A');
+            })
+            ->addColumn('created_at', fn($order) => $order->created_at->format('d/m/Y H:i'))
+            ->addColumn('filter_date', fn($order) => $order->filter_date)
+            ->addColumn('total_products', fn($order) => $order->total_products)
+            ->addColumn('total_dropship', fn($order) => number_format($order->total_dropship, 0, ',', '.') . ' đ')
+            ->addColumn('total_bill', fn($order) => number_format($order->total_bill, 0, ',', '.') . ' đ')
+            ->addColumn('payment_status', function ($order) {
+                $color = $order->payment_status == 'Chưa thanh toán' ? 'red' : 'green';
+                return '<span style="color:' . $color . ';">' . $order->payment_status . '</span>';
+            })
+            ->addColumn('transaction_id', fn($order) => $order->transaction_id ?: 'N/A')
+            ->addColumn('reconciled', function ($order) {
+                return $order->reconciled ? '<span style="color:red;">Chưa đối soát</span>' : '<span style="color:green;">Đã đối soát</span>';
+            })
+            ->addColumn('action', fn($order) => '<button class="btn btn-sm btn-primary view-details" data-id="' . $order->id . '"><i class="ri-eye-line"></i></button>')
+            ->rawColumns(['shop_name', 'payment_status', 'reconciled', 'action'])
+            ->make(true);
+    }
+
     function Getorder()
     {
-        return view('order.order');
+        return view('payment.transaction_all');
     }
+    public function Get_orders_all()
+    {
+        $shops = Shop::with('orders')->get();
+        $orders_all = [];
+
+        foreach ($shops as $shop) {
+            $userName = $shop->user->name ?? 'Unknown User';
+
+            if (!isset($orders_all[$userName])) {
+                $orders_all[$userName] = [];
+            }
+
+            $orders_all[$userName][$shop->shop_name] = $shop->orders;
+        }
+
+        return view('order.orders_all', compact('orders_all'));
+    }
+
+
 
     public function order_si(Request $request)
     {
         $user = Auth::user();
         $shops = Shop::where('user_id', $user->id)->get();
-    
+
         $ordersQuery = Order::whereIn('shop_id', $shops->pluck('shop_id'))
             ->with(['shop', 'orderDetails'])
             ->orderBy('created_at', 'desc');
-    
+
         if ($request->has('order_code') && !empty($request->order_code)) {
             $ordersQuery->where('order_code', 'like', '%' . $request->order_code . '%');
         }
-    
-        $orders = $ordersQuery->get(); 
+
+        $orders = $ordersQuery->get();
         return view('order.order_si', compact('orders', 'shops'));
     }
-    
+
 
 
     public function exportOrders()
@@ -71,7 +139,7 @@ class OrderController extends Controller
                 $totalAmount += $order['amount'];
             }
         }
-        $total_dropship = in_array($shopId, $excludedShopIds, true) ? 0 : $totalAmount * 5000;
+        $total_dropship = in_array($shopId, $excludedShopIds, true) ? 0 : $totalRevenue * 0.05;
         $total_tong = $totalRevenue + $total_dropship;
 
         $orderCode = 'DROP' . substr(str_shuffle('0123456789'), 0, 12);
@@ -155,5 +223,329 @@ class OrderController extends Controller
 
             return redirect()->route('productsss')->with('success', 'Đơn hàng này đã được tạo mới!');
         }
+    }
+    // đơn hoàn
+    public function showImportForm()
+    {
+        return view('order.import_don_hoan');
+    }
+
+
+    public function import(Request $request)
+    {
+        $rows = Excel::toArray([], $request->file('file'))[0];
+        $data = collect($rows)->skip(1);
+        $ketQua = [];
+        foreach ($data as $row) {
+            [$ngays, $sku, $so_luong, $shopId] = $row;
+            $ngay = Date::excelToDateTimeObject($ngays)->format('Y-m-d');
+            $donHangs = DB::table('orders')
+                ->where('shop_id', $shopId)
+                ->whereRaw("? BETWEEN SUBSTRING_INDEX(filter_date, ' - ', 1) AND SUBSTRING_INDEX(filter_date, ' - ', -1)", [$ngay])
+                ->get();
+            if ($donHangs->isEmpty()) {
+                $ketQua[] = [
+                    'ngay' => $ngay,
+                    'shop_id' => $shopId,
+                    'sku' => $sku,
+                    'order_code' => null,
+                    'filter_date' => null,
+                    'ket_qua' => '❌ Không tìm thấy đơn nào'
+                ];
+            } else {
+                foreach ($donHangs as $don) {
+                    $product = Product::where('sku', $sku)
+                        ->with(['order_detail' => function ($q) use ($don) {
+                            $q->where('order_id', $don->id);
+                        }])
+                        ->first();
+                    $ketQua[] = [
+                        'ngay' => $ngay,
+                        'shop_id' => $shopId,
+                        'sku' => $sku,
+                        'so_luong' => (int) $so_luong,
+                        'order_code' => $don->order_code,
+                        'filter_date' => $don->filter_date,
+                        'gia_san_pham' => $product->price ?? 0,
+                        'ket_qua' => '✅',
+                        'product' => $product, // ⭐ thêm toàn bộ thông tin sản phẩm tại đây
+                    ];
+                }
+            }
+        }
+        $shops = Shop::all();
+        $timThay = collect($ketQua)->where('order_code', '!=', null);
+        $khongTimThay = collect($ketQua)->where('order_code', null);
+
+        $gopTimThay = $timThay
+            ->groupBy(fn($item) => $item['ngay'] . '|' . $item['shop_id'] . '|' . $item['order_code'])
+            ->map(function ($group) {
+                $first = $group->first();
+                $skuGrouped = $group->groupBy('sku')
+                    ->map(function ($items) {
+                        $tong = $items->sum('so_luong');
+                        return $items->first()['sku'] . ' (' . $tong . ')';
+                    })->values()->implode(', ');
+
+                return [
+                    'ngay' => $first['ngay'],
+                    'shop_id' => $first['shop_id'],
+                    'order_code' => $first['order_code'],
+                    'filter_date' => $first['filter_date'],
+                    'sku' => $skuGrouped,
+                    'tong_tien' => $group->sum(fn($item) => $item['so_luong'] * $item['gia_san_pham']),
+                    'ket_qua' => '✅ ',
+                ];
+            });
+
+        $gopKhongTimThay = $khongTimThay
+            ->groupBy(fn($item) => $item['ngay'] . '|' . $item['shop_id'])
+            ->map(function ($group) {
+                $first = $group->first();
+                $skuList = $group->pluck('sku')->implode(', ');
+
+                return [
+                    'ngay' => $first['ngay'],
+                    'shop_id' => $first['shop_id'],
+                    'order_code' => null,
+                    'filter_date' => null,
+                    'sku' => $skuList,
+                    'tong_tien' => 0,
+                    'ket_qua' => '❌',
+                ];
+            });
+
+        $ketQuaGop = $gopTimThay
+            ->merge($gopKhongTimThay)
+            ->sortByDesc(fn($item) => $item['ket_qua'] === '❌')
+            ->values();
+
+        $sanPhamGop = collect($ketQua)
+            ->filter(fn($item) => !empty($item['order_code'])) // ✅ chỉ lấy dòng có đơn hàng
+            ->groupBy('sku')
+            ->map(function ($items) {
+                $first = $items->first();
+                return [
+                    'sku' => $first['sku'],
+                    'product_name' => $first['product']->order_detail[0]->product_name ?? '',
+                    'image' => $first['product']->order_detail[0]->image ?? '',
+                    'so_luong' => $items->sum('so_luong'),
+                ];
+            })
+            ->values()
+            ->sortBy('sku')
+            ->values();
+        $tongSanPham = $sanPhamGop->sum('so_luong');
+        return view('order.import_don_hoan', ['ketQua' => $ketQuaGop, 'sanPhamGop' => $sanPhamGop, 'tongSanPham' => $tongSanPham, 'shops' => $shops]);
+    }
+    public function taoThanhToan(Request $request)
+    {
+        $ketQuaGop = collect(unserialize(base64_decode($request->input('data'))));
+
+        $donCanThanhToan = $ketQuaGop->filter(function ($item) {
+            return $item['order_code'] !== null && $item['tong_tien'] > 0;
+        })->values();
+        // dd($donCanThanhToan);
+        if ($donCanThanhToan->isNotEmpty()) {
+            foreach ($donCanThanhToan as $don) {
+                ReturnOrder::create([
+                    'order_code' => $don['order_code'],
+                    'shop_id' => $don['shop_id'],
+                    'ngay' => $don['ngay'],
+                    'sku' => json_encode($don['sku']), // có thể là chuỗi hoặc mảng → encode lại nếu là text
+                    'tong_tien' => $don['tong_tien'],
+                    'payment_status' => 'Chưa thanh toán',
+                    'transaction_id' => null,
+                ]);
+            }
+
+            return redirect()->back()->with('message', '✅ Đã tạo thanh toán thành công!');
+        } else {
+            return redirect()->back()->with('error', '❌ Không có đơn hợp lệ để thanh toán.');
+        }
+    }
+
+    public function getOrderDetails($id)
+    {
+        try {
+            $order = Order::with(['shop', 'orderDetails'])->findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'order' => $order,
+                'details' => $order->orderDetails,
+                'shop' => $order->shop
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Hiển thị tất cả đơn hoàn của tất cả user
+     */
+    public function allReturnOrders(Request $request)
+    {
+        $query = ReturnOrder::with(['shop.user', 'order'])
+            ->orderBy('created_at', 'desc');
+
+        // Filter theo trạng thái thanh toán
+        if ($request->has('status') && $request->status != '') {
+            $query->where('payment_status', $request->status);
+        }
+
+        // Filter theo shop
+        if ($request->has('shop_id') && $request->shop_id != '') {
+            $query->where('shop_id', $request->shop_id);
+        }
+
+        // Filter theo user
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->whereHas('shop', function($q) use ($request) {
+                $q->where('user_id', $request->user_id);
+            });
+        }
+
+        // Filter theo khoảng thời gian
+        if ($request->has('start_date') && $request->start_date != '') {
+            $query->whereDate('ngay', '>=', $request->start_date);
+        }
+        if ($request->has('end_date') && $request->end_date != '') {
+            $query->whereDate('ngay', '<=', $request->end_date);
+        }
+
+        $returnOrders = $query->paginate(50);
+
+        // Lấy danh sách users và shops cho filter
+        $users = \App\Models\User::orderBy('name')->get();
+        $shops = \App\Models\Shop::orderBy('shop_name')->get();
+
+        return view('admin.return_orders', compact('returnOrders', 'users', 'shops'));
+    }
+
+    /**
+     * Thanh toán đơn hoàn
+     */
+    public function payReturnOrder(ReturnOrder $returnOrder)
+    {
+        try {
+            // Kiểm tra đã thanh toán chưa
+            if ($returnOrder->payment_status == 'Đã thanh toán') {
+                return redirect()->back()->with('error', '❌ Đơn hoàn này đã được thanh toán rồi!');
+            }
+
+            // Kiểm tra có shop và user không
+            if (!$returnOrder->shop || !$returnOrder->shop->user) {
+                return redirect()->back()->with('error', '❌ Không tìm thấy thông tin shop hoặc user!');
+            }
+
+            // Tạo transaction ID duy nhất
+            $transactionId = $this->generateUniqueTransactionId();
+
+            // Tạo giao dịch thanh toán
+            \App\Models\Transaction::create([
+                'bank' => 'DROP',
+                'account_number' => $returnOrder->shop->user->referral_code,
+                'transaction_date' => now(),
+                'transaction_id' => $transactionId,
+                'description' => $returnOrder->shop->user->referral_code . " Thanh toán đơn hoàn: {$returnOrder->order_code}",
+                'type' => 'IN',
+                'amount' => $returnOrder->tong_tien,
+            ]);
+
+            // Cập nhật trạng thái đơn hoàn
+            $returnOrder->update([
+                'payment_status' => 'Đã thanh toán',
+                'transaction_id' => $transactionId,
+            ]);
+
+            return redirect()->back()->with('success', "✅ Đã thanh toán đơn hoàn {$returnOrder->order_code} thành công!");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Thanh toán tất cả đơn hoàn chưa thanh toán
+     */
+    public function payAllReturnOrders()
+    {
+        try {
+            // Lấy tất cả đơn hoàn chưa thanh toán
+            $unpaidOrders = ReturnOrder::with('shop.user')
+                ->where('payment_status', 'Chưa thanh toán')
+                ->get();
+
+            if ($unpaidOrders->isEmpty()) {
+                return redirect()->back()->with('error', '❌ Không có đơn hoàn nào cần thanh toán!');
+            }
+
+            $successCount = 0;
+            $errorCount = 0;
+            $errors = [];
+
+            foreach ($unpaidOrders as $returnOrder) {
+                try {
+                    // Kiểm tra có shop và user không
+                    if (!$returnOrder->shop || !$returnOrder->shop->user) {
+                        $errorCount++;
+                        $errors[] = "Đơn {$returnOrder->order_code}: Không tìm thấy shop/user";
+                        continue;
+                    }
+
+                    // Tạo transaction ID duy nhất
+                    $transactionId = $this->generateUniqueTransactionId();
+
+                    // Tạo giao dịch thanh toán
+                    \App\Models\Transaction::create([
+                        'bank' => 'DROP',
+                        'account_number' => $returnOrder->shop->user->referral_code,
+                        'transaction_date' => now(),
+                        'transaction_id' => $transactionId,
+                        'description' => $returnOrder->shop->user->referral_code . " Thanh toán đơn hoàn: {$returnOrder->order_code}",
+                        'type' => 'IN',
+                        'amount' => $returnOrder->tong_tien,
+                    ]);
+
+                    // Cập nhật trạng thái đơn hoàn
+                    $returnOrder->update([
+                        'payment_status' => 'Đã thanh toán',
+                        'transaction_id' => $transactionId,
+                    ]);
+
+                    $successCount++;
+                } catch (\Exception $e) {
+                    $errorCount++;
+                    $errors[] = "Đơn {$returnOrder->order_code}: {$e->getMessage()}";
+                }
+            }
+
+            $message = "✅ Đã thanh toán thành công {$successCount} đơn hoàn!";
+            if ($errorCount > 0) {
+                $message .= " ⚠️ Có {$errorCount} đơn lỗi.";
+                if (count($errors) <= 5) {
+                    $message .= "<br><small>" . implode("<br>", $errors) . "</small>";
+                }
+            }
+
+            return redirect()->back()->with('success', $message);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Generate unique transaction ID
+     */
+    private function generateUniqueTransactionId()
+    {
+        do {
+            $transactionId = 'DH' . str_pad(mt_rand(0, 99999999999999), 14, '0', STR_PAD_LEFT);
+        } while (\App\Models\Transaction::where('transaction_id', $transactionId)->exists());
+
+        return $transactionId;
     }
 }

@@ -14,10 +14,9 @@ class OrderMail extends Mailable
     public $order; // Biến lưu đơn hàng
     public $orderDetail; // Biến lưu đơn hàng
 
-    public function __construct($order, $orderDetail)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->orderDetail = $orderDetail;
     }
 
     public function build()
@@ -27,7 +26,6 @@ class OrderMail extends Mailable
                     ->view('emails.order_mail')
                     ->with([
                         'order' => $this->order,
-                        'orderDetail' => $this->orderDetail,
                     ]);
     }
 }

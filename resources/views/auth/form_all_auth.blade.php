@@ -97,6 +97,24 @@
             <input type="password" name="password" placeholder="Password" required>
             <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
             <input type="text" name="referral_code" placeholder="Referral Code (Optional)">
+            
+            <!-- Form đăng ký -->
+<div class="form-group mb-3">
+    <label for="captcha-register">CAPTCHA <span class="text-danger">*</span></label>
+    <div class="captcha-container">
+        <span>{!! captcha_img('math') !!}</span>
+        <button type="button" class="btn btn-danger refresh-captcha" id="refresh-captcha-register">
+            <i class="fa fa-refresh"></i>
+        </button>
+    </div>
+    <input id="captcha-register" type="text" class="form-control @error('captcha') is-invalid @enderror" name="captcha" placeholder="Nhập kết quả toán học">
+    @error('captcha')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
             <button type="submit">Register</button>
         </form>
         
@@ -111,6 +129,24 @@
             @csrf
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
+            
+            <!-- Form đăng nhập -->
+<div class="form-group mb-3">
+    <label for="captcha">CAPTCHA <span class="text-danger">*</span></label>
+    <div class="captcha-container">
+        <span>{!! captcha_img('math') !!}</span>
+        <button type="button" class="btn btn-danger refresh-captcha" id="refresh-captcha-login">
+            <i class="fa fa-refresh"></i>
+        </button>
+    </div>
+    <input id="captcha" type="text" class="form-control @error('captcha') is-invalid @enderror" name="captcha" placeholder="Nhập kết quả toán học">
+    @error('captcha')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
             <button type="submit">Login</button>
         </form>
         <div class="switch">
@@ -144,5 +180,20 @@
             document.getElementById('logout-form').style.display = 'block';
         }
     </script>
+    @section('scripts')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#refresh-captcha-login, #refresh-captcha-register').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route("auth.refresh.captcha") }}',
+                success: function(data) {
+                    $(this).closest('.captcha-container').find('span').html(data.captcha);
+                }
+            });
+        });
+    });
+</script>
+@endsection
 </body>
 </html>

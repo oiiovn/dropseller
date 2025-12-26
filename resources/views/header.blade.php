@@ -1,3 +1,22 @@
+<style>
+    .balance-info a:hover {
+    text-decoration: underline;
+}
+
+.balance-info small {
+    font-size: 13px;
+    margin-top: 2px;
+}
+.height-notification{
+    max-height: 300px;
+
+}
+@media (max-width: 600px) {
+    .height-notification{
+        max-height: 700px;
+    }
+}
+</style>
 <header id="page-topbar">
     <div class="layout-width">
         <div class="navbar-header">
@@ -23,11 +42,7 @@
                 </div>
 
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none" id="topnav-hamburger-icon">
-                    <span class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
+                   <img src="{{ asset('assets/images/icons/ic-menu.png') }}" alt="menu" class="hamburger-icon rounded" style="width: 24px; height: 24px; transform: unset; ">
                 </button>
 
                 <!-- App Search-->
@@ -117,30 +132,22 @@
                 </form>
             </div>
             <div class="d-flex align-items-center">
-                <div>
-                    <a class="align-items-center " href="{{route('transaction')}}"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Số dư : <b class="text-success">{{ number_format($totalAmount, 0, ',', '.'); }} đ</b></span></a>
-                    <i class=" text-body-tertiary ">(Chờ đối soát: {{ number_format($balace, 0, ',', '.'); }} đ )</i>
+                <div class="balance-info d-flex flex-column align-items-start">
+                    <a class="text-dark fw-bold text-decoration-none" href="{{ route('balance.history') }}">
+                       <img src="{{ asset('assets/images/icons/ic-wallet.png') }}" alt="Wallet" height="24" class="rounded">
+                        <span class="align-middle">Số dư : <b style="color: #038DC8;">{{ number_format($totalAmount, 0, ',', '.') }} đ</b></span>
+                    </a>
+                   
                 </div>
-                <div class="dropdown ms-1 topbar-head-dropdown header-item">
-                    <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="header-lang-img" src="assets/images/flags/vn.svg" alt="Header Language" height="20" class="rounded">
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language py-2" data-lang="en" title="English">
-                            <img src="assets/images/flags/vn.svg" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Tiếng Việt</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
+                
+                <div class="dropdown topbar-head-dropdown header-item ms-1 ms-sm-5" id="notificationDropdown">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <i class='bx bx-bell fs-22'></i>
+                        <img src="{{ asset('assets/images/icons/ic-bell.png') }}" alt="bell" height="24" class="rounded">
                         @if($unreadNotificationsCount > 0)
                         <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">{{$unreadNotificationsCount ?? 0}}<span class="visually-hidden">unread messages</span></span>
                         @endif
                     </button>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" style="box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);" aria-labelledby="page-header-notifications-dropdown">
 
                         <div class="dropdown-head bg-white rounded-top">
                             <div class="p-3">
@@ -151,12 +158,15 @@
                                     <div class="col-auto dropdown-tabs">
                                         <span class="badge bg-light text-body fs-13"> {{$unreadNotificationsCount ?? 0}} Mới</span>
                                     </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-sm btn-outline-secondary" id="closeNotification" type="button" data-bs-dismiss="dropdown" aria-label="Close">X</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="px-2 pt-2">
 
                                 <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist" style="overflow-x: unset;">
                                         <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất Cả ({{$NotificationsCount ?? 0}})</button>
                                         <button id="markReadButton" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                                             Thông báo mới ({{$unreadNotificationsCount ?? 0}})
@@ -166,10 +176,10 @@
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                         <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
-                                            <div data-simplebar style="max-height: 300px;" class="pe-2">
+                                            <div data-simplebar class="pe-2 height-notification">
                                                 @if($Notifications && $Notifications->count() > 0)
                                                 @foreach($Notifications as $notification)
-                                                <div class="text-reset notification-item d-block dropdown-item position-relative" id="notification-{{ $notification->id }}" data-id="{{ $notification->id }}">
+                                                <div class="text-reset notification-item d-block dropdown-item position-relative" style="border-radius: 10px;border-bottom: 1px solid #ddd;" id="notification-{{ $notification->id }}" data-id="{{ $notification->id }}">
                                                     <div class="d-flex">
                                                         <div class="avatar-xs me-3 flex-shrink-0">
                                                             <span class="avatar-title bg-info-subtle text-info rounded-circle fs-16">
@@ -181,7 +191,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <a href="#!" class="stretched-link">
+                                                            <a  class="stretched-link">
                                                                 <h6 class="mt-0 mb-2 lh-base"> {{$notification->shop->shop_name ?? ''}} <b></b><span class="text-secondary">{{$notification->message}}</span></h6>
                                                             </a>
                                                             <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -240,7 +250,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <a href="#!" class="stretched-link">
+                                                            <a  class="stretched-link">
                                                                 <h6 class="mt-0 mb-2 lh-base"> {{$notification->shop->shop_name ?? ''}} <b>
 
 
@@ -296,30 +306,29 @@
                             @if (Auth::check() && Auth::user()->image)
                                     {{ Auth::user()->image }}
                                     @else
-                                assets/images/users/avatar-1.jpg
+                                    https://img.icons8.com/ios-filled/100/user-male-circle.png
                                     @endif
                                     " alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                                <span class="d-none d-xl-inline-block ms-1 fw-bold user-name-text">
                                     @if (Auth::check())
                                     {{ Auth::user()->name }}
                                     @else
                                     Welcome, Guest
                                     @endif
                                 </span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text border rounded p-1" style="background-color: #faa887; color: black;">Nhà Bán Mới</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text border rounded p-1" style="background-color: #FABABA; color: rgba(0, 0, 0, 0.56); text-align: center; font-size: 11px; font-style: normal; font-weight: 590; line-height: 22px;">Nhà Bán Mới</span>
 
                             </span>
                         </span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
+                    <div class="dropdown-menu dropdown-menu-end px-2 mt-2" style="width: unset; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);">
                         <!-- item-->
 
-                        <a class="dropdown-item" href="{{route('portfolio')}}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ Sơ</span></a>
-                        @if(Auth::check() && Auth::user()->role == '2')
-                        
-                            <a class="dropdown-item" href="{{route('shop')}}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Shop</span></a>
-                        
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="{{route('portfolio')}}"><img src="{{ asset('assets/images/icons/ic-user.png') }}" alt="profile" height="20" class="rounded"> <span class="align-middle">Hồ Sơ</span></a>
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="{{route('balance.history')}}"> <span class="align-middle"> <img src="{{ asset('assets/images/icons/ic-coin.png') }}" alt="coin" height="20" class="rounded"> Biến động số dư</span></a>
+                        @if(Auth::check() && Auth::user()->hasRole('admin'))
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="{{route('shop')}}"><img src="{{ asset('assets/images/icons/ic-shop.png') }}" alt="shop" height="20" class="rounded"> <span class="align-middle">Quản lý shop</span></a>
                         @endif
                         <!-- <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
                         <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
@@ -331,9 +340,9 @@
                             @csrf
                         </form>
 
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle" data-key="t-logout">Logout</span>
+                        <a class="dropdown-item p-2" style="border-radius: 10px;" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <img src="{{ asset('assets/images/icons/ic-logout.png') }}" alt="logout" height="20" class="rounded">
+                            <span class="align-middle" data-key="t-logout">Đăng xuất</span>
                         </a>
 
                     </div>
@@ -342,3 +351,97 @@
         </div>
     </div>
 </header>
+
+<!-- Modal để nhập mã xác nhận Admin -->
+<div class="modal fade" id="adminAccessModal" tabindex="-1" aria-labelledby="adminAccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminAccessModalLabel">Xác nhận quyền Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="adminAccessForm" method="post" action="{{ route('admin.verify_access') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="accessCode" class="form-label">Nhập mã xác nhận</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="accessCode" name="access_code" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="mdi mdi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">Vui lòng nhập mã xác nhận để truy cập trang quản trị.</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="submitAccessCode">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Khi tài liệu đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', function() {
+        // Khi nhấp vào liên kết Admin
+        const adminAccessLink = document.getElementById('adminAccessLink');
+        if (adminAccessLink) {
+            adminAccessLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Hiển thị modal
+                var adminModal = new bootstrap.Modal(document.getElementById('adminAccessModal'));
+                adminModal.show();
+            });
+        }
+
+        // Khi nhấp vào nút xác nhận trong modal
+        const submitAccessCode = document.getElementById('submitAccessCode');
+        if (submitAccessCode) {
+            submitAccessCode.addEventListener('click', function() {
+                document.getElementById('adminAccessForm').submit();
+            });
+        }
+
+        // Hiển thị/ẩn mật khẩu
+        const togglePassword = document.getElementById('togglePassword');
+        if (togglePassword) {
+            togglePassword.addEventListener('click', function() {
+                const accessCode = document.getElementById('accessCode');
+                const type = accessCode.getAttribute('type') === 'password' ? 'text' : 'password';
+                accessCode.setAttribute('type', type);
+                
+                // Thay đổi biểu tượng
+                this.querySelector('i').classList.toggle('mdi-eye');
+                this.querySelector('i').classList.toggle('mdi-eye-off');
+            });
+        }
+
+        // Close notification dropdown
+        const closeNotification = document.getElementById('closeNotification');
+        if (closeNotification) {
+            closeNotification.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Sử dụng Bootstrap dropdown API để đóng dropdown
+                const notificationDropdown = document.getElementById('notificationDropdown');
+                if (notificationDropdown) {
+                    const dropdown = bootstrap.Dropdown.getInstance(notificationDropdown);
+                    if (dropdown) {
+                        dropdown.hide();
+                    } else {
+                        // Fallback: ẩn dropdown bằng cách xóa class show
+                        notificationDropdown.classList.remove('show');
+                        const dropdownMenu = notificationDropdown.querySelector('.dropdown-menu');
+                        if (dropdownMenu) {
+                            dropdownMenu.classList.remove('show');
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>

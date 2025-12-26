@@ -39,13 +39,15 @@
                         </li>
                     </ul>
                 </div>
-            </li> end Dashboard Menu -->
+
+            </li> end Dashboard Menu 
+
             <!-- <li class="nav-item"> -->
                 <a class="nav-link menu-link" href="{{route('list_products')}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                     <i class="ri-apps-2-line"></i> <span data-key="t-apps">Danh sách sản phẩm</span>
                 </a>
                 
-            </li> -->
+            </li> 
 
             <!-- <li class="nav-item"> -->
                 <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
@@ -213,7 +215,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#sidebarErrors" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarErrors" data-key="t-errors"> Errors
                             </a>
                             <div class="collapse menu-dropdown" id="sidebarErrors">
@@ -728,11 +730,11 @@
                 </div>
             </li>
 
-        </ul>
+        </ul> -->
     </div>
     <!-- Sidebar -->
 </div>
 
 
 @endsection
- -->
+

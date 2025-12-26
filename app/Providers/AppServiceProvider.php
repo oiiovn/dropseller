@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Notification;
+use App\Models\ADS;
+use App\Models\BalanceHistory;
+use App\Observers\TransactionObserver;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Request $request)
     {
+        Transaction::observe(TransactionObserver::class);
         Carbon::setLocale('vi');
         Paginator::useBootstrap();
         // Chia sẻ biến $shop_get cho view `index`
@@ -42,9 +47,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('header', function ($view) {
             $user = Auth::user();
             $balace = $user->balance;
+            $totalAmount = $user->total_amount;
             if ($user) {
                 $userCode = $user->referral_code;
-                $transactions = Transaction::where('description', 'LIKE', "%$userCode%")->get();
                 $Transactions_Drop = Transaction::with('order')
                     ->where('description', 'LIKE', "%$userCode%")
                     ->where('bank', 'DROP')
@@ -54,18 +59,7 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
                 foreach ($Transactions_Drop as $transaction) {
                     $balace += $transaction->amount;
-                }
-
-                $totalAmount = 0;
-
-                foreach ($transactions as $transaction) {
-                    if ($transaction->type == 'IN') {
-                        $totalAmount += $transaction->amount;
-                    } elseif ($transaction->type == 'OUT') {
-                        $totalAmount -= $transaction->amount;
-                    }
-                }
-                $user->total_amount = $totalAmount;
+                }             
                 $user->save();
                 $view->with([
                     'user' => $user,
@@ -76,11 +70,10 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('index', function ($view) {
             $excludedCodes = ['QUA_TRANG', 'QUA001'];
-            $startDate = request()->input('start_date', Carbon::now()->subDays(30)->startOfDay());
+            $startDate = request()->input('start_date', Carbon::now()->startOfMonth()->format('Y-m-d H:i:s'));          
             $endDate = request()->input('end_date', Carbon::now()->endOfDay());
             $startDate = Carbon::parse($startDate)->startOfDay();
             $endDate = Carbon::parse($endDate)->endOfDay();
-
             $Products = OrderDetail::select(
                 'sku',
                 DB::raw('MAX(product_name) as product_name'),
@@ -96,42 +89,66 @@ class AppServiceProvider extends ServiceProvider
                 ->whereNotIn('sku', $excludedCodes)
                 ->groupBy('sku')
                 ->orderByDesc('total_quantity')
-                ->take(5)
-                ->get();
-            if (Auth()->user()->role == '2') {
+                ->paginate(5);
+
+            // Kiểm tra người dùng có đăng nhập không
+            $user = Auth::user();
+            
+            // Check if user is admin or manager using DB query
+            $isAdminOrManager = $user && DB::table('role_user')
+                ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                ->where('role_user.user_id', $user->id)
+                ->whereIn('roles.slug', ['admin', 'manager'])
+                ->exists();
+                
+            if ($isAdminOrManager) {
                 $totalQuantitySold = OrderDetail::whereBetween('created_at', [$startDate, $endDate])
                     ->whereNotIn('sku', $excludedCodes)
                     ->sum('quantity');
+
                 $totalBillPaid = Order::whereBetween('created_at', [$startDate, $endDate])
                     ->sum('total_bill');
+
                 $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])
                     ->count();
+
                 $total_dropship = Order::whereBetween('created_at', [$startDate, $endDate])
                     ->sum('total_dropship');
             } else {
                 // Lấy danh sách shop của user hiện tại
-                $userShopIds = Shop::where('user_id', auth()->id())->pluck('shop_id');
-                $totalQuantitySold = OrderDetail::whereHas('order', function ($query) use ($userShopIds, $startDate, $endDate) {
-                    
-                    $query->whereIn('shop_id', $userShopIds) // Sửa lại thành whereIn()
-                          ->whereBetween('created_at', [$startDate, $endDate]);
-                })
-                ->whereNotIn('sku', $excludedCodes)
-                ->sum('quantity');
-            
+                $userShopIds = Shop::where('user_id', optional($user)->id)->pluck('shop_id');
 
+                $totalQuantitySold = OrderDetail::whereHas('order', function ($query) use ($userShopIds, $startDate, $endDate) {
+                    $query->whereIn('shop_id', $userShopIds)
+                        ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                            $startDate->toDateString(),
+                            $endDate->toDateString()
+                        ]);
+                })
+                    ->whereNotIn('sku', $excludedCodes)
+                    ->sum('quantity');
                 $totalBillPaid = Order::whereIn('shop_id', $userShopIds)
-                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                        $startDate->toDateString(),
+                        $endDate->toDateString()
+                    ])
                     ->sum('total_bill');
 
                 $totalOrders = Order::whereIn('shop_id', $userShopIds)
-                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                        $startDate->toDateString(),
+                        $endDate->toDateString()
+                    ])
                     ->count();
 
                 $total_dropship = Order::whereIn('shop_id', $userShopIds)
-                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(filter_date, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", [
+                        $startDate->toDateString(),
+                        $endDate->toDateString()
+                    ])
                     ->sum('total_dropship');
             }
+
             $totalOrdersByShop = Order::select(
                 'shop_id',
                 DB::raw('COUNT(*) as order_count'),
@@ -153,8 +170,10 @@ class AppServiceProvider extends ServiceProvider
                 'totalOrdersByShop' => $totalOrdersByShop
             ]);
         });
+
         View::composer('*', function ($view) {
-            $Notifications = Notification::where('user_id', Auth::id())
+            $userId = Auth::id();
+            $Notifications = Notification::where('user_id', $userId)
                 ->with('user', 'shop')
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -163,11 +182,32 @@ class AppServiceProvider extends ServiceProvider
             $NotificationsCount = $Notifications->count();
 
             $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
-                ->whereHas('shop', function ($query) {
-                    $query->where('user_id', Auth::id());
+                ->whereHas('shop', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
                 })
                 ->where('created_at', '<', Carbon::now()->subDay())
                 ->get();
+
+            $pendingOrdersTotal = Order::where('payment_status', 'Chưa thanh toán')
+                ->whereHas('shop', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })
+                ->sum('total_bill');
+
+            $pendingAdsTotal = ADS::where('payment_status', 'Chưa thanh toán')
+                ->whereHas('shops', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })
+                ->sum('total_amount');
+
+            // Lấy số dư hiện tại của user từ BalanceHistory
+            $currentBalance = BalanceHistory::where('user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->value('balance_after') ?? 0;
+
+            // Tính số tiền nạp tối thiểu = (tổng đơn hàng + quảng cáo chưa thanh toán) - số dư hiện tại
+            $pendingPaymentTotal = max(0, ($pendingOrdersTotal + $pendingAdsTotal) - $currentBalance);
 
             $view->with(
                 [
@@ -175,9 +215,28 @@ class AppServiceProvider extends ServiceProvider
                     'Notifications' => $Notifications,
                     'NotificationsCount' => $NotificationsCount,
                     'unreadNotificationsCount' => $unreadNotificationsCount,
-                    'unreadNotifications' => $unreadNotifications
+                    'unreadNotifications' => $unreadNotifications,
+                    'pending_orders_total' => $pendingOrdersTotal,
+                    'pending_ads_total' => $pendingAdsTotal,
+                    'pending_payment_total' => $pendingPaymentTotal,
                 ]
             );
+        });
+        // Add @role directive for Blade templates
+        Blade::directive('role', function ($expression) {
+            return "<?php if(Auth::check() && DB::table('role_user')
+                ->join('roles', 'role_user.role_id', '=', 'roles.id')
+                ->where('role_user.user_id', Auth::id())
+                ->whereIn('roles.slug', is_array($expression) ? $expression : explode(',', $expression))
+                ->exists()): ?>";
+        });
+        
+        Blade::directive('endrole', function () {
+            return "<?php endif; ?>";
+        });
+        // Thêm directive để load jQuery
+        Blade::directive('jquery', function () {
+            return '<?php echo \'<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>\'; ?>';
         });
     }
 }

@@ -1,0 +1,858 @@
+/* Order Page Styles */
+
+/* Enhanced Table Styling with Sticky Header & Footer */
+.modern-table-container {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid #e8eaed;
+    position: relative;
+    max-height: 85vh;
+    overflow: visible;
+}
+
+.table-wrapper {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+    position: relative;
+    border-radius: 6px;
+}
+
+/* Pagination Container - nằm ngoài table */
+.pagination-container {
+    background: #fff;
+    border-top: none;
+    padding: 0px 5px;
+    border-radius: 0 0 6px 6px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-top: -1px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.pagination-container .row {
+    width: 100%;
+    margin: 0;
+    align-items: center;
+}
+
+.pagination-container .col-4 {
+    padding: 0px;
+}
+
+@media (max-width: 768px) {
+    .pagination-container {
+        display: none !important;
+    }
+}
+
+.modern-table {
+    margin: 0;
+    border: none;
+    font-size: 14px;
+    position: relative;
+}
+
+.modern-table .table-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.modern-table .table-header th {
+    padding: 8px 12px;
+    font-weight: 600;
+    color: #495057;
+    border: none;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #dee2e6;
+}
+
+.modern-table .table-body tr {
+    border-bottom: 1px solid #f1f3f4;
+    transition: all 0.2s ease;
+}
+
+.modern-table .table-body tr:hover {
+    background-color: #f8f9ff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.modern-table .table-body td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    border: none;
+    color: #777777;
+}
+
+/* Order Code Styling */
+.order-code-cell {
+    position: relative;
+}
+
+.order-code-main {
+    font-weight: 600;
+    color: #5893e0;
+    font-size: 15px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-code-date {
+    font-size: 11px;
+    color: #5f6368;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Shop Info */
+.shop-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shop-platform-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+}
+
+/* Prevent icon jumping during load */
+img[src*="icons8.com"] {
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 30px;
+    max-height: 30px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Ensure icon containers have fixed dimensions */
+.d-flex.align-items-center.gap-2 {
+    min-height: 24px;
+}
+
+.customer_cost {
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+/* Status Pills */
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    min-width: 90px;
+}
+
+.status-paid {
+    color: #009522;
+}
+
+.status-unpaid {
+    color: #ff7777;
+}
+
+.status-reconciled {
+    color: #009522;
+}
+
+.status-not-reconciled {
+    color: #ff7777;
+}
+
+/* Amount Styling */
+.amount-cell {
+    text-align: right;
+    font-weight: 600;
+    color: #1a73e8;
+    font-size: 14px;
+}
+
+.quantity-cell {
+    text-align: center;
+    font-weight: 600;
+    color: #34a853;
+    background: #f0f8f0;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Action Button */
+.action-btn {
+    background: #3F87B1;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+    color: white;
+}
+
+/* Copy functionality */
+.hienthicopy {
+    display: flex;
+    cursor: pointer;
+    position: relative;
+}
+
+.order-link {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+}
+
+.order-link .icon {
+    display: block;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: #5f6368;
+    pointer-events: all;
+}
+
+.hienthicopy:hover .order-link .icon,
+.order-link:hover .icon,
+.hienthicopy:hover .icon {
+    display: flex;
+    opacity: 1;
+    color: #1a73e8;
+}
+
+/* Filter Section */
+.filter-section {
+   padding: 8px;
+}
+
+.filter-section .form-control,
+.filter-section .form-select {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 4px 8px;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    height: 26px;
+}
+
+.filter-section .btn {
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.filter-section .btn-primary {
+    background: #3F87B1;
+    border: none;
+}
+
+/* No Data Message Styling */
+.no-data-message {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    margin: 20px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.no-data-message:hover {
+    border-color: #3F87B1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(63, 135, 177, 0.1);
+}
+
+.no-data-message i {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0.6; transform: scale(1); }
+}
+
+.no-data-message .btn-outline-primary {
+    border-color: #3F87B1;
+    color: #3F87B1;
+    transition: all 0.3s ease;
+}
+
+.no-data-message .btn-outline-primary:hover {
+    background: #3F87B1;
+    border-color: #3F87B1;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(63, 135, 177, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    /* Hide filter section on mobile by default */
+    .filter-section {
+        display: none !important;
+    }
+    .modern-table-container{
+        display: none !important;
+    }
+    /* Mobile filter toggle */
+    .mobile-filter-toggle {
+        display: block !important;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        z-index: 100;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-filter-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+    }
+
+    /* Mobile filter overlay */
+    .mobile-filter-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-filter-overlay.show {
+        display: block;
+        opacity: 1;
+    }
+
+    /* When filter is shown on mobile */
+    .filter-section.mobile-show {
+        display: block !important;
+        position: fixed;
+        top: 20px;
+        left: 15px;
+        right: 15px;
+        bottom: 20px;
+        width: auto;
+        height: auto;
+        background: white;
+        z-index: 101;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        animation: modalSlideIn 0.3s ease;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Close button for mobile filter */
+    .mobile-filter-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+        z-index: 102;
+    }
+
+    /* Filter section title for mobile */
+    .mobile-filter-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-right: 40px;
+        color: #333;
+    }
+
+    /* Prevent body scroll when modal is open */
+    body.modal-open {
+        overflow: hidden !important;
+        position: relative;
+        width: 100%;
+        height: 100vh;
+    }
+
+    /* Better mobile filter spacing */
+    .filter-section.mobile-show .row {
+        margin-bottom: 15px;
+    }
+
+    .filter-section.mobile-show .form-control,
+    .filter-section.mobile-show .form-select {
+        height: 40px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
+    .filter-section.mobile-show .btn {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    /* Mobile filter specific adjustments */
+    .filter-section.mobile-show .row {
+        flex-direction: column !important;
+        margin: 0;
+    }
+
+    .filter-section.mobile-show .col-md-3,
+    .filter-section.mobile-show .col-md-2 {
+        width: 100% !important;
+        margin-bottom: 15px;
+        padding: 0;
+        flex: none;
+    }
+
+    .filter-section.mobile-show .d-flex {
+        flex-direction: column !important;
+        gap: 10px;
+    }
+
+    .filter-section.mobile-show .d-flex .btn {
+        width: 100%;
+        margin: 0;
+    }
+
+    .filter-section.mobile-show label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Ensure mobile filter is scrollable */
+    .filter-section.mobile-show {
+        overscroll-behavior: contain;
+        scroll-behavior: smooth;
+        /* Force hardware acceleration for better performance */
+        transform: translateZ(0);
+        will-change: transform;
+    }
+
+    /* iOS specific fixes */
+    .filter-section.mobile-show input,
+    .filter-section.mobile-show select {
+        -webkit-appearance: none;
+        border-radius: 8px;
+        background-color: #fff;
+        border: 2px solid #e0e4e7;
+        transition: border-color 0.2s ease;
+    }
+
+    .filter-section.mobile-show input:focus,
+    .filter-section.mobile-show select:focus {
+        border-color: #1a73e8;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+    }
+
+    /* Better mobile viewport handling */
+    @supports (-webkit-touch-callout: none) {
+        .filter-section.mobile-show {
+            top: env(safe-area-inset-top, 20px);
+            bottom: env(safe-area-inset-bottom, 20px);
+        }
+    }
+
+    /* Improve mobile touch targets */
+    .filter-section.mobile-show button,
+    .filter-section.mobile-show input,
+    .filter-section.mobile-show select {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Better mobile input styling */
+    .filter-section.mobile-show input::-webkit-input-placeholder,
+    .filter-section.mobile-show select::-webkit-input-placeholder {
+        color: #999;
+        font-size: 14px;
+    }
+
+    @keyframes modalSlideIn {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+
+    /* Show mobile card layout */
+    .mobile-card-container {
+        display: block !important;
+        padding: 10px;
+    }
+
+    .mobile-order-card {
+        background: #fff;
+        border: 1px solid #e0e4e7;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+    }
+
+    .mobile-order-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Header với platform icon và shop name */
+    .mobile-card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        gap: 10px;
+    }
+
+    .mobile-platform-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        flex-shrink: 0;
+    }
+
+    .mobile-shop-name {
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+        flex: 1;
+    }
+
+    /* Order info section */
+    .mobile-order-info {
+        margin-bottom: 12px;
+    }
+
+    .mobile-order-code {
+        font-weight: 700;
+        color: #1a73e8;
+        font-size: 16px;
+        margin-bottom: 4px;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .mobile-order-date {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .mobile-order-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+
+    .mobile-products-count {
+        color: #666;
+    }
+
+    .mobile-amount {
+        font-weight: 600;
+        color: #1a73e8;
+        font-size: 15px;
+    }
+
+    /* Status pills section */
+    .mobile-status-section {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .mobile-status-pill {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        text-align: center;
+        border: 1px solid;
+    }
+
+    .mobile-status-paid {
+        background: #e8f5e8;
+        color: #2e7d32;
+        border-color: #c8e6c9;
+    }
+
+    .mobile-status-unpaid {
+        background: #ffebee;
+        color: #c62828;
+        border-color: #ffcdd2;
+    }
+
+    .mobile-status-reconciled {
+        background: #e3f2fd;
+        color: #1565c0;
+        border-color: #bbdefb;
+    }
+
+    .mobile-status-not-reconciled {
+        background: #fff3e0;
+        color: #ef6c00;
+        border-color: #ffcc02;
+    }
+
+    /* Detail button */
+    .mobile-detail-btn {
+        background: #fff;
+        color: #1a73e8;
+        border: 1px solid #1a73e8;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+    .mobile-detail-btn:hover {
+        background: #1a73e8;
+        color: white;
+    }
+
+    /* Copy functionality for mobile */
+    .mobile-order-code:hover {
+        text-decoration: underline;
+    }
+
+    /* Mobile tabs optimization */
+    .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .nav-tabs .nav-link {
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .nav-tabs .nav-item {
+        flex-shrink: 0;
+    }
+
+    /* No data message responsive */
+    .no-data-message {
+        margin: 10px;
+        min-height: 200px;
+        padding: 20px 15px;
+    }
+
+    .no-data-message i {
+        font-size: 36px !important;
+    }
+
+    .no-data-message h5 {
+        font-size: 16px;
+    }
+
+    .no-data-message p {
+        font-size: 14px;
+    }
+}
+
+/* Desktop view - hide mobile container and filter toggle */
+@media (min-width: 769px) {
+    .mobile-card-container {
+        display: none !important;
+    }
+    
+    .mobile-filter-toggle {
+        display: none !important;
+    }
+}
+
+/* Mobile Card Layout */
+.mobile-card-container {
+    display: none;
+    padding: 0 8px;
+}
+
+/* Enhanced Modal Mobile Styles */
+@media (max-width: 768px) {
+    .modal-fullscreen-mobile {
+        max-width: 100% !important;
+        margin: 0 !important;
+        height: 100vh;
+    }
+    
+    .modal-fullscreen-mobile .modal-content {
+        height: 100vh;
+        border-radius: 0 !important;
+        border: none;
+    }
+    
+    .modal-fullscreen-mobile .modal-body {
+        overflow-y: auto;
+        /* max-height: calc(100vh - 140px); */
+        padding: 15px;
+    }
+    
+    .modal-fullscreen-mobile .modal-header {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1000;
+        border-bottom: 2px solid #e8eaed;
+    }
+    
+    .modal-fullscreen-mobile .table-responsive {
+        max-height: none !important;
+        border-radius: 8px;
+        overflow: visible;
+    }
+    
+    .modal-fullscreen-mobile table {
+        font-size: 13px;
+    }
+    
+    .modal-fullscreen-mobile th,
+    .modal-fullscreen-mobile td {
+        padding: 8px 6px !important;
+    }
+    
+    .modal-fullscreen-mobile .table thead th {
+        position: sticky;
+        top: 0;
+        background: #f8f9fa;
+        z-index: 10;
+    }
+    
+    .modal-fullscreen-mobile img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* Mobile card adjustments */
+    .modal-fullscreen-mobile .row.mb-4 {
+        flex-direction: column;
+    }
+
+    .modal-fullscreen-mobile .col-md-8,
+    .modal-fullscreen-mobile .col-md-4 {
+        width: 100% !important;
+        margin-bottom: 15px;
+    }
+}
+
+/* Copy Notification Animation Improvements */
+.copy-notification {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+}
+
+.copy-notification:hover {
+    transform: translateX(-5px) !important;
+    box-shadow: 0 6px 25px rgba(66, 133, 244, 0.4) !important;
+}
+
+/* Better Mobile Touch Targets */
+@media (max-width: 768px) {
+    .order-link {
+        min-height: 44px;
+        display: inline-flex !important;
+        align-items: center;
+        padding: 8px 4px;
+        margin: -8px -4px;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+    }
+    
+    .order-link:hover,
+    .order-link:active {
+        background-color: rgba(26, 115, 232, 0.1);
+    }
+}
+
+/* Enhanced modal table styling */
+#orderDetailModal .table > tbody > tr > td {
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+#orderDetailModal .table > tbody > tr:hover {
+    background-color: #f8f9ff;
+}
+
+/* Modal header enhancement */
+#orderDetailModal .modal-header {
+    border-bottom: 2px solid #e8eaed;
+}
+
+#orderDetailModal .modal-footer {
+    border-top: 2px solid #e8eaed;
+} 

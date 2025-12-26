@@ -1,0 +1,204 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0089ED;
+}
+
+.layout-wrapper {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0089ED 0%, #0089ED 50%, #ffffff 50%, #ffffff 100%);
+}
+
+.left-section {
+  width: 60%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 60px;
+}
+
+.left-top {
+  color: white;
+}
+
+.left-top img {
+  height: 76px;
+}
+
+.rocket {
+  max-height: 500px;
+  position: absolute;
+  top: 0%;
+  right: 50%;
+}
+
+.platforms {
+  display: flex;
+  justify-content: flex-start;
+  gap: 30px;
+  padding-top: 40px;
+}
+
+.platforms img {
+  height: 40px;
+}
+
+.platforms p {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+}
+
+.right-section {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.fs-wellcom-card {
+  font-size: 21px;
+}
+
+.fs-wellcom-register {
+  font-size: 15px;
+}
+
+.form-control {
+  border-radius: 8px;
+  height: 45px;
+}
+
+.btn-login {
+  background-color: #0089ED;
+  border: none;
+  border-radius: 8px;
+  height: 45px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.btn-login:hover {
+  background-color: #2f5fd6;
+}
+
+.text-small {
+  font-size: 13px;
+}
+
+.card-stock {
+  background-color: #EFF8FF;
+  padding: 10px;
+  border-radius: 9px;
+  width: 145px;
+}
+
+.card-stock img {
+  height: 76px;
+}
+
+.card-stock p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+}
+.logo-login-register{
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .layout-wrapper {
+    flex-direction: column;
+  }
+
+  .left-section, .right-section {
+    width: 100%;
+  }
+
+  .platforms {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1300px) {
+  .left-section,
+  .layout-wrapper > .d-flex.align-items-center {
+    display: none !important;
+  }
+  .logo-login-register{
+    display: none;
+  }
+  .right-section {
+    width: 100% !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+  }
+  
+  .layout-wrapper {
+    padding: 0 !important;
+    background: #0089ED;
+    height: 100%;
+  }
+
+  .login-card {
+    padding: 30px 20px;
+  }
+  
+  .fs-wellcom-card {
+    font-size: 15px;
+  }
+  
+  .fs-wellcom-register {
+    font-size: 12px;
+  }
+  
+  .rocket {
+    max-height: 300px;
+    top: 0%;
+    right: 20%;
+    display: none;
+  }
+}
+
+/* Captcha styles */
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.captcha-container img {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.captcha-container .btn {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+  
+  .captcha-container .btn {
+    margin-top: 5px;
+  }
+} 

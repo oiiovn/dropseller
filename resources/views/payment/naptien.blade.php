@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modal QR Example</title>
     <style>
-        .modal-backdrop.show {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
+       
         /* Đường phát sáng */
         .qr-container .glow-line {
             position: absolute;
@@ -21,7 +18,12 @@
             box-shadow: 0 0 10px rgba(47, 127, 232, 0.8);
             animation: move-down 2s linear infinite;
         }
-
+        .qr-display {
+            display: flex;
+        }
+        @media (min-width: 768px) {
+           
+        }
         @keyframes move-down {
             0% {
                 top: -10px;
@@ -31,8 +33,13 @@
                 top: 100%;
             }
         }
+        @media (max-width: 768px) {
+            .qr-display {
+                display: block;
+            }
+        }
     </style>
-    <script>
+        <script>
         const referralCode = "{{ $referralCode }}";
     </script>
 </head>
@@ -41,30 +48,33 @@
     <!-- Modal Nhập Số Tiền -->
     <div class="modal fade" id="napTienModal" aria-hidden="true" aria-labelledby="napTienModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center" style="height: 47px; padding-top:3px;">
-                    <h5 class="modal-title" id="napTienModalLabel">Thêm số dư vào tài khoản dropseller</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content shadow-lg rounded-4 rounded-top-5 border-0">
+                <div class="modal-header text-white rounded-top-4 border-0" style="padding-bottom: 20px; background-color: #0089ED;">
+                    <h5 class="modal-title text-white fw-bold" id="napTienModalLabel">Nạp tiền vào tài khoản</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="formNapTien">
                         <div class="mb-3">
-                            <label for="soTien" class="form-label">Số tiền</label>
-                            @if (isset($orders_unpaid) && $orders_unpaid->isNotEmpty())
+                            <label for="soTien" class="form-label">Số tiền <span class="text-danger">*</span></label>
                             @php
-                            $total_bill = $orders_unpaid->sum('total_bill');
+                                $minDeposit = $pending_payment_total ?? 0;
                             @endphp
-                            <input type="text" class="form-control" id="soTien" placeholder="Số tiền ít nhất phải nạp {{ number_format($total_bill, 0, ',', '.') }} VNĐ" />
-                            @else
-                            <input type="text" class="form-control" id="soTien" placeholder="Nhập số tiền" />
-                            @endif
-
+                            <input type="text" class="form-control form-control-lg" id="soTien"
+                                value="{{ request('amount') ? number_format(request('amount'), 0, ',', '.') : '' }}"
+                                placeholder="{{ $minDeposit > 0 ? 'Số tiền ít nhất phải nạp ' . number_format($minDeposit, 0, ',', '.') . ' VNĐ cho các khoản chưa thanh toán' : 'Nhập số tiền' }}"
+                                autocomplete="off" />
+                            <div class="invalid-feedback" id="soTienError">
+                                Vui lòng nhập số tiền hợp lệ (tối thiểu {{ number_format($minDeposit > 0 ? $minDeposit : 10000, 0, ',', '.') }} VNĐ{{ $minDeposit > 0 ? ' cho các khoản chưa thanh toán' : '' }} )!
+                            </div>
                         </div>
+                        
+                        <input type="hidden" id="noiDungChuyenKhoan" value="{{ $referralCode ?? '' }}" />
                     </form>
                 </div>
-                <div class="modal-footer d-flex align-items-center" style="height: 57px; padding:5px;">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
-                    <button id="generateQrButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#qrModal">Thực hiện thanh toán</button>
+                <div class="modal-footer d-flex align-items-end" style="height: 60px; gap: 10px;">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button id="generateQrButton" class="btn px-4" disabled style="background-color: #0089ED; color: white;">Tiếp tục &rarr;</button>
                 </div>
             </div>
         </div>
@@ -73,63 +83,82 @@
     <!-- Modal Hiển Thị QR -->
     <div class="modal fade" id="qrModal" aria-hidden="true" aria-labelledby="qrModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center" style="height: 37px; padding-top:3px;">
-                    <h5 class="modal-title" id="qrModalLabel">QR Code Thanh Toán</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content shadow-lg rounded-4 border-0">
+                <div class="modal-header text-white rounded-top-4" style="height: 56px; background-color: #0089ED;">
+                    <h5 class="modal-title fw-bold text-white" id="qrModalLabel">QR Code Thanh Toán</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex align-items-center justify-content-center" style="min-height: 205px; position: relative; overflow: hidden;">
-                    <div class="col-7 alert material-shadow text-opacity-100" role="alert" style="height: 205px; overflow-wrap: break-word; margin-right:5px;">
-                        <strong>Chào bạn! Quét mã QR để thanh toán!</strong> Số tiền sẽ được chuyển vào số dư của bạn trong 3-5 giây.
+                <div class="modal-body d-flex flex-column align-items-center justify-content-center gap-3" style="min-height: 400px;">
+                    <div class="alert alert-info w-100 text-center mb-2">
+                        <strong>Quét mã QR để thanh toán!</strong><br/>
+                        Số tiền sẽ được chuyển vào số dư của bạn trong 3-5 giây.<br/>
                         <b>Chuyển thành công</b> — Nhấn đóng để thoát!
                     </div>
-                    <div class="qr-container col-5 rounded-4" style="width: 205px; height: 205px; border: 2px solid rgb(9, 61, 202); box-shadow: 0 0 10px rgb(47, 127, 232); position: relative; overflow: hidden;">
-                        <div class="spinner-border text-primary" role="status" id="spinner">
-                            <span class="visually-hidden">Đang tạo QR...</span>
+                    
+                    <!-- Thông tin chuyển khoản và QR -->
+                    <div class="w-100">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header">
+                                <h6 class="mb-0 fw-bold text-primary">Thông tin chuyển khoản</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="qr-display justify-content-between">
+                                    <!-- Thông tin bên trái -->
+                                    <div class="mb-3 mb-md-0">
+                                        <div class="">
+                                            <div class="d-flex gap-2">
+                                                <small class="text-muted">Ngân hàng:</small>
+                                                <div class="fw-bold text-success">ACB</div>
+                                            </div>
+                                            
+                                            <div class="d-flex gap-2 mt-2">
+                                                <small class="text-muted">Tài khoản nhận:</small>
+                                                <div class="fw-bold">PHATLOC934584939</div>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <small class="text-muted">Tên người nhận:</small>
+                                                <div class="fw-bold">OIIO VN </div>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <small class="text-muted">Số tiền:</small>
+                                                <div class="fw-bold text-danger" id="displayAmount"></div>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <small class="text-muted">Nội dung chuyển khoản:</small>
+                                                <div class="fw-bold text-primary" id="displayContent">{{ $referralCode ?? '' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- QR bên phải (desktop) / dưới (mobile) -->
+                                    <div class="d-flex justify-content-center">
+                                        <div class="qr-container rounded-4 d-flex align-items-center justify-content-center position-relative" style="width: 180px; height: 180px; border: 2px solid #198754; box-shadow: 0 0 16px #19875455;">
+                                            <div class="spinner-border text-success position-absolute top-50 start-50 translate-middle" role="status" id="spinner">
+                                                <span class="visually-hidden">Đang tạo QR...</span>
+                                            </div>
+                                            <img src="" id="qrCode" class="d-none rounded-4" alt="QR Code" style="width: 100%; height: 100%; object-fit: contain;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <img src="" id="qrCode" class="d-none" alt="QR Code" style="width: 100%; height: 100%; border-radius: inherit; object-fit: contain;" />
-                        <div class="glow-line"></div>
                     </div>
                 </div>
-                <div class="modal-footer d-flex align-items-center" style="height: 57px; padding:5px;">
-                    <button class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <div class="modal-footer d-flex align-items-center justify-content-center" style="height: 60px;">
+                    <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Hoàn tất</button>
+                    <button id="captureQrButton" class="btn btn-success px-4">Chụp mã QR</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap Bundle with Popper -->
-
+    <script src="{{ asset('assets/js/naptien.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
-        document.getElementById("generateQrButton").addEventListener("click", function() {
-            let soTien = input.value.replace(/[^0-9]/g, "");
-            if (!soTien || parseInt(soTien) <= 0) {
-                alert("Vui lòng nhập số tiền hợp lệ!");
-                return;
-            }
-            input.value = new Intl.NumberFormat("vi-VN").format(soTien) + " VND";
-            console.log("Referral Code:", referralCode);
-            const bankAccount = "62886838888";
-            const accountName = "BUI QUOC VU";
-            const addInfo = encodeURIComponent(`${referralCode}`);
-            const qrUrl = `https://img.vietqr.io/image/mbbank-${bankAccount}-200x200.png?amount=${soTien}&addInfo=${addInfo}&accountName=${encodeURIComponent(accountName)}`;
-            console.log("Generated QR URL:", qrUrl);
-            const qrImage = document.getElementById("qrCode");
-            const spinner = document.getElementById("spinner");
-            spinner.classList.remove("d-none");
-            qrImage.classList.add("d-none");
-            qrImage.src = qrUrl;
-            qrImage.onload = () => {
-                spinner.classList.add("d-none");
-                qrImage.classList.remove("d-none");
-            };
-        });
-
-        const input = document.getElementById("soTien");
-        input.addEventListener("input", function(e) {
-            const value = e.target.value.replace(/[^0-9]/g, "");
-            const formattedValue = new Intl.NumberFormat("vi-VN").format(value)
-            e.target.value = formattedValue;
+        // Khởi tạo sự kiện khi trang load
+        document.addEventListener('DOMContentLoaded', function() {
+            initNapTienModalEvents();
         });
     </script>
 </body>

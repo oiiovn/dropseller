@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Facade;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -15,7 +14,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Dropships.vn'),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +27,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'Dropships.vn'),
 
     /*
     |--------------------------------------------------------------------------
@@ -156,7 +155,6 @@ return [
     */
 
     'providers' => [
-
         /*
          * Laravel Framework Service Providers...
          */
@@ -182,10 +180,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+       
         /*
          * Package Service Providers...
          */
+        Mews\Captcha\CaptchaServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -211,6 +210,20 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ])->toArray(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Referral Code Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Cấu hình cho hệ thống tạo mã giới thiệu
+    |
+    */
+
+    'referral_code_prefix' => env('REFERRAL_CODE_PREFIX', 'DS'),
+    'referral_code_number_length' => env('REFERRAL_CODE_NUMBER_LENGTH', 3),
+    'referral_code_start' => env('REFERRAL_CODE_START', 1),
 
 ];

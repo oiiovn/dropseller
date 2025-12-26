@@ -21,4 +21,8 @@ class Product extends Model
         'sku',
         'price',
     ];
+    public function order_detail()
+    {
+        return $this->hasMany(OrderDetail::class, 'sku', 'sku'); 
+    }
 }

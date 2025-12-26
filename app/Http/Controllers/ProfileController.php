@@ -6,10 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
 use App\Models\Order;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -22,31 +26,43 @@ class ProfileController extends Controller
             $shop->revenue = Order::where('shop_id', $shop->shop_id)->sum('total_bill');
             $orders = Order::where('shop_id', $shop->shop_id)->get();
         }
-        return view('profile.profile', compact('user', 'shops'));
-    }
+        $topProducts = DB::table('order_details')
+        ->select(
+            'sku',
+            DB::raw('MAX(product_name) as product_name'),
+            DB::raw('MAX(image) as image'),
+            DB::raw('SUM(quantity) as total_quantity')
+        )
+        ->whereNotIn('sku', ['QUA001', 'QUA_TRANG']) // ✅ Loại trừ các SKU không mong muốn
+        ->groupBy('sku')
+        ->orderByDesc('total_quantity')
+        ->limit(20)
+        ->get();
+    
 
-    // Hàm cập nhật hồ sơ người dùng
+        return view('profile.profile', compact('user', 'shops', 'topProducts'));
+    }
+    public function Get_all()
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            $shops = Shop::where('user_id', $user->id)->get();
+            foreach ($shops as $shop) {
+                $orders_unpaiddd = Order::where('shop_id', $shop->shop_id)
+                    ->where('payment_status', 'Chưa thanh toán')
+                    ->where('created_at', '<', Carbon::now()->subDay()) 
+                    ->get();
+                    $shop->orders_unpaid_count = $orders_unpaiddd->count();
+                $shop->orders_unpaid = $orders_unpaiddd;
+            }
+            $user->shops = $shops;
+        }
+
+        return view('user.profie_user', compact('users'));
+    }
     public function updateProfile(Request $request)
     {
-        // Lấy user hiện tại
         $user = Auth::user();
-
-        // Kiểm tra dữ liệu nhập vào
-        $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:6|confirmed', // Nhập lại mật khẩu
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048', // Giới hạn 2MB
-        ]);
-
-        // Nếu có lỗi validation, trả về lỗi
-        if ($validator->fails()) {
-            dd($validator->errors()); // In lỗi ra màn hình
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        
-
-        // Cập nhật thông tin nếu có
         if ($request->has('name')) {
             $user->name = $request->name;
         }
