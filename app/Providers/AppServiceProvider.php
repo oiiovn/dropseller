@@ -16,6 +16,7 @@ use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Notification;
 use App\Models\ADS;
+use App\Models\BalanceHistory;
 use App\Observers\TransactionObserver;
 use Illuminate\Support\Facades\Blade;
 
@@ -199,7 +200,14 @@ class AppServiceProvider extends ServiceProvider
                 })
                 ->sum('total_amount');
 
-            $pendingPaymentTotal = $pendingOrdersTotal + $pendingAdsTotal;
+            // Lấy số dư hiện tại của user từ BalanceHistory
+            $currentBalance = BalanceHistory::where('user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->value('balance_after') ?? 0;
+
+            // Tính số tiền nạp tối thiểu = (tổng đơn hàng + quảng cáo chưa thanh toán) - số dư hiện tại
+            $pendingPaymentTotal = max(0, ($pendingOrdersTotal + $pendingAdsTotal) - $currentBalance);
 
             $view->with(
                 [
