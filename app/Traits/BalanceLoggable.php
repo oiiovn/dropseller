@@ -59,9 +59,10 @@ trait BalanceLoggable
                 ->lockForUpdate()
                 ->get(['id']); // chỉ để tạo lock, không dùng dữ liệu
 
-            // 1) Lấy số dư ngay trước (hoặc tại) thời điểm giao dịch
+            // 1) Lấy số dư ngay trước thời điểm giao dịch
+            // CHỈ lấy các bản ghi có created_at < transaction_date để tránh lấy nhầm giao dịch cùng thời điểm
             $prev = BalanceHistory::where('user_id', $user->id)
-                ->where('created_at', '<=', $tran->transaction_date)
+                ->where('created_at', '<', $tran->transaction_date)
                 ->orderBy('created_at', 'desc')
                 ->orderBy('id', 'desc')
                 ->lockForUpdate()
