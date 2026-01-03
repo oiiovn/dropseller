@@ -797,6 +797,27 @@
         padding: 0;
         float: none !important;
     }
+    /* Đảm bảo ô tìm kiếm hiển thị */
+    .dataTables_wrapper .dataTables_filter {
+        display: block !important;
+        visibility: visible !important;
+        margin: 0;
+        padding: 0;
+        float: none !important;
+        text-align: right;
+    }
+    .dataTables_wrapper .dataTables_filter label {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+    }
+    .dataTables_wrapper .dataTables_filter input {
+        display: inline-block !important;
+        width: auto !important;
+        min-width: 200px;
+        margin-left: 8px;
+    }
     @media (max-width: 768px) {
         .dataTables_wrapper .row:last-child {
             flex-direction: column;

@@ -179,46 +179,106 @@
             });
         });
 
-        // Initialize DataTable for all ads
-        $('#adsTable').DataTable({
-            "paging": true,
-            "searching": false, // Disable built-in search since we have custom search
-            "ordering": true,
-            "info": true,
-            "lengthMenu": [10, 20, 50, 100, 150],
-            "order": [[8, "desc"]], // Sort by created_at column
-            "dom": '<""<"col-sm-12"tr>>' +
-                   '<"row justify-content-between align-items-center mt-2 mx-0 no-gutters"<"col-auto"l><"col-auto"i><"col-auto"p>>',
-            "language": {
-                "lengthMenu": "Hiển thị _MENU_ quảng cáo",
-                "zeroRecords": "Không tìm thấy dữ liệu",
-                "info": "",
-                "infoEmpty": "Không có dữ liệu để hiển thị",
-                "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
-                "search": "",
-                "paginate": {
-                    "first": "Trang đầu",
-                    "last": "Trang cuối",
-                    "next": "Tiếp theo",
-                    "previous": "Quay lại"
-                }
-            }
-        });
+        // ============================================
+        // KHỞI TẠO DATATABLE CHO BẢNG QUẢNG CÁO
+        // Bảng: #adsTable (trong file ads-table.blade.php)
+        // ============================================
+        
+        // Kiểm tra xem bảng có tồn tại và chưa được khởi tạo chưa
+        if ($('#adsTable').length && !$.fn.DataTable.isDataTable('#adsTable')) {
+            $('#adsTable').DataTable({
+                // 1. BẬT PHÂN TRANG
+                "paging": true,
+                
+                // 2. BẬT TÌM KIẾM (THAY ĐỔI TỪ false THÀNH true)
+                "searching": true, // ✅ ĐÃ BẬT TÌM KIẾM
+                
+                // 3. BẬT SẮP XẾP
+                "ordering": true,
+                
+                // 4. BẬT HIỂN THỊ THÔNG TIN
+                "info": true,
+                
+                // 5. TÙY CHỌN SỐ MỤC MỖI TRANG
+                "lengthMenu": [[10, 20, 50, 100, 150], [10, 20, 50, 100, 150]],
+                "pageLength": 10, // Số mục mặc định mỗi trang
+                
+                // 6. SẮP XẾP MẶC ĐỊNH (theo cột Ngày tạo - cột thứ 8, giảm dần)
+                "order": [[8, "desc"]],
+                
+                // 7. CẤU HÌNH DOM (Layout) - QUAN TRỌNG: THÊM 'f' ĐỂ HIỂN THỊ Ô TÌM KIẾM
+                // 'l' = lengthMenu (dropdown chọn số mục/trang)
+                // 'f' = search box (Ô TÌM KIẾM) ✅
+                // 't' = table (bảng)
+                // 'i' = info (thông tin)
+                // 'p' = pagination (phân trang)
+                "dom": '<"row mb-3"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                       '<"row"<"col-sm-12"tr>>' +
+                       '<"row mt-3"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                
+                // 8. NGÔN NGỮ TIẾNG VIỆT
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ quảng cáo",
+                    "zeroRecords": "Không tìm thấy dữ liệu",
+                    "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ quảng cáo", // ✅ HIỂN THỊ THÔNG TIN ĐẦY ĐỦ
+                    "infoEmpty": "Không có dữ liệu để hiển thị",
+                    "infoFiltered": "(lọc từ tổng số _MAX_ mục)",
+                    "search": "Tìm kiếm:", // ✅ LABEL CHO Ô TÌM KIẾM
+                    "searchPlaceholder": "Nhập từ khóa...", // ✅ PLACEHOLDER CHO Ô TÌM KIẾM
+                    "paginate": {
+                        "first": "Trang đầu",
+                        "last": "Trang cuối",
+                        "next": "Tiếp theo",
+                        "previous": "Quay lại"
+                    }
+                },
+                
+                // 9. RESPONSIVE (Tự động điều chỉnh trên mobile)
+                "responsive": true,
+                
+                // 10. KHÔNG HIỂN THỊ LOADING
+                "processing": false
+            });
+        }
 
         // Di chuyển phân trang ra ngoài table cho mobile
         function movePaginationForMobile() {
             if (window.innerWidth < 768) {
                 // Di chuyển phân trang ra ngoài table cho mobile
-                $('#mobile-pagination').html($('.dataTables_paginate'));
-                $('#mobile-pagination').append($('.dataTables_info'));
-            } else {
-                // Đưa lại vào vị trí cũ cho desktop nếu cần
-                $('.dataTables_wrapper .row.justify-content-between .col-auto:last').append($('.dataTables_paginate'));
-                $('.dataTables_wrapper .row.justify-content-between .col-auto').first().append($('.dataTables_info'));
+                const paginate = $('.dataTables_paginate');
+                const info = $('.dataTables_info');
+                if (paginate.length && $('#mobile-pagination').length) {
+                    $('#mobile-pagination').html('').append(paginate).append(info);
+                }
             }
         }
-        movePaginationForMobile();
-        $(window).on('resize', movePaginationForMobile);
+        
+        // Wait for DataTable to initialize then move pagination
+        setTimeout(function() {
+            movePaginationForMobile();
+            // Đảm bảo ô tìm kiếm hiển thị
+            if ($('.dataTables_filter').length) {
+                $('.dataTables_filter').show();
+            }
+        }, 100);
+        
+        $(window).on('resize', function() {
+            setTimeout(movePaginationForMobile, 100);
+        });
+        
+        // Reinitialize pagination when tab changes
+        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function() {
+            setTimeout(function() {
+                if ($.fn.DataTable.isDataTable('#adsTable')) {
+                    $('#adsTable').DataTable().draw();
+                    movePaginationForMobile();
+                    // Đảm bảo ô tìm kiếm hiển thị khi chuyển tab
+                    if ($('.dataTables_filter').length) {
+                        $('.dataTables_filter').show();
+                    }
+                }
+            }, 100);
+        });
     });
 </script>
 
