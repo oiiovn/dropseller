@@ -7,6 +7,7 @@ use App\Models\Shop;
 use App\Models\ADS;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\Notification;
 
 class ADSController extends Controller
@@ -93,45 +94,54 @@ class ADSController extends Controller
 
    public function ads_shop()
 {
-    $user = Auth::user();
-    if (!$user) {
-        return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem quảng cáo.');
-    }
-
-    // Lấy tất cả shop kèm quảng cáo, sắp xếp mới nhất trước
-    $shops = $user->shops()
-        ->with(['ads' => function ($query) {
-            $query->orderBy('created_at', 'desc'); // sắp xếp mới nhất
-        }])
-        ->get();
-
-    $ads_shop = [];
-
-    foreach ($shops as $shop) {
-        $shopName = $shop->shop_name ?? 'Unknown Shop';
-
-        if (!isset($ads_shop[$shopName])) {
-            $ads_shop[$shopName] = [];
+    try {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem quảng cáo.');
         }
 
-        if ($shop->ads->isNotEmpty()) {
-            foreach ($shop->ads as $ads) {
-                $ads_shop[$shopName][] = [
-                    'invoice_id' => $ads->invoice_id,
-                    'date_range' => $ads->date_range,
-                    'shop_id' => $ads->shop_id,
-                    'amount' => $ads->amount,
-                    'vat' => $ads->vat,
-                    'total_amount' => $ads->total_amount,
-                    'payment_status' => $ads->payment_status,
-                    'payment_code' => $ads->payment_code ?? 'Chưa có mã thanh toán',
-                    'created_at' => $ads->created_at,
-                ];
+        // Lấy tất cả shop kèm quảng cáo, sắp xếp mới nhất trước
+        $shops = $user->shops()
+            ->with(['ads' => function ($query) {
+                $query->orderBy('created_at', 'desc'); // sắp xếp mới nhất
+            }])
+            ->get();
+
+        $ads_shop = [];
+
+        foreach ($shops as $shop) {
+            $shopName = $shop->shop_name ?? 'Unknown Shop';
+
+            if (!isset($ads_shop[$shopName])) {
+                $ads_shop[$shopName] = [];
+            }
+
+            // Kiểm tra xem shop có quan hệ ads không và ads có dữ liệu không
+            if ($shop->relationLoaded('ads') && $shop->ads && $shop->ads->isNotEmpty()) {
+                foreach ($shop->ads as $ads) {
+                    $ads_shop[$shopName][] = [
+                        'invoice_id' => $ads->invoice_id ?? '',
+                        'date_range' => $ads->date_range ?? '',
+                        'shop_id' => $ads->shop_id ?? '',
+                        'amount' => $ads->amount ?? 0,
+                        'vat' => $ads->vat ?? 0,
+                        'total_amount' => $ads->total_amount ?? 0,
+                        'payment_status' => $ads->payment_status ?? 'Chưa thanh toán',
+                        'payment_code' => $ads->payment_code ?? 'Chưa có mã thanh toán',
+                        'created_at' => $ads->created_at ? (is_string($ads->created_at) ? $ads->created_at : $ads->created_at->format('Y-m-d H:i:s')) : '',
+                    ];
+                }
             }
         }
-    }
 
-    return view('ads.ads_shop', compact('ads_shop', 'user'));
+        return view('ads.ads_shop', compact('ads_shop', 'user'));
+    } catch (\Exception $e) {
+        Log::error('Error in ads_shop method: ' . $e->getMessage(), [
+            'trace' => $e->getTraceAsString(),
+            'user_id' => Auth::id()
+        ]);
+        return redirect()->back()->with('error', 'Có lỗi xảy ra khi tải danh sách quảng cáo. Vui lòng thử lại sau.');
+    }
 }
 
 }
