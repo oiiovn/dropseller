@@ -128,13 +128,6 @@ Route::middleware('auth')->group(function () {
 
     // Hệ thống quản lý nợ - Con nợ / Admin (tài khoản không có personal_code)
     Route::prefix('quan-ly-no')->name('debt.admin.')->middleware('debt.debtor')->group(function () {
-        Route::get('debug-auth', function () {
-            return response()->json([
-                'auth_id' => auth()->id(),
-                'email' => auth()->user()?->email,
-                'creditor_1_debtor_user_id' => \App\Models\DebtCreditor::find(1)?->debtor_user_id,
-            ]);
-        })->name('debug-auth');
         Route::get('/', [DebtAdminController::class, 'index'])->name('index');
         Route::get('tong-no', [DebtAdminController::class, 'summary'])->name('summary');
         Route::get('chu-no/tao', [DebtAdminController::class, 'createCreditor'])->name('creditor.create');
