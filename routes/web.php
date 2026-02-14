@@ -145,6 +145,7 @@ Route::middleware('auth')->group(function () {
         Route::get('thu-nhap-thang/{income}/sua', [DebtAdminController::class, 'editMonthlyIncome'])->name('monthly-income.edit');
         Route::put('thu-nhap-thang/{income}', [DebtAdminController::class, 'updateMonthlyIncome'])->name('monthly-income.update');
         Route::post('thu-nhap-thang/phan-bo-hang-loat', [DebtAdminController::class, 'distributeBulk'])->name('monthly-income.distribute-bulk');
+        Route::get('thu-nhap-thang/{income}/phan-bo', [DebtAdminController::class, 'distributeMonthlyIncome'])->name('monthly-income.distribute.get');
         Route::post('thu-nhap-thang/{income}/phan-bo', [DebtAdminController::class, 'distributeMonthlyIncome'])->name('monthly-income.distribute');
         Route::post('thu-nhap-thang/{income}/xoa-phan-bo', [DebtAdminController::class, 'deleteDistributions'])->name('monthly-income.delete-distributions');
         Route::post('thu-nhap-thang/xoa-phan-bo-hang-loat', [DebtAdminController::class, 'deleteDistributionsBulk'])->name('monthly-income.delete-distributions-bulk');

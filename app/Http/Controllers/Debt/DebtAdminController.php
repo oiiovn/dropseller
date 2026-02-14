@@ -181,9 +181,7 @@ class DebtAdminController extends Controller
 
     public function editMonthlyIncome(DebtMonthlyIncome $income)
     {
-        if ($income->debtor_user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorizeIncome($income);
         return view('debt.admin.monthly-income-form', ['income' => $income]);
     }
 
@@ -264,9 +262,7 @@ class DebtAdminController extends Controller
 
     public function updateMonthlyIncome(Request $request, DebtMonthlyIncome $income)
     {
-        if ($income->debtor_user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorizeIncome($income);
         $request->validate([
             'month' => 'required|integer|min:1|max:12',
             'year' => 'required|integer|min:2020|max:2100',
@@ -292,9 +288,7 @@ class DebtAdminController extends Controller
 
     public function distributeMonthlyIncome(DebtMonthlyIncome $income)
     {
-        if ($income->debtor_user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorizeIncome($income);
         $income->distributions()->where('status', 'pending')->delete();
         $this->distributeIncome($income);
         $count = $income->distributions()->count();
@@ -303,9 +297,7 @@ class DebtAdminController extends Controller
 
     public function deleteDistributions(DebtMonthlyIncome $income)
     {
-        if ($income->debtor_user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorizeIncome($income);
         $count = $income->distributions()->count();
         $income->distributions()->delete();
         return redirect()->route('debt.admin.monthly-incomes')->with('success', "Đã xóa {$count} phân bổ tháng {$income->month}/{$income->year}. Bạn có thể bấm Phân bổ để tạo lại.");
@@ -318,7 +310,7 @@ class DebtAdminController extends Controller
         $deleted = 0;
         foreach ($request->income_ids as $id) {
             $income = DebtMonthlyIncome::find($id);
-            if (!$income || $income->debtor_user_id !== $debtorId) {
+            if (!$income || !$this->canAccessIncome($income)) {
                 continue;
             }
             $deleted += $income->distributions()->count();
@@ -334,7 +326,7 @@ class DebtAdminController extends Controller
         $done = 0;
         foreach ($request->income_ids as $id) {
             $income = DebtMonthlyIncome::find($id);
-            if (!$income || $income->debtor_user_id !== $debtorId) {
+            if (!$income || !$this->canAccessIncome($income)) {
                 continue;
             }
             $income->distributions()->where('status', 'pending')->delete();
@@ -528,5 +520,19 @@ class DebtAdminController extends Controller
         if ($userId !== $ownerId && !auth()->user()->hasRole('admin')) {
             abort(403);
         }
+    }
+
+    protected function authorizeIncome(DebtMonthlyIncome $income): void
+    {
+        if (!$this->canAccessIncome($income)) {
+            abort(403);
+        }
+    }
+
+    protected function canAccessIncome(DebtMonthlyIncome $income): bool
+    {
+        $userId = (int) auth()->id();
+        $ownerId = (int) $income->debtor_user_id;
+        return $userId === $ownerId || auth()->user()->hasRole('admin');
     }
 }
