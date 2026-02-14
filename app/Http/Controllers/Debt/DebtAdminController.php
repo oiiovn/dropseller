@@ -523,7 +523,9 @@ class DebtAdminController extends Controller
 
     protected function authorizeDebtor(DebtCreditor $creditor): void
     {
-        if ($creditor->debtor_user_id !== auth()->id()) {
+        $userId = (int) auth()->id();
+        $ownerId = (int) $creditor->debtor_user_id;
+        if ($userId !== $ownerId && !auth()->user()->hasRole('admin')) {
             abort(403);
         }
     }
