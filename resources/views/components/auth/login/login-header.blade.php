@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
   <p class="mb-0 fs-wellcom-card">Chào mừng <span class="fw-bold" style="color: #0089ED;">Dropships Seller</span></p>
-  <small class="text-small fs-wellcom-register">Bạn chưa có tài khoản? </br> <a href="{{ route('register') }}" class="text-decoration-none fw-regular" style="color: #0089ED !important;">Đăng ký</a></small>
+  <small class="text-small fs-wellcom-register text-muted">Đăng ký tạm thời đóng</small>
 </div>
 <h2 class="fw-bold mb-4">Đăng nhập</h2>
 

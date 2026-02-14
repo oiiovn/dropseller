@@ -24,7 +24,8 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'image',
         'password',
-        'referral_code'
+        'referral_code',
+        'personal_code',
     ];
 
     /**
@@ -144,6 +145,21 @@ class User extends Authenticatable implements JWTSubject
             ->where('role_id', $roleId)
             ->exists();
     }
+    public function debtCreditorsAsDebtor(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(DebtCreditor::class, 'debtor_user_id');
+    }
+
+    public function debtCreditorProfile(): ?DebtCreditor
+    {
+        return DebtCreditor::where('user_id', $this->id)->first();
+    }
+
+    public function isDebtSystemUser(): bool
+    {
+        return !empty($this->personal_code);
+    }
+
     public function getCurrentBalance()
     {
         $refCode = $this->referral_code;

@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\Transaction;
+use App\Models\DebtDistribution;
 use Illuminate\Support\Facades\Http;
 use App\Models\Notification;
 use App\Models\User;
@@ -19,31 +21,34 @@ class FetchTransactions extends Command
 
     public function handle()
     {
-        // URL của API
-        $url = "https://my.pay2s.vn/userapi/transactions";
+        $url = config('pay2s.transactions_url', 'https://my.pay2s.vn/userapi/transactions');
+        $token = base64_encode(config('pay2s.secret_key'));
+        $accountsStr = config('pay2s.bank_accounts', '46241987');
+        $accounts = array_filter(array_map('trim', explode(',', $accountsStr)));
+        $begin = config('pay2s.fetch_begin', '22/08/2025');
+        $end = config('pay2s.fetch_end', '20/11/2029');
 
-        // Secret key và token
-        $secretKey = "1ece1f568539eeb7b971578c32a317369defbf0e64b8336124bdc47399a3419e";
-        $token = base64_encode($secretKey);
+        $transactions = [];
+        foreach ($accounts as $account) {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'pay2s-token' => $token,
+            ])->post($url, [
+                'bankAccounts' => $account,
+                'begin' => $begin,
+                'end' => $end,
+            ]);
 
-        $requestBody = [
-            "bankAccounts" => "46241987", // Số tài khoản chính xác
-            "begin" => "22/08/2025",        // Ngày bắt đầu 
-            "end" => "20/11/2029"          // Ngày kết thúc
-        ];
-
-        // Gửi request tới API
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'pay2s-token' => $token
-        ])->post($url, $requestBody);
-
-        if ($response->failed()) {
-            $this->error('API fetch failed.');
-            return;
+            if ($response->failed()) {
+                $this->warn("Pay2s API failed for account {$account}: " . $response->status());
+                continue;
+            }
+            $list = $response->json()['transactions'] ?? [];
+            foreach ($list as $t) {
+                $transactions[] = $t;
+            }
         }
 
-        $transactions = $response->json()['transactions'] ?? [];
         foreach ($transactions as $transaction) {
             if (Transaction::where('transaction_id', $transaction['transaction_id'])->exists()) {
                 continue; 
@@ -57,9 +62,27 @@ class FetchTransactions extends Command
                 'type' => $transaction['type'],
                 'description' => $transaction['description']
             ]);
+
+            // Chi tiền (OUT): nếu nội dung chứa mã giao dịch phân bổ nợ → ghi nhận đã thanh toán
+            if (isset($transaction['type']) && strtoupper($transaction['type']) === 'OUT' && !empty($transaction['description'])) {
+                $description = (string) $transaction['description'];
+                $pending = DebtDistribution::where('status', 'pending')->get();
+                foreach ($pending as $dist) {
+                    if (str_contains($description, $dist->transaction_code)) {
+                        $paidAt = isset($transaction['transaction_date'])
+                            ? Carbon::parse($transaction['transaction_date'])
+                            : now();
+                        $dist->update([
+                            'status' => 'paid',
+                            'paid_at' => $paidAt,
+                            'bank_transaction_ref' => $transaction['transaction_id'] ?? null,
+                        ]);
+                        Log::info("Đã ghi nhận thanh toán nợ: distribution_id={$dist->id}, transaction_code={$dist->transaction_code}, bank_ref=" . ($transaction['transaction_id'] ?? ''));
+                        break;
+                    }
+                }
+            }
         
-        
-            
             $user = User::whereRaw("? LIKE CONCAT('%', referral_code, '%')", [$transaction['description']])->first();
             if ($user) {
                 Notification::create([

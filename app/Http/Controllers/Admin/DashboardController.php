@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{User, Shop, Order, OrderDetail, ADS};
+use App\Models\{User, Shop, Order, OrderDetail, ADS, Transaction};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Auth, Cache};
@@ -181,6 +181,15 @@ class DashboardController extends Controller
             ->whereRaw("STR_TO_DATE(SUBSTRING_INDEX(date_range, ' - ', 1), '%Y-%m-%d') BETWEEN ? AND ?", $filterBindings)
             ->sum('total_amount');
 
+        // Thống kê SHOPEEPAY & Grab từ bảng transactions (theo cột bank, cùng khoảng thời gian)
+        $txBase = Transaction::whereBetween('transaction_date', [$startDate->toDateString(), $endDate->toDateString()]);
+        $shopeepayIn  = (clone $txBase)->where('bank', 'SHOPEEPAY')->where('type', 'IN')->sum('amount');
+        $shopeepayOut = (clone $txBase)->where('bank', 'SHOPEEPAY')->where('type', 'OUT')->sum('amount');
+        $shopeepayCount = (clone $txBase)->where('bank', 'SHOPEEPAY')->count();
+        $grabIn  = (clone $txBase)->where('bank', 'Grab')->where('type', 'IN')->sum('amount');
+        $grabOut = (clone $txBase)->where('bank', 'Grab')->where('type', 'OUT')->sum('amount');
+        $grabCount = (clone $txBase)->where('bank', 'Grab')->count();
+
         return response()->json([
             'start_date'           => $startDate->toDateTimeString(),
             'end_date'             => $endDate->toDateTimeString(),
@@ -189,6 +198,12 @@ class DashboardController extends Controller
             'total_orders'         => $totalOrders,
             'total_dropship'       => $totalDropship,
             'total_ads'            => $totalAds,
+            'shopeepay_in'         => (float) $shopeepayIn,
+            'shopeepay_out'        => (float) $shopeepayOut,
+            'shopeepay_count'      => (int) $shopeepayCount,
+            'grab_in'              => (float) $grabIn,
+            'grab_out'             => (float) $grabOut,
+            'grab_count'           => (int) $grabCount,
         ]);
     }
 

@@ -69,6 +69,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check_balance' => \App\Http\Middleware\EnsurePositiveBalance::class,
         'pick_order.access' => \App\Http\Middleware\CheckPickOrderAccess::class,
+        'debt.code.verified' => \App\Http\Middleware\EnsureDebtCodeVerified::class,
+        'debt.debtor' => \App\Http\Middleware\EnsureUserIsDebtor::class,
 
     ];
 

@@ -36,6 +36,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         $user = Auth::user();
+        if ($user->isDebtSystemUser()) {
+            session()->forget(['debt_code_verified_at']);
+            return redirect()->route('debt.code.verify');
+        }
         $programShops = ProgramService::getUnregisteredProgramsForUser($user);
         if (!empty($programShops)) {
             session()->flash('show_welcome_modal', true);

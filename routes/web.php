@@ -35,6 +35,8 @@ use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\GiftCardController;
 use App\Http\Controllers\PhoneCheckController;
+use App\Http\Controllers\Debt\DebtController;
+use App\Http\Controllers\Debt\DebtAdminController;
 
 
 Route::get('/', function () {
@@ -111,6 +113,46 @@ Route::middleware('auth')->group(function () {
         }
         return response()->json([], 204); // Return empty response with 204 No Content
     })->name('keep-alive');
+
+    // Hệ thống quản lý nợ - Chủ nợ (tài khoản có personal_code)
+    Route::prefix('debt')->name('debt.')->group(function () {
+        Route::get('code-verify', [DebtController::class, 'showCodeVerify'])->name('code.verify');
+        Route::post('code-verify', [DebtController::class, 'verifyCode'])->name('code.verify.post');
+        Route::middleware('debt.code.verified')->group(function () {
+            Route::get('dashboard', [DebtController::class, 'dashboard'])->name('dashboard');
+            Route::get('thong-bao-tai-cau-truc', [DebtController::class, 'showNoticeRestructuring'])->name('notice-restructuring');
+            Route::get('tai-khoan', [DebtController::class, 'showAccountForm'])->name('account');
+            Route::put('tai-khoan', [DebtController::class, 'updateAccount'])->name('account.update');
+        });
+    });
+
+    // Hệ thống quản lý nợ - Con nợ / Admin (tài khoản không có personal_code)
+    Route::prefix('quan-ly-no')->name('debt.admin.')->middleware('debt.debtor')->group(function () {
+        Route::get('/', [DebtAdminController::class, 'index'])->name('index');
+        Route::get('tong-no', [DebtAdminController::class, 'summary'])->name('summary');
+        Route::get('chu-no/tao', [DebtAdminController::class, 'createCreditor'])->name('creditor.create');
+        Route::post('chu-no', [DebtAdminController::class, 'storeCreditor'])->name('creditor.store');
+        Route::get('chu-no/{creditor}/sua', [DebtAdminController::class, 'editCreditor'])->name('creditor.edit');
+        Route::put('chu-no/{creditor}', [DebtAdminController::class, 'updateCreditor'])->name('creditor.update');
+        Route::delete('chu-no/{creditor}', [DebtAdminController::class, 'destroyCreditor'])->name('creditor.destroy');
+        Route::get('chu-no/{creditor}/ke-hoach-tra', [DebtAdminController::class, 'repaymentPlans'])->name('repayment-plans');
+        Route::post('chu-no/{creditor}/ke-hoach-tra', [DebtAdminController::class, 'storeRepaymentPlan'])->name('repayment-plan.store');
+        Route::get('thu-nhap-thang', [DebtAdminController::class, 'monthlyIncomes'])->name('monthly-incomes');
+        Route::get('thu-nhap-thang/tao', [DebtAdminController::class, 'createMonthlyIncome'])->name('monthly-income.create');
+        Route::get('thu-nhap-thang/tao-60-thang', [DebtAdminController::class, 'createBulk60Months'])->name('monthly-income.create-bulk-60');
+        Route::post('thu-nhap-thang/tao-60-thang', [DebtAdminController::class, 'storeBulk60Months'])->name('monthly-income.store-bulk-60');
+        Route::post('thu-nhap-thang', [DebtAdminController::class, 'storeMonthlyIncome'])->name('monthly-income.store');
+        Route::get('thu-nhap-thang/{income}/sua', [DebtAdminController::class, 'editMonthlyIncome'])->name('monthly-income.edit');
+        Route::put('thu-nhap-thang/{income}', [DebtAdminController::class, 'updateMonthlyIncome'])->name('monthly-income.update');
+        Route::post('thu-nhap-thang/phan-bo-hang-loat', [DebtAdminController::class, 'distributeBulk'])->name('monthly-income.distribute-bulk');
+        Route::post('thu-nhap-thang/{income}/phan-bo', [DebtAdminController::class, 'distributeMonthlyIncome'])->name('monthly-income.distribute');
+        Route::post('thu-nhap-thang/{income}/xoa-phan-bo', [DebtAdminController::class, 'deleteDistributions'])->name('monthly-income.delete-distributions');
+        Route::post('thu-nhap-thang/xoa-phan-bo-hang-loat', [DebtAdminController::class, 'deleteDistributionsBulk'])->name('monthly-income.delete-distributions-bulk');
+        Route::get('phan-bo', [DebtAdminController::class, 'distributions'])->name('distributions');
+        Route::get('lich-su-thanh-toan-no', [DebtAdminController::class, 'paymentHistory'])->name('payment-history');
+        Route::get('lich-su-ngan-hang-pay2s', [DebtAdminController::class, 'bankHistoryPay2s'])->name('bank-history-pay2s');
+        Route::post('phan-bo/{distribution}/da-thanh-toan', [DebtAdminController::class, 'markPaid'])->name('mark-paid');
+    });
 
     //Affiliate mời nhà bán hàng
     Route::get('affiliate', [ProgramController::class, 'affiliatePage'])->name('affiliate.affiliate');
