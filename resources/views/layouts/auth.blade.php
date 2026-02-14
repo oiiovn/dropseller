@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <!-- Custom CSS -->
-    <link href="{{ asset('assets/css/login.css') }}" rel="stylesheet">
+    <link href="{{ (request()->secure() ? secure_asset('assets/css/login.css') : asset('assets/css/login.css')) }}" rel="stylesheet">
     
     @stack('styles')
 </head>
@@ -21,7 +21,7 @@
     
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('assets/js/login.js') }}"></script>
+    <script src="{{ (request()->secure() ? secure_asset('assets/js/login.js') : asset('assets/js/login.js')) }}"></script>
     
     @stack('scripts')
 </body>
