@@ -135,8 +135,8 @@ Route::middleware('auth')->group(function () {
         Route::get('chu-no/{creditor}/sua', [DebtAdminController::class, 'editCreditor'])->name('creditor.edit');
         Route::put('chu-no/{creditor}', [DebtAdminController::class, 'updateCreditor'])->name('creditor.update');
         Route::delete('chu-no/{creditor}', [DebtAdminController::class, 'destroyCreditor'])->name('creditor.destroy');
-        Route::get('chu-no/{creditor}/ke-hoach-tra', [DebtAdminController::class, 'repaymentPlans'])->name('repayment-plans');
-        Route::post('chu-no/{creditor}/ke-hoach-tra', [DebtAdminController::class, 'storeRepaymentPlan'])->name('repayment-plan.store');
+        Route::get('ke-hoach-tra/{creditor}', [DebtAdminController::class, 'repaymentPlans'])->name('repayment-plans');
+        Route::post('ke-hoach-tra/{creditor}', [DebtAdminController::class, 'storeRepaymentPlan'])->name('repayment-plan.store');
         Route::get('thu-nhap-thang', [DebtAdminController::class, 'monthlyIncomes'])->name('monthly-incomes');
         Route::get('thu-nhap-thang/tao', [DebtAdminController::class, 'createMonthlyIncome'])->name('monthly-income.create');
         Route::get('thu-nhap-thang/tao-60-thang', [DebtAdminController::class, 'createBulk60Months'])->name('monthly-income.create-bulk-60');
