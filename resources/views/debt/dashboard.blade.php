@@ -14,7 +14,7 @@
     @if($creditor)
         <div class="debt-card p-4 mb-4">
             <h5>Tổng nợ của bạn (theo kế hoạch)</h5>
-            <p class="fs-4 text-primary mb-0">{{ number_format($creditor->total_debt, 0, ',', '.') }} đ</p>
+            <p class="fs-4 mb-0"><a href="{{ route('debt.old-debt.detail') }}" class="text-primary text-decoration-none">{{ number_format($creditor->total_debt, 0, ',', '.') }} đ</a></p>
             @if($creditor->restructuring_date)
                 <p class="text-muted small mb-0 mt-2">Ngày tái cấu trúc: {{ $creditor->restructuring_date->format('d/m/Y') }}</p>
             @endif
@@ -33,7 +33,12 @@
                     <strong>{{ number_format($averageMonthlyPayment, 0, ',', '.') }} đ</strong>
                 </div>
                 <div class="col-6 col-md-3">
-                    <span class="text-muted d-block">Dự kiến hoàn tất</span>
+                    <span class="text-muted d-block">Dự kiến hoàn tất
+                        <span class="debt-tooltip-wrap position-relative d-inline-block ms-1">
+                            <i class="bi bi-exclamation-circle text-muted opacity-75 debt-tooltip-btn" style="font-size: 0.85rem; cursor: help;" tabindex="0" role="button" aria-label="Giải thích"></i>
+                            <span class="debt-tooltip-box">Thời gian dự kiến rút ngắn dần theo các khoản đã thanh toán (theo lịch phân bổ đã thanh toán), thường giảm khoảng 30 tháng so với ban đầu. Khi một chủ nợ được thanh toán hết, phần tiền đó dồn sang chủ nợ còn lại, đẩy nhanh thời gian hoàn tất.</span>
+                        </span>
+                    </span>
                     <strong>{{ $estimatedCompletionMonth ? $estimatedCompletionMonth->format('m/Y') : '—' }}</strong>
                 </div>
             </div>
@@ -110,3 +115,34 @@
         <div class="alert alert-warning">Bạn chưa được gắn với hồ sơ chủ nợ. Liên hệ quản trị viên.</div>
     @endif
 @endsection
+
+@push('styles')
+<style>
+.debt-tooltip-wrap .debt-tooltip-box {
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(100% + 6px);
+    width: 280px; max-width: 90vw; padding: 8px 10px; font-size: 0.8rem; line-height: 1.4;
+    background: #333; color: #fff; border-radius: 6px; white-space: normal;
+    visibility: hidden; opacity: 0; transition: opacity 0.15s, visibility 0.15s;
+    z-index: 1050; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.debt-tooltip-wrap .debt-tooltip-box::after {
+    content: ''; position: absolute; top: 100%; left: 50%; margin-left: -5px;
+    border: 5px solid transparent; border-top-color: #333;
+}
+.debt-tooltip-wrap:hover .debt-tooltip-box,
+.debt-tooltip-wrap.show .debt-tooltip-box { visibility: visible; opacity: 1; }
+</style>
+@endpush
+@push('scripts')
+<script>
+(function() {
+    var wrap = document.querySelector('.debt-tooltip-wrap');
+    if (!wrap) return;
+    var btn = wrap.querySelector('.debt-tooltip-btn');
+    btn.addEventListener('click', function(e) { e.preventDefault(); wrap.classList.toggle('show'); });
+    document.addEventListener('click', function(e) {
+        if (!wrap.contains(e.target)) wrap.classList.remove('show');
+    });
+})();
+</script>
+@endpush

@@ -119,6 +119,16 @@ class DebtController extends Controller
         ]);
     }
 
+    public function oldDebtDetail()
+    {
+        $creditor = Auth::user()->debtCreditorProfile();
+        if (!$creditor) {
+            return redirect()->route('debt.dashboard')->with('info', 'Bạn chưa có hồ sơ chủ nợ.');
+        }
+        $items = $creditor->oldDebtItems;
+        return view('debt.old-debt-detail', compact('creditor', 'items'));
+    }
+
     public function showNoticeRestructuring()
     {
         $creditorName = Auth::user()->name ?: 'Anh/Chị';

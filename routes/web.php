@@ -120,6 +120,7 @@ Route::middleware('auth')->group(function () {
         Route::post('code-verify', [DebtController::class, 'verifyCode'])->name('code.verify.post');
         Route::middleware('debt.code.verified')->group(function () {
             Route::get('dashboard', [DebtController::class, 'dashboard'])->name('dashboard');
+            Route::get('chi-tiet-no-cu', [DebtController::class, 'oldDebtDetail'])->name('old-debt.detail');
             Route::get('thong-bao-tai-cau-truc', [DebtController::class, 'showNoticeRestructuring'])->name('notice-restructuring');
             Route::get('tai-khoan', [DebtController::class, 'showAccountForm'])->name('account');
             Route::put('tai-khoan', [DebtController::class, 'updateAccount'])->name('account.update');
@@ -153,6 +154,9 @@ Route::middleware('auth')->group(function () {
         Route::get('lich-su-thanh-toan-no', [DebtAdminController::class, 'paymentHistory'])->name('payment-history');
         Route::get('lich-su-ngan-hang-pay2s', [DebtAdminController::class, 'bankHistoryPay2s'])->name('bank-history-pay2s');
         Route::post('phan-bo/{distribution}/da-thanh-toan', [DebtAdminController::class, 'markPaid'])->name('mark-paid');
+        Route::get('no-cu', [DebtAdminController::class, 'oldDebtIndex'])->name('old-debt.index');
+        Route::get('no-cu/{creditor}', [DebtAdminController::class, 'oldDebtCreditor'])->name('old-debt.creditor');
+        Route::post('no-cu/{creditor}', [DebtAdminController::class, 'storeOldDebt'])->name('old-debt.store');
     });
 
     //Affiliate mời nhà bán hàng

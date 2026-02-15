@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DebtCreditor;
 use App\Models\DebtDistribution;
 use App\Models\DebtMonthlyIncome;
+use App\Models\DebtOldDebtItem;
 use App\Models\DebtRepaymentPlan;
 use App\Models\Transaction;
 use App\Models\User;
@@ -534,5 +535,72 @@ class DebtAdminController extends Controller
         $userId = (int) auth()->id();
         $ownerId = (int) $income->debtor_user_id;
         return $userId === $ownerId || auth()->user()->hasRole('admin');
+    }
+
+    public function oldDebtIndex(Request $request)
+    {
+        $creditors = DebtCreditor::with('user')
+            ->where('debtor_user_id', auth()->id())
+            ->orderBy('id')
+            ->get();
+        $creditor = null;
+        $items = [];
+        if ($request->filled('creditor_id')) {
+            $creditor = $creditors->firstWhere('id', (int) $request->creditor_id);
+            if ($creditor) {
+                $this->authorizeDebtor($creditor);
+                $items = $creditor->oldDebtItems;
+            }
+        }
+        return view('debt.admin.old-debt', compact('creditors', 'creditor', 'items'));
+    }
+
+    public function oldDebtCreditor(DebtCreditor $creditor)
+    {
+        $this->authorizeDebtor($creditor);
+        $creditors = DebtCreditor::with('user')
+            ->where('debtor_user_id', auth()->id())
+            ->orderBy('id')
+            ->get();
+        $items = $creditor->oldDebtItems;
+        return view('debt.admin.old-debt', compact('creditors', 'creditor', 'items'));
+    }
+
+    public function storeOldDebt(Request $request, DebtCreditor $creditor)
+    {
+        $this->authorizeDebtor($creditor);
+        $request->validate([
+            'items' => 'nullable|array',
+            'items.*.id' => 'nullable|integer|exists:debt_old_debt_items,id',
+            'items.*.code' => 'nullable|string|max:100',
+            'items.*.principal_amount' => 'nullable|numeric|min:0',
+            'items.*.notes' => 'nullable|string|max:1000',
+        ]);
+        $ids = [];
+        foreach ($request->input('items', []) as $index => $row) {
+            $amount = isset($row['principal_amount']) ? (float) $row['principal_amount'] : 0;
+            $code = $row['code'] ?? '';
+            $notes = $row['notes'] ?? '';
+            if ($code === '' && $amount <= 0 && $notes === '') {
+                continue;
+            }
+            if (!empty($row['id'])) {
+                $item = DebtOldDebtItem::where('debt_creditor_id', $creditor->id)->find($row['id']);
+                if ($item) {
+                    $item->update(['code' => $code, 'principal_amount' => $amount, 'notes' => $notes, 'sort_order' => $index]);
+                    $ids[] = $item->id;
+                }
+            } else {
+                $item = $creditor->oldDebtItems()->create([
+                    'code' => $code,
+                    'principal_amount' => $amount,
+                    'notes' => $notes,
+                    'sort_order' => $index,
+                ]);
+                $ids[] = $item->id;
+            }
+        }
+        DebtOldDebtItem::where('debt_creditor_id', $creditor->id)->whereNotIn('id', $ids)->delete();
+        return redirect()->route('debt.admin.old-debt.creditor', $creditor)->with('success', 'Đã lưu ghi chép nợ cũ.');
     }
 }

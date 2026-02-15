@@ -51,4 +51,9 @@ class DebtCreditor extends Model
     {
         return $this->repaymentPlans()->where('is_active', true)->first();
     }
+
+    public function oldDebtItems(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(DebtOldDebtItem::class, 'debt_creditor_id')->orderBy('sort_order')->orderBy('id');
+    }
 }
