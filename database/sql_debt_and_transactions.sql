@@ -85,18 +85,18 @@ CREATE TABLE IF NOT EXISTS `debt_distributions` (
   CONSTRAINT `debt_distributions_debt_creditor_id_foreign` FOREIGN KEY (`debt_creditor_id`) REFERENCES `debt_creditors` (`id`) ON DELETE CASCADE
 );
 
--- 6b. Ghi chép nợ cũ (từng khoản theo chủ nợ, admin nhập)
+-- 6b. Ghi chép nợ cũ (từng khoản theo chủ nợ, admin nhập) — dùng utf8mb4 cho tiếng Việt
 CREATE TABLE IF NOT EXISTS `debt_old_debt_items` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `debt_creditor_id` BIGINT UNSIGNED NOT NULL,
-  `code` VARCHAR(100) NULL COMMENT 'Mã',
+  `code` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'Mã',
   `principal_amount` DECIMAL(18, 2) NOT NULL DEFAULT 0 COMMENT 'Số tiền gốc',
-  `notes` TEXT NULL,
+  `notes` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `sort_order` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NULL,
   `updated_at` TIMESTAMP NULL,
   CONSTRAINT `debt_old_debt_items_debt_creditor_id_foreign` FOREIGN KEY (`debt_creditor_id`) REFERENCES `debt_creditors` (`id`) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 7. Giao dịch ngân hàng (đồng bộ từ Pay2s)
 CREATE TABLE IF NOT EXISTS `transactions` (

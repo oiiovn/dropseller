@@ -24,6 +24,37 @@
         </form>
     </div>
 
+    <div class="row g-3 mb-4">
+        @if(isset($acb_balance))
+        <div class="col-md-6 col-xl-3">
+            <div class="debt-card p-3 border-primary border-opacity-25">
+                <div class="d-flex align-items-center">
+                    <span class="avatar-title rounded fs-4 bg-primary bg-opacity-10 text-primary"><i class="bi bi-bank2"></i></span>
+                    <div class="ms-3">
+                        <span class="fw-semibold">Ví ACB (46241987)</span>
+                        @if($acb_as_of_date ?? null)<small class="text-muted d-block">Gốc {{ $acb_as_of_date }}</small>@endif
+                        <div class="fs-5 fw-bold mt-1">{{ number_format($acb_balance, 0, ',', '.') }} đ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+        @if(isset($mbank_balance))
+        <div class="col-md-6 col-xl-3">
+            <div class="debt-card p-3 border-info border-opacity-25">
+                <div class="d-flex align-items-center">
+                    <span class="avatar-title rounded fs-4 bg-info bg-opacity-10 text-info"><i class="bi bi-bank"></i></span>
+                    <div class="ms-3">
+                        <span class="fw-semibold">Ví MBank (008338298888)</span>
+                        @if($mbank_as_of_date ?? null)<small class="text-muted d-block">Gốc {{ $mbank_as_of_date }}</small>@endif
+                        <div class="fs-5 fw-bold mt-1">{{ number_format($mbank_balance, 0, ',', '.') }} đ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
+
     <!-- Dashboard SHOPEEPAY & Grab -->
     <div class="row g-3 mb-4">
         <div class="col-md-6 col-xl-3">

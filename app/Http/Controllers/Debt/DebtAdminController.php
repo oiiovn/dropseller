@@ -8,6 +8,7 @@ use App\Models\DebtDistribution;
 use App\Models\DebtMonthlyIncome;
 use App\Models\DebtOldDebtItem;
 use App\Models\DebtRepaymentPlan;
+use App\Models\BankWalletBalanceSnapshot;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -491,6 +492,42 @@ class DebtAdminController extends Controller
         $beOut  = (clone $baseFilter)->where('description', 'like', '%BE-%')->where('type', 'OUT')->sum('amount');
         $beCount = (clone $baseFilter)->where('description', 'like', '%BE-%')->count();
 
+        // Số dư ví ACB (46241987): snapshot + giao dịch sau as_of_date
+        $acbSnapshot = BankWalletBalanceSnapshot::where('account_number', '46241987')->where('bank', 'ACB')->first();
+        $acbBalance = null;
+        $acbAsOfDate = null;
+        if ($acbSnapshot) {
+            $acbAsOfDate = $acbSnapshot->as_of_date->format('d/m/Y');
+            $after = $acbSnapshot->as_of_date->format('Y-m-d');
+            $acbIn = (float) Transaction::where('account_number', '46241987')
+                ->where('transaction_date', '>', $after)
+                ->where('type', 'IN')
+                ->sum('amount');
+            $acbOut = (float) Transaction::where('account_number', '46241987')
+                ->where('transaction_date', '>', $after)
+                ->where('type', 'OUT')
+                ->sum('amount');
+            $acbBalance = (float) $acbSnapshot->balance_snapshot + $acbIn - $acbOut;
+        }
+
+        // Số dư ví MBank (008338298888): snapshot + giao dịch sau as_of_date
+        $mbankSnapshot = BankWalletBalanceSnapshot::where('account_number', '008338298888')->where('bank', 'MBB')->first();
+        $mbankBalance = null;
+        $mbankAsOfDate = null;
+        if ($mbankSnapshot) {
+            $mbankAsOfDate = $mbankSnapshot->as_of_date->format('d/m/Y');
+            $afterMbank = $mbankSnapshot->as_of_date->format('Y-m-d');
+            $mbankIn = (float) Transaction::where('account_number', '008338298888')
+                ->where('transaction_date', '>', $afterMbank)
+                ->where('type', 'IN')
+                ->sum('amount');
+            $mbankOut = (float) Transaction::where('account_number', '008338298888')
+                ->where('transaction_date', '>', $afterMbank)
+                ->where('type', 'OUT')
+                ->sum('amount');
+            $mbankBalance = (float) $mbankSnapshot->balance_snapshot + $mbankIn - $mbankOut;
+        }
+
         return view('debt.admin.bank-history-pay2s', [
             'transactions' => $transactions,
             'begin_ymd' => $beginYmd,
@@ -511,6 +548,10 @@ class DebtAdminController extends Controller
             'be_in' => $beIn,
             'be_out' => $beOut,
             'be_count' => $beCount,
+            'acb_balance' => $acbBalance,
+            'acb_as_of_date' => $acbAsOfDate,
+            'mbank_balance' => $mbankBalance,
+            'mbank_as_of_date' => $mbankAsOfDate,
         ]);
     }
 

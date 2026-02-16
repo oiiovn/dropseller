@@ -16,9 +16,9 @@
         <p class="mb-2">Kính gửi Anh/Chị <strong>{{ $creditorName }}</strong>,</p>
         <p class="mb-3">Tôi gửi thông báo này với tinh thần minh bạch và trách nhiệm.</p>
 
-        <p class="mb-3">Trong suốt thời gian qua, tôi luôn ưu tiên thực hiện nghĩa vụ thanh toán theo các thỏa thuận đã thống nhất. Tuy nhiên, sau khi rà soát tổng thể cơ cấu tài chính và <strong>dòng tiền</strong> hiện tại, tôi nhận thấy mô hình thanh toán cũ – đặc biệt là phần lãi suất định kỳ – đang làm suy giảm nghiêm trọng tốc độ giảm gốc và tạo áp lực <strong>dòng tiền</strong> kéo dài.</p>
+        <p class="mb-3">Trong suốt thời gian qua, tôi luôn ưu tiên thực hiện nghĩa vụ thanh toán theo các thỏa thuận đã thống nhất. Tuy nhiên, sau khi rà soát tổng thể cơ cấu tài chính và <strong>dòng tiền</strong> hiện tại, tôi nhận thấy mô hình thanh toán cũ – đặc biệt là phần lãi suất định kỳ – đang làm suy giảm nghiêm trọng tài chính và tạo áp lực gãy <strong>dòng tiền</strong> kéo dài.</p>
 
-        <p class="mb-3">Nếu tiếp tục duy trì cơ chế này, phần lớn nguồn tiền hàng tháng sẽ tiếp tục bị hấp thụ bởi chi phí lãi, trong khi dư nợ gốc giảm rất chậm. Mô hình đó không đảm bảo tính bền vững trung và dài hạn, và tiềm ẩn rủi ro mất cân bằng tài chính trong tương lai. Một khi <strong>dòng tiền</strong> bị phá vỡ, tiến độ thanh toán sẽ bị gián đoạn – điều này không có lợi cho bất kỳ bên nào.</p>
+        <p class="mb-3">Nếu tiếp tục duy trì cơ chế này, phần lớn nguồn tiền hàng tháng sẽ tiếp tục bị hấp thụ bởi chi phí lãi, trong khi dư nợ gốc không giảm. Mô hình đó không đảm bảo tính bền vững trung và dài hạn, và tiềm ẩn rủi ro mất cân bằng tài chính trong tương lai. Một khi <strong>dòng tiền</strong> bị phá vỡ, tiến độ thanh toán sẽ bị gián đoạn – điều này không có lợi cho bất kỳ bên nào.</p>
 
         <p class="mb-2"><strong>Vì vậy, tôi chủ động chuyển sang mô hình tái cấu trúc với các nguyên tắc sau:</strong></p>
         <ul class="mb-3">
@@ -27,6 +27,7 @@
             <li>Số tiền thanh toán hàng tháng được xác định theo năng lực tài chính thực tế.</li>
             <li>Chính sách được áp dụng thống nhất, không có ngoại lệ cá nhân.</li>
             <li>Tiến độ được cập nhật minh bạch trên hệ thống theo dõi riêng.</li>
+            <li>Không phát sinh vay mới, chỗ này gán chỗ kia.</li>
         </ul>
 
         <p class="mb-3">Quyết định này không phải là sự né tránh. Ngược lại, đây là lựa chọn có trách nhiệm nhằm bảo toàn khả năng hoàn trả toàn bộ nghĩa vụ gốc. Tôi lựa chọn một lộ trình ổn định, dựa trên thực tế, thay vì duy trì một mô hình có thể làm gia tăng rủi ro hệ thống.</p>

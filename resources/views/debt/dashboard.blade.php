@@ -10,14 +10,11 @@
 @endsection
 
 @section('content')
-    <h4 class="mb-4">Chào {{ Auth::user()->name }}</h4>
+    <h4 class="mb-4"> {{ Auth::user()->name }}</h4>
     @if($creditor)
         <div class="debt-card p-4 mb-4">
-            <h5>Tổng nợ của bạn (theo kế hoạch)</h5>
+            <h5>Tổng nợ bạn</h5>
             <p class="fs-4 mb-0"><a href="{{ route('debt.old-debt.detail') }}" class="text-primary text-decoration-none">{{ number_format($creditor->total_debt, 0, ',', '.') }} đ</a></p>
-            @if($creditor->restructuring_date)
-                <p class="text-muted small mb-0 mt-2">Ngày tái cấu trúc: {{ $creditor->restructuring_date->format('d/m/Y') }}</p>
-            @endif
             <hr class="my-3">
             <div class="row g-3 small">
                 <div class="col-6 col-md-3">
