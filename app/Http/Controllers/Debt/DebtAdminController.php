@@ -492,37 +492,37 @@ class DebtAdminController extends Controller
         $beOut  = (clone $baseFilter)->where('description', 'like', '%BE-%')->where('type', 'OUT')->sum('amount');
         $beCount = (clone $baseFilter)->where('description', 'like', '%BE-%')->count();
 
-        // Số dư ví ACB (46241987): snapshot + giao dịch sau as_of_date
+        // Số dư ví: snapshot + tổng IN/OUT theo created_at từ 16/02 13:00:00 trở đi
+        $walletFromAt = \Carbon\Carbon::parse('2026-02-16 14:00:00', 'Asia/Ho_Chi_Minh');
+        $walletFromAtFormatted = $walletFromAt->format('d/m/Y H:i');
+
         $acbSnapshot = BankWalletBalanceSnapshot::where('account_number', '46241987')->where('bank', 'ACB')->first();
         $acbBalance = null;
         $acbAsOfDate = null;
         if ($acbSnapshot) {
             $acbAsOfDate = $acbSnapshot->as_of_date->format('d/m/Y');
-            $after = $acbSnapshot->as_of_date->format('Y-m-d');
             $acbIn = (float) Transaction::where('account_number', '46241987')
-                ->where('transaction_date', '>', $after)
+                ->where('created_at', '>=', $walletFromAt)
                 ->where('type', 'IN')
                 ->sum('amount');
             $acbOut = (float) Transaction::where('account_number', '46241987')
-                ->where('transaction_date', '>', $after)
+                ->where('created_at', '>=', $walletFromAt)
                 ->where('type', 'OUT')
                 ->sum('amount');
             $acbBalance = (float) $acbSnapshot->balance_snapshot + $acbIn - $acbOut;
         }
 
-        // Số dư ví MBank (008338298888): snapshot + giao dịch sau as_of_date
         $mbankSnapshot = BankWalletBalanceSnapshot::where('account_number', '008338298888')->where('bank', 'MBB')->first();
         $mbankBalance = null;
         $mbankAsOfDate = null;
         if ($mbankSnapshot) {
             $mbankAsOfDate = $mbankSnapshot->as_of_date->format('d/m/Y');
-            $afterMbank = $mbankSnapshot->as_of_date->format('Y-m-d');
             $mbankIn = (float) Transaction::where('account_number', '008338298888')
-                ->where('transaction_date', '>', $afterMbank)
+                ->where('created_at', '>=', $walletFromAt)
                 ->where('type', 'IN')
                 ->sum('amount');
             $mbankOut = (float) Transaction::where('account_number', '008338298888')
-                ->where('transaction_date', '>', $afterMbank)
+                ->where('created_at', '>=', $walletFromAt)
                 ->where('type', 'OUT')
                 ->sum('amount');
             $mbankBalance = (float) $mbankSnapshot->balance_snapshot + $mbankIn - $mbankOut;
@@ -552,6 +552,7 @@ class DebtAdminController extends Controller
             'acb_as_of_date' => $acbAsOfDate,
             'mbank_balance' => $mbankBalance,
             'mbank_as_of_date' => $mbankAsOfDate,
+            'wallet_from_at_formatted' => $walletFromAtFormatted,
         ]);
     }
 

@@ -32,7 +32,7 @@
                     <span class="avatar-title rounded fs-4 bg-primary bg-opacity-10 text-primary"><i class="bi bi-bank2"></i></span>
                     <div class="ms-3">
                         <span class="fw-semibold">Ví ACB (46241987)</span>
-                        @if($acb_as_of_date ?? null)<small class="text-muted d-block">Gốc {{ $acb_as_of_date }}</small>@endif
+                        @if($acb_as_of_date ?? null)<small class="text-muted d-block">Gốc {{ $acb_as_of_date }} · Cộng/trừ từ {{ $wallet_from_at_formatted ?? '16/02/2026 14:00' }}</small>@endif
                         <div class="fs-5 fw-bold mt-1">{{ number_format($acb_balance, 0, ',', '.') }} đ</div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <span class="avatar-title rounded fs-4 bg-info bg-opacity-10 text-info"><i class="bi bi-bank"></i></span>
                     <div class="ms-3">
                         <span class="fw-semibold">Ví MBank (008338298888)</span>
-                        @if($mbank_as_of_date ?? null)<small class="text-muted d-block">Gốc {{ $mbank_as_of_date }}</small>@endif
+                        @if($mbank_as_of_date ?? null)<small class="text-muted d-block">Gốc {{ $mbank_as_of_date }} · Cộng/trừ từ {{ $wallet_from_at_formatted ?? '16/02/2026 14:00' }}</small>@endif
                         <div class="fs-5 fw-bold mt-1">{{ number_format($mbank_balance, 0, ',', '.') }} đ</div>
                     </div>
                 </div>
