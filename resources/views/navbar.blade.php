@@ -85,7 +85,7 @@
                         <span>Dashboards</span>
                     </a>
                 </li>
-                @if(Auth::check() && !Auth::user()->isDebtSystemUser())
+                @if(Auth::check() && Auth::user()->hasRole('admin'))
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('debt.admin.index') }}">
                         <i class="ri-bank-card-line"></i>

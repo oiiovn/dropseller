@@ -127,8 +127,8 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Hệ thống quản lý nợ - Con nợ / Admin (tài khoản không có personal_code)
-    Route::prefix('quan-ly-no')->name('debt.admin.')->middleware('debt.debtor')->group(function () {
+    // Hệ thống quản lý nợ - Chỉ admin mới xem và quản lý
+    Route::prefix('quan-ly-no')->name('debt.admin.')->middleware(['debt.debtor', 'role:admin'])->group(function () {
         Route::get('/', [DebtAdminController::class, 'index'])->name('index');
         Route::get('tong-no', [DebtAdminController::class, 'summary'])->name('summary');
         Route::get('chu-no/tao', [DebtAdminController::class, 'createCreditor'])->name('creditor.create');
