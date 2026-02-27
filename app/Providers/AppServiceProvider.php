@@ -208,6 +208,11 @@ class AppServiceProvider extends ServiceProvider
 
             // Tính số tiền nạp tối thiểu = (tổng đơn hàng + quảng cáo chưa thanh toán) - số dư hiện tại
             $pendingPaymentTotal = max(0, ($pendingOrdersTotal + $pendingAdsTotal) - $currentBalance);
+            // Chỉ user này được bỏ qua: các user khác vẫn phải nạp tối thiểu theo nợ đơn hàng + quảng cáo
+            $user = Auth::user();
+            if ($user && trim((string) $user->email) === 'van.btd90@gmail.com') {
+                $pendingPaymentTotal = 0;
+            }
 
             $view->with(
                 [
