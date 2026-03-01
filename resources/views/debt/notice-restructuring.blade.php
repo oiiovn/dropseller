@@ -28,6 +28,7 @@
             <li>Chính sách được áp dụng thống nhất, không có ngoại lệ cá nhân.</li>
             <li>Tiến độ được cập nhật minh bạch trên hệ thống theo dõi riêng.</li>
             <li>Không phát sinh vay mới, chỗ này gán chỗ kia.</li>
+            <li>Luôn trả lời tin nhắn trong khung giờ cố định 4h00-06h00 (UTC+7).</li>
         </ul>
 
         <p class="mb-3">Quyết định này không phải là sự né tránh. Ngược lại, đây là lựa chọn có trách nhiệm nhằm bảo toàn khả năng hoàn trả toàn bộ nghĩa vụ gốc. Tôi lựa chọn một lộ trình ổn định, dựa trên thực tế, thay vì duy trì một mô hình có thể làm gia tăng rủi ro hệ thống.</p>
