@@ -13,7 +13,7 @@
     <div class="debt-card p-4 p-md-5" style="max-width: 720px;">
         <h4 class="mb-4 text-center">THÔNG BÁO CHÍNH THỨC VỀ VIỆC TÁI CẤU TRÚC THANH TOÁN</h4>
 
-        <p class="mb-2">Kính gửi Anh/Chị <strong>{{ $creditorName }}</strong>,</p>
+        <p class="mb-2">Kính gửi Anh/Chị <strong>{{ $creditorName ?? 'Anh/Chị' }}</strong>,</p>
         <p class="mb-3">Tôi gửi thông báo này với tinh thần minh bạch và trách nhiệm.</p>
 
         <p class="mb-3">Trong suốt thời gian qua, tôi luôn ưu tiên thực hiện nghĩa vụ thanh toán theo các thỏa thuận đã thống nhất. Tuy nhiên, sau khi rà soát tổng thể cơ cấu tài chính và <strong>dòng tiền</strong> hiện tại, tôi nhận thấy mô hình thanh toán cũ – đặc biệt là phần lãi suất định kỳ – đang làm suy giảm nghiêm trọng tài chính và tạo áp lực gãy <strong>dòng tiền</strong> kéo dài.</p>

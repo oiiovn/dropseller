@@ -17,6 +17,11 @@ class CheckRole
 
         $userId = Auth::id();
 
+        // Middleware phải được khai báo với ít nhất một role (vd: role:admin hoặc checkrole:admin,manager)
+        if (empty($roles) || !isset($roles[0])) {
+            return redirect()->route('dashboard')->with('error', 'Bạn không có quyền truy cập.');
+        }
+
         // Nếu roles là 1 chuỗi "admin,seller", thì explode
         if (is_string($roles[0]) && str_contains($roles[0], ',')) {
             $roles = explode(',', $roles[0]);
