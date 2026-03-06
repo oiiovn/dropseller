@@ -54,6 +54,19 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    @php
+                        $noDon = $pending_orders_total ?? 0;
+                        $noAds = $pending_ads_total ?? 0;
+                        $minNap = $pending_payment_total ?? 0;
+                    @endphp
+                    @if($noDon > 0 || $noAds > 0 || $minNap > 0)
+                    <div class="alert alert-warning border-warning mb-3 py-2 small">
+                        <div class="fw-bold mb-2">Các khoản chưa thanh toán:</div>
+                        <div class="d-flex justify-content-between"><span>Nợ đơn hàng:</span><span class="fw-bold">{{ number_format($noDon, 0, ',', '.') }} VNĐ</span></div>
+                        <div class="d-flex justify-content-between"><span>Nợ quảng cáo:</span><span class="fw-bold">{{ number_format($noAds, 0, ',', '.') }} VNĐ</span></div>
+                        <div class="d-flex justify-content-between mt-1 pt-1 border-top border-warning"><span>Số tiền nạp tối thiểu (giới hạn):</span><span class="fw-bold text-danger">{{ number_format($minNap, 0, ',', '.') }} VNĐ</span></div>
+                    </div>
+                    @endif
                     <form id="formNapTien">
                         <div class="mb-3">
                             <label for="soTien" class="form-label">Số tiền <span class="text-danger">*</span></label>
