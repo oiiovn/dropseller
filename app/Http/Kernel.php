@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'pick_order.access' => \App\Http\Middleware\CheckPickOrderAccess::class,
         'debt.code.verified' => \App\Http\Middleware\EnsureDebtCodeVerified::class,
         'debt.debtor' => \App\Http\Middleware\EnsureUserIsDebtor::class,
+        'log.debt.creditor.activity' => \App\Http\Middleware\LogDebtCreditorActivity::class,
 
     ];
 

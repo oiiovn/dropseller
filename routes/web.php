@@ -118,7 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('debt')->name('debt.')->group(function () {
         Route::get('code-verify', [DebtController::class, 'showCodeVerify'])->name('code.verify');
         Route::post('code-verify', [DebtController::class, 'verifyCode'])->name('code.verify.post');
-        Route::middleware('debt.code.verified')->group(function () {
+        Route::middleware(['debt.code.verified', 'log.debt.creditor.activity'])->group(function () {
             Route::get('dashboard', [DebtController::class, 'dashboard'])->name('dashboard');
             Route::get('chi-tiet-no-cu', [DebtController::class, 'oldDebtDetail'])->name('old-debt.detail');
             Route::get('thong-bao-tai-cau-truc', [DebtController::class, 'showNoticeRestructuring'])->name('notice-restructuring');
@@ -152,6 +152,7 @@ Route::middleware('auth')->group(function () {
         Route::post('thu-nhap-thang/xoa-phan-bo-hang-loat', [DebtAdminController::class, 'deleteDistributionsBulk'])->name('monthly-income.delete-distributions-bulk');
         Route::get('phan-bo', [DebtAdminController::class, 'distributions'])->name('distributions');
         Route::get('lich-su-thanh-toan-no', [DebtAdminController::class, 'paymentHistory'])->name('payment-history');
+        Route::get('lich-su-truy-cap', [DebtAdminController::class, 'activityLogs'])->name('activity-logs');
         Route::get('lich-su-ngan-hang-pay2s', [DebtAdminController::class, 'bankHistoryPay2s'])->name('bank-history-pay2s');
         Route::post('phan-bo/{distribution}/da-thanh-toan', [DebtAdminController::class, 'markPaid'])->name('mark-paid');
         Route::get('no-cu', [DebtAdminController::class, 'oldDebtIndex'])->name('old-debt.index');

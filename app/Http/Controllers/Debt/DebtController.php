@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Debt;
 
 use App\Http\Controllers\Controller;
+use App\Models\DebtCreditorActivityLog;
 use App\Models\DebtMonthlyIncome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,8 +32,10 @@ class DebtController extends Controller
             return redirect()->route('dashboard');
         }
         if ((string) $user->personal_code !== (string) $request->personal_code) {
+            DebtCreditorActivityLog::logLoginFailed($request);
             return redirect()->back()->withErrors(['personal_code' => 'Mã số cá nhân không đúng.']);
         }
+        DebtCreditorActivityLog::logLogin($request);
         session(['debt_code_verified_at' => now()->toDateTimeString()]);
         return redirect()->route('debt.dashboard');
     }

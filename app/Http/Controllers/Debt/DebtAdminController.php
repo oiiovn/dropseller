@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Debt;
 
 use App\Http\Controllers\Controller;
 use App\Models\DebtCreditor;
+use App\Models\DebtCreditorActivityLog;
 use App\Models\DebtDistribution;
 use App\Models\DebtMonthlyIncome;
 use App\Models\DebtOldDebtItem;
@@ -644,5 +645,47 @@ class DebtAdminController extends Controller
         }
         DebtOldDebtItem::where('debt_creditor_id', $creditor->id)->whereNotIn('id', $ids)->delete();
         return redirect()->route('debt.admin.old-debt.creditor', $creditor)->with('success', 'Đã lưu ghi chép nợ cũ.');
+    }
+
+    /**
+     * Lịch sử truy cập của chủ nợ (đăng nhập + xem trang). Chỉ admin xem, chủ nợ không thấy.
+     */
+    public function activityLogs(Request $request)
+    {
+        $debtorId = auth()->id();
+        $creditorUserIds = DebtCreditor::where('debtor_user_id', $debtorId)->pluck('user_id');
+        $creditors = DebtCreditor::with('user')->where('debtor_user_id', $debtorId)->orderBy('id')->get();
+
+        $query = DebtCreditorActivityLog::whereIn('user_id', $creditorUserIds)->with('user')->orderByDesc('created_at');
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+        if ($request->filled('action')) {
+            $query->where('action', $request->action);
+        }
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $logs = $query->paginate(50)->withQueryString();
+
+        $loginCounts = DebtCreditorActivityLog::whereIn('user_id', $creditorUserIds)
+            ->where('action', DebtCreditorActivityLog::ACTION_LOGIN)
+            ->selectRaw('user_id, count(*) as total')
+            ->groupBy('user_id')
+            ->pluck('total', 'user_id');
+
+        $loginCountsLastWeek = DebtCreditorActivityLog::whereIn('user_id', $creditorUserIds)
+            ->where('action', DebtCreditorActivityLog::ACTION_LOGIN)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->selectRaw('user_id, count(*) as total')
+            ->groupBy('user_id')
+            ->pluck('total', 'user_id');
+
+        return view('debt.admin.activity-logs', compact('logs', 'creditors', 'loginCounts', 'loginCountsLastWeek'));
     }
 }

@@ -974,7 +974,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Mobile Pagination -->
+                        <!-- Phân trang mobile (trên cards) -->
                         <div class="d-lg-none mt-3">
                             {{ $Transactions->links() }}
                         </div>
@@ -1073,6 +1073,10 @@
                             </script>
 
                         </div>
+                        <!-- Phân trang desktop (dưới bảng) -->
+                        <div class="d-none d-lg-block mt-3">
+                            {{ $Transactions->links() }}
+                        </div>
                     </div>
                     <!-- Giao dịch đơn sỉ -->
                     <div class="tab-pane fade" id="pills-bill-si" role="tabpanel" aria-labelledby="pills-bill-si-tab">
@@ -1104,7 +1108,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Mobile Pagination -->
+                        <!-- Phân trang mobile (trên cards) -->
                         <div class="d-lg-none mt-3">
                             {{ $Bill_Si->links() }}
                         </div>
@@ -1195,6 +1199,10 @@
                                 });
                             </script>
                         </div>
+                        <!-- Phân trang desktop (dưới bảng) -->
+                        <div class="d-none d-lg-block mt-3">
+                            {{ $Bill_Si->links() }}
+                        </div>
                     </div>
                     <!-- Nạp tiền -->
                     <div class="tab-pane fade" id="pills-nap" role="tabpanel" aria-labelledby="pills-nap-tab">
@@ -1224,7 +1232,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Mobile Pagination -->
+                        <!-- Phân trang mobile (trên cards) -->
                         <div class="d-lg-none mt-3">
                             {{ $Naptien->links() }}
                         </div>
@@ -1316,6 +1324,10 @@
                                 });
                             </script>
                         </div>
+                        <!-- Phân trang desktop (dưới bảng) -->
+                        <div class="d-none d-lg-block mt-3">
+                            {{ $Naptien->links() }}
+                        </div>
                     </div>
                     <!-- Chi tiêu ADS -->
                     <div class="tab-pane fade" id="pills-ads" role="tabpanel" aria-labelledby="pills-ads-tab">
@@ -1345,7 +1357,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Mobile Pagination -->
+                        <!-- Phân trang mobile (trên cards) -->
                         <div class="d-lg-none mt-3">
                             {{ $ADS->links() }}
                         </div>
@@ -1437,6 +1449,10 @@
                                 });
                             </script>
                         </div>
+                        <!-- Phân trang desktop (dưới bảng) -->
+                        <div class="d-none d-lg-block mt-3">
+                            {{ $ADS->links() }}
+                        </div>
                     </div>
                     <!-- Hoá đơn dịch vụ -->
                     <div class="tab-pane fade" id="pills-dich-vu" role="tabpanel" aria-labelledby="pills-dich-vu-tab">
@@ -1468,7 +1484,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Mobile Pagination -->
+                        <!-- Phân trang mobile (trên cards) -->
                         <div class="d-lg-none mt-3">
                             {{ $Dich_Vu->links() }}
                         </div>
@@ -1519,6 +1535,10 @@
 
                                 </tbody>
                             </table>
+                        </div>
+                        <!-- Phân trang desktop (dưới bảng) -->
+                        <div class="d-none d-lg-block mt-3">
+                            {{ $Dich_Vu->links() }}
                         </div>
                     </div>
                 </div>
