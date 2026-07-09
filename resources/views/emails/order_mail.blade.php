@@ -27,7 +27,7 @@
             color: #333;
         }
         p {
-            font-size: 16px;
+            font-size: 20px;
             color: #555;
             margin: 10px 0;
         }
@@ -37,7 +37,7 @@
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 20px;
             color: white;
             text-decoration: none;
             border-radius: 5px;

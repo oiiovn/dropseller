@@ -1,0 +1,63 @@
+.dashboard-time-filter {
+    @apply rounded-xl border border-slate-200 bg-gradient-to-r from-slate-50/80 to-white p-3 shadow-sm md:p-4;
+}
+
+.dashboard-time-filter__row {
+    @apply flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between;
+}
+
+.dashboard-time-filter__intro {
+    @apply flex min-w-0 flex-wrap items-center gap-2 sm:gap-3;
+}
+
+.dashboard-time-filter__icon {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm;
+}
+
+.dashboard-time-filter__heading {
+    @apply min-w-0;
+}
+
+.dashboard-time-filter__title {
+    @apply text-sm font-semibold text-slate-900;
+}
+
+.dashboard-time-filter__badge {
+    @apply mt-0.5 inline-flex max-w-full items-center gap-1 truncate rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700;
+}
+
+.dashboard-time-filter__badge-dot {
+    @apply h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500;
+}
+
+.dashboard-time-filter__controls {
+    @apply flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-stretch lg:justify-end;
+}
+
+.dashboard-time-filter__panel {
+    @apply grid grid-cols-1 overflow-hidden rounded-xl border border-slate-200 bg-white sm:grid-cols-3;
+}
+
+.dashboard-time-filter__segment {
+    @apply flex min-w-0 flex-col gap-1 border-b border-slate-200 px-3 py-2.5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0;
+}
+
+.dashboard-time-filter__segment--month {
+    @apply sm:min-w-[168px];
+}
+
+.dashboard-time-filter__label {
+    @apply text-[11px] font-semibold uppercase tracking-wide text-slate-400;
+}
+
+.dashboard-time-filter__input {
+    @apply h-9 w-full min-w-0 rounded-md border-0 bg-slate-50 px-2 text-sm text-slate-800 transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100;
+}
+
+.dashboard-time-filter__clear {
+    @apply inline-flex h-full min-h-[74px] shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 sm:min-h-0 sm:h-[74px];
+}
+
+.dashboard-time-filter__loading {
+    @apply text-xs font-normal text-slate-400;
+}

@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.admin-shell,
+.crm-shell {
+    --app-bg: #f4f4f5;
+    --app-sidebar-bg: #020617;
+    --app-sidebar-text: #f4f4f5;
+    --app-sidebar-active-bg: #2563eb;
+    --app-sidebar-hover-bg: rgba(255, 255, 255, 0.08);
+    --app-sidebar-border: rgba(255, 255, 255, 0.12);
+    --app-header-bg: #ffffff;
+    background-color: var(--app-bg);
+}
+
+.crm-sidebar {
+    background-color: var(--app-sidebar-bg);
+    color: var(--app-sidebar-text);
+    border-color: var(--app-sidebar-border);
+}
+
+.admin-header,
+.crm-header {
+    background-color: color-mix(in srgb, var(--app-header-bg) 95%, transparent);
+}
+
+.sidebar-nav__link--active {
+    background-color: var(--app-sidebar-active-bg);
+}
+
+.sidebar-nav__link--child {
+    color: var(--app-sidebar-text);
+}
+
+.sidebar-nav__link--child:hover {
+    background-color: var(--app-sidebar-hover-bg);
+}
+
+.sidebar-nav__group-toggle {
+    color: var(--app-sidebar-text);
+}
+
+.sidebar-nav__group-toggle:hover {
+    background-color: var(--app-sidebar-hover-bg);
+}
+
+.sidebar-nav__children {
+    border-color: var(--app-sidebar-border);
+}

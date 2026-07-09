@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// Hide PHP 8.5 deprecation notices from vendor packages in local runtime output.
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

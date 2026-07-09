@@ -90,7 +90,7 @@
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$item->filter_date}}</a>
+                                                            <a class="text-body-secondary" style="font-size: 15px;">{{$item->filter_date}}</a>
                                                         </li>
                                                     </ul>
                                                 </td>
@@ -259,7 +259,7 @@
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a class="text-body-secondary" style="font-size: 11px;">{{$order->filter_date}}</a>
+                                                            <a class="text-body-secondary" style="font-size: 15px;">{{$order->filter_date}}</a>
                                                         </li>
                                                     </ul>
                                                 </td>

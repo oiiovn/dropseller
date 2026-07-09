@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -17,7 +18,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const CRM_HOME = '/crm';
+
+    public const ADMIN_HOME = '/admin';
+
+    /**
+     * @deprecated Use homeForUser() for role-aware redirects.
+     */
+    public const HOME = self::CRM_HOME;
     protected $namespace = 'App\\Http\\Controllers';
 
 
@@ -53,4 +61,12 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
+    public static function homeForUser(?User $user): string
+    {
+        if ($user?->hasCrmRole('admin')) {
+            return self::ADMIN_HOME;
+        }
+
+        return self::CRM_HOME;
+    }
 }

@@ -70,7 +70,7 @@
         }
 
         body {
-            font-size: 14px !important;
+            font-size: 18px !important;
             font-family: Arial, sans-serif !important;
 
         }

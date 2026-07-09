@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\OrderDetail;
@@ -162,12 +163,20 @@ class AppServiceProvider extends ServiceProvider
             $unreadNotifications = $Notifications->where('is_read', 0)->values(); // Dùng `values()` để giữ lại collection hợp lệ
             $NotificationsCount = $Notifications->count();
 
-            $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
-                ->whereHas('shop', function ($query) {
-                    $query->where('user_id', Auth::id());
-                })
-                ->where('created_at', '<', Carbon::now()->subDay())
-                ->get();
+            $orders_unpaid = collect();
+            if (
+                Auth::check()
+                && Schema::hasTable('orders')
+                && Schema::hasColumn('orders', 'shop_id')
+                && method_exists(Order::class, 'shop')
+            ) {
+                $orders_unpaid = Order::where('payment_status', 'Chưa thanh toán')
+                    ->whereHas('shop', function ($query) {
+                        $query->where('user_id', Auth::id());
+                    })
+                    ->where('created_at', '<', Carbon::now()->subDay())
+                    ->get();
+            }
 
             $view->with(
                 [
